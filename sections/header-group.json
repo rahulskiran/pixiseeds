@@ -1,1 +1,104 @@
-{"type":"header","name":"Header","sections":{"topbar_8RhN8X":{"type":"topbar","blocks":{"menu_CEP3Lj":{"type":"menu","settings":{"position":"center","menu":"sidebar-menu-1"}},"text_w7jAWQ":{"type":"text","settings":{"position":"left","text":"Registered Seller On Amazon.in"}},"text_DHHdUT":{"type":"text","disabled":true,"settings":{"position":"right","text":"✌🏼 Free Express Shipping All Over India"}},"menu_ebrqpt":{"type":"menu","settings":{"position":"right","menu":"track-order"}}},"block_order":["menu_CEP3Lj","text_w7jAWQ","text_DHHdUT","menu_ebrqpt"],"settings":{"color_scheme":"background-5"}},"header_yWqLw4":{"type":"header","custom_css":[".m-header__search {padding-left: 150px; padding-right: 150px; max-width: 2000px; position: center; top: 25%; right: 300px;}"],"settings":{"color_scheme":"background-1","sticky_header_type":"none","separator_line":"none","customers":"icon","show_wishlist":true,"show_compare":false,"icon_size":"large","custom_icon":"","search_button":"icon-plain","menu":"main-menu","menu_color_scheme":"background-1","menu_show_separator_line":false,"enable_country_selector":false,"enable_language_selector":false,"mega_menu_heading":"","foxkit_menu_element":"","toggle_button_position":"menu","open_default":false,"megamenu_color":"background-3","padding_top":24,"padding_bottom":0}},"170991466638743ad7":{"type":"apps","settings":{"color_scheme":"","include_margins":true,"boxed_layout":false,"boxed_color_scheme":"","padding_top":0,"padding_bottom":0,"custom_class":""}}},"order":["topbar_8RhN8X","header_yWqLw4","170991466638743ad7"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "type": "header",
+  "name": "Header",
+  "sections": {
+    "topbar_8RhN8X": {
+      "type": "topbar",
+      "blocks": {
+        "menu_CEP3Lj": {
+          "type": "menu",
+          "settings": {
+            "position": "center",
+            "menu": ""
+          }
+        },
+        "text_w7jAWQ": {
+          "type": "text",
+          "settings": {
+            "position": "center",
+            "text": "Registered Seller On Amazon.in"
+          }
+        },
+        "text_DHHdUT": {
+          "type": "text",
+          "disabled": true,
+          "settings": {
+            "position": "center",
+            "text": "✌🏼 Free Express Shipping All Over India"
+          }
+        },
+        "menu_ebrqpt": {
+          "type": "menu",
+          "settings": {
+            "position": "right",
+            "menu": ""
+          }
+        }
+      },
+      "block_order": [
+        "menu_CEP3Lj",
+        "text_w7jAWQ",
+        "text_DHHdUT",
+        "menu_ebrqpt"
+      ],
+      "settings": {
+        "color_scheme": "background-5"
+      }
+    },
+    "header_yWqLw4": {
+      "type": "header",
+      "custom_css": [
+        ".m-header__search {padding-left: 150px; padding-right: 150px; max-width: 2000px; position: center; top: 25%; right: 300px;}"
+      ],
+      "settings": {
+        "color_scheme": "background-1",
+        "sticky_header_type": "none",
+        "separator_line": "none",
+        "customers": "icon",
+        "show_wishlist": true,
+        "show_compare": false,
+        "icon_size": "large",
+        "custom_icon": "",
+        "search_button": "icon-plain",
+        "menu": "main-menu",
+        "menu_color_scheme": "background-1",
+        "menu_show_separator_line": false,
+        "enable_country_selector": false,
+        "enable_language_selector": false,
+        "mega_menu_heading": "",
+        "foxkit_menu_element": "",
+        "toggle_button_position": "menu",
+        "open_default": false,
+        "megamenu_color": "background-3",
+        "padding_top": 24,
+        "padding_bottom": 0
+      }
+    },
+    "170991466638743ad7": {
+      "type": "apps",
+      "settings": {
+        "color_scheme": "",
+        "include_margins": true,
+        "boxed_layout": false,
+        "boxed_color_scheme": "",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "custom_class": ""
+      }
+    }
+  },
+  "order": [
+    "topbar_8RhN8X",
+    "header_yWqLw4",
+    "170991466638743ad7"
+  ]
+}
