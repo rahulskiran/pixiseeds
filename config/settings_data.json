@@ -14,7 +14,7 @@
     "favicon": "shopify://shop_images/Fav.png",
     "use_ajax_atc": true,
     "show_scroll_top_button": true,
-    "page_width": 1460,
+    "page_width": 1900,
     "enable_boxed_layout": false,
     "boxed_color_scheme": "background-1",
     "page_transition": true,
