@@ -743,6 +743,119 @@
       },
       {
         "type": "header",
+        "content": "Header"
+      },
+      {
+        "type": "range",
+        "id": "header_corner_radius",
+        "label": "Corner radius",
+        "min": 0,
+        "max": 40,
+        "step": 1,
+        "unit": "px",
+        "default": 0
+      },
+      {
+        "type": "header",
+        "content": "Footer"
+      },
+      {
+        "type": "range",
+        "id": "footer_corner_radius",
+        "label": "Corner radius",
+        "min": 0,
+        "max": 40,
+        "step": 1,
+        "unit": "px",
+        "default": 0
+      },
+      {
+        "type": "header",
+        "content": "Dropdown menus"
+      },
+      {
+        "type": "range",
+        "id": "dropdown_corner_radius",
+        "label": "Corner radius",
+        "min": 0,
+        "max": 30,
+        "step": 1,
+        "unit": "px",
+        "default": 5
+      },
+      {
+        "type": "header",
+        "content": "Modals & Popups"
+      },
+      {
+        "type": "range",
+        "id": "modal_corner_radius",
+        "label": "Corner radius",
+        "min": 0,
+        "max": 40,
+        "step": 1,
+        "unit": "px",
+        "default": 4
+      },
+      {
+        "type": "header",
+        "content": "Drawers"
+      },
+      {
+        "type": "range",
+        "id": "drawer_corner_radius",
+        "label": "Corner radius",
+        "min": 0,
+        "max": 40,
+        "step": 1,
+        "unit": "px",
+        "default": 0
+      },
+      {
+        "type": "header",
+        "content": "Images"
+      },
+      {
+        "type": "range",
+        "id": "image_corner_radius",
+        "label": "Corner radius",
+        "min": 0,
+        "max": 40,
+        "step": 1,
+        "unit": "px",
+        "default": 0,
+        "info": "Applies to general images across the site."
+      },
+      {
+        "type": "header",
+        "content": "Announcement bar"
+      },
+      {
+        "type": "range",
+        "id": "announcement_corner_radius",
+        "label": "Corner radius",
+        "min": 0,
+        "max": 30,
+        "step": 1,
+        "unit": "px",
+        "default": 0
+      },
+      {
+        "type": "header",
+        "content": "Tooltip"
+      },
+      {
+        "type": "range",
+        "id": "tooltip_corner_radius",
+        "label": "Corner radius",
+        "min": 0,
+        "max": 20,
+        "step": 1,
+        "unit": "px",
+        "default": 4
+      },
+      {
+        "type": "header",
         "content": "Others"
       },
       {
@@ -754,6 +867,204 @@
         "step": 1,
         "unit": "px",
         "default": 0
+      }
+    ]
+  },
+  {
+    "name": "Borders & Dividers",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Global border"
+      },
+      {
+        "type": "paragraph",
+        "content": "Controls the default border style across the entire site."
+      },
+      {
+        "type": "range",
+        "id": "global_border_width",
+        "label": "Border width",
+        "min": 0,
+        "max": 5,
+        "step": 1,
+        "unit": "px",
+        "default": 1
+      },
+      {
+        "type": "range",
+        "id": "global_border_opacity",
+        "label": "Border opacity",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "%",
+        "default": 100,
+        "info": "Reduce opacity for a softer border appearance."
+      },
+      {
+        "type": "header",
+        "content": "Header border"
+      },
+      {
+        "type": "range",
+        "id": "header_border_width",
+        "label": "Bottom border width",
+        "min": 0,
+        "max": 5,
+        "step": 1,
+        "unit": "px",
+        "default": 1
+      },
+      {
+        "type": "color",
+        "id": "header_border_color",
+        "label": "Border color",
+        "default": "#EEEEEE"
+      },
+      {
+        "type": "header",
+        "content": "Footer border"
+      },
+      {
+        "type": "range",
+        "id": "footer_border_width",
+        "label": "Top border width",
+        "min": 0,
+        "max": 5,
+        "step": 1,
+        "unit": "px",
+        "default": 1
+      },
+      {
+        "type": "color",
+        "id": "footer_border_color",
+        "label": "Border color",
+        "default": "#EEEEEE"
+      },
+      {
+        "type": "header",
+        "content": "Section dividers"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_section_dividers",
+        "label": "Show dividers between sections",
+        "default": false
+      },
+      {
+        "type": "range",
+        "id": "section_divider_width",
+        "label": "Divider width",
+        "min": 1,
+        "max": 5,
+        "step": 1,
+        "unit": "px",
+        "default": 1
+      },
+      {
+        "type": "color",
+        "id": "section_divider_color",
+        "label": "Divider color",
+        "default": "#EEEEEE"
+      },
+      {
+        "type": "header",
+        "content": "Card borders"
+      },
+      {
+        "type": "range",
+        "id": "card_border_width",
+        "label": "Card border width",
+        "min": 0,
+        "max": 5,
+        "step": 1,
+        "unit": "px",
+        "default": 1,
+        "info": "Applies to product, collection, and article cards."
+      },
+      {
+        "type": "color",
+        "id": "card_border_color",
+        "label": "Card border color",
+        "default": "#EEEEEE"
+      },
+      {
+        "type": "header",
+        "content": "Input field borders"
+      },
+      {
+        "type": "color",
+        "id": "input_border_color",
+        "label": "Input border color",
+        "default": "#EEEEEE"
+      },
+      {
+        "type": "color",
+        "id": "input_focus_border_color",
+        "label": "Input focus border color",
+        "default": "#222222",
+        "info": "Border color when an input field is focused."
+      },
+      {
+        "type": "header",
+        "content": "Dropdown borders"
+      },
+      {
+        "type": "range",
+        "id": "dropdown_border_width",
+        "label": "Border width",
+        "min": 0,
+        "max": 3,
+        "step": 1,
+        "unit": "px",
+        "default": 1
+      },
+      {
+        "type": "color",
+        "id": "dropdown_border_color",
+        "label": "Border color",
+        "default": "#EEEEEE"
+      },
+      {
+        "type": "header",
+        "content": "Modal & Popup borders"
+      },
+      {
+        "type": "range",
+        "id": "modal_border_width",
+        "label": "Border width",
+        "min": 0,
+        "max": 3,
+        "step": 1,
+        "unit": "px",
+        "default": 0
+      },
+      {
+        "type": "color",
+        "id": "modal_border_color",
+        "label": "Border color",
+        "default": "#EEEEEE"
+      },
+      {
+        "type": "header",
+        "content": "Drawer borders"
+      },
+      {
+        "type": "range",
+        "id": "drawer_border_width",
+        "label": "Border width",
+        "min": 0,
+        "max": 3,
+        "step": 1,
+        "unit": "px",
+        "default": 0
+      },
+      {
+        "type": "color",
+        "id": "drawer_border_color",
+        "label": "Border color",
+        "default": "#EEEEEE"
       }
     ]
   },

@@ -136,6 +136,34 @@
      --collection-card-corner-radius: {{ settings.collection_card_corner_radius }}px;
      --article-card-corner-radius: {{ settings.blog_card_corner_radius }}px;
      --corner-radius: {{ settings.corner_radius }}px;
+     --header-corner-radius: {{ settings.header_corner_radius | default: 0 }}px;
+     --footer-corner-radius: {{ settings.footer_corner_radius | default: 0 }}px;
+     --dropdown-corner-radius: {{ settings.dropdown_corner_radius | default: 5 }}px;
+     --modal-corner-radius: {{ settings.modal_corner_radius | default: 4 }}px;
+     --drawer-corner-radius: {{ settings.drawer_corner_radius | default: 0 }}px;
+     --image-corner-radius: {{ settings.image_corner_radius | default: 0 }}px;
+     --announcement-corner-radius: {{ settings.announcement_corner_radius | default: 0 }}px;
+     --tooltip-corner-radius: {{ settings.tooltip_corner_radius | default: 4 }}px;
+
+     /* Borders & Dividers */
+     --global-border-width: {{ settings.global_border_width | default: 1 }}px;
+     --global-border-opacity: {{ settings.global_border_opacity | default: 100 | divided_by: 100.0 }};
+     --header-border-width: {{ settings.header_border_width | default: 1 }}px;
+     --header-border-color: {{ settings.header_border_color | default: '#EEEEEE' }};
+     --footer-border-width: {{ settings.footer_border_width | default: 1 }}px;
+     --footer-border-color: {{ settings.footer_border_color | default: '#EEEEEE' }};
+     --section-divider-width: {{ settings.section_divider_width | default: 1 }}px;
+     --section-divider-color: {{ settings.section_divider_color | default: '#EEEEEE' }};
+     --card-border-width: {{ settings.card_border_width | default: 1 }}px;
+     --card-border-color: {{ settings.card_border_color | default: '#EEEEEE' }};
+     --input-border-color: {{ settings.input_border_color | default: '#EEEEEE' }};
+     --input-focus-border-color: {{ settings.input_focus_border_color | default: '#222222' }};
+     --dropdown-border-width: {{ settings.dropdown_border_width | default: 1 }}px;
+     --dropdown-border-color: {{ settings.dropdown_border_color | default: '#EEEEEE' }};
+     --modal-border-width: {{ settings.modal_border_width | default: 0 }}px;
+     --modal-border-color: {{ settings.modal_border_color | default: '#EEEEEE' }};
+     --drawer-border-width: {{ settings.drawer_border_width | default: 0 }}px;
+     --drawer-border-color: {{ settings.drawer_border_color | default: '#EEEEEE' }};
 
      /* Search bar styling */
      --search-bar-radius: {{ settings.search_bar_radius | default: 30 }}px;
