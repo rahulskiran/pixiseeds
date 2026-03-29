@@ -121,6 +121,11 @@
 
   	/* LAYOUT */
   	--page-width: {{ settings.page_width }}px;
+  	--site-padding-left: {{ settings.site_padding_left | default: 40 }}px;
+  	--site-padding-right: {{ settings.site_padding_right | default: 40 }}px;
+  	{% if settings.enable_full_width %}
+  	--page-width: 100%;
+  	{% endif %}
 
   	/* BADGES */
   	--badge-radius: {{ settings.badge_radius }}px;

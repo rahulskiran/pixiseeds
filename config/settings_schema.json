@@ -81,6 +81,41 @@
         "unit": "px"
       },
       {
+        "type": "checkbox",
+        "id": "enable_full_width",
+        "label": "Enable full width layout",
+        "default": false,
+        "info": "When enabled, the page will stretch to full width. Use left/right padding to control spacing."
+      },
+      {
+        "type": "header",
+        "content": "Site padding"
+      },
+      {
+        "type": "paragraph",
+        "content": "Controls the left and right padding for the entire website. Works best with full width layout enabled."
+      },
+      {
+        "type": "range",
+        "id": "site_padding_left",
+        "label": "Left padding",
+        "default": 40,
+        "min": 0,
+        "max": 150,
+        "step": 5,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "site_padding_right",
+        "label": "Right padding",
+        "default": 40,
+        "min": 0,
+        "max": 150,
+        "step": 5,
+        "unit": "px"
+      },
+      {
         "type": "header",
         "content": "Boxed layout"
       },
