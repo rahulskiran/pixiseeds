@@ -82,8 +82,8 @@
     "predictive_search_show_price": true,
     "product_type_search_enabled": false,
     "product_type_search_custom": "Beds With Storage, Garden & Outdoor, Garden & Outdoor, Drawer Dividers, Beds, Ovens, Range Hoods, Display & Storage Cabinets, Other, Bathroom Textiles,  Cookware & Tableware, Gaming Furniture, Baby & Kids, Bathroom, Lighting, Home Decor, Mattress Toppers, Fabrics & Sewing, Bedding, Serveware, Window Treatments, Baby Textiles, Modular Kitchen Cabinets & Mini-kitchens, Cabinets For Built-in Appliances, Chairs, Lighting, Microwaves, Bed Skirts, Cafe Furniture, Kids Furniture",
-    "cookie_design_mode": false,
     "show_cookie_consent": false,
+    "cookie_design_mode": false,
     "cookie_consent_placement": "bottom-left",
     "cookie_consent_theme": "white",
     "review_app": "loox",
@@ -128,6 +128,27 @@
     "social_facebook_label": "300k Followers",
     "social_pinterest_label": "",
     "social_instagram_label": "100k Followers",
+    "sections": {
+      "customer-login": {
+        "type": "customer-login",
+        "settings": {
+          "page_header_padding_top": 60,
+          "page_header_padding_bottom": 60,
+          "padding_top": 0,
+          "padding_bottom": 80
+        }
+      },
+      "customer-account": {
+        "type": "customer-account",
+        "settings": {
+          "page_header_padding_top": 60,
+          "page_header_padding_bottom": 60,
+          "padding_top": 0,
+          "padding_bottom": 80
+        }
+      }
+    },
+    "content_for_index": [],
     "color_schemes": {
       "background-1": {
         "settings": {
@@ -216,7 +237,7 @@
       "background-5": {
         "settings": {
           "primary_accent": "#ffffff",
-          "background": "#ee4266",
+          "background": "#eab15b",
           "background_gradient": "",
           "text": "#ffffff",
           "subtext": "#eeeeee",
@@ -339,28 +360,7 @@
           "tooltip_label": "#ffffff"
         }
       }
-    },
-    "sections": {
-      "customer-login": {
-        "type": "customer-login",
-        "settings": {
-          "page_header_padding_top": 60,
-          "page_header_padding_bottom": 60,
-          "padding_top": 0,
-          "padding_bottom": 80
-        }
-      },
-      "customer-account": {
-        "type": "customer-account",
-        "settings": {
-          "page_header_padding_top": 60,
-          "page_header_padding_bottom": 60,
-          "padding_top": 0,
-          "padding_bottom": 80
-        }
-      }
-    },
-    "content_for_index": []
+    }
   },
   "presets": {
     "Default": {
