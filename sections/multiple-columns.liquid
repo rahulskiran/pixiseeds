@@ -1,0 +1,764 @@
+{{ 'component-column-card.css' | asset_url | stylesheet_tag }}
+{{ 'section-multiple-columns.css' | asset_url | stylesheet_tag }}
+
+{% liquid
+  assign padding_top = section.settings.section_padding_top
+  assign padding_bottom = section.settings.section_padding_bottom
+  assign items_per_row = section.settings.items_per_row
+  assign desc_text_color = section.settings.desc_text_color
+
+  assign heading = section.settings.heading
+  assign text_size = section.settings.text_size
+  assign description = section.settings.description
+  
+  assign header_alignment = section.settings.header_alignment
+  assign header_layout = section.settings.header_layout
+  assign color_scheme = section.settings.color_scheme
+  assign header_divider = section.settings.header_divider
+  assign boxed_layout = section.settings.boxed_layout
+
+  assign show_pagination = section.settings.show_pagination
+  assign show_navigation = section.settings.show_navigation
+  assign pagination_type = 'fraction'
+
+  assign enable_swipe_mobile = section.settings.enable_swipe_mobile
+
+  assign total_blocks = section.blocks
+  assign enable_slider = section.settings.enable_slider
+  if total_blocks <= items_per_row
+    assign enable_slider = false
+  endif
+
+  assign mobile_layout = section.settings.mobile_layout
+
+  if enable_slider and mobile_layout == 'inherit'
+    assign mobile_layout = 'slider'
+  endif
+
+  assign show_controls = false
+  if show_pagination or show_navigation
+    assign show_controls = true
+  endif
+
+  assign animation_effect = settings.animations
+  assign animated = false
+  if animation_effect != 'none'
+    assign animated = true
+    if section.settings.animations != 'inherit'
+      assign animation_effect = section.settings.animations
+    endif
+  endif
+
+  assign tablet_items = items_per_row | at_most: 3
+
+  assign section_header_classes = 'm-section__header m:display-flex m:flex-col'
+  assign section_header_action_classes = 'm-section__header-action m:display-flex m:flex-col'
+
+  if header_layout == 'top'
+    assign section_header_classes = section_header_classes | append: ' m:justify-between'
+
+    if header_alignment == 'left'
+      assign section_header_classes = section_header_classes | append: ' sm:m:flex-row m:items-start sm:m:items-center'
+      assign section_header_action_classes = section_header_action_classes | append: ' sm:m:flex-row m:items-start sm:m:items-end'
+    else
+      assign section_header_classes = section_header_classes | append: ' m:items-center'
+      assign section_header_action_classes = section_header_action_classes | append: ' m:items-center'
+    endif
+  else
+    assign section_header_classes = section_header_classes | append: ' m:justify-center lg:m:items-start'
+    assign section_header_action_classes = section_header_action_classes | append: ' m:justify-center lg:m:items-start'
+
+    if header_alignment == 'left'
+      assign section_header_classes = section_header_classes | append: ' m:items-start'
+      assign section_header_action_classes = section_header_action_classes | append: ' m:items-start'
+    else
+      assign section_header_classes = section_header_classes | append: ' m:items-center'
+      assign section_header_action_classes = section_header_action_classes | append: ' m:items-center'
+    endif
+  endif
+
+  assign section_header_classes = section_header_classes | append: ' m:text-' | append: header_alignment
+%}
+
+<section
+  class="m-section m-section--padding{% if boxed_layout %} m-section--boxed{% endif %}{% if header_divider %} m-section--header-separated{% endif %} m-multiple-columns m-multiple-columns--header-{{ header_layout }} m-color-{{ color_scheme }} m-gradient {{ section.settings.custom_class }}"
+  style="
+  --section-padding-top: {{ padding_top }}px; 
+  --section-padding-bottom: {{ padding_bottom }}px;
+  --column-gap: {{ section.settings.column_gap }}px; 
+  --column-gap-mobile: {{ section.settings.column_gap_mobile }}px; 
+  --row-gap: {{ section.settings.row_gap }}px; 
+  --row-gap-mobile: {{ section.settings.row_gap_mobile }}px;
+  "
+>
+  <div class="m-page-width">
+    <m-multiple-columns
+      data-enable-slider="{{ enable_slider }}"
+      {% if enable_slider %}
+        data-items="{{ items_per_row }}"
+        data-pagination-type="fraction"
+        data-show-controls="{{ show_controls }}"
+        data-pagination="{{ show_pagination }}"
+        data-navigation="{{ show_navigation }}"
+        data-mobile-layout="{{ mobile_layout }}"
+      {% endif %}
+      data-total="{{ section.blocks.size }}"
+      class="m-multiple-columns__container m-section__wrapper m:flex-col{% if header_layout == 'left' %} lg:m:flex-row lg:m:items-center{% else %} md:m:flex-col{% endif %}{% if boxed_layout %} m-gradient m-color-{{ section.settings.boxed_color_scheme }}{% endif %}"
+    >
+      {% if heading != blank or description != blank or section.settings.button_text != blank %}
+        <div class="{{ section_header_classes }}{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}">
+          <div class="m-section__header-text">
+            {% if heading != blank %}
+              <h2 class="m-section__heading {{ text_size }}">{{ heading }}</h2>
+            {% endif %}
+            {% if description != blank %}
+              <div class="m-section__description m:text-color-{{ desc_text_color }}">
+                {{ description }}
+              </div>
+            {% endif %}
+          </div>
+          <div class="{{ section_header_action_classes }}">
+            {% if section.settings.button_text != blank %}
+              {% capture arrow  %}<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4.5 2.25L8.25 6L4.5 9.75" stroke="CurrentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>{% endcapture %}
+              {% capture triangle %}<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.51531 5.73474L4.76531 1.98474C4.71287 1.93223 4.64602 1.89647 4.57324 1.88198C4.50046 1.86748 4.42501 1.87491 4.35645 1.90332C4.28789 1.93172 4.22931 1.97984 4.1881 2.04156C4.1469 2.10328 4.12494 2.17584 4.125 2.25005V9.75005C4.12494 9.82426 4.1469 9.89682 4.1881 9.95855C4.22931 10.0203 4.28789 10.0684 4.35645 10.0968C4.42501 10.1252 4.50046 10.1326 4.57324 10.1181C4.64602 10.1036 4.71287 10.0679 4.76531 10.0154L8.51531 6.26536C8.55018 6.23054 8.57784 6.18918 8.59671 6.14365C8.61558 6.09813 8.62529 6.04933 8.62529 6.00005C8.62529 5.95077 8.61558 5.90197 8.59671 5.85645C8.57784 5.81092 8.55018 5.76957 8.51531 5.73474Z" fill="currentColor"/></svg>{% endcapture %}
+              {% liquid 
+                assign is_button_icon = false
+                if section.settings.button_text contains '[arrow]' or section.settings.button_text contains '[triangle]'
+                  assign is_button_icon = true
+                endif
+              %}
+              <a
+                href="{{ section.settings.button_link | default: '#' }}"
+                class="m-button {{ section.settings.button_style }}{% if is_button_icon %} m-button--with-icon{% endif %}"
+              >
+                {{- section.settings.button_text | replace: '[arrow]', arrow | replace: '[triangle]', triangle -}}
+              </a>
+            {% endif %}
+            {% if enable_slider and section.settings.show_pagination or section.settings.show_navigation %}
+              {% render 'slider-controls',
+                container: 'm-page-width',
+                show_nav: show_navigation,
+                show_pagination: show_pagination,
+                pagination_type: pagination_type
+              %}
+            {% endif %}
+          </div>
+        </div>
+      {% endif %}
+      <div class="m-section__content">
+        <div
+          class="m-mixed-layout{% if mobile_layout != 'slider' %} m-mixed-layout--mobile-grid{% if enable_swipe_mobile %} m-mixed-layout--mobile-scroll{% endif %}{% endif %}"
+          {% if section.settings.mobile_layout != 'inherit' %}
+            style="
+              --grid-columns-mobile: {{ section.settings.mobile_layout | replace: 'col-1', '1' | replace: 'col-2', '2' }};
+              --mobile-column-width: {{ section.settings.mobile_layout | replace: 'col-1', '66.66vw' | replace: 'col-2', '40vw' }};
+            "
+          {% endif %}
+        >
+          <div class="m-mixed-layout__wrapper{% if enable_slider %} swiper swiper--equal-height{% endif %}">
+            <div class="m-mixed-layout__inner m:grid md:m:grid-{{ tablet_items }}-cols lg:m:grid-{{ items_per_row }}-cols{% if enable_slider %} swiper-wrapper{% endif %}">
+              {% for block in section.blocks %}
+                <div class="m-multiple-columns__card m:column{% if enable_slider %} swiper-slide{% endif %}">
+                  {% render 'column-card',
+                    card_bordered: section.settings.card_bordered, 
+                    text_alignment: section.settings.card_content_alignment, 
+                    show_border: section.settings.card_show_border, 
+                    hover_effect: section.settings.card_hover_effect, 
+                    image_rounded: section.settings.card_image_rounded, 
+                    image_width: section.settings.card_image_width, 
+                    heading_size: section.settings.card_heading_size, 
+                    description_color: section.settings.card_description_color, 
+                    block: block,
+                    index: forloop.index,
+                    animated: animated,
+                    animation_effect: animation_effect
+                  %}
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </m-multiple-columns>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Multiple columns",
+  "disabled_on": {
+    "groups": [
+      "header",
+      "footer",
+      "aside"
+    ]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "General"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "default": "scheme_1",
+      "label": "Color scheme"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "checkbox",
+      "id": "boxed_layout",
+      "label": "Enable boxed layout",
+      "default": false
+    },
+    {
+      "type": "color_scheme",
+      "id": "boxed_color_scheme",
+      "default": "scheme_1",
+      "label": "Color scheme"
+    },
+    {
+      "type": "header",
+      "content": "Section header"
+    },
+    {
+      "type": "select",
+      "id": "header_layout",
+      "label": "Header layout",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "top",
+          "label": "Top"
+        }
+      ],
+      "default": "top"
+    },
+    {
+      "id": "heading",
+      "label": "Heading",
+      "type": "textarea",
+      "default": "Multiple columns"
+    },
+    {
+      "type": "select",
+      "id": "text_size",
+      "label": "Heading size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "H2"
+        },
+        {
+          "value": "h3",
+          "label": "H3"
+        },
+        {
+          "value": "h4",
+          "label": "H4"
+        },
+        {
+          "value": "h5",
+          "label": "H5"
+        },
+        {
+          "value": "h6",
+          "label": "H6"
+        }
+      ],
+      "default": "h3"
+    },
+    {
+      "id": "description",
+      "label": "Description",
+      "type": "richtext"
+    },
+    {
+      "type": "select",
+      "id": "desc_text_color",
+      "label": "Description style",
+      "options": [
+        {
+          "value": "body",
+          "label": "Body text"
+        },
+        {
+          "value": "subtext",
+          "label": "Subtext"
+        }
+      ],
+      "default": "body"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button label",
+      "default": "View more",
+      "info": "Leave blank to hide"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button style",
+      "options": [
+        {
+          "value": "m-button--primary",
+          "label": "Primary"
+        },
+        {
+          "value": "m-button--secondary",
+          "label": "Secondary"
+        },
+        {
+          "value": "m-button--outline",
+          "label": "Outline"
+        },
+        {
+          "value": "m-button--link",
+          "label": "Underline"
+        },
+        {
+          "value": "m-button--blank",
+          "label": "Plain"
+        }
+      ],
+      "default": "m-button--link"
+    },
+    {
+      "type": "checkbox",
+      "id": "header_divider",
+      "label": "Show header divider",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "header_alignment",
+      "label": "Alignment",
+      "default": "left",
+      "options": [
+        {
+          "label": "Left",
+          "value": "left"
+        },
+        {
+          "label": "Center",
+          "value": "center"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Card settings"
+    },
+    {
+      "type": "select",
+      "id": "card_content_alignment",
+      "label": "Content alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "checkbox",
+      "id": "card_bordered",
+      "label": "Show border",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "card_image_width",
+      "label": "Image width",
+      "options": [
+        {
+          "value": "32px",
+          "label": "Extra small"
+        },
+        {
+          "value": "48px",
+          "label": "Small"
+        },
+        {
+          "value": "64px",
+          "label": "Medium"
+        },
+        {
+          "value": "80px",
+          "label": "Large"
+        },
+        {
+          "value": "128px",
+          "label": "Extra large"
+        },
+        {
+          "value": "100%",
+          "label": "Full width"
+        }
+      ],
+      "default": "100%"
+    },
+    {
+      "type": "range",
+      "id": "card_image_rounded",
+      "label": "Image rounded",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "card_heading_size",
+      "label": "Heading size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "H2"
+        },
+        {
+          "value": "h3",
+          "label": "H3"
+        },
+        {
+          "value": "h4",
+          "label": "H4"
+        },
+        {
+          "value": "h5",
+          "label": "H5"
+        },
+        {
+          "value": "h6",
+          "label": "H6"
+        }
+      ],
+      "default": "h5"
+    },
+    {
+      "type": "select",
+      "id": "card_description_color",
+      "label": "Description style",
+      "options": [
+        {
+          "value": "body",
+          "label": "Body text"
+        },
+        {
+          "value": "subtext",
+          "label": "Subtext"
+        }
+      ],
+      "default": "body"
+    },
+    {
+      "type": "select",
+      "id": "card_hover_effect",
+      "label": "Image hover effect",
+      "default": "",
+      "options": [
+        {
+          "value": "",
+          "label": "None"
+        },
+        {
+          "value": "scaling-up",
+          "label": "Scaling up"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Grid settings"
+    },
+    {
+      "type": "range",
+      "id": "items_per_row",
+      "label": "Number of columns on desktop",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "column_gap",
+      "label": "Column gap",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "default": 30,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "row_gap",
+      "label": "Row gap",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "default": 30,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Slide settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_slider",
+      "label": "Enable slider",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_navigation",
+      "label": "Show navigation",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_pagination",
+      "label": "Show pagination",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Mobile settings"
+    },
+    {
+      "type": "select",
+      "id": "mobile_layout",
+      "label": "Mobile layout",
+      "default": "inherit",
+      "options": [
+        {
+          "value": "inherit",
+          "label": "Inherit"
+        },
+        {
+          "value": "col-1",
+          "label": "1 column"
+        },
+        {
+          "value": "col-2",
+          "label": "2 columns"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "label": "Enable swipe on mobile",
+      "id": "enable_swipe_mobile",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "column_gap_mobile",
+      "label": "Column gap mobile",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "default": 10,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "row_gap_mobile",
+      "label": "Row gap mobile",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "default": 10,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "label": "Padding top",
+      "default": 50,
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "label": "Padding bottom",
+      "default": 50,
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Custom attributes"
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom classes"
+    },
+    {
+      "type": "header",
+      "content": "Animations"
+    },
+    {
+      "type": "select",
+      "id": "animations",
+      "label": "Visible in the view animation",
+      "default": "inherit",
+      "options": [
+        {
+          "value": "inherit",
+          "label": "Inherit global setting"
+        },
+        {
+          "value": "fade-in",
+          "label": "Fade in"
+        },
+        {
+          "value": "fade-in-up",
+          "label": "Fade in up"
+        },
+        {
+          "value": "fade-in-left",
+          "label": "Fade in left"
+        },
+        {
+          "value": "fade-in-right",
+          "label": "Fade in right"
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "name": "Card",
+      "type": "column",
+      "settings": [
+        {
+          "type": "header",
+          "content": "General"
+        },
+        {
+          "type": "color_scheme",
+          "id": "color_scheme",
+          "default": "scheme_1",
+          "label": "Color scheme"
+        },
+        {
+          "type": "url",
+          "id": "card_link",
+          "label": "Card link"
+        },
+        {
+          "type": "header",
+          "content": "Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "header",
+          "content": "Content"
+        },
+        {
+          "type": "textarea",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Card heading"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description"
+        },
+        {
+          "type": "header",
+          "content": "Button"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "default": "Shop now"
+        },
+        {
+          "type": "select",
+          "id": "button_style",
+          "label": "Button style",
+          "options": [
+            {
+              "value": "m-button--primary",
+              "label": "Primary"
+            },
+            {
+              "value": "m-button--secondary",
+              "label": "Secondary"
+            },
+            {
+              "value": "m-button--outline",
+              "label": "Outline"
+            },
+            {
+              "value": "m-button--link",
+              "label": "Underline"
+            },
+            {
+              "value": "m-button--blank",
+              "label": "Plain"
+            }
+          ],
+          "default": "m-button--link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Multiple columns",
+      "blocks": [
+        {
+          "type": "column"
+        },
+        {
+          "type": "column"
+        },
+        {
+          "type": "column"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

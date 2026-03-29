@@ -1,0 +1,114 @@
+<!doctype html>
+<html
+  class="no-js {% if settings.page_transition %} m:overflow-hidden{% endif %}"
+  lang="{{ request.locale.iso_code }}"
+  data-template="{{ template.name }}"
+>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0">
+    <meta name="theme-color" content="{{ settings.color_primary }}">
+
+    <link rel="preload" as="image" href="//expressdukaan.com/cdn/shop/files/Mobile-Banner-2.jpg?v=1709730458&width=1100">
+
+    {%- liquid
+      render 'preload'
+      render 'SEO'
+      render 'social-meta-tags'
+      render 'font-face'
+    -%}
+
+    {% render 'critical-css' %}
+    {% render 'custom-code-head' %}
+
+    {{ 'grid.css' | asset_url | stylesheet_tag }}
+    {{ 'base.css' | asset_url | stylesheet_tag }}
+    {{ 'modules.css' | asset_url | stylesheet_tag }}
+
+    {% render 'style-tags' %}
+
+    <script src="{{ 'vendor.min.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'theme-global.js' | asset_url }}" defer="defer"></script>
+
+    {%- if settings.animations != 'none' -%}
+      <script src="{{ 'animations.js' | asset_url }}" defer="defer"></script>
+    {%- endif -%}
+
+    {{ content_for_header }}
+
+    {% render 'theme-data' %}
+    <script>
+      document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
+      if (Shopify.designMode) {
+        document.documentElement.classList.add('shopify-design-mode');
+      }
+    </script>
+  </head>
+
+  <body
+    id="m-theme"
+    class="template-{{ template.name | append: ' ' | append: template.suffix }}{% if settings.page_transition %} m:overflow-hidden{% endif %}"
+    {% if template.name == 'product' %}
+      data-product-id="{{ product.id }}"
+    {% endif %}
+  >{%- include 'mc-required-login' -%}
+    {% if settings.page_transition %}
+      <div class="m-page-transition">
+        <div class="m-page-transition__spinner">
+          <div class="m-page-transition__spinner-content">
+            <div></div>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+    {%- liquid
+      render 'scroll-top-button'
+      sections 'header-group'
+
+      assign enable_aside_group = false
+      if template == 'index' and settings.enable_aside_section_group == true
+        assign enable_aside_group = true
+      endif
+    -%}
+    <main role="main" id="MainContent" class="m-main-content">
+      {% if enable_aside_group %}
+      <div class="m-main-content__container m-page-width">
+        <div class="m-aside-section-group m:hidden xl:m:block">{% sections 'aside-group' %}</div>
+      {% endif %}
+        <div class="m-content-for-layout">{{ content_for_layout }}</div>
+      {% if enable_aside_group %}
+      </div>
+      {% endif %}
+    </main>
+
+    {%- sections 'footer-group' -%}
+
+    {% render 'script-tags' %}
+    {% render 'cookie-banner' %}
+    {% render 'custom-code-body' %}
+
+    <script src="{{ 'product-quick-view.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'wishlist.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'compare-product.js' | asset_url }}" defer="defer"></script>
+
+    {%- if settings.predictive_search_enabled -%}
+      <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
+    {%- endif -%}
+
+    {%- if linklists['gift-wrapping'].links != blank
+      and linklists['gift-wrapping'].links.first.type == 'product_link'
+    -%}
+      <script src="{{ 'gift-wrapping.js' | asset_url }}" defer="defer"></script>
+    {%- endif -%}
+
+    {%- if settings.show_swatch_option -%}
+      <script src="{{ 'product-card-swatch.js' | asset_url }}" defer="defer"></script>
+    {%- endif -%}
+
+    {%- if settings.enable_cart_drawer and template != 'cart' -%}
+      {% render 'cart-drawer' %}
+    {%- endif -%}
+  </body>
+</html>
+

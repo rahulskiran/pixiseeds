@@ -1,0 +1,33 @@
+{%- include "mc-required-variable" -%}
+{%- include "mc-requierd-passcode" -%}
+{% unless customer %}
+<script>
+  function mcRedirectToLogin() {
+    window.location.href = "{{ mc_required_login_page_url }}?checkout_url=" + window.location.pathname;
+  }
+  {% assign remove_pages = "login,register,404,reset_password" | split: ',' %}
+  {% unless remove_pages contains template.name %}
+
+  {% if mc_all_site_restrict == "on" %}
+  mcRedirectToLogin();
+  {% else %}
+  var mc_required_login_products = "{{ mc_required_login_products }}".split(",");
+  var mc_required_login_collections = "{{ mc_required_login_collections }}".split(",");
+  var mc_required_login_pages = "{{ mc_required_login_pages }}".split(",");
+  var product_id = "{{ product.id }}";
+  if (product_id && mc_required_login_products.includes(product_id)) {
+    mcRedirectToLogin();
+  }
+  var collection_id = "{{ collection.id }}";
+  if (collection_id && mc_required_login_collections.includes(collection_id)) {
+    mcRedirectToLogin();
+  }
+  var page_id = "{{ page.id }}";
+  if (page_id && mc_required_login_pages.includes(page_id)) {
+    mcRedirectToLogin();
+  }
+
+  {% endif %}
+  {% endunless %}
+</script>
+{% endunless %}

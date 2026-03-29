@@ -1,0 +1,56 @@
+{%- liquid
+  assign animation_effect = settings.animations
+  assign animated = false
+  if animation_effect != 'none'
+    assign animated = true
+  endif
+
+  assign text_alignment = text_alignment | default: 'center'
+
+  if breadcrumb_justify == nil
+    if text_alignment == 'center'
+      assign breadcrumb_justify = 'center'
+    elsif text_alignment == 'right'
+      assign breadcrumb_justify = 'end'
+    else
+      assign breadcrumb_justify = 'start'
+    endif
+  endif
+
+  if show_breadcrumb == nil
+    assign show_breadcrumb = true
+  endif
+
+  assign template_name = template.name | handle
+
+  assign classes = 'm-page-header m-page-header--template-' | append: template_name
+
+  assign classes = classes | append: ' m:text-' | append: text_alignment
+
+  if extra_classes != nil
+    assign classes = classes | append: ' ' | append: extra_classes
+  endif
+
+  assign heading_size = heading_size | default: 'h3'
+
+  assign style = ''
+  if custom_style != nil
+    assign style = style | append: custom_style
+  endif
+-%}
+{% if title != nil %}
+  <div class="{{ classes }}{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %} m-section--padding"{% if style != blank %} style="{{ style }}"{% endif %}>
+    <div class="m-page-width">
+      <h1 class="m-page-header__title {{ heading_size }}">{{ title }}</h1>
+      {% if description %}<div class="m-page-header__description">{{ description }}</div>{% endif %}
+    </div>
+    {% if show_breadcrumb %}
+      {% render 'breadcrumb', 
+        justify: breadcrumb_justify,
+        animated: false,
+        animation_effect: 'none'
+      %}
+    {% endif %}
+  </div>
+{% endif %}
+

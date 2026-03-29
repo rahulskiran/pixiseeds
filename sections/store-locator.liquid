@@ -1,0 +1,373 @@
+{{ 'section-store-locator.css' | asset_url | stylesheet_tag }}
+
+{%- liquid 
+  assign classes = 'm-section m-section--padding'
+  if section.settings.boxed_layout
+    assign classes = classes | append: ' m-section--boxed'
+  endif
+
+  assign classes = classes | append: ' m-gradient m-color-' | append: section.settings.color_scheme
+
+  if section.settings.custom_class != blank
+    assign classes = classes | append: ' ' | append: section.settings.custom_class
+  endif
+
+  assign animation_effect = settings.animations
+  assign animated = false
+  if animation_effect != 'none'
+    assign animated = true
+    if section.settings.animations != 'inherit'
+      assign animation_effect = section.settings.animations
+    endif
+  endif
+-%}
+
+<section
+  class="m-store-locator m-store-locator--image-{{ section.settings.image_position }} {{ classes }}"
+  style="
+    --column-gap: {{ section.settings.column_gap }}px;
+    --grid-items-gap: {{ section.settings.grid_gap }}px;
+    --section-padding-top: {{ section.settings.padding_top }}px;
+    --section-padding-bottom: {{ section.settings.padding_bottom }}px;
+  "
+>
+  <div class="m-page-width">
+    <div class="m-section__content{% if section.settings.boxed_layout %} m-gradient m-color-{{ section.settings.boxed_color_scheme }}{% endif %}">
+      <div class="m-store-locator__wrapper  m:grid md:m:grid-2-cols m:items-center">
+        <div class="m:column m-store-locator-image">
+          <div class="m-store-locator__image{% if animated %} m:overflow-hidden m-scroll-trigger animate--zoom-fade{% endif %}">
+            {% if section.settings.image != blank %}
+              {% render 'responsive-image', image: section.settings.image, image_rounded: false %}
+            {% else %}
+              {{ 'image' | placeholder_svg_tag: 'm-placeholder-svg' }}
+            {% endif %}
+          </div>
+        </div>
+        <div class="m:column m-store-locator-content">
+          <div class="m-store-locator__content">
+            {% if section.settings.heading != blank %}
+              <h3 class="m-store-locator__heading {{ section.settings.heading_size }}{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}">{{ section.settings.heading | escape }}</h3>
+            {% endif %}
+            {% if section.blocks.size > 0 %}
+              <div 
+                class="m-locator-info"
+                style="
+                  --grid-items-gap: {{ section.settings.grid_gap }}px;
+                "
+              >
+                {% for block in section.blocks %}
+                  {% case block.type %}
+                    {% when 'text' %}
+                      <div 
+                        class="m-locator-info__item{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}"
+                        {% if animated %}
+                          data-cascade
+                          style="--animation-order: {{ forloop.index }};"
+                        {% endif %}
+                      >
+                        {% if block.settings.heading != blank %}
+                          <h4 class="m-locator-info__heading h5 m:font-medium">{{ block.settings.heading }}</h4>
+                        {% endif %}
+                        {% if block.settings.content != blank %}
+                          <div class="m-locator-info__content m:text-color-{{ block.settings.text_color }}">{{ block.settings.content }}</div>
+                        {% endif %}
+                        {% if block.settings.sub_content != blank %}
+                          <p class="m-locator-info__subcontent m:font-regular">{{ block.settings.sub_content }}</p>
+                        {% endif %}
+                      </div>
+                    {% when 'social_media' %}
+                      <div 
+                        class="m-locator-info__item{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}"
+                        {% if animated %}
+                          data-cascade
+                          style="--animation-order: {{ forloop.index }};"
+                        {% endif %}
+                      >
+                        {% if block.settings.heading != blank %}
+                          <h4 class="m-locator-info__heading h5 m:font-medium">{{ block.settings.heading }}</h4>
+                        {% endif %}
+                        {% render 'social-media-links' %}
+                      </div>
+                  {% endcase %}
+                {% endfor %}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Store locator",
+  "disabled_on": {
+    "groups": [
+      "header",
+      "footer",
+      "aside"
+    ]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "General"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "default": "scheme_1",
+      "label": "Color scheme"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "checkbox",
+      "id": "boxed_layout",
+      "label": "Enable boxed layout",
+      "default": false
+    },
+    {
+      "type": "color_scheme",
+      "id": "boxed_color_scheme",
+      "default": "scheme_1",
+      "label": "Color scheme",
+      "info": "Only works if Boxed layout is enabled."
+    },
+    {
+      "type": "header",
+      "content": "Section header"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Store address"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "default": "h3",
+      "options": [
+        {
+          "value": "h2",
+          "label": "H2"
+        },
+        {
+          "value": "h3",
+          "label": "H3"
+        },
+        {
+          "value": "h4",
+          "label": "H4"
+        },
+        {
+          "value": "h5",
+          "label": "H5"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Image settings"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image position",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Grid settings"
+    },
+    {
+      "type": "range",
+      "id": "column_gap",
+      "label": "Column gap",
+      "min": 0,
+      "max": 150,
+      "step": 2,
+      "default": 130
+    },
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "label": "Grid items gap",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "default": 50,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "default": 50,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Custom attributes"
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom classes"
+    },
+    {
+      "type": "header",
+      "content": "Animations"
+    },
+    {
+      "type": "select",
+      "id": "animations",
+      "label": "Visible in the view animation",
+      "default": "inherit",
+      "options": [
+        {
+          "value": "inherit",
+          "label": "Inherit global setting"
+        },
+        {
+          "value": "fade-in",
+          "label": "Fade in"
+        },
+        {
+          "value": "fade-in-up",
+          "label": "Fade in up"
+        },
+        {
+          "value": "fade-in-left",
+          "label": "Fade in left"
+        },
+        {
+          "value": "fade-in-right",
+          "label": "Fade in right"
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Address"
+        },
+        {
+          "type": "richtext",
+          "label": "Content",
+          "id": "content",
+          "default": "<p>461 Valencia Street San Francisco, CA 94103</p>"
+        },
+        {
+          "type": "select",
+          "id": "text_color",
+          "label": "Text color",
+          "options": [
+            {
+              "value": "body",
+              "label": "Body text"
+            },
+            {
+              "value": "subtext",
+              "label": "Subtext"
+            }
+          ],
+          "default": "subtext"
+        },
+        {
+          "type": "text",
+          "id": "sub_content",
+          "label": "Subcontent"
+        }
+      ]
+    },
+    {
+      "type": "social_media",
+      "name": "Social media",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "textarea",
+          "label": "Heading",
+          "id": "heading",
+          "default": "Social Media"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Store locator",
+      "blocks": [
+        {
+          "type": "text",
+          "settings": {
+            "heading": "Address",
+            "content": "<p>461 Valencia Street San<br> Francisco, CA 94103</p>",
+            "sub_content": "<a class=\"m-button m-button--link\">Get Direction</a>"
+          }
+        },
+        {
+          "type": "text",
+          "settings": {
+            "heading": "We're Open",
+            "content": "<p>Our store has re-opened<br> for shopping, exchanges<br> Every day 11am to 7pm</p>"
+          }
+        },
+        {
+          "type": "text",
+          "settings": {
+            "heading": "Message",
+            "content": "<p>Send us a text & an<br> ambassador will respond<br> when available.</p>",
+            "sub_content": "<a class=\"m-button m-button--blank\">1-814-251-9966</a>"
+          }
+        },
+        {
+          "type": "social_media"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

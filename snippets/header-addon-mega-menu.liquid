@@ -1,0 +1,26 @@
+<mega-menu
+  class="m-megamenu m:h-full m-gradient m-color-{{ section.settings.megamenu_color }}{% if section.settings.open_default and template == 'index' %} menu-open{% endif %} {{ classes }}"
+  data-template="{{ template }}"
+  {% if template == 'index' %}
+    data-open-default="{{ section.settings.open_default }}"
+  {% endif %}
+  {% if section.settings.open_default and template == 'index' %}
+    open
+  {% endif %}
+>
+  <button class="m-megamenu__toggle m:h-full" data-menu-toggle>
+    <svg class="m-svg-icon--medium m-icon-hamburger" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M3.125 10H16.875" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M3.125 5H16.875" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M3.125 15H16.875" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span>{{ section.settings.mega_menu_heading }}</span>
+  </button>
+  <div class="m-megamenu__navigation-container m-foxkit-menu-desktop" data-menu-content>
+    {% if section.settings.toggle_button_position == 'menu' %}
+    <ul class="m-megamenu__menu" id="m-megamenu-desktop-{{ section.id }}"></ul>
+    {% else %}
+    {{ section.settings.foxkit_menu_element }}
+    {% endif %}
+  </div>
+</mega-menu>

@@ -1,0 +1,135 @@
+{%- liquid 
+	assign animation_effect = settings.animations
+  assign animated = false
+  if animation_effect != 'none'
+    assign animated = true
+  endif
+
+  assign block_size = section.blocks.size
+
+  assign boxed_layout = section.settings.boxed_layout
+
+  assign classes = 'm-section m-section--padding'
+  if boxed_layout
+    assign classes = classes | append: ' m-section--boxed'
+  endif
+
+  assign classes = classes | append: ' m-section-apps'
+
+  assign classes = classes | append: ' m-gradient m-color-' | append: section.settings.color_scheme
+
+  if section.settings.custom_class != blank
+    assign classes = classes | append: ' ' | append: section.settings.custom_class
+  endif
+-%}
+<style>
+  .m-section-apps {
+    display: none;
+  }
+  .m-section-apps:has(.shopify-app-block) {
+    display: block;
+  }
+</style>
+{% if block_size > 0 %}
+<div
+	class="{{ classes }}"
+	style="
+	--section-padding-top: {{ section.settings.padding_top }}px;
+	--section-padding-bottom: {{ section.settings.padding_bottom }}px;
+	"
+>
+	<div class="{% if section.settings.include_margins %}m-page-width{% endif %}{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}">
+    <div class="m-section__wrapper m-section__content{% if boxed_layout %} m-gradient m-color-{{ section.settings.boxed_color_scheme }}{% endif %}">
+      {%- for block in section.blocks -%}
+        {% render block %}
+      {%- endfor -%}
+    </div>
+	</div>
+</div>
+{%  endif  %}
+
+{% schema %}
+{
+  "name": "Apps",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "General"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "default": "scheme_1",
+      "label": "Color scheme"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "checkbox",
+      "id": "include_margins",
+      "default": true,
+      "label": "Make section margins the same as theme"
+    },
+    {
+      "type": "checkbox",
+      "id": "boxed_layout",
+      "label": "Enable boxed layout",
+      "default": false
+    },
+    {
+      "type": "color_scheme",
+      "id": "boxed_color_scheme",
+      "default": "scheme_1",
+      "label": "Color scheme",
+      "info": "Only works if Boxed layout is enabled."
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "default": 0,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "default": 0,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Custom attributes"
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom classes"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Apps"
+    }
+  ]
+}
+{% endschema %}

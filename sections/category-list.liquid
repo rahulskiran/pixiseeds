@@ -1,0 +1,264 @@
+{{ 'section-category-list.css' | asset_url | stylesheet_tag }}
+
+{% liquid
+  assign animation_effect = settings.animations
+  assign animated = false
+  if animation_effect != 'none'
+    assign animated = true
+    if section.settings.animations != 'inherit'
+      assign animation_effect = section.settings.animations
+    endif
+  endif
+
+  assign heading = section.settings.heading
+%}
+
+<section
+  id="m-category-list-{{ section.id }}"
+  data-section-id="{{ section.id }}"
+  class="m-section m-section--padding{% if section.settings.boxed_layout %} m-section--boxed{% endif %}{% if section.settings.header_divider %} m-section--header-separated{% endif %} m-category-list {{ section.settings.custom_class }}" 
+  style="
+  --section-padding-top: {{ section.settings.padding_top }}px; 
+  --section-padding-bottom: {{ section.settings.padding_bottom }}px;
+  "
+>
+  <div class="m-section__wrapper m-gradient m-color-{{ section.settings.color_scheme }}">
+    {% if heading != blank %}
+      <div class="m-section__header">
+        <h2 class="m-section__heading {{ section.settings.heading_size }}{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}">{{ heading }}</h2>
+      </div>
+    {% endif %}
+    {% if section.blocks.size > 0 %}
+      <ul class="m-section__content m:display-flex m:flex-col">
+        {% for block in section.blocks %}
+          {% if block.settings.text != blank or block.settings.image != blank %}
+            <li 
+              class="m-category-item {% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}"
+              style="{% if animated %}--animation-order: {{ forloop.index }};{% endif %}"
+              {% if animated %}
+                data-cascade
+              {% endif %}
+            >
+              <a 
+                href="{{ block.settings.link | default: '#' }}" 
+                class="m:display-flex m:items-center" 
+                style="--img-rounded: {{ block.settings.image_rounded | default: 0 }};--img-width: {{ block.settings.image_width | default: '26px' }};"
+              >
+                {% if block.settings.image != blank %}
+                  <span class="m-category-item__icon">
+                    {% render 'responsive-image', image: block.settings.image, wrapper_class: 'm:w-full m:h-full', image_rounded: false %}
+                  </span>
+                {% endif %}
+    
+                {% if block.settings.text != blank %}
+                  <span class="m-category-item__text">{{ block.settings.text }}</span>
+                {% endif %}
+              </a>
+            </li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Category list",
+  "enabled_on": {
+    "groups": [
+      "aside"
+    ]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "General"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "default": "scheme_1",
+      "label": "Color scheme"
+    },
+    {
+      "type": "checkbox",
+      "id": "boxed_layout",
+      "label": "Enable boxed layout",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Header"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Hot Categories"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "default": "h4",
+      "options": [
+        {
+          "value": "h2",
+          "label": "H2"
+        },
+        {
+          "value": "h3",
+          "label": "H3"
+        },
+        {
+          "value": "h4",
+          "label": "H4"
+        },
+        {
+          "value": "h5",
+          "label": "H5"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "header_divider",
+      "label": "Show header divider",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "default": 30,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "default": 0,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Animations"
+    },
+    {
+      "type": "select",
+      "id": "animations",
+      "label": "Visible in the view animation",
+      "default": "inherit",
+      "options": [
+        {
+          "value": "inherit",
+          "label": "Inherit global setting"
+        },
+        {
+          "value": "fade-in",
+          "label": "Fade in"
+        },
+        {
+          "value": "fade-in-up",
+          "label": "Fade in up"
+        },
+        {
+          "value": "fade-in-left",
+          "label": "Fade in left"
+        },
+        {
+          "value": "fade-in-right",
+          "label": "Fade in right"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Custom attributes"
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom classes"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category_block",
+      "name": "Category",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "image_width",
+          "label": "Image Width",
+          "info": "Example: 300px,100%",
+          "default": "26px"
+        },
+        {
+          "type": "text",
+          "id": "image_rounded",
+          "label": "Image rounded",
+          "info": "Example: 1rem,3px,50%"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Category list",
+      "blocks": [
+        {
+          "type": "category_block",
+          "settings": {
+            "text": "Category title"
+          }
+        },
+        {
+          "type": "category_block",
+          "settings": {
+            "text": "Category title"
+          }
+        },
+        {
+          "type": "category_block",
+          "settings": {
+            "text": "Category title"
+          }
+        },
+        {
+          "type": "category_block",
+          "settings": {
+            "text": "Category title"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

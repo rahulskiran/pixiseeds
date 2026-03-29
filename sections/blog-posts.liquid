@@ -1,0 +1,488 @@
+{{ 'component-article-card.css' | asset_url | stylesheet_tag }}
+{{ 'section-blog-post.css' | asset_url | stylesheet_tag }}
+{% liquid
+  assign blog = blogs[section.settings.blog]
+
+  assign blog_to_show = section.settings.limit | default: 3
+  assign enable_swipe_mobile = section.settings.enable_swipe_mobile
+  assign mobile_layout = section.settings.mobile_layout
+
+  assign animation_effect = settings.animations
+  assign animated = false
+  if animation_effect != 'none'
+    assign animated = true
+    if section.settings.animations != 'inherit'
+      assign animation_effect = section.settings.animations
+    endif
+  endif
+%}
+
+<section
+  id="m-blog-grid-{{ section.id }}"
+  class="m-section m-section--padding{% if section.settings.boxed_layout %} m-section--boxed{% endif %}{% if section.settings.header_divider %} m-section--header-separated{% endif %} m-blog-grid m-color-{{ section.settings.color_scheme }} m-gradient {{ section.settings.custom_class }}"
+  data-section-id="{{ section.id }}"
+  style="
+    --section-padding-top: {{ section.settings.padding_top }}px; 
+    --section-padding-bottom: {{ section.settings.padding_bottom }}px;
+    --column-gap: {{ section.settings.column_gap }}px; 
+    --column-gap-mobile: {{ section.settings.column_gap_mobile }}px; 
+    --row-gap: {{ section.settings.row_gap }}px; 
+    --row-gap-mobile: {{ section.settings.row_gap_mobile }}px; 
+  "
+>
+  <div class="m-page-width">
+    <div class="m-section__wrapper{% if section.settings.boxed_layout %} m-gradient m-color-{{ section.settings.boxed_color_scheme }}{% endif %}">
+      {% render 'index-section-header', section_settings: section.settings %}
+      <div class="m-blog-grid__wrapper m-section__content">
+        <div class="m-mixed-layout{% if mobile_layout %} m-mixed-layout--mobile-grid{% if enable_swipe_mobile %} m-mixed-layout--mobile-scroll{% endif %}{% endif %}"
+          {% if section.settings.mobile_layout %}  
+            style="
+              --grid-columns-mobile: {{ section.settings.mobile_layout | replace: 'col-1', '1' | replace: 'col-2', '2' }};
+              --mobile-column-width: {{ section.settings.mobile_layout | replace: 'col-1', '66.66vw' | replace: 'col-2', '40vw' }};
+            "
+          {% endif %}
+        >
+          <div class="m-mixed-layout__inner m:grid m:grid-1-cols md:m:grid-2-cols lg:m:grid-{{ section.settings.column }}-cols">
+            {% if blog.articles.size > 0 %}
+              {% for article in blog.articles limit: section.settings.limit %}
+                <div class="m:column">
+                  {% render 'article-card',
+                    article: article,
+                    view: 'grid',
+                    settings: section.settings,
+                    index: forloop.index,
+                    animated: animated,
+                    animation_effect: animation_effect
+                  %}
+                </div>
+              {% endfor %}
+            {% else %}
+              {% for i in (1..blog_to_show) %}
+                <div class="m:column">
+                  {% render 'article-card-placeholder',
+                    index: forloop.index,
+                    animated: animated,
+                    animation_effect: animation_effect
+                  %}
+                </div>
+              {% endfor %}
+            {% endif %}
+          </div>
+        </div>
+
+        {% if section.settings.button_text != blank %}
+          <div class="m-blog-grid__button m:text-center{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}">
+            {% capture arrow  %}<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4.5 2.25L8.25 6L4.5 9.75" stroke="CurrentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>{% endcapture %}
+            {% capture triangle %}<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.51531 5.73474L4.76531 1.98474C4.71287 1.93223 4.64602 1.89647 4.57324 1.88198C4.50046 1.86748 4.42501 1.87491 4.35645 1.90332C4.28789 1.93172 4.22931 1.97984 4.1881 2.04156C4.1469 2.10328 4.12494 2.17584 4.125 2.25005V9.75005C4.12494 9.82426 4.1469 9.89682 4.1881 9.95855C4.22931 10.0203 4.28789 10.0684 4.35645 10.0968C4.42501 10.1252 4.50046 10.1326 4.57324 10.1181C4.64602 10.1036 4.71287 10.0679 4.76531 10.0154L8.51531 6.26536C8.55018 6.23054 8.57784 6.18918 8.59671 6.14365C8.61558 6.09813 8.62529 6.04933 8.62529 6.00005C8.62529 5.95077 8.61558 5.90197 8.59671 5.85645C8.57784 5.81092 8.55018 5.76957 8.51531 5.73474Z" fill="currentColor"/></svg>{% endcapture %}
+            {% liquid 
+              assign is_button_icon = false
+              if section.settings.button_text contains '[arrow]' or section.settings.button_text contains '[triangle]'
+                assign is_button_icon = true
+              endif
+            %}
+            <a
+              href="{{ section.settings.button_link | default: '#' }}"
+              class="m-button {{ section.settings.button_style }}{% if is_button_icon %} m-button--with-icon{% endif %}"
+            >
+              {{- section.settings.button_text | replace: '[arrow]', arrow | replace: '[triangle]', triangle -}}
+            </a>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+
+{% schema %}
+{
+  "name": "Blog posts",
+  "disabled_on": {
+    "groups": [
+      "header",
+      "footer",
+      "aside"
+    ]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "General"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "default": "scheme-1",
+      "label": "Color scheme"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "checkbox",
+      "id": "boxed_layout",
+      "label": "Enable boxed layout",
+      "default": false
+    },
+    {
+      "type": "color_scheme",
+      "id": "boxed_color_scheme",
+      "default": "scheme_1",
+      "label": "Color scheme",
+      "info": "Only works if Boxed layout is enabled."
+    },
+    {
+      "type": "header",
+      "content": "Section header"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Blog posts"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "H2"
+        },
+        {
+          "value": "h3",
+          "label": "H3"
+        },
+        {
+          "value": "h4",
+          "label": "H4"
+        },
+        {
+          "value": "h5",
+          "label": "H5"
+        }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "select",
+      "id": "header_alignment",
+      "label": "Text alignment",
+      "default": "center",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "header_mobile_alignment",
+      "label": "Mobile text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "header_divider",
+      "label": "Show header divider",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "id": "blog",
+      "type": "blog",
+      "label": "Blog"
+    },
+    {
+      "type": "range",
+      "id": "limit",
+      "label": "Posts to show",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "column",
+      "label": "Posts per row",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "column_gap",
+      "label": "Column gap",
+      "min": 0,
+      "max": 50,
+      "default": 30,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "row_gap",
+      "label": "Row gap",
+      "min": 0,
+      "max": 50,
+      "default": 30,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Card settings"
+    },
+    {
+      "type": "select",
+      "id": "article_image_aspect_ratio",
+      "label": "Image aspect ratio",
+      "default": "16/9",
+      "options": [
+        {
+          "value": "original",
+          "label": "Original aspect ratio"
+        },
+        {
+          "value": "1/1",
+          "label": "1:1"
+        },
+        {
+          "value": "3/4",
+          "label": "3:4"
+        },
+        {
+          "value": "4/3",
+          "label": "4:3"
+        },
+        {
+          "value": "16/9",
+          "label": "16:9"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "article_align_content",
+      "label": "Content alignment",
+      "default": "text-left",
+      "options": [
+        {
+          "label": "Left",
+          "value": "text-left"
+        },
+        {
+          "label": "Center",
+          "value": "text-center"
+        },
+        {
+          "label": "Right",
+          "value": "text-right"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "article_show_tags",
+      "label": "Show tags",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "article_show_date",
+      "label": "Show publised date",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "article_show_excerpt",
+      "label": "Show excerpt",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "article_show_button",
+      "label": "Show read more link",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Button settings"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button label",
+      "default": "View More",
+      "info": "Leave it blank to hide"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button style",
+      "options": [
+        {
+          "value": "m-button--primary",
+          "label": "Primary"
+        },
+        {
+          "value": "m-button--secondary",
+          "label": "Secondary"
+        },
+        {
+          "value": "m-button--outline",
+          "label": "Outline"
+        },
+        {
+          "value": "m-button--link",
+          "label": "Underline"
+        },
+        {
+          "value": "m-button--blank",
+          "label": "Plain"
+        }
+      ],
+      "default": "m-button--primary"
+    },
+    {
+      "type": "header",
+      "content": "Mobile Settings"
+    },
+    {
+      "type": "select",
+      "id": "mobile_layout",
+      "label": "Mobile layout",
+      "default": "col-1",
+      "options": [
+        {
+          "value": "col-1",
+          "label": "1 column"
+        },
+        {
+          "value": "col-2",
+          "label": "2 columns"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "label": "Enable swipe on mobile",
+      "id": "enable_swipe_mobile",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "column_gap_mobile",
+      "label": "Column gap mobile",
+      "min": 0,
+      "max": 50,
+      "default": 10,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "row_gap_mobile",
+      "label": "Row gap mobile",
+      "min": 0,
+      "max": 50,
+      "default": 10,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "default": 50,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "default": 50,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Custom attributes"
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom classes"
+    },
+    {
+      "type": "header",
+      "content": "Animations"
+    },
+    {
+      "type": "select",
+      "id": "animations",
+      "label": "Visible in the view animation",
+      "default": "inherit",
+      "options": [
+        {
+          "value": "inherit",
+          "label": "Inherit global setting"
+        },
+        {
+          "value": "fade-in",
+          "label": "Fade in"
+        },
+        {
+          "value": "fade-in-up",
+          "label": "Fade in up"
+        },
+        {
+          "value": "fade-in-left",
+          "label": "Fade in left"
+        },
+        {
+          "value": "fade-in-right",
+          "label": "Fade in right"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Blog posts",
+      "category": "Blog"
+    }
+  ]
+}
+{% endschema %}

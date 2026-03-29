@@ -1,0 +1,541 @@
+{{ 'section-banner-grid-layout-' | append: section.settings.layout | append: '.css' | asset_url | stylesheet_tag }}
+{{ 'component-image-card.css' | asset_url | stylesheet_tag }}
+{% liquid
+  assign custom_classes = section.settings.custom_classes
+  assign column_gap_desktop = section.settings.gap_desktop
+  assign column_gap_mobile = section.settings.gap_mobile
+  assign row_gap_desktop = section.settings.row_gap_desktop
+  assign row_gap_mobile = section.settings.row_gap_mobile
+  assign padding_top = section.settings.section_padding_top
+  assign padding_bottom = section.settings.section_padding_bottom
+  assign total_blocks = section.blocks | size
+
+  assign animation_effect = settings.animations
+  assign animated = false
+  if animation_effect != 'none'
+    assign animated = true
+    if section.settings.animations != 'inherit'
+      assign animation_effect = section.settings.animations
+    endif
+  endif
+%}
+<div class="m-image-cards m-section--padding m-image-cards__{{ section.id }} m-image-cards--blocks-num-{{ total_blocks }} {{ custom_classes }} {% if animated %}m-scroll-trigger animate--{{ animation_effect }}{% endif %}"
+  style="--section-padding-top: {{ padding_top }}px; --section-padding-bottom: {{ padding_bottom }}px; --column-gap: {{ column_gap_desktop }}px; --column-gap-mobile: {{ column_gap_mobile }}px;--row-gap: {{ row_gap_desktop }}px; --row-gap-mobile: {{ row_gap_mobile }}px;"
+>
+  <div class="m-page-width">
+    {%- case section.settings.layout -%}
+      {% when '1' %}
+        {% liquid 
+          assign first_block = section.blocks.first
+        %}
+        <div class="m-image-cards--layout-{{ section.settings.layout }} m:grid">
+          <div class="m-image-card__first m:w-full">
+            {% render 'image-card',
+              block: first_block,
+              classes: "m:column"
+            %}
+          </div>
+          <div class="m-image-card__rest m-mixed-layout m-mixed-layout--mobile-scroll">
+            <div class="m:grid m-mixed-layout__inner m:h-full">
+              {% for block in section.blocks offset: 1 %}
+                {% render 'image-card',
+                  block: block,
+                  classes: "m:column"
+                %}
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      {% when '2' %}
+        <div class="m-image-cards--layout-{{ section.settings.layout }} md:m:grid m:flex m:flex-col">
+          {% for block in section.blocks %}
+            {% render 'image-card',
+              block: block,
+              classes: 'm:column'
+            %}
+          {% endfor %}
+        </div>
+      {% when '3' %}
+        <div class="m-image-cards--layout-{{ section.settings.layout }}">
+          <div class="m-mixed-layout m-mixed-layout--mobile-scroll">
+            <div class="m:grid m-mixed-layout__inner">
+              {% for block in section.blocks %}
+                {% render 'image-card',
+                block: block,
+                classes: 'm:column' %}
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+    {% endcase %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Banner grid",
+  "disabled_on": {
+    "groups": [
+      "header",
+      "footer",
+      "aside"
+    ]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Grid settings"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Desktop layout",
+      "info": "Layout is automatically optimized for mobile.",
+      "default": "1",
+      "options": [
+        {
+          "value": "1",
+          "label": "Layout 1"
+        },
+        {
+          "value": "2",
+          "label": "Layout 2"
+        },
+        {
+          "value": "3",
+          "label": "Layout 3"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "gap_desktop",
+      "label": "Column gap",
+      "default": 0,
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "row_gap_desktop",
+      "label": "Row gap",
+      "default": 0,
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "gap_mobile",
+      "label": "Column gap mobile",
+      "default": 16,
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "row_gap_mobile",
+      "label": "Row gap mobile",
+      "default": 16,
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "label": "Padding top",
+      "default": 50,
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "label": "Padding bottom",
+      "default": 50,
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Animations"
+    },
+    {
+      "type": "select",
+      "id": "animations",
+      "label": "Visible in the view animation",
+      "default": "inherit",
+      "options": [
+        {
+          "value": "inherit",
+          "label": "Inherit global setting"
+        },
+        {
+          "value": "fade-in",
+          "label": "Fade in"
+        },
+        {
+          "value": "fade-in-up",
+          "label": "Fade in up"
+        },
+        {
+          "value": "fade-in-left",
+          "label": "Fade in left"
+        },
+        {
+          "value": "fade-in-right",
+          "label": "Fade in right"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Custom attributes"
+    },
+    {
+      "type": "text",
+      "id": "custom_classes",
+      "label": "Custom classes"
+    }
+  ],
+  "max_blocks": 4,
+  "blocks": [
+    {
+      "name": "Image card",
+      "type": "image",
+      "settings": [
+        {
+          "type": "header",
+          "content": "General"
+        },
+        {
+          "type": "color_scheme",
+          "id": "color_scheme",
+          "default": "scheme_1",
+          "label": "Color scheme"
+        },
+        {
+          "type": "header",
+          "content": "Images"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_desktop",
+          "label": "Image desktop"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_mobile",
+          "label": "Image mobile"
+        },
+        {
+          "type": "header",
+          "content": "Link"
+        },
+        {
+          "type": "url",
+          "id": "card_link",
+          "label": "Card link"
+        },
+        {
+          "type": "select",
+          "id": "apply_link_on",
+          "label": "Apply link on",
+          "options": [
+            {
+              "value": "card",
+              "label": "Whole card"
+            },
+            {
+              "value": "button",
+              "label": "Button only"
+            }
+          ],
+          "default": "card"
+        },
+        {
+          "type": "header",
+          "content": "Content"
+        },
+        {
+          "type": "textarea",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Heading"
+        },
+        {
+          "type": "select",
+          "id": "text_size",
+          "label": "Heading size",
+          "options": [
+            {
+              "value": "h2",
+              "label": "H2"
+            },
+            {
+              "value": "h3",
+              "label": "H3"
+            },
+            {
+              "value": "h4",
+              "label": "H4"
+            },
+            {
+              "value": "h5",
+              "label": "H5"
+            }
+          ],
+          "default": "h2"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "sub_heading",
+          "label": "Subheading",
+          "default": "Subheading"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description"
+        },
+        {
+          "type": "select",
+          "id": "desc_text_color",
+          "label": "Description style",
+          "options": [
+            {
+              "value": "body",
+              "label": "Body text"
+            },
+            {
+              "value": "subtext",
+              "label": "Subtext"
+            }
+          ],
+          "default": "body"
+        },
+        {
+          "type": "select",
+          "id": "content_position",
+          "label": "Content position",
+          "options": [
+            {
+              "value": "top_left",
+              "label": "Top-left"
+            },
+            {
+              "value": "top_right",
+              "label": "Top-right"
+            },
+            {
+              "value": "top_center",
+              "label": "Top-center"
+            },
+            {
+              "value": "middle_left",
+              "label": "Middle-left"
+            },
+            {
+              "value": "middle_right",
+              "label": "Middle-right"
+            },
+            {
+              "value": "middle_center",
+              "label": "Middle-center"
+            },
+            {
+              "value": "bottom_left",
+              "label": "Bottom-left"
+            },
+            {
+              "value": "bottom_right",
+              "label": "Bottom-right"
+            },
+            {
+              "value": "bottom_center",
+              "label": "Bottom-center"
+            }
+          ],
+          "default": "middle_center"
+        },
+        {
+          "type": "select",
+          "id": "content_alignment",
+          "label": "Content alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "checkbox",
+          "id": "is_last_block_bottom",
+          "label": "Push last block to bottom",
+          "default": false
+        },
+        {
+          "type": "header",
+          "content": "Button"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "default": "Button label"
+        },
+        {
+          "type": "select",
+          "id": "button_style",
+          "label": "Button style",
+          "options": [
+            {
+              "value": "m-button--primary",
+              "label": "Primary"
+            },
+            {
+              "value": "m-button--secondary",
+              "label": "Secondary"
+            },
+            {
+              "value": "m-button--outline",
+              "label": "Outline"
+            },
+            {
+              "value": "m-button--link",
+              "label": "Underline"
+            },
+            {
+              "value": "m-button--blank",
+              "label": "Plain"
+            }
+          ],
+          "default": "m-button--primary"
+        },
+        {
+          "type": "header",
+          "content": "Padding"
+        },
+        {
+          "type": "range",
+          "id": "content_padding_desktop",
+          "label": "Padding desktop",
+          "default": 30,
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px"
+        },
+        {
+          "type": "range",
+          "id": "content_padding_mobile",
+          "label": "Padding mobile",
+          "default": 19,
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Banner grid 1",
+      "settings": {
+        "layout": "1"
+      },
+      "blocks": [
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        }
+      ]
+    }, {
+      "name": "Banner grid 2",
+      "settings": {
+        "layout": "2",
+        "gap_desktop": 10,
+        "row_gap_desktop": 10,
+        "gap_mobile": 0
+      },
+      "blocks": [
+        {
+          "type": "image",
+          "settings": {
+              "text_size": "h3"
+          }
+        },
+        {
+          "type": "image",
+          "settings": {
+              "text_size": "h3"
+          }
+        },
+        {
+          "type": "image",
+          "settings": {
+              "text_size": "h3"
+          }
+        },
+        {
+          "type": "image",
+          "settings": {
+              "text_size": "h3"
+          }
+        }
+      ]
+    }, {
+      "name": "Banner grid 3",
+      "settings": {
+        "layout": "3",
+        "row_gap_desktop": 0
+      },
+      "blocks": [
+        {
+          "type": "image",
+          "settings": {
+              "text_size": "h3"
+          }
+        },
+        {
+          "type": "image",
+          "settings": {
+              "text_size": "h3"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

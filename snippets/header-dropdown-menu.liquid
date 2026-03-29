@@ -1,0 +1,97 @@
+<nav class="m:h-full">
+  <ul class="m-list-menu m-list-menu--inline m:h-full" role="list">
+    {%- for link in section.settings.menu.links -%}
+      {%liquid
+        assign hasLeftOffset = true
+        if forloop.index == 1
+          if hasMega == false or section.settings.toggle_button_position == 'top'
+            assign hasLeftOffset = false
+          endif;
+        endif;
+      %}
+      <li class="m-header__menu-item m-list-menu__item m-header__menu-item--parent"{% if hasLeftOffset == false %} style="--m-menu-item-padding-l: 0;"{% endif %}>
+        <a
+          href="{{ link.url }}"
+          class="m-link m-link--text focus-inset m:display-flex m:items-center"
+          {% if link.current %}
+            aria-current="page"
+          {% endif %}
+        >
+          <div class="m-link--content m:display-flex m:items-center">
+            <span
+              {%- if link.current %}
+                class="m-header__active-menu-item"
+              {% endif %}
+            >
+              {{- link.title | escape -}}
+            </span>
+            {%- if link.links != blank -%}
+            <span class="m-header__menu-item--icon">
+              <svg width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9.75 5L6 8.75L2.25 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            {% endif %}
+          </div>
+        </a>
+        {%- if link.links != blank -%}
+          <ul
+            class="m-header__submenu m-gradient m-color-{{ settings.popups_drawer_color_scheme }}"
+            role="list"
+            tabindex="-1"
+          >
+            {%- for childlink in link.links -%}
+              {%- if childlink.links != blank -%}
+                <li class="m-header__menu-item m-list-menu__item{% if childlink.current %} m-list-menu__item--active{% endif %}">
+                  <a
+                    href="{{ childlink.url }}"
+                    class="m:display-flex m:items-center m:justify-between m:w-full m-link m-link--text focus-inset"
+                    {% if childlink.current %}
+                      aria-current="page"
+                    {% endif %}
+                  >
+                    <span>{{ childlink.title | escape }}</span>
+                    <span class="m-header__menu-item--icon">
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4.5 2.25L8.25 6L4.5 9.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </span>
+                  </a>
+                  <ul 
+                    class="m-header__submenu m-header__submenu-level3"
+                  >
+                    {%- for grandchildlink in childlink.links -%}
+                      <li class="m-header__menu-item m-list-menu__item{% if grandchildlink.current %} m-list-menu__item--active{% endif %}">
+                        <a
+                          href="{{ grandchildlink.url }}"
+                          class="m-link m-link--text focus-inset"
+                          {% if grandchildlink.current %}
+                            aria-current="page"
+                          {% endif %}
+                        >
+                          {{ grandchildlink.title | escape }}
+                        </a>
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                </li>
+              {%- else -%}
+                <li class="m-header__menu-item m-list-menu__item{% if childlink.current %} m-list-menu__item--active{% endif %}">
+                  <a
+                    href="{{ childlink.url }}"
+                    class="m-link m-link--text focus-inset"
+                    {% if childlink.current %}
+                      aria-current="page"
+                    {% endif %}
+                  >
+                    {{ childlink.title | escape }}
+                  </a>
+                </li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+        {% endif %}
+      </li>
+    {%- endfor -%}
+  </ul>
+</nav>

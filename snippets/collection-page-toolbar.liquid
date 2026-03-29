@@ -1,0 +1,123 @@
+{%- liquid
+  assign sort_by = results.sort_by | default: results.default_sort_by
+  for option in results.sort_options
+    if option.value == sort_by
+      assign sort_by_name = option.name | escape
+      break
+    endif
+  endfor
+
+  assign first = paginate.current_offset | plus: 1
+  assign last = paginate.current_page | times: paginate.page_size
+  assign last = last | at_most: paginate.items
+
+  if paginate.items > 0
+    if paginate.items == 1
+      assign result_count_text = 'templates.search.single_result_count' | t
+    elsif paginate.items <= paginate.page_size
+      assign result_count_text = 'templates.search.all_result_count' | t: total: paginate.items
+    else
+      assign result_count_text = 'templates.search.range_result_count' | t: first: first, last: last, total: paginate.items
+    endif
+  endif
+-%}
+<div class="m-collection-toolbar">
+  <div class="m-collection-toolbar__wrapper m:display-flex m:items-center m:justity-center">
+    <div class="m-collection-toolbar__left m:display-flex">
+      {%- if section.settings.show_filter -%}
+        <button class="m-filter-button m:display-flex m:items-center{% unless section.settings.sidebar == 'fixed' %} xl:m:hidden{% endunless %}">
+          <span>{{ 'collections.toolbar.show_filter' | t }}</span>
+          <svg class="m-svg-icon--small" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+            <path d="M441.9 167.3l-19.8-19.8c-4.7-4.7-12.3-4.7-17 0L224 328.2 42.9 147.5c-4.7-4.7-12.3-4.7-17 0L6.1 167.3c-4.7 4.7-4.7 12.3 0 17l209.4 209.4c4.7 4.7 12.3 4.7 17 0l209.4-209.4c4.7-4.7 4.7-12.3 0-17z"/>
+          </svg>
+        </button>
+      {%- endif -%}
+      {% if paginate.items > 0 %}
+        <div class="m-collection-toolbar__total m:hidden md:m:block">
+          {{ result_count_text }}
+        </div>
+      {% endif %}
+    </div>
+    {%- if section.settings.show_sorting or section.settings.show_layout_switcher -%}
+      <div class="m-collection-toolbar__right m:display-flex m:flex-1 m:items-center m:justify-end">
+        {% if section.settings.show_sorting %}
+          <div class="m-collection-toolbar__sortby m:hidden md:m:block" data-toolbar-sorting>
+            <m-select-component>
+              {%- assign sort_by = results.sort_by | default: results.default_sort_by -%}
+              <select name="sort_by" aria-describedby="a11y-refresh-page-message" class="js-selectNative">
+                {%- for option in results.sort_options -%}
+                  <option
+                    value="{{ option.value | escape }}"
+                    {% if option.value == sort_by %}
+                      selected="selected"
+                    {% endif %}
+                    data-index="{{ forloop.index0 }}"
+                  >
+                    {{ option.name | escape }}
+                  </option>
+                {%- endfor -%}
+              </select>
+              <div class="m-select-custom js-selectCustom" aria-hidden="true">
+                <div class="m-select-custom--trigger">
+                  <span class="m-select-custom--trigger-text"></span>
+                  <span class="m-select-custom--trigger-icon">
+                    <svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                      <path d="M441.9 167.3l-19.8-19.8c-4.7-4.7-12.3-4.7-17 0L224 328.2 42.9 147.5c-4.7-4.7-12.3-4.7-17 0L6.1 167.3c-4.7 4.7-4.7 12.3 0 17l209.4 209.4c4.7 4.7 12.3 4.7 17 0l209.4-209.4c4.7-4.7 4.7-12.3 0-17z"/>
+                    </svg>
+                  </span>
+                </div>
+                <div class="m-select-custom--options m-select-custom--options-{{ pos }} m-gradient m-color-{{ settings.popups_drawer_color_scheme }}">
+                  {%- for option in results.sort_options -%}
+                    <div class="m-select-custom--option" data-value="{{ option.value | escape }}">
+                      {{ option.name | escape }}
+                    </div>
+                  {%- endfor -%}
+                </div>
+              </div>
+            </m-select-component>
+          </div>
+          <button class="m-sortby-button m:flex m:items-center md:m:hidden">
+            <span data-sortby-option>{{ sort_by_name }}</span>
+            <svg class="m-svg-icon--small" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+              <path d="M441.9 167.3l-19.8-19.8c-4.7-4.7-12.3-4.7-17 0L224 328.2 42.9 147.5c-4.7-4.7-12.3-4.7-17 0L6.1 167.3c-4.7 4.7-4.7 12.3 0 17l209.4 209.4c4.7 4.7 12.3 4.7 17 0l209.4-209.4c4.7-4.7 4.7-12.3 0-17z"/>
+            </svg>
+          </button>
+        {% endif %}
+        {% if section.settings.show_layout_switcher %}
+          <div class="m-collection-toolbar__column-switcher m:display-flex">
+            <button
+              data-layout="list"
+              aria-label="{{ 'collections.toolbar.view_list' | t }}"
+              data-tippy-theme="m-color-{{ color_scheme }}"
+              data-tippy-content="{{ 'collections.toolbar.view_list' | t }}"
+            >
+              <svg
+                class="m-svg-icon--small"
+                fill="currentColor"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 12.5 9.5"
+              >
+                <path d="M12.5.75a.76.76 0 01-.75.75h-11A.76.76 0 010 .75.76.76 0 01.75 0h11a.76.76 0 01.75.75z"/><path d="M12.5 4.75a.76.76 0 01-.75.75h-11A.76.76 0 010 4.75.76.76 0 01.75 4h11a.76.76 0 01.75.75z"/><path d="M12.5 8.75a.76.76 0 01-.75.75h-11A.76.76 0 010 8.75.76.76 0 01.75 8h11a.76.76 0 01.75.75z"/>
+              </svg>
+            </button>
+            <button
+              data-layout="grid"
+              aria-label="{{ 'collections.toolbar.view_grid' | t }}"
+              data-tippy-theme="m-color-{{ color_scheme }}"
+              data-tippy-content="{{ 'collections.toolbar.view_grid' | t }}"
+            >
+              <svg
+                class="m-svg-icon--small"
+                fill="currentColor"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 13.5 12.5"
+              >
+                <path d="M.75 0a.76.76 0 01.75.75v11a.76.76 0 01-.75.75.76.76 0 01-.75-.75v-11A.76.76 0 01.75 0z"/><path d="M4.75 0a.76.76 0 01.75.75v11a.76.76 0 01-.75.75.76.76 0 01-.75-.75v-11A.76.76 0 014.75 0z"/><path d="M8.75 0a.76.76 0 01.75.75v11a.76.76 0 01-.75.75.76.76 0 01-.75-.75v-11A.76.76 0 018.75 0z"/><path d="M12.75 0a.76.76 0 01.75.75v11a.76.76 0 01-.75.75.76.76 0 01-.75-.75v-11a.76.76 0 01.75-.75z"/>
+              </svg>
+            </button>
+          </div>
+        {% endif %}
+      </div>
+    {%- endif -%}
+  </div>
+</div>

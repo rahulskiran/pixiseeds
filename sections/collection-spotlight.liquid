@@ -1,0 +1,743 @@
+{{ 'component-product-card.css' | asset_url | stylesheet_tag }}
+{{ 'section-collection-spotlight.css' | asset_url | stylesheet_tag }}
+
+{% liquid
+  assign enable_swipe_mobile = section.settings.enable_swipe_mobile
+
+  assign image_ratio = section.settings.pcard_image_ratio
+  assign show_vendor = section.settings.show_vendor
+
+  assign card_style = settings.pcard_layout
+
+  assign animation_effect = settings.animations
+  assign animated = false
+  if animation_effect != 'none'
+    assign animated = true
+    if section.settings.animations != 'inherit'
+      assign animation_effect = section.settings.animations
+    endif
+  endif
+
+  assign heading = section.settings.heading
+  assign button_text = section.settings.button_text
+
+  assign boxed_layout = section.settings.boxed_layout
+
+  assign card_bordered = false
+  if boxed_layout and section.settings.grid_bordered
+    assign card_bordered = true
+  endif
+
+  assign classes = 'm-section m-section--padding'
+  if boxed_layout
+    assign classes = classes | append: ' m-section--boxed'
+
+    if section.settings.grid_bordered
+      assign classes = classes | append: ' m-section--grid-bordered'
+    endif
+  endif
+
+  if section.settings.header_divider
+    assign classes = classes | append: ' m-section--header-separated'
+  endif
+
+  assign classes = classes | append: ' m-collection-spotlight'
+
+  assign classes = classes | append: ' m-gradient m-color-' | append: section.settings.color_scheme
+
+  if section.settings.custom_class != blank
+    assign classes = classes | append: ' ' | append: section.settings.custom_class
+  endif
+
+  assign products = section.settings.product_list | reverse | reverse
+  if products.size >= 1
+    assign featured_product = products[0]
+  endif
+
+  assign enable_slider = false
+
+  if products != blank and products.size > 3
+    assign enable_slider = true
+  endif
+
+  assign mobile_layout = section.settings.mobile_layout
+  if enable_slider and mobile_layout == 'inherit'
+    assign mobile_layout = 'slider'
+  endif
+%}
+
+<section
+  id="m-featured-collection-{{ section.id }}"
+  data-section-type="featured-collection"
+  data-section-id="{{ section.id }}"
+  data-product-card-style="{{ card_style }}"
+  class="{{ classes }}"
+  style="
+    --column-gap: {{ section.settings.column_gap }}px;
+    --column-gap-mobile: {{ section.settings.column_gap_mobile }}px;
+    --row-gap: {{ section.settings.row_gap }}px;
+    --row-gap-mobile: {{ section.settings.row_gap_mobile }}px;
+    --section-padding-top: {{ section.settings.padding_top }}px;
+    --section-padding-bottom: {{ section.settings.padding_bottom }}px;
+  "
+>
+  <div class="m-page-width">
+    <m-collection-spotlight
+      data-enable-slider="{{ enable_slider }}"
+      {% if enable_slider %}
+        data-mobile-items="2"
+        data-mobile-layout="{{ mobile_layout }}"
+      {% endif %}
+      class="m:block m-section__wrapper{% if boxed_layout %} m-gradient m-color-{{ section.settings.boxed_color_scheme }}{% endif %}"
+    >
+      {% if heading != blank or button_text != blank %}
+        <div class="m-section__header m:display-flex m:flex-col{% if section.settings.header_alignment == 'left' %} sm:m:flex-row m:items-start sm:m:items-center{% else %} sm:m:flex-col m:items-center{% endif %}">
+          {% if heading != blank %}
+            <h2 class="m-section__heading {{ section.settings.heading_size }}{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}">
+              {{ section.settings.heading }}
+            </h2>
+          {% endif %}
+          {% if button_text != blank %}
+            <div class="m-section__button sm:m:text-right m:text-left m:flex-1{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}">
+              {% capture arrow  %}<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4.5 2.25L8.25 6L4.5 9.75" stroke="CurrentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>{% endcapture %}
+              {% capture triangle %}<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.51531 5.73474L4.76531 1.98474C4.71287 1.93223 4.64602 1.89647 4.57324 1.88198C4.50046 1.86748 4.42501 1.87491 4.35645 1.90332C4.28789 1.93172 4.22931 1.97984 4.1881 2.04156C4.1469 2.10328 4.12494 2.17584 4.125 2.25005V9.75005C4.12494 9.82426 4.1469 9.89682 4.1881 9.95855C4.22931 10.0203 4.28789 10.0684 4.35645 10.0968C4.42501 10.1252 4.50046 10.1326 4.57324 10.1181C4.64602 10.1036 4.71287 10.0679 4.76531 10.0154L8.51531 6.26536C8.55018 6.23054 8.57784 6.18918 8.59671 6.14365C8.61558 6.09813 8.62529 6.04933 8.62529 6.00005C8.62529 5.95077 8.61558 5.90197 8.59671 5.85645C8.57784 5.81092 8.55018 5.76957 8.51531 5.73474Z" fill="currentColor"/></svg>{% endcapture %}
+              {% liquid 
+                assign is_button_icon = false
+                if section.settings.button_text contains '[arrow]' or section.settings.button_text contains '[triangle]'
+                  assign is_button_icon = true
+                endif
+              %}
+              <a
+                href="{{ section.settings.button_link | default: '#' }}"
+                class="m-button {{ section.settings.button_style }}{% if is_button_icon %} m-button--with-icon{% endif %}"
+              >
+                {{- section.settings.button_text | replace: '[arrow]', arrow | replace: '[triangle]', triangle -}}
+              </a>
+            </div>
+          {% endif %}
+        </div>
+        <div class="m-section__content">
+          <div class="m-collection-spotlight__product-featured">
+            {%- if featured_product != blank -%}
+              {%- liquid
+                assign first_3d_model = featured_product.media | where: 'media_type', 'model' | first
+                assign variant = featured_product.selected_or_first_available_variant
+                assign compare_at_price = variant.compare_at_price
+                assign price = variant.price
+                assign on_sale = false
+                if compare_at_price > price
+                  assign on_sale = true
+                endif
+
+                assign sold_out = true
+                assign all_quantity = 0
+                if featured_product.available
+                  assign sold_out = false
+                endif
+                for variant in featured_product.variants
+                  assign all_quantity = all_quantity | plus: variant.inventory_quantity
+                endfor
+              -%}
+              {%- if first_3d_model -%}
+                <link
+                  id="ModelViewerStyle"
+                  rel="stylesheet"
+                  href="https://cdn.shopify.com/shopifycloud/model-viewer-ui/assets/v1.0/model-viewer-ui.css"
+                  media="print"
+                  onload="this.media='all'"
+                >
+              {%- endif -%}
+              <div class="m-product-featured__media">
+                <div class="m-product-featured__media-thumb-wrapper m:hidden sm:m:block">
+                  <div class="m-product-featured__media-thumb m:h-full">
+                    <div class="swiper-wrapper">
+                      {% for media in featured_product.media %}
+                        <div class="swiper-slide">
+                          {%- render 'product-thumbnail', media: media, product: featured_product, thumbnail: true -%}
+                          {% if media.media_type contains 'video' %}
+                            <div class="m-product-media--slider__thumbnail-icon">
+                              <svg
+                                class="m-svg-icon--small"
+                                fill="currentColor"
+                                stroke="currentColor"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 576 512"
+                              >
+                                <path d="M543.9 96c-6.2 0-12.5 1.8-18.2 5.7L416 171.6v-59.8c0-26.4-23.2-47.8-51.8-47.8H51.8C23.2 64 0 85.4 0 111.8v288.4C0 426.6 23.2 448 51.8 448h312.4c28.6 0 51.8-21.4 51.8-47.8v-59.8l109.6 69.9c5.7 4 12.1 5.7 18.2 5.7 16.6 0 32.1-13 32.1-31.5v-257c.1-18.5-15.4-31.5-32-31.5zM384 400.2c0 8.6-9.1 15.8-19.8 15.8H51.8c-10.7 0-19.8-7.2-19.8-15.8V111.8c0-8.6 9.1-15.8 19.8-15.8h312.4c10.7 0 19.8 7.2 19.8 15.8v288.4zm160-15.7l-1.2-1.3L416 302.4v-92.9L544 128v256.5z"/>
+                              </svg>
+                            </div>
+                          {% endif %}
+                          {% if media.media_type == 'model' %}
+                            <div class="m-product-media--slider__thumbnail-icon">
+                              <svg
+                                class="m-svg-icon--small"
+                                fill="currentColor"
+                                stroke="currentColor"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 512 512"
+                              >
+                                <path d="M239.1 6.3l-208 78c-18.7 7-31.1 25-31.1 45v225.1c0 18.2 10.3 34.8 26.5 42.9l208 104c13.5 6.8 29.4 6.8 42.9 0l208-104c16.3-8.1 26.5-24.8 26.5-42.9V129.3c0-20-12.4-37.9-31.1-44.9l-208-78C262 2.2 250 2.2 239.1 6.3zM256 34.2l224 84v.3l-224 97.1-224-97.1v-.3l224-84zM32 153.4l208 90.1v224.7l-208-104V153.4zm240 314.8V243.5l208-90.1v210.9L272 468.2z"/>
+                              </svg>
+                            </div>
+                          {% endif %}
+                        </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                  {% if featured_product.media.size > 5 %}
+                    {% render 'slider-controls',
+                      show_nav: true,
+                      show_pagination: false,
+                      pagination_class: 'sm:m:hidden'
+                    %}
+                  {% endif %}
+                </div>
+                <div class="m-product-featured__media-main-wrapper">
+                  <div class="m-product-featured__media-main">
+                    <div class="swiper-wrapper">
+                      {% for media in featured_product.media %}
+                        <div class="swiper-slide" data-media-type="{{ media.media_type }}">
+                          {%- render 'product-thumbnail', media: media, product: featured_product -%}
+                        </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                  {% if featured_product.media.size > 1 %}
+                    {% render 'slider-controls',
+                      show_nav: true,
+                      show_pagination: true,
+                      pagination_class: 'sm:m:hidden'
+                    %}
+                  {% endif %}
+                </div>
+              </div>
+              <div class="m-product-featured__info{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}">
+                {%- if on_sale and section.settings.featured_show_sale_badge -%}
+                  <span class="m-product-featured__tag m-product-tag m-product-tag--sale m-gradient m-color-{{ settings.sale_badge_scheme }}">
+                    {{ 'products.product.on_sale' | t }}
+                  </span>
+                {%- endif -%}
+                {%- if section.settings.featured_show_review -%}
+                  <div class="m-product-featured__review">
+                    {% render 'product-reviews-app__badge', product: featured_product %}
+                  </div>
+                {%- endif -%}
+                {%- if section.settings.featured_show_vendor -%}
+                  <p class="m-product-featured__vendor m:text-small m:text-color-subtext">
+                    {{ featured_product.vendor }}
+                  </p>
+                {%- endif -%}
+                <h2 class="m-product-featured__title h4">
+                  <a href="{{ featured_product.url }}">{{ featured_product.title }}</a>
+                </h2>
+                <div class="m-product-featured__price">
+                  {%- render 'product-prices', product: featured_product, price_text_size: 'h4 m:font-medium' -%}
+                </div>
+                {%- if section.settings.featured_show_quantity -%}
+                  <div
+                    data-sold-out="{{ sold_out }}"
+                    data-all-quantity="{{ all_quantity }}"
+                    class="m-product-featured__quantity-status{% if sold_out %} product-sold-out{% endif %}"
+                  >
+                    <div class="m-product-featured__status-text m:text-small-medium">
+                      <span class="m-product-featured__status-text-dots"></span>
+                      <span>
+                        {%- if sold_out -%}
+                          {{ 'products.product.sold_out' | t }}
+                        {%- else -%}
+                          {{ 'products.product.in_stock_with_count' | t: count: all_quantity }}
+                        {%- endif -%}
+                      </span>
+                    </div>
+                    <div
+                      class="m-product-featured__status-progress"
+                      {% unless sold_out %}
+                        style="--percent-number: 75%;"
+                      {% endunless %}
+                    ></div>
+                  </div>
+                {%- endif -%}
+              </div>
+              {%- if first_3d_model -%}
+                <script type="application/json" id="ModelJSON-{{ featured_product.id }}">
+                  {{ featured_product.media | where: 'media_type', 'model' | json }}
+                </script>
+                <script src="{{ 'product-model.js' | asset_url }}" defer="defer"></script>
+              {%- endif -%}
+            {%- else -%}
+              <div class="m-product-featured__media m-product-featured__media--placeholder">
+                <div class="m-product-featured__media-thumb-wrapper m:hidden sm:m:block">
+                  <div class="m-product-featured__media-thumb m:h-full">
+                    <div class="swiper-wrapper">
+                      {% for i in (1..4) %}
+                        <div class="swiper-slide">
+                          <div class="m-image m-image--rounded m-image--placeholder">{{ 'product-1' | placeholder_svg_tag: 'm-placeholder-svg' }}</div>
+                        </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                </div>
+                <div class="m-product-featured__media-main-wrapper">
+                  <div class="m-product-featured__media-main">
+                    <div class="swiper-wrapper">
+                      {% for i in (1..4) %}
+                        <div class="swiper-slide">
+                          {{ 'product-1' | placeholder_svg_tag: 'm-placeholder-svg' }}
+                        </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                  {% render 'slider-controls', show_nav: true, show_pagination: true, pagination_class: 'sm:m:hidden' %}
+                </div>
+              </div>
+              <div class="m-product-featured__info">
+                <p class="m-product-featured__vendor m:text-small m:text-color-subtext">
+                  {{ 'homepage.onboarding.product_vendor' | t }}
+                </p>
+                <h2 class="m-product-featured__title h4">
+                  <a href="{{ featured_product.url }}">{{ 'homepage.onboarding.product_title' | t }}</a>
+                </h2>
+                <div class="m-product-featured__price">
+                  {{ 'homepage.onboarding.product_price' | t }}
+                </div>
+              </div>
+            {%- endif -%}
+          </div>
+          <div class="m-collection-spotlight__product-list m-mixed-layout{% if mobile_layout != 'slider' %} m-mixed-layout--mobile-grid{% if enable_swipe_mobile %} m-mixed-layout--mobile-scroll{% endif %}{% endif %}">
+            <div class="m-mixed-layout__wrapper{% if enable_slider %} swiper{% endif %}">
+              <div
+                class="m-mixed-layout__inner m:grid lg:m:grid-1-cols{% if enable_slider %} swiper-wrapper{% endif %}"
+                {% if section.settings.mobile_layout != 'inherit' %}
+                  style="
+                    --grid-columns-mobile: {{ section.settings.mobile_layout | replace: 'col-1', '1' | replace: 'col-2', '2' }};
+                    --mobile-column-width: {{ section.settings.mobile_layout | replace: 'col-1', '66.66vw' | replace: 'col-2', '40vw' }};
+                  "
+                {% endif %}
+              >
+                {% if products != blank and products.size > 1 %}
+                  {% for product in products %}
+                    {% if forloop.index0 > 0 %}
+                      <div class="m:column{% if enable_slider %} swiper-slide{% endif %}">
+                        {% liquid
+                          case card_style
+                            when '1'
+                              render 'product-card-1', view: 'list', product: product, image_ratio: image_ratio, card_bordered: card_bordered, show_vendor: show_vendor, index: forloop.index, animated: animated, animation_effect: animation_effect
+                            when '2'
+                              render 'product-card-2', view: 'list', product: product, image_ratio: image_ratio, card_bordered: card_bordered, show_vendor: show_vendor, index: forloop.index, animated: animated, animation_effect: animation_effect
+                            when '3'
+                              render 'product-card-3', view: 'list', product: product, image_ratio: image_ratio, card_bordered: card_bordered, show_vendor: show_vendor, index: forloop.index, animated: animated, animation_effect: animation_effect
+                          endcase
+                        %}
+                      </div>
+                    {% endif %}
+                  {% endfor %}
+                {% else %}
+                  {% for i in (1..2) %}
+                    <div class="m:column{% if enable_slider %} swiper-slide{% endif %}">
+                      <div
+                        class="m-product-card m-product-card--view-list m-product-card--placeholder{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}"
+                        {% if animated %}
+                          data-cascade
+                          style="--animation-order: {{ forloop.index }};"
+                        {% endif %}
+                      >
+                        <div class="m-product-card__media" style="--aspect-ratio: 1/1;">
+                          {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+                          {{
+                            'product-'
+                            | append: current
+                            | placeholder_svg_tag: 'm-placeholder-svg m:object-cover m:w-full m:h-full'
+                          }}
+                        </div>
+                        <div class="m-product-card__content">
+                          <div class="m-product-card__info">
+                            <div class="m-product-card__name{% if settings.uppercase_prd_name %} m:uppercase{% endif %}">
+                              {{ 'homepage.onboarding.product_title' | t }}
+                            </div>
+                            <div class="m-product-card__price">
+                              <p class="m-price">{{ 'homepage.onboarding.product_price' | t }}</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  {% endfor %}
+                {% endif %}
+              </div>
+            </div>
+            {% if enable_slider %}
+              {% render 'slider-controls',
+                container: 'm-page-width',
+                show_nav: true,
+                show_pagination: true,
+                nav_class: 'lg:m:hidden'
+              %}
+            {% endif %}
+          </div>
+        </div>
+      {% endif %}
+    </m-collection-spotlight>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Collection spotlight",
+  "disabled_on": {
+    "groups": [
+      "header",
+      "footer",
+      "aside"
+    ]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "General"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "default": "scheme_1",
+      "label": "Color scheme"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "checkbox",
+      "id": "boxed_layout",
+      "label": "Enable boxed layout",
+      "default": false
+    },
+    {
+      "type": "color_scheme",
+      "id": "boxed_color_scheme",
+      "default": "scheme_1",
+      "label": "Color scheme",
+      "info": "Only works if Boxed layout is enabled."
+    },
+    {
+      "type": "header",
+      "content": "Section header"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Collection spotlight"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "default": "h3",
+      "options": [
+        {
+          "value": "h2",
+          "label": "H2"
+        },
+        {
+          "value": "h3",
+          "label": "H3"
+        },
+        {
+          "value": "h4",
+          "label": "H4"
+        },
+        {
+          "value": "h5",
+          "label": "H5"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button label",
+      "default": "View more",
+      "info": "Leave blank to hide"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button style",
+      "options": [
+        {
+          "value": "m-button--link",
+          "label": "Underline"
+        },
+        {
+          "value": "m-button--primary",
+          "label": "Primary"
+        },
+        {
+          "value": "m-button--secondary",
+          "label": "Secondary"
+        },
+        {
+          "value": "m-button--outline",
+          "label": "Outline"
+        },
+        {
+          "value": "m-button--blank",
+          "label": "Plain"
+        }
+      ],
+      "default": "m-button--link"
+    },
+    {
+      "type": "checkbox",
+      "id": "header_divider",
+      "label": "Show header divider",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "header_alignment",
+      "label": "Alignment",
+      "default": "left",
+      "options": [
+        {
+          "label": "Left",
+          "value": "left"
+        },
+        {
+          "label": "Center",
+          "value": "center"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Products list"
+    },
+    {
+      "type": "product_list",
+      "id": "product_list",
+      "label": "Select products",
+      "limit": 12
+    },
+    {
+      "type": "header",
+      "content": "Featured product"
+    },
+    {
+      "type": "paragraph",
+      "content": "The featured product is the first product in the products list"
+    },
+    {
+      "type": "checkbox",
+      "id": "featured_show_vendor",
+      "label": "Show vendor",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "featured_show_review",
+      "label": "Show product review",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "featured_show_quantity",
+      "label": "Show quantity status",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "featured_show_sale_badge",
+      "label": "Show sale badge",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Product card settings"
+    },
+    {
+      "type": "select",
+      "id": "pcard_image_ratio",
+      "label": "Image aspect ratio",
+      "default": "",
+      "options": [
+        {
+          "value": "",
+          "label": "Use global settings"
+        },
+        {
+          "value": "original",
+          "label": "Original aspect ratio"
+        },
+        {
+          "value": "1/1",
+          "label": "1:1"
+        },
+        {
+          "value": "3/4",
+          "label": "3:4"
+        },
+        {
+          "value": "4/3",
+          "label": "4:3"
+        },
+        {
+          "value": "16/9",
+          "label": "16:9"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Show product vendors",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Grid settings"
+    },
+    {
+      "type": "range",
+      "id": "column_gap",
+      "label": "Column gap",
+      "min": 0,
+      "max": 50,
+      "default": 30,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "row_gap",
+      "label": "Row gap",
+      "min": 0,
+      "max": 50,
+      "default": 30,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Mobile settings"
+    },
+    {
+      "type": "select",
+      "id": "mobile_layout",
+      "label": "Mobile layout",
+      "default": "inherit",
+      "options": [
+        {
+          "value": "inherit",
+          "label": "Inherit"
+        },
+        {
+          "value": "col-1",
+          "label": "1 column"
+        },
+        {
+          "value": "col-2",
+          "label": "2 columns"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "label": "Enable swipe on mobile",
+      "id": "enable_swipe_mobile",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "column_gap_mobile",
+      "label": "Column gap mobile",
+      "min": 0,
+      "max": 50,
+      "default": 10,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "row_gap_mobile",
+      "label": "Row gap mobile",
+      "min": 0,
+      "max": 50,
+      "default": 10,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "default": 50,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "default": 50,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Custom attributes"
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom classes"
+    },
+    {
+      "type": "header",
+      "content": "Animations"
+    },
+    {
+      "type": "select",
+      "id": "animations",
+      "label": "Visible in the view animation",
+      "default": "inherit",
+      "options": [
+        {
+          "value": "inherit",
+          "label": "Inherit global setting"
+        },
+        {
+          "value": "fade-in",
+          "label": "Fade in"
+        },
+        {
+          "value": "fade-in-up",
+          "label": "Fade in up"
+        },
+        {
+          "value": "fade-in-left",
+          "label": "Fade in left"
+        },
+        {
+          "value": "fade-in-right",
+          "label": "Fade in right"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection spotlight"
+    }
+  ]
+}
+{% endschema %}

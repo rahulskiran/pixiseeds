@@ -1,0 +1,409 @@
+{{ 'component-product-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-article-card.css' | asset_url | stylesheet_tag }}
+{{ 'collection.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'collection.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'main-search.js' | asset_url }}" defer="defer"></script>
+{% liquid
+  assign columns = section.settings.grid_columns
+  assign tablet_columns = columns | at_most: 3
+  assign laptop_columns = columns | at_most: 4
+
+  assign boxed_layout = settings.enable_boxed_layout
+  assign boxed_color_scheme = settings.boxed_color_scheme
+
+  assign card_bordered = false
+  if boxed_layout and section.settings.grid_bordered
+    assign card_bordered = true
+  endif
+
+  assign sidebar_title = section.settings.sidebar_title
+  assign filter_title_divider = section.settings.filter_title_divider
+
+  assign sidebar_position = 'left'
+%}
+{% paginate search.results by section.settings.results_per_page %}
+  <section
+    class="m-section m-section--padding{% if boxed_layout %} m-section--boxed{% if section.settings.grid_bordered %} m-section--grid-bordered{% endif %}{% endif %} facest-filters-section m-search-template m-search m-main-collection"
+    data-section-type="page-search"
+    data-enable-filters="{{ section.settings.show_filter }}"
+    data-enable-sorting="{{ section.settings.show_sorting }}"
+    data-section-id="{{ section.id }}"
+    data-view="{{ template.name }}"
+    style="
+      --section-padding-top: {{ section.settings.padding_top }}px;
+      --section-padding-bottom: {{ section.settings.padding_bottom }}px;
+    "
+  >
+    <div class="m-page-width">
+      <div class="m-search-template__header m:flex m:flex-col m:items-center">
+        {% if search.performed %}
+          <h1 class="m-search-template__title h3">
+            {{ 'templates.search.results_with_count_and_term' | t: terms: search.terms, count: search.results_count }}
+          </h1>
+        {% else %}
+          <h1 class="m-search-template__title h3">{{ 'general.search.search' | t }}</h1>
+        {% endif %}
+        {%- if settings.predictive_search_enabled -%}
+          <predictive-search class="m:display-flex m:justify-center m:w-full" data-loading-text="{{ 'accessibility.loading' | t }}">
+        {%- endif -%}
+        <main-search class="m:display-flex m:justify-center m:w-full">
+          <form action="{{ routes.search_url }}" method="get" role="search" class="m-search-form">
+            <div class="m-search-form__wrapper">
+              <input
+                class="search__input field__input form-field form-field--input m-search__input"
+                id="Search-In-Template"
+                type="search"
+                name="q"
+                value="{{ search.terms | escape }}"
+                placeholder="{{ 'general.search.search_field_placeholder' | t }}"
+                {%- if settings.predictive_search_enabled -%}
+                  role="combobox"
+                  aria-expanded="false"
+                  aria-owns="predictive-search-results"
+                  aria-controls="predictive-search-results"
+                  aria-haspopup="listbox"
+                  aria-autocomplete="list"
+                  autocorrect="off"
+                  autocomplete="off"
+                  autocapitalize="off"
+                  spellcheck="false"
+                {%- endif -%}
+              >
+              <input name="options[prefix]" type="hidden" value="last">
+              <div class="m-search-form__buttons">
+                <button
+                  type="reset"
+                  class="reset__button m-search-form__reset--button{% if search.terms == blank %} m:hidden{% endif %}"
+                  aria-label="{{ 'general.search.reset' | t }}"
+                >
+                  <svg class="m-svg-icon--large" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M18.75 5.25L5.25 18.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M18.75 18.75L5.25 5.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+                <button type="submit" class="search__button m-search-form__search--button m-spinner-button" aria-label="{{ 'general.search.search' | t }}">
+                  <svg class="m-svg-icon--large" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10.5 18C14.6421 18 18 14.6421 18 10.5C18 6.35786 14.6421 3 10.5 3C6.35786 3 3 6.35786 3 10.5C3 14.6421 6.35786 18 10.5 18Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M15.8032 15.8035L20.9998 21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <span class="m-spinner-icon">
+                    <svg
+                      class="animate-spin m-svg-icon--medium"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                    >
+                      <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"></circle>
+                      <path fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                  </span>
+                </button>
+              </div>
+            </div>
+            {%- if settings.predictive_search_enabled -%}
+              <div
+                class="m-predictive-search m-gradient m-color-{{ settings.popups_drawer_color_scheme }}"
+                tabindex="-1"
+                data-predictive-search
+              ></div>
+              <span class="m-predictive-search-status m:visually-hidden" role="status" aria-hidden="true"></span>
+            {%- endif -%}
+          </form>
+        </main-search>
+        {%- if settings.predictive_search_enabled -%}
+          </predictive-search>
+        {%- endif -%}
+      </div>
+    </div>
+    {% if search.performed %}
+      <div class="m-page-width">
+        <div class="m-main-collection__wrapper m:display-flex m:items-start m-sidebar--{{ sidebar_position }}">
+          {%- if search.filters != empty and section.settings.show_filter -%}
+            <div class="m-sidebar{% if filter_title_divider %} m-sidebar--header-separated{% endif %}{% if sidebar_title == blank %} m-sidebar--blank-title{% endif %}{% unless section.settings.show_filter %} m:hidden{% endunless %}">
+              <div class="m-sidebar__content{% if boxed_layout %} m-gradient m-color-{{ boxed_color_scheme }}{% endif %}">
+                {%- if sidebar_title != blank -%}
+                  <h2 class="m-sidebar__title h4">{{ sidebar_title }}</h2>
+                {%- endif -%}
+                <div class="m-sidebar__close xl:m:hidden">
+                  <svg
+                    class="m-svg-icon--large"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                  </svg>
+                </div>
+                <div class="m-sidebar__filter">
+                  {% render 'storefront-filters', section: section, results: search, color_scheme: boxed_color_scheme %}
+                </div>
+              </div>
+            </div>
+          {%- endif -%}
+          <div
+            id="CollectionProductGrid"
+            class="m-section__wrapper m:flex-1{% if boxed_layout %} m-gradient m-color-{{ boxed_color_scheme }}{% endif %}"
+          >
+            {%- if section.settings.show_sorting and search.filters != empty -%}
+              <div class="m-section__content m-main-collection__top">
+                {%- render 'collection-page-toolbar', section: section, results: search, paginate: paginate, is_search_page: true, color_scheme: boxed_color_scheme -%}
+                {%- render 'collection-filters-facets', results: search -%}
+              </div>
+            {%- endif -%}
+            {% if search.results_count == 0 %}
+              <div class="m-section__content m-search--empty m:text-center">
+                {{ 'templates.search.no_results' | t: terms: search.terms }}
+              </div>
+            {% else %}
+              <div
+                class="m-section__content m-search-result{% if section.settings.show_filter or section.settings.show_sorting %} m-search-show-filter{% endif %} m:grid m:grid-2-cols md:m:grid-{{ tablet_columns }}-cols lg:m:grid-{{ laptop_columns }}-cols xl:m:grid-{{ columns }}-cols"
+                style="
+                  --column-gap: {{ section.settings.column_gap }}px; 
+                  --column-gap-mobile: {{ section.settings.column_gap_mobile }}px; 
+                  --row-gap: {{ section.settings.row_gap }}px; 
+                  --row-gap-mobile: {{ section.settings.row_gap_mobile }}px; 
+                "
+              >
+                {% for item in search.results limit: section.settings.results_per_page %}
+                  {% if item.object_type == 'product' %}
+                    <div class="m-search-item m:column">
+                      {% liquid
+                        case settings.pcard_layout
+                          when '1'
+                            render 'product-card-1', product: item, section: section, card_bordered: card_bordered
+                          when '2'
+                            render 'product-card-2', product: item, section: section, card_bordered: card_bordered
+                          when '3'
+                            render 'product-card-3', product: item, section: section, card_bordered: card_bordered
+                        endcase
+                      %}
+                    </div>
+                  {% endif %}
+                  {% if item.object_type == 'article' %}
+                    <div class="m-search-item m:column">
+                      {% render 'article-card', article: item, card_bordered: card_bordered %}
+                    </div>
+                  {% endif %}
+                  {% if item.object_type == 'page' %}
+                    <div class="m-search-item m:column">
+                      <a
+                        href="{{ item.url }}"
+                        class="m-search-item-page m:display-flex m:flex-col m:justify-center m:h-full"
+                      >
+                        <span class="m-search-item-page--badge">Page</span>
+                        <h3 class="m-search-item-page--title h5">{{ item.title | escape }}</h3>
+                      </a>
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              </div>
+            {% endif %}
+            {% if paginate.pages > 1 %}
+              {% render 'pagination', paginate: paginate, extra_classes: 'm-section__content m-search-pagination' %}
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% endif %}
+    {% if section.settings.show_sorting %}
+      {%- render 'sort-by-mobile', results: search -%}
+    {% endif %}
+  </section>
+{% endpaginate %}
+<script>
+  window.addEventListener('load', () => {
+    if (typeof Collection !== 'undefined') {
+      MinimogTheme.Collection = new Collection();
+      MinimogTheme.Collection.init();
+    }
+  });
+  if (Shopify.designMode) {
+    document.addEventListener('shopify:section:load', function (event) {
+      MinimogTheme.Collection.init();
+    });
+  }
+</script>
+{% schema %}
+{
+  "name": "Search",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "grid_columns",
+      "label": "Items per row",
+      "info": "For devices with screen width greater than 1280px",
+      "options": [
+        {
+          "value": "2",
+          "label": "2"
+        },
+        {
+          "value": "3",
+          "label": "3"
+        },
+        {
+          "value": "4",
+          "label": "4"
+        },
+        {
+          "value": "5",
+          "label": "5"
+        },
+        {
+          "value": "6",
+          "label": "6"
+        }
+      ],
+      "default": "3"
+    },
+    {
+      "type": "checkbox",
+      "id": "grid_bordered",
+      "label": "Grid bordered",
+      "default": false,
+      "info": "Only works if Boxed layout is enabled."
+    },
+    {
+      "type": "header",
+      "content": "Gap"
+    },
+    {
+      "type": "range",
+      "id": "column_gap",
+      "label": "Column gap",
+      "min": 0,
+      "max": 50,
+      "default": 30,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "row_gap",
+      "label": "Row gap",
+      "min": 0,
+      "max": 50,
+      "default": 30,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "column_gap_mobile",
+      "label": "Column gap mobile",
+      "min": 0,
+      "max": 50,
+      "default": 10,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "row_gap_mobile",
+      "label": "Row gap mobile",
+      "min": 0,
+      "max": 50,
+      "default": 10,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Pagination"
+    },
+    {
+      "type": "range",
+      "id": "results_per_page",
+      "label": "Results per page",
+      "default": 12,
+      "min": 8,
+      "max": 48,
+      "step": 1
+    },
+    {
+      "type": "header",
+      "content": "SORTING AND FILTERING"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sorting",
+      "label": "Enable sorting",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_filter",
+      "label": "Enable filtering",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "sidebar_title",
+      "label": "Filters title",
+      "default": "Filters",
+      "info": "Leave blank to hide"
+    },
+    {
+      "type": "checkbox",
+      "id": "filter_title_divider",
+      "label": "Show title divider",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "collapsed_groups",
+      "label": "Collapsed filter groups",
+      "default": "Brand, Vendor, Size",
+      "info": "Filters groups that collapsed by default. Separate by comma."
+    },
+    {
+      "type": "text",
+      "id": "color_swatches",
+      "label": "Color swatches group",
+      "default": "color,colour,couleur,farbe",
+      "info": "Enter color option name, separate by comma."
+    },
+    {
+      "type": "checkbox",
+      "id": "limit_height_widget",
+      "label": "Limit filter widget's height",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "limit_height",
+      "label": "Max height",
+      "default": 300,
+      "step": 10,
+      "min": 200,
+      "max": 600,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "default": 30,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "default": 60,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px"
+    }
+  ]
+}
+{% endschema %}

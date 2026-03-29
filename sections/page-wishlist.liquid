@@ -1,0 +1,150 @@
+{{ 'component-product-card.css' | asset_url | stylesheet_tag }}
+{% liquid
+  assign boxed_layout = settings.enable_boxed_layout
+  assign boxed_color_scheme = settings.boxed_color_scheme
+
+  assign pcard_show_border = settings.pcard_show_border
+  assign card_bordered = false
+  if boxed_layout and section.settings.grid_bordered
+    assign card_bordered = true
+  endif
+
+  assign items_per_row = section.settings.items_per_row
+
+  assign tablet_items = items_per_row | at_most: 3
+  assign laptop_items = items_per_row | at_most: 4
+%}
+
+<section 
+  class="m-section m-section--padding{% if boxed_layout %} m-section--boxed{% if section.settings.grid_bordered %} m-section--grid-bordered{% endif %}{% endif %} m-wishlist-page"
+  style="
+    --column-gap: {{ section.settings.column_gap }}px; 
+    --column-gap-mobile: {{ section.settings.column_gap_mobile }}px; 
+    --row-gap: {{ section.settings.row_gap }}px; 
+    --row-gap-mobile: {{ section.settings.row_gap_mobile }}px; 
+    --section-padding-top: {{ section.settings.padding_top }}px;
+    --section-padding-bottom: {{ section.settings.padding_bottom }}px;
+  "
+>
+  <div class="m-page-width">
+    <div 
+      class="m-section__wrapper m-section__content m-wishlist-page-content{% if boxed_layout %} m-gradient m-color-{{ boxed_color_scheme }}{% endif %}" 
+      data-pcard-bordered="{% if pcard_show_border or card_bordered == true %}true{% else %}false{% endif %}"
+    >
+      <div class="m-mixed-layout m-mixed-layout--mobile-grid">
+        <div class="m-wishlist-page-content__wrapper m-mixed-layout__inner m:grid m:grid-2-cols md:m:grid-{{ tablet_items }}-cols lg:m:grid-{{ laptop_items }}-cols xl:m:grid-{{ items_per_row }}-cols"></div>
+      </div>
+    </div>
+
+    <div class="m-section__wrapper m-wishlist-no-products m:hidden{% if boxed_layout %} m-gradient m-color-{{ boxed_color_scheme }}{% endif %}">
+      <h3 class="h3">
+        {{ 'layout.wishlist.no_products' | t }}
+        <a class="m-text-link" href="{{ routes.all_products_collection_url }}">
+          {{ 'layout.back_to_shopping' | t }}
+        </a>
+      </h3>
+    </div>
+  </div>
+</section>
+<script>
+  if (Shopify.designMode) {
+    document.addEventListener('shopify:section:load', function(event) {
+      MinimogTheme.Wishlist.init();
+    });
+  }
+</script>
+{% schema %}
+{
+  "name": "Wishlist page",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "checkbox",
+      "id": "grid_bordered",
+      "label": "Grid bordered",
+      "default": false,
+      "info": "Only works if Boxed layout is enabled. The Boxed layout Setting is in \"Theme settings > Layout settings\"."
+    },
+    {
+      "type": "header",
+      "content": "Grid settings"
+    },
+    {
+      "type": "range",
+      "id": "items_per_row",
+      "label": "Products per row",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "column_gap",
+      "label": "Column gap",
+      "min": 0,
+      "max": 50,
+      "default": 30,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "row_gap",
+      "label": "Row gap",
+      "min": 0,
+      "max": 50,
+      "default": 30,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Mobile settings"
+    },
+    {
+      "type": "range",
+      "id": "column_gap_mobile",
+      "label": "Column gap mobile",
+      "min": 0,
+      "max": 50,
+      "default": 10,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "row_gap_mobile",
+      "label": "Row gap mobile",
+      "min": 0,
+      "max": 50,
+      "default": 10,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "default": 0,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "default": 50,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px"
+    }
+  ]
+}
+{% endschema %}

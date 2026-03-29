@@ -1,0 +1,41 @@
+<div class="m-disclosure">
+  <button
+    type="button"
+    class="m-disclosure__button m-localization-form__select m-localization-selector"
+    aria-expanded="false"
+    aria-controls="{{ localPosition }}List"
+    aria-describedby="{{ localPosition }}Label"
+  >
+    <span class="m-country-flags m-country-flags--{{ localization.country.iso_code }}"></span>
+    <span>
+      {{ localization.country.name }} ( {{ localization.country.currency.iso_code }}{{ localization.country.currency.symbol }} )
+    </span>
+    <span class="m-disclosure__button-icon">
+      <svg class="m-svg-icon--small" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M9.75 5L6 8.75L2.25 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </span>
+  </button>
+  <div class="m-disclosure__list-wrapper m-gradient m-color-{{ section.settings.content_color }} m-disclosure__list-wrapper--{{ panelPosition | default: 'bottom' }}">
+    <ul id="{{ localPosition }}List" role="list" class="m-disclosure__list">
+      {%- for country in localization.available_countries -%}
+        <li class="m-disclosure__item" tabindex="-1">
+          <a
+            class="m-disclosure__link {% if country.iso_code == localization.country.iso_code %} m-disclosure__link--active{% endif %}"
+            href="#"
+            {% if country.iso_code == localization.country.iso_code %}
+              aria-current="true"
+            {% endif %}
+            data-value="{{ country.iso_code }}"
+          >
+            <span class="m-country-flags m-country-flags--{{ country.iso_code }}"></span>
+            <span class="m-localization-form__currency">
+              {{ country.name }} ( {{ country.currency.iso_code }}{{ country.currency.symbol }} )
+            </span>
+          </a>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</div>
+<input type="hidden" name="country_code" value="{{ localization.country.iso_code }}">

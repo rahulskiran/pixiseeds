@@ -1,0 +1,460 @@
+{{ 'section-topbar.css' | asset_url | stylesheet_tag }}
+<div class="m-topbar-section m-color-{{ section.settings.color_scheme }} m-gradient">
+  <div class="m-page-width">
+    <div class="m-topbar-section__container m:grid m:items-center">
+      <div class="m-topbar-section__left m:flex m:justify-center xl:m:justify-start">
+        {% for block in section.blocks %}
+          {% liquid
+            assign current_position = ''
+          %}
+          {% if block.settings.position == 'left' %}
+            {% assign current_position = 'm:justify-center xl:m:justify-start' %} 
+            {% case block.type %}
+              {% when 'menu' %}
+                <div class="m-topbar-section__menu m:hidden xl:m:flex {{ current_position }}">
+                  <div class="m-topbar-section__menu-container">
+                    <ul class="m-link-lists m-link-lists--inline">
+                      {% for link in linklists[block.settings.menu].links -%}
+                        <li class="m-link-lists__item">
+                          <a href="{{ link.url }}" class="m-link">{{ link.title }}</a>
+                        </li>
+                      {%- endfor %}
+                    </ul>
+                  </div>
+                </div>
+              {% when 'text' %}
+                <div class="m-topbar-section__text m:flex {{ current_position }}">
+                  <p>{{- block.settings.text -}}</p>
+                  <a
+                    target="_blank"
+                    class="social-media-links--item"
+                    href="https://www.amazon.in/l/27943762031?ie=UTF8&marketplaceID=A21TJRUUN4KGV&me=ADLC6UUYOIQBC"
+                    rel="noreferrer"
+                    aria-label="Line"
+                  >
+                   <svg class="m-svg-icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0,0,256,256" width="30px" height="30px"><g fill-opacity="0" fill="#ffffff" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><path d="M0,256v-256h256v256z" id="bgRectangle"/></g><g fill="#ffffff" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><g transform="scale(8.53333,8.53333)"><path d="M15.18359,3c-3.363,0 -7.09877,1.25809 -7.88477,5.37109c-0.084,0.438 0.22272,0.66256 0.51172,0.72656l3.41406,0.34766c0.321,-0.017 0.57667,-0.31486 0.63867,-0.63086c0.294,-1.417 1.49384,-2.11719 2.83984,-2.11719c0.727,0 1.55047,0.27202 1.98047,0.91602c0.497,0.719 0.41406,1.6963 0.41406,2.5293v0.47266c-2.049,0.228 -4.72072,0.36717 -6.63672,1.20117c-2.214,0.947 -3.76758,2.87875 -3.76758,5.71875c0,3.634 2.32383,5.4668 5.29883,5.4668c2.513,0 3.86859,-0.60259 5.80859,-2.55859c0.641,0.919 0.86897,1.37089 2.04297,2.33789c0.264,0.14 0.59708,0.11425 0.83008,-0.09375v0.03125c0.705,-0.622 1.99094,-1.73689 2.71094,-2.33789c0.287,-0.234 0.225,-0.59897 0,-0.91797c-0.646,-0.883 -1.30859,-1.61586 -1.30859,-3.25586v-5.43555c0,-2.309 0.1565,-4.44516 -1.5625,-6.03516c-1.357,-1.288 -3.61208,-1.73633 -5.33008,-1.73633zM16.14063,13.42578c0.319,-0.021 0.63703,0 0.95703,0v0.75781c0.001,1.364 0.05533,2.48527 -0.63867,3.69727c-0.562,0.984 -1.46503,1.58008 -2.45703,1.58008c-1.356,0 -2.14062,-1.0153 -2.14062,-2.5293c0,-2.605 2.0493,-3.36086 4.2793,-3.50586zM26.08008,22.2207c-0.909,0.013 -1.97406,0.20353 -2.78906,0.76953c-0.25,0.174 -0.21355,0.41972 0.06445,0.38672c0.917,-0.109 2.94359,-0.3653 3.30859,0.0957c0.364,0.462 -0.40214,2.35998 -0.74414,3.20898c-0.104,0.256 0.12147,0.35516 0.35547,0.16016c1.526,-1.264 1.93309,-3.88553 1.62109,-4.26953c-0.155,-0.187 -0.90641,-0.36456 -1.81641,-0.35156zM2.17773,22.70117c-0.19,0.025 -0.26445,0.27217 -0.06445,0.45117c3.392,3.032 7.8638,4.84766 12.8418,4.84766c3.551,0 7.69602,-1.10069 10.54102,-3.17969c0.47,-0.345 0.06108,-0.87683 -0.41992,-0.67383c-3.189,1.34 -6.67513,1.99023 -9.82812,1.99023c-4.675,0 -9.1828,-1.26309 -12.8418,-3.37109c-0.081,-0.046 -0.16652,-0.07245 -0.22852,-0.06445z"/></g></g></svg>
+                  </a>
+                </div>
+              {% when 'country_region' %}
+                <div class="m-topbar-section__country m:hidden xl:m:flex {{ current_position }}">
+                  {% if block.settings.show_country_selector %}
+                    <localization-form class="m:hidden xl:m:block">
+                      {%- form 'localization', id: 'TopbarCountryForm', class: 'm-localization-form' -%}
+                        {%- render 'country-localization', localPosition: 'TopbarCountry' -%}
+                      {%- endform -%}
+                    </localization-form>
+                  {% endif %}
+                  {% if block.settings.show_language_selector %}
+                    <localization-form class="m:hidden xl:m:block">
+                      {%- form 'localization', id: 'TopbarLanguageForm', class: 'm-localization-form' -%}
+                        {%- render 'language-localization', localPosition: 'TopbarLanguage' -%}
+                      {%- endform -%}
+                    </localization-form>
+                  {% endif %}
+                </div>
+              {% when'social_media' %}
+                {% render 'social-media-links',
+                  show_pinterest: block.settings.show_pinterest,
+                  show_facebook: block.settings.show_facebook,
+                  show_instagram: block.settings.show_instagram,
+                  show_twitter: block.settings.show_twitter,
+                  show_linkedin: block.settings.show_linkedin,
+                  show_snapchat: block.settings.show_snapchat,
+                  show_tumblr: block.settings.show_tumblr,
+                  show_youtube: block.settings.show_youtube,
+                  show_vimeo: block.settings.show_vimeo,
+                  show_tiktok: block.settings.show_tiktok,
+                  show_discord: block.settings.show_discord,
+                  show_whatsapp: block.settings.show_whatsapp,
+                  show_line: block.settings.show_line,
+                  show_spotify: block.settings.show_spotify,
+                  extra_classes: current_position
+                %}
+            {% endcase %}
+          {% endif %}
+        {% endfor %}
+      </div>
+      <div class="m-topbar-section__center m:flex m:justify-center xl:m:justify-center">
+        {% for block in section.blocks %}
+          {% liquid
+            assign current_position = ''
+          %}
+          {% if block.settings.position == 'center' %}
+            {% assign current_position = 'm:justify-center xl:m:justify-center' %} 
+            {% case block.type %}
+              {% when 'menu' %}
+                <div class="m-topbar-section__menu m:hidden xl:m:flex {{ current_position }}">
+                  <div class="m-topbar-section__menu-container">
+                    <ul class="m-link-lists m-link-lists--inline">
+                      {% for link in linklists[block.settings.menu].links -%}
+                        <li class="m-link-lists__item">
+                          <a href="{{ link.url }}" class="m-link">{{ link.title }}</a>
+                        </li>
+                      {%- endfor %}
+                    </ul>
+                  </div>
+                </div>
+              {% when 'text' %}
+                <div class="m-topbar-section__text m:flex {{ current_position }}">
+                  <p>{{- block.settings.text -}}</p>
+                </div>
+              {% when 'country_region' %}
+                <div class="m-topbar-section__country m:hidden xl:m:flex {{ current_position }}">
+                  {% if block.settings.show_country_selector %}
+                    <localization-form class="m:hidden xl:m:block">
+                      {%- form 'localization', id: 'TopbarCountryForm', class: 'm-localization-form' -%}
+                        {%- render 'country-localization', localPosition: 'TopbarCountry' -%}
+                      {%- endform -%}
+                    </localization-form>
+                  {% endif %}
+                  {% if block.settings.show_language_selector %}
+                    <localization-form class="m:hidden xl:m:block">
+                      {%- form 'localization', id: 'TopbarLanguageForm', class: 'm-localization-form' -%}
+                        {%- render 'language-localization', localPosition: 'TopbarLanguage' -%}
+                      {%- endform -%}
+                    </localization-form>
+                  {% endif %}
+                </div>
+              {% when'social_media' %}
+                {% render 'social-media-links',
+                  show_pinterest: block.settings.show_pinterest,
+                  show_facebook: block.settings.show_facebook,
+                  show_instagram: block.settings.show_instagram,
+                  show_twitter: block.settings.show_twitter,
+                  show_linkedin: block.settings.show_linkedin,
+                  show_snapchat: block.settings.show_snapchat,
+                  show_tumblr: block.settings.show_tumblr,
+                  show_youtube: block.settings.show_youtube,
+                  show_vimeo: block.settings.show_vimeo,
+                  show_tiktok: block.settings.show_tiktok,
+                  show_discord: block.settings.show_discord,
+                  show_whatsapp: block.settings.show_whatsapp,
+                  show_line: block.settings.show_line,
+                  show_spotify: block.settings.show_spotify,
+                  extra_classes: current_position
+                %}
+            {% endcase %}
+          {% endif %}
+        {% endfor %}
+      </div>
+      <div class="m-topbar-section__right m:flex m:justify-center xl:m:justify-end">
+        {% for block in section.blocks %}
+          {% liquid
+            assign current_position = ''
+          %}
+          {% if block.settings.position == 'right' %}
+            {% assign current_position = 'm:justify-center xl:m:justify-end' %} 
+            {% case block.type %}
+              {% when 'menu' %}
+                <div class="m-topbar-section__menu m:hidden xl:m:flex {{ current_position }}">
+                  <div class="m-topbar-section__menu-container">
+                    <ul class="m-link-lists m-link-lists--inline">
+                      {% for link in linklists[block.settings.menu].links -%}
+                        <li class="m-link-lists__item">
+                          <a href="{{ link.url }}" class="m-link">{{ link.title }}</a>
+                        </li>
+                      {%- endfor %}
+                    </ul>
+                  </div>
+                </div>
+              {% when 'text' %}
+                <div class="m-topbar-section__text m:flex {{ current_position }}">
+                  <p>{{- block.settings.text -}}</p>
+                </div>
+              {% when 'country_region' %}
+                <div class="m-topbar-section__country m:hidden xl:m:flex {{ current_position }}">
+                  {% if block.settings.show_country_selector %}
+                    <localization-form class="m:hidden xl:m:block">
+                      {%- form 'localization', id: 'TopbarCountryForm', class: 'm-localization-form' -%}
+                        {%- render 'country-localization', localPosition: 'TopbarCountry' -%}
+                      {%- endform -%}
+                    </localization-form>
+                  {% endif %}
+                  {% if block.settings.show_language_selector %}
+                    <localization-form class="m:hidden xl:m:block">
+                      {%- form 'localization', id: 'TopbarLanguageForm', class: 'm-localization-form' -%}
+                        {%- render 'language-localization', localPosition: 'TopbarLanguage' -%}
+                      {%- endform -%}
+                    </localization-form>
+                  {% endif %}
+                </div>
+              {% when'social_media' %}
+                {% render 'social-media-links',
+                  show_pinterest: block.settings.show_pinterest,
+                  show_facebook: block.settings.show_facebook,
+                  show_instagram: block.settings.show_instagram,
+                  show_twitter: block.settings.show_twitter,
+                  show_linkedin: block.settings.show_linkedin,
+                  show_snapchat: block.settings.show_snapchat,
+                  show_tumblr: block.settings.show_tumblr,
+                  show_youtube: block.settings.show_youtube,
+                  show_vimeo: block.settings.show_vimeo,
+                  show_tiktok: block.settings.show_tiktok,
+                  show_discord: block.settings.show_discord,
+                  show_whatsapp: block.settings.show_whatsapp,
+                  show_line: block.settings.show_line,
+                  show_spotify: block.settings.show_spotify,
+                  extra_classes: current_position
+                %}
+            {% endcase %}
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% schema %}
+{
+  "name": "Top bar",
+  "enabled_on": {
+    "groups": [
+      "header"
+    ]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "General"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "default": "scheme-1",
+      "label": "Color scheme"
+    }
+  ],
+  "blocks": [
+    {
+      "name": "Text",
+      "type": "text",
+      "settings": [
+        {
+          "type": "select",
+          "id": "position",
+          "label": "Position",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "✌🏼 Free Express Shipping on orders $120!"
+        }
+      ]
+    },
+    {
+      "name": "Social media",
+      "type": "social_media",
+      "settings": [
+        {
+          "type": "select",
+          "id": "position",
+          "label": "Position",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "right"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_facebook",
+          "label": "Enable facebook",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_twitter",
+          "label": "Enable twitter",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_instagram",
+          "label": "Enable instagram",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_pinterest",
+          "label": "Enable Pinterest",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "show_snapchat",
+          "label": "Enable Snapchat",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "show_tumblr",
+          "label": "Enable Tumblr",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "show_youtube",
+          "label": "Enable Youtube",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "show_vimeo",
+          "label": "Enable Vimeo",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "show_tiktok",
+          "label": "Enable Tiktok",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "show_discord",
+          "label": "Enable Discord",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "show_whatsapp",
+          "label": "Enable Whatsapp",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "show_spotify",
+          "label": "Enable Spotify",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "show_line",
+          "label": "Enable Line",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "show_linkedin",
+          "label": "Enable Linkedin",
+          "default": false
+        }
+      ]
+    },
+    {
+      "name": "Country/region & language",
+      "type": "country_region",
+      "settings": [
+        {
+          "type": "select",
+          "id": "position",
+          "label": "Position",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "right"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_country_selector",
+          "label": "Enable country/region selector",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_language_selector",
+          "label": "Enable language selector",
+          "default": true
+        }
+      ]
+    },
+    {
+      "name": "Menu",
+      "type": "menu",
+      "settings": [
+        {
+          "type": "select",
+          "id": "position",
+          "label": "Position",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "left"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu",
+          "default": "main-menu"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Top bar",
+      "blocks": [
+        {
+          "type": "menu"
+        },
+        {
+          "type": "text"
+        },
+        {
+          "type": "country_region"
+        },
+        {
+          "type": "social_media"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

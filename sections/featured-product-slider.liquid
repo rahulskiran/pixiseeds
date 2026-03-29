@@ -1,0 +1,548 @@
+{{ 'component-product-card.css' | asset_url | stylesheet_tag }}
+{{ 'section-featured-product-slider.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign image_ratio = section.settings.pcard_image_ratio
+  assign show_vendor = section.settings.show_vendor
+  assign pcard_alignment = section.settings.pcard_alignment
+  assign card_style = section.settings.pcard_layout
+
+  if card_style == nil or card_style == blank
+    assign card_style = settings.pcard_layout
+  endif
+
+  assign animation_effect = settings.animations
+  assign animated = false
+  if animation_effect != 'none'
+    assign animated = true
+    if section.settings.animations != 'inherit'
+      assign animation_effect = section.settings.animations
+    endif
+  endif
+  assign color_scheme = section.settings.color_scheme
+-%}
+
+<section
+  class="m-section m-featured-slider m-featured-slider--image-{{ section.settings.image_placement }} {{ section.settings.custom_class }} m-section--padding m-color-{{ color_scheme }} m-gradient{% if section.settings.boxed_layout %} m-section--boxed{% endif %}{% if section.settings.header_divider %} m-section--header-separated{% endif %}"
+  data-section-type="m-featured-slider"
+  data-section-id="{{ section.id }}"
+  data-product-card-style="{{ card_style }}"
+  style="--items: 1;--section-padding-top: {{ section.settings.padding_top }}px; --section-padding-bottom: {{ section.settings.padding_bottom }}px;"
+>
+  <div class="m-page-width">
+    <div class="m-section__wrapper{% if section.settings.boxed_layout %} m-gradient m-color-{{ section.settings.boxed_color_scheme }}{% endif %}">
+      {% render 'index-section-header', section_settings: section.settings %}
+      <m-featured-slider
+        data-container="{{ section.settings.container_type }}"
+        data-autoplay="{{ section.settings.slide_autoplay }}"
+        data-timeout="{{ section.settings.autorotate_speed | times: 1000 }}"
+        data-show-pagination="{{ section.settings.show_pagination }}"
+        data-show-navigation="{{ section.settings.show_navigation }}"
+        class="m:block m-section__content"
+      >
+        <div class="m-featured-slider__container m:flex m:flex-col lg:m:items-center md:m:block lg:m:flex{% if section.settings.image_placement == 'left' %} lg:m:flex-row-reverse {% else %} lg:m:flex-row{% endif %}">
+          <div class="m-featured-slider__col-left m:w-full lg:m:w-1/2">
+            <div
+              class="m-featured-slider__products m-product-list swiper"
+              style="--items: 1;"
+            >
+              <div class="swiper-wrapper">
+                {% for block in section.blocks %}
+                  {% liquid
+                    assign text_size = block.settings.text_size 
+                    assign desc_color = 'm:text-color-' | append: block.settings.text_color
+                  %}
+                  {%- assign product = all_products[block.settings.product] -%}
+                  <div class="swiper-slide" data-index="{{ forloop.index0 }}" {{ block.shopify_attributes }}>
+                    <div class="m-featured-slider__product">
+                      {% if block.settings.heading != blank or block.settings.description != blank %}
+                        <div class="m-featured-slider__product-content m:text-center{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}">
+                          {% if block.settings.heading != blank %}
+                            <h3 class="{{ text_size }}">{{ block.settings.heading }}</h3>
+                          {% endif %}
+                          {% if block.settings.description != blank %}
+                            <div class="m-rte {{ desc_color }}">{{ block.settings.description }}</div>
+                          {% endif %}
+                        </div>
+                      {% endif %}
+                      {% if product != blank %}
+                        <div class="m-featured-slider__product-item">
+                          {% liquid
+                            case card_style
+                              when '1'
+                                render 'product-card-1', product: product, image_ratio: image_ratio, show_vendor: show_vendor, pcard_alignment: pcard_alignment, index: forloop.index, animated: animated, animation_effect: animation_effect
+                              when '2'
+                                render 'product-card-2', product: product, image_ratio: image_ratio, show_vendor: show_vendor, pcard_alignment: pcard_alignment, index: forloop.index, animated: animated, animation_effect: animation_effect
+                              when '3'
+                                render 'product-card-3', product: product, image_ratio: image_ratio, show_vendor: show_vendor, pcard_alignment: pcard_alignment, index: forloop.index, animated: animated, animation_effect: animation_effect
+                            endcase
+                          %}
+                        </div>
+                      {% else %}
+                        {% render 'product-card-placeholder', index: forloop.index, animated: animated, animation_effect: animation_effect %}
+                      {% endif %}
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+            </div>            
+            {% render 'slider-controls', 
+              show_nav: section.settings.show_navigation, 
+              show_pagination: section.settings.show_pagination
+            %}
+          </div>
+          <div class="m-featured-slider__col-right m:hidden lg:m:block m:w-full lg:m:w-1/2{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}">
+            <div class="m-featured-slider__images swiper">
+              <div class="swiper-wrapper">
+                {% for block in section.blocks %}
+                  {%- liquid 
+                    assign image = block.settings.image
+                    assign product = all_products[block.settings.product]
+                    if image == blank and product != blank
+                      assign image = product.featured_image
+                    endif
+                  -%}
+
+                  <div class="m-featured-slider__img swiper-slide m-hover-box m-hover-box--scale-up" data-index="{{ forloop.index0 }}" {{ block.shopify_attributes }}>
+                    {% if image == blank %}
+                      {{ 'image' | placeholder_svg_tag: 'm-placeholder-svg' }}
+                    {% else %}
+                      {% render 'responsive-image', image: image %}
+                    {% endif %}
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </m-featured-slider>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Featured products slider",
+  "disabled_on": {
+    "groups": [
+      "header",
+      "footer",
+      "aside"
+    ]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "General"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "default": "scheme_1",
+      "label": "Color scheme"
+    },
+    {
+      "type": "select",
+      "id": "image_placement",
+      "label": "Image placement",
+      "default": "right",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "checkbox",
+      "id": "boxed_layout",
+      "label": "Enable boxed layout",
+      "default": false
+    },
+    {
+      "type": "color_scheme",
+      "id": "boxed_color_scheme",
+      "default": "scheme_1",
+      "label": "Color scheme",
+      "info": "Only works if Boxed layout is enabled."
+    },
+    {
+      "type": "header",
+      "content": "Section header"
+    },
+    {
+      "type": "checkbox",
+      "id": "header_divider",
+      "label": "Show header divider",
+      "default": false
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Featured products"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "H2"
+        },
+        {
+          "value": "h3",
+          "label": "H3"
+        },
+        {
+          "value": "h4",
+          "label": "H4"
+        },
+        {
+          "value": "h5",
+          "label": "H5"
+        }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "subheading",
+      "label": "Subheading"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "select",
+      "id": "text_color",
+      "label": "Description style",
+      "options": [
+        {
+          "value": "body",
+          "label": "Body text"
+        },
+        {
+          "value": "subtext",
+          "label": "Subtext"
+        }
+      ],
+      "default": "body"
+    },
+    {
+      "type": "select",
+      "id": "header_alignment",
+      "label": "Text alignment",
+      "default": "center",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "header_mobile_alignment",
+      "label": "Mobile text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Slider settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "slide_autoplay",
+      "label": "Auto-rotate slides",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_navigation",
+      "label": "Show navigation",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_pagination",
+      "label": "Show pagination",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "autorotate_speed",
+      "label": {
+        "en": "Change slides every"
+      },
+      "info": {
+        "en": "Work when auto-rotate"
+      },
+      "max": 10,
+      "min": 2,
+      "step": 1,
+      "unit": "s",
+      "default": 5
+    },
+    {
+      "type": "header",
+      "content": "Product card settings"
+    },
+    {
+      "type": "select",
+      "id": "pcard_layout",
+      "label": "Design layout",
+      "default": "",
+      "options": [
+        {
+          "value": "",
+          "label": "Use global settings"
+        },
+        {
+          "value": "1",
+          "label": "Style 1"
+        },
+        {
+          "value": "2",
+          "label": "Style 2"
+        },
+        {
+          "value": "3",
+          "label": "Style 3"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "pcard_alignment",
+      "label": "Content alignment",
+      "default": "left",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "pcard_image_ratio",
+      "label": "Image aspect ratio",
+      "default": "",
+      "options": [
+        {
+          "value": "",
+          "label": "Use global settings"
+        },
+        {
+          "value": "original",
+          "label": "Original aspect ratio"
+        },
+        {
+          "value": "1/1",
+          "label": "1:1"
+        },
+        {
+          "value": "3/4",
+          "label": "3:4"
+        },
+        {
+          "value": "4/3",
+          "label": "4:3"
+        },
+        {
+          "value": "16/9",
+          "label": "16:9"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Show product vendors",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "default": 50,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "default": 50,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Custom attributes"
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom classes"
+    },
+    {
+      "type": "header",
+      "content": "Animations"
+    },
+    {
+      "type": "select",
+      "id": "animations",
+      "label": "Visible in the view animation",
+      "default": "inherit",
+      "options": [
+        {
+          "value": "inherit",
+          "label": "Inherit global setting"
+        },
+        {
+          "value": "fade-in",
+          "label": "Fade in"
+        },
+        {
+          "value": "fade-in-up",
+          "label": "Fade in up"
+        },
+        {
+          "value": "fade-in-left",
+          "label": "Fade in left"
+        },
+        {
+          "value": "fade-in-right",
+          "label": "Fade in right"
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Product",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "heading",
+          "label": "Heading"
+        },
+        {
+          "type": "select",
+          "id": "text_size",
+          "label": "Heading size",
+          "options": [
+            {
+              "value": "h2",
+              "label": "H2"
+            },
+            {
+              "value": "h3",
+              "label": "H3"
+            },
+            {
+              "value": "h4",
+              "label": "H4"
+            },
+            {
+              "value": "h5",
+              "label": "H5"
+            }
+          ],
+          "default": "h2"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description"
+        },
+        {
+          "type": "select",
+          "id": "text_color",
+          "label": "Description style",
+          "options": [
+            {
+              "value": "body",
+              "label": "Body text"
+            },
+            {
+              "value": "subtext",
+              "label": "Subtext"
+            }
+          ],
+          "default": "body"
+        },
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Featured image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured products slider",
+      "category": "Product",
+      "blocks": [
+        {
+          "type": "product"
+        },
+        {
+          "type": "product"
+        },
+        {
+          "type": "product"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

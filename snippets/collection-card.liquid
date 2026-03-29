@@ -1,0 +1,76 @@
+{%- liquid 
+  assign card_layout = card_layout | default: 'standard'
+  assign text_alignment = text_alignment | default: 'left'
+  assign heading_size = heading_size | default: 'h6'
+  assign horizontal_align = horizontal_align | default: 'start'
+  assign vertical_align = vertical_align | default: 'start'
+  assign image_rounded = image_rounded | default: '0' | append: 'px'
+
+	assign aspect_ratio = featured_image.aspect_ratio | default: 1
+  for i in (1..index)
+    capture current
+      cycle 1, 2, 3, 4, 5, 6
+    endcapture
+  endfor
+  assign placeholder_image = 'collection-' | append: current
+  assign all_products_count = collection.all_products_count
+  if collection == blank
+    assign all_products_count = 12
+  endif
+
+  assign hover = 'm-hover-box'
+  case hover_effect
+    when 'scaling-down'
+      assign hover = hover | append: ' m-hover-box--scale-down'
+    when 'scaling-up'
+      assign hover = hover | append: ' m-hover-box--scale-up'
+    when 'zoom-in'
+      assign hover = hover | append: ' m-hover-box--zoom-in'
+    else
+      assign hover = ''
+  endcase
+-%}
+
+<div
+  class="m-collection-card m-collection-card--{{ card_layout }}{% if show_border or card_bordered == true %} m-collection-card--bordered{% endif %}{% if color_scheme %} m-gradient m-color-{{ color_scheme }}{% endif %}"
+  style="
+    --img-rounded: {{ image_rounded | default: 'var(--collection-card-corner-radius, 0px)' }};
+    --img-width: {{ image_width | default: '100%' }};
+  "
+>
+  <div 
+    class="m-collection-card__wrapper m:text-{{ text_alignment }}{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}"
+    {% if animated %}
+      data-cascade
+    {% endif %}
+    style="{% if animated %}--animation-order: {{ index }};{% endif %}"
+  >
+    <a
+      href="{{ collection.url | default: "#" }}"
+      class="m-collection-card__image m:block{% if hover %} {{ hover }}{% endif %}"
+      aria-label="{{ title | default: collection.title }}"
+    >
+      <div class="m-hover-box__wrapper">
+        {% if featured_image != blank %}
+          {% render 'responsive-image', image: featured_image, image_class: 'm:w-full', aspect_ratio: aspect_ratio, image_rounded: false %}
+        {% else %}
+          <div class="m-image--placeholder" style="--aspect-ratio: 1/1;">
+            {{ placeholder_image | placeholder_svg_tag: 'm-placeholder-svg' }}
+          </div>
+        {% endif %}
+      </div>
+    </a>
+    {% if card_layout == 'inside' %}<div class="m-collection-card__inner m:display-flex m:justify-{{ horizontal_align }}">{% endif %}
+      <div class="m-collection-card__info m:justify-{{ vertical_align }}">
+        <h3 class="m-collection-card__title {{ heading_size }}">
+          <a class="m-collection-card__link m:block" href="{{ collection.url | default: "#" }}">{{ title | default: collection.title }}</a>
+        </h3>
+        {% if show_product_count %}
+          <p class="m-collection-card__product-count">
+            {{ 'collections.general.collection_items' | t: title: all_products_count }}
+          </p>
+        {% endif %}
+      </div>
+    {% if card_layout == 'inside' %}</div><!--.m-collection-card__inner-->{% endif %}
+  </div>
+</div>

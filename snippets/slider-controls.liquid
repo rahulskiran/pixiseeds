@@ -1,0 +1,83 @@
+{% comment %}
+  Accepts:
+  - show_pagination: {Boolean} Show Pagination (optional)
+  - show_nav: {Boolean} Show Navigation (optional)
+  - pagination_type: {String} Accepted value: bullets/fraction (optional)
+  - navigation_position: {String} (optional)
+  - pagination_class: {String} Pagination extra classes (optional)
+  - alignment: {String} (optional)
+  - container: {String} (optional)
+  - extra_classes: {String} Extra classes (optional)
+
+  Usage:
+  {% render 'slider-controls', 
+    show_pagination: false,
+    show_nav: false,
+    pagination_type: 'bullets',
+    container: '',
+    pagination_class: '',
+    extra_classes: ''
+  %}
+{% endcomment %}
+
+{% liquid
+  assign pagination_type = pagination_type | default: "fraction"
+  assign alignment = alignment | default: "center"
+  assign navigation_position = navigation_position | default: "inline"
+
+  if show_pagination == nil
+    assign show_pagination = true
+  endif
+
+  if show_nav == nil
+    assign show_nav = true
+  endif
+
+  assign classes = 'm-slider-controls m:text-' | append: alignment
+  
+  if show_nav
+    assign classes = classes | append: ' m-slider-controls--show-nav'
+  endif
+
+  if show_nav and navigation_position
+    assign classes = classes | append: ' m-slider-controls--nav-' | append: navigation_position
+  endif
+
+  if show_pagination
+    assign classes = classes | append: ' m-slider-controls--show-pagination'
+    assign classes = classes | append: ' m-slider-controls--pagination-' | append: pagination_type
+  endif
+
+  if navigation_position == 'inline'
+    assign classes = classes | append: ' m-slider-controls--group'
+  endif
+
+  if container == 'full-width'
+    assign classes = classes | append: ' m-slider-controls--full'
+  endif
+
+  if extra_classes
+    assign classes = classes | append: ' ' | append: extra_classes
+  endif
+%}
+<div class="{{ classes }}">
+  <div class="m-slider-controls__wrapper">
+    {% if show_nav %}
+    <button class="m-slider-controls__button m:inline-flex m-slider-controls__button-prev swiper-button-prev {{ nav_class }}" aria-label="Previous">
+      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M20 6L10 16L20 26" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    {% endif %}
+    {% if show_pagination %}
+      <div class="swiper-pagination m:inline-flex m:w-full {{ pagination_class }}"></div>
+    {% endif %}
+    {% if show_nav %}
+    <button class="m-slider-controls__button m:inline-flex m-slider-controls__button-next swiper-button-next {{ nav_class }}" aria-label="Next">
+      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 6L22 16L12 26" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    {% endif %}
+  </div>
+</div>

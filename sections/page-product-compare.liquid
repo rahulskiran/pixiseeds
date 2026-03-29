@@ -1,0 +1,76 @@
+{{ 'component-product-card.css' | asset_url | stylesheet_tag }}
+{% liquid
+  assign boxed_layout = settings.enable_boxed_layout
+  assign boxed_color_scheme = settings.boxed_color_scheme
+
+  assign tablet_items = 3
+  assign mobile_items = 2
+  if boxed_layout
+    assign tablet_items = 2
+    assign mobile_items = 1
+  endif
+%}
+
+<section 
+  class="m-section m-section--padding{% if boxed_layout %} m-section--boxed{% endif %} m-compare-page"
+  style="
+    --row-gap: 40px; 
+    --row-gap-mobile: 40px;
+    --column-gap: 30px;
+    --column-gap-mobile: 16px;
+    --section-padding-top: {{ section.settings.padding_top }}px;
+    --section-padding-bottom: {{ section.settings.padding_bottom }}px;
+  "
+>
+  <div class="m-page-width">
+    <div class="m-section__wrapper m-section__content m-compare-page-content{% if boxed_layout %} m-gradient m-color-{{ boxed_color_scheme }}{% endif %}">
+      <div class="m-compare-page-content__wrapper m:grid m:grid-{{ mobile_items }}-cols sm:m:grid-{{ mobile_items }}-cols md:m:grid-{{ tablet_items }}-cols lg:m:grid-3-cols xl:m:grid-4-cols"></div>
+    </div>
+    <div class="m-section__wrapper m-compare-no-products m:hidden{% if boxed_layout %} m-gradient m-color-{{ boxed_color_scheme }}{% endif %}">
+      <h3 class="h3">
+        {{ 'layout.compare.no_products' | t }}
+        <a class="m-text-link" href="{{ routes.all_products_collection_url }}">
+          {{ 'layout.back_to_shopping' | t }}
+        </a>
+      </h3>
+    </div>
+  </div>
+</section>
+<script>
+  if (Shopify.designMode) {
+    document.addEventListener('shopify:section:load', function(event) {
+      MinimogTheme.CompareProduct.init();
+    });
+  }
+</script>
+{% schema %}
+{
+  "name": "Compare page",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "default": 0,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "default": 50,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px"
+    }
+  ]
+}
+{% endschema %}

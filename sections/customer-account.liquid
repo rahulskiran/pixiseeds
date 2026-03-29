@@ -1,0 +1,112 @@
+{%- capture page_title -%}
+  {{ 'customer.account.title' | t }}
+{%- endcapture -%}
+{%- capture page_header_style -%}
+--section-padding-top: {{ section.settings.page_header_padding_top }}px;
+--section-padding-bottom: {{ section.settings.page_header_padding_bottom }}px;
+{%- endcapture -%}
+{% render 'page-title', title: page_title, custom_style: page_header_style %}
+
+{% liquid 
+  assign boxed_layout = settings.enable_boxed_layout
+  assign boxed_color_scheme = settings.boxed_color_scheme
+%}
+
+<div 
+  class="m-section m-section--padding{% if boxed_layout %} m-section--boxed{% endif %} m-account" 
+  style="
+  --section-padding-top: {{ section.settings.padding_top }}px;
+  --section-padding-bottom: {{ section.settings.padding_bottom }}px;
+  "
+>
+  <div class="m-page-width">
+    <div class="m-account__wrapper m:block md:m:display-flex m:items-start">
+      {% render 'customer-navs' %}
+      <div class="m-section__wrapper m-section__content m:flex-1{% if boxed_layout %} m-gradient m-color-{{ boxed_color_scheme }}{% endif %} m-account__content">
+        <div class="m-account__greeting">
+          {{ customer.account.greeting | t }}
+          <span>{{ customer.name }}</span>
+          ({{ 'customer.account.not' | t }} <span>{{ customer.name }}</span>?
+          <a href="{{ routes.account_logout_url }}" class="m-text-link">{{ 'customer.account.log_out' | t }}</a>)
+        </div>
+
+        <div class="m-customer-order">
+          <h3 class="m-account__title h4">{{ 'customer.orders.title' | t }}</h3>
+          {% render 'customer-orders', paginate: paginate %}
+        </div>
+
+        <div class="m-account__detail m-customer-info">
+          <h3 class="m-account__title h4">{{ 'customer.account.details' | t }}</h3>
+
+          <div class="m-customer-info__field">
+            <div class="m:w-4/12">{{ 'customer.account.name' | t }}</div>
+            <div class="m:w-8/12">{{ customer.name }}</div>
+          </div>
+          <div class="m-customer-info__field">
+            <div class="m:w-4/12">{{ 'customer.account.email' | t }}</div>
+            <div class="m:w-8/12">{{ customer.email }}</div>
+          </div>
+
+          <a href="/account/addresses" class="m-button m-button--primary">
+            {{ 'customer.account.view_addresses' | t }} ({{ customer.addresses_count }})
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% schema %}
+{
+  "name": "Customer account",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Page header padding"
+    },
+    {
+      "type": "range",
+      "id": "page_header_padding_top",
+      "label": "Padding top",
+      "default": 60,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "page_header_padding_bottom",
+      "label": "Padding bottom",
+      "default": 60,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "default": 0,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "default": 80,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,538 @@
+{{ 'section-image-banner.css' | asset_url | stylesheet_tag }}
+{% liquid
+  assign image_link = section.settings.image_link
+  assign image_desktop = section.settings.image
+  assign image_mobile = section.settings.image_mobile
+  assign content_alignment = section.settings.content_alignment
+  assign content_mobile_alignment = section.settings.content_alignment_mobile
+  assign stack_on_mobile = section.settings.stack_images_on_mobile
+  assign color_scheme = section.settings.color_scheme
+
+  assign image_height = section.settings.image_height
+  if image_height == 'adapt'
+    assign aspect_ratio_desktop = image_desktop.aspect_ratio | default: 2.333
+    assign aspect_ratio_mobile = image_mobile.aspect_ratio | default: aspect_ratio_desktop
+  endif
+  assign widths = '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840'
+  assign image_height_desktop = image_desktop.width | divided_by: image_desktop.aspect_ratio
+  assign image_height_mobile = image_mobile.width | divided_by: image_mobile.aspect_ratio
+
+  assign content_position = ''
+  case section.settings.content_position
+    when 'top_left'
+      assign content_position = ' m:items-start m:justify-start'
+    when 'top_right'
+      assign content_position = ' m:justify-end m:items-start'
+    when 'top_center'
+      assign content_position = ' m:items-start m:justify-center'
+    when 'middle_left'
+      assign content_position = ' m:items-center m:justify-start'
+    when 'middle_right'
+      assign content_position = ' m:justify-end m:items-center'
+    when 'middle_center'
+      assign content_position = ' m:items-center m:justify-center'
+    when 'bottom_left'
+      assign content_position = ' m:items-end m:justify-start'
+    when 'bottom_right'
+      assign content_position = ' m:items-end m:justify-end'
+    when 'bottom_center'
+      assign content_position = ' m:justify-center m:items-end'
+    else
+        assign content_position = ' m:items-center m:justify-center'
+  endcase
+
+  assign no_image = false
+  if image_desktop == blank or image_mobile != blank and image_desktop == blank or image_mobile == blank and image_desktop == blank
+    assign no_image = true
+  endif
+
+  for block in section.blocks
+    if block.type == 'heading'
+      assign heading_size = block.settings.heading_size
+    endif
+  endfor
+
+  assign animation_effect = settings.animations
+  assign animated = false
+  if animation_effect != 'none'
+    assign animated = true
+    if section.settings.animations != 'inherit'
+      assign animation_effect = section.settings.animations
+    endif
+  endif
+%}
+
+{% capture adapt_style %}
+  {% if image_height == 'adapt' %}
+    style="--aspect-ratio: {{ aspect_ratio_desktop }}; --aspect-ratio-mobile: {{ aspect_ratio_mobile }}"
+  {% endif %}
+{% endcapture %}
+
+<section class="m-hero-section m-hero-section--{{ section.id }} m-section-py m-color-{{ color_scheme }} m-gradient {{ section.settings.custom_class }}">
+  <div class="{% if section.settings.layout == 'grid' %}m-page-width{% else %}m:w-full{% endif %}">
+    <div class="m-hero-section__container{% if animated and section.settings.enable_bg_zoom_effect %} m:overflow-hidden m-scroll-trigger animate--zoom-fade{% endif %}">
+      {% if no_image %}
+        <{% if image_link != blank %}a href="{{ image_link }}"{% else %}div{% endif %}
+          class="m-placeholder-wrapper m-image-loaded m-hero-section__image--{{ image_height }} m:w-full m:h-full m:block {% if image_mobile != blank %}m:hidden md:m:block{% endif %}"
+          {{ adapt_style }}
+          aria-labelledby="HeroNoMediaLink-{{ section.id }}"
+        >
+          {{ 'lifestyle-1' | placeholder_svg_tag: 'm-placeholder-svg m-placeholder-svg--no-border m:object-cover m:w-full' }}
+        </{% if image_link != blank %}a{% else %}div{% endif %}>
+      {% endif %}
+
+      {% if image_desktop != blank %}
+        <{% if image_link != blank %}a href="{{ image_link }}"{% else %}div{% endif %}
+          class="m-hero-section__image m-hero-section__image--desktop m:w-full m:h-full m-hero-section__image--{{ image_height }} {% if image_mobile != blank %}m:hidden md:m:block{% else %}m:block{% endif %}{% if animated and section.settings.enable_bg_zoom_effect %} m-image{% endif %}"
+          {{ adapt_style }}
+          aria-labelledby="HeroNoMediaLink-{{ section.id }}"
+        >
+          {{
+            image_desktop
+            | image_url: width: 1920
+            | image_tag:
+            loading: 'lazy',
+            width: image_desktop.width,
+            height: image_height_desktop,
+            widths: widths 
+          }}
+        </{% if image_link != blank %}a{% else %}div{% endif %}>
+      {% endif %}
+
+      {% if image_mobile != blank %}
+        <{% if image_link != blank %}a  href="{{ image_link }}"{% else %}div{% endif %}
+          class="m-hero-section__image m-hero-section__image--mobile m:w-full m:h-full m-hero-section__image--{{ image_height }} m:block md:m:hidden"
+          {{ adapt_style }}
+          aria-labelledby="HeroNoMediaLink-{{ section.id }}"
+        >
+          {{
+            image_mobile
+            | image_url: width: 1920
+            | image_tag:
+            loading: 'lazy',
+            width: image_mobile.width,
+            height: image_height_mobile,
+            widths: widths 
+          }}
+        </{% if image_link != blank %}a{% else %}div{% endif %}>
+      {% endif %}
+
+      <div class="m-hero-section__content m-hero-section__content--{{ heading_size }} {% if stack_on_mobile %}m-hero-section__content--stack-mobile{% endif %}">
+        <div class="m-page-width">
+          <div class="m-hero-section__content-inner{{ content_position }} m:flex m:w-full m:h-full{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}">
+            <div class="m-hero-section__wrapper{% if stack_on_mobile %} m:w-full md:m:w-auto m:text-{{ content_mobile_alignment }} md:m:text-{{ content_alignment }}{% else %} m:text-{{ content_alignment }} m:w-auto{% endif %}">
+              {% for block in section.blocks %}
+                {% case block.type %}
+                  {% when 'sub_heading' %}
+                  {% if block.settings.sub_heading != blank %}
+                    <p class="m-hero-section__content-sub-heading">
+                      {{ block.settings.sub_heading }}
+                    </p>
+                  {% endif %}
+                  {% when 'heading' %}
+                  {% if block.settings.heading != blank %}
+                    <h2 class="m-hero-section__content-heading {{ heading_size }}" id="HeroNoMediaLink-{{ section.id }}">
+                      {{ block.settings.heading }}
+                    </h2>
+                  {% endif %}
+                  {% when 'description' %}
+                  {% if block.settings.description != blank %}
+                    <div class="m-hero-section__content-description {% if block.settings.text_color == 'text' %}m-hero-section__content-description--text{% else %}m-hero-section__content-description--subtext{% endif %}">
+                      {{ block.settings.description }}
+                    </div>
+                  {% endif %}
+                  {% when 'button' %}
+                  {% if block.settings.button_label != blank %}
+                    {% capture arrow  %}<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4.5 2.25L8.25 6L4.5 9.75" stroke="CurrentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>{% endcapture %}
+                    {% capture triangle %}<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.51531 5.73474L4.76531 1.98474C4.71287 1.93223 4.64602 1.89647 4.57324 1.88198C4.50046 1.86748 4.42501 1.87491 4.35645 1.90332C4.28789 1.93172 4.22931 1.97984 4.1881 2.04156C4.1469 2.10328 4.12494 2.17584 4.125 2.25005V9.75005C4.12494 9.82426 4.1469 9.89682 4.1881 9.95855C4.22931 10.0203 4.28789 10.0684 4.35645 10.0968C4.42501 10.1252 4.50046 10.1326 4.57324 10.1181C4.64602 10.1036 4.71287 10.0679 4.76531 10.0154L8.51531 6.26536C8.55018 6.23054 8.57784 6.18918 8.59671 6.14365C8.61558 6.09813 8.62529 6.04933 8.62529 6.00005C8.62529 5.95077 8.61558 5.90197 8.59671 5.85645C8.57784 5.81092 8.55018 5.76957 8.51531 5.73474Z" fill="currentColor"/></svg>{% endcapture %}
+                    {% liquid 
+                      assign is_button_icon = false
+                      if block.settings.button_label contains '[arrow]' or block.settings.button_label contains '[triangle]'
+                        assign is_button_icon = true
+                      endif
+                    %}
+                    <a
+                      href="{{ image_link | default: '#' }}"
+                      class="m-button {{ block.settings.button_style }}{% if is_button_icon %} m-button--with-icon{% endif %}"
+                    >
+                      {{- block.settings.button_label | replace: '[arrow]', arrow | replace: '[triangle]', triangle -}}
+                    </a>
+                  {% endif %}
+                {% endcase %}
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Image banner",
+  "disabled_on": {
+    "groups": [
+      "header",
+      "footer",
+      "aside"
+    ]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "General"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        {
+          "value": "full-width",
+          "label": "Full width"
+        },
+        {
+          "value": "grid",
+          "label": "Grid"
+        }
+      ],
+      "default": "full-width"
+    },
+    {
+      "type": "select",
+      "id": "image_height",
+      "label": "Banner height",
+      "default": "medium",
+      "options": [
+        {
+          "label": "Adapt to image",
+          "value": "adapt"
+        },
+        {
+          "label": "Small",
+          "value": "small"
+        },
+        {
+          "label": "Medium",
+          "value": "medium"
+        },
+        {
+          "label": "Large",
+          "value": "large"
+        },
+        {
+          "label": "Full screen",
+          "value": "full-screen"
+        }
+      ]
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "default": "scheme-1",
+      "label": "Color scheme"
+    },
+    {
+      "type": "header",
+      "content": "Image settings"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "url",
+      "id": "image_link",
+      "label": "Banner link"
+    },
+    {
+      "type": "header",
+      "content": "Content settings"
+    },
+    {
+      "type": "select",
+      "id": "content_position",
+      "label": "Content position",
+      "options": [
+        {
+          "value": "top_left",
+          "label": "Top-left"
+        },
+        {
+          "value": "top_right",
+          "label": "Top-right"
+        },
+        {
+          "value": "top_center",
+          "label": "Top-center"
+        },
+        {
+          "value": "middle_left",
+          "label": "Middle-left"
+        },
+        {
+          "value": "middle_right",
+          "label": "Middle-right"
+        },
+        {
+          "value": "middle_center",
+          "label": "Middle-center"
+        },
+        {
+          "value": "bottom_left",
+          "label": "Bottom-left"
+        },
+        {
+          "value": "bottom_right",
+          "label": "Bottom-right"
+        },
+        {
+          "value": "bottom_center",
+          "label": "Bottom-center"
+        }
+      ],
+      "default": "middle_center"
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "label": "Content alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Mobile settings"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Image"
+    },
+    {
+      "type": "checkbox",
+      "id": "stack_images_on_mobile",
+      "label": "Stack images on mobile",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "content_alignment_mobile",
+      "label": "Content alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "Advanced settings"
+    },
+    {
+      "type": "select",
+      "id": "animations",
+      "label": "Visible in the view animation",
+      "default": "inherit",
+      "options": [
+        {
+          "value": "inherit",
+          "label": "Inherit global setting"
+        },
+        {
+          "value": "fade-in",
+          "label": "Fade in"
+        },
+        {
+          "value": "fade-in-up",
+          "label": "Fade in up"
+        },
+        {
+          "value": "fade-in-left",
+          "label": "Fade in left"
+        },
+        {
+          "value": "fade-in-right",
+          "label": "Fade in right"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_bg_zoom_effect",
+      "label": "Enable background zoom effect",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom classes"
+    }
+  ],
+  "blocks": [
+    {
+      "name": "Subheading",
+      "type": "sub_heading",
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "sub_heading",
+          "label": "Sub heading"
+        }
+      ]
+    },
+    {
+      "name": "Heading",
+      "type": "heading",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Image banner"
+        },
+        {
+          "type": "select",
+          "id": "heading_size",
+          "label": "Heading size",
+          "options": [
+            {
+              "value": "h1",
+              "label": "H1"
+            },
+            {
+              "value": "h2",
+              "label": "H2"
+            },
+            {
+              "value": "h3",
+              "label": "H3"
+            },
+            {
+              "value": "h4",
+              "label": "H4"
+            },
+            {
+              "value": "h5",
+              "label": "H5"
+            },
+            {
+              "value": "h6",
+              "label": "H6"
+            }
+          ],
+          "default": "h1"
+        }
+      ]
+    },
+    {
+      "name": "Description",
+      "type": "description",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description",
+          "default": "<p>Give customers details about the banner image(s) or content on the template.</p>"
+        },
+        {
+          "type": "select",
+          "id": "text_color",
+          "label": "Text color",
+          "options": [
+            {
+              "value": "body",
+              "label": "Body text"
+            },
+            {
+              "value": "sub_text",
+              "label": "Subtext"
+            }
+          ],
+          "default": "body"
+        }
+      ]
+    },
+    {
+      "name": "Button",
+      "type": "button",
+      "settings": [
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "default": "Button label"
+        },
+        {
+          "type": "select",
+          "id": "button_style",
+          "label": "Button style",
+          "options": [
+            {
+              "value": "m-button--primary",
+              "label": "Primary"
+            },
+            {
+              "value": "m-button--secondary",
+              "label": "Secondary"
+            },
+            {
+              "value": "m-button--outline",
+              "label": "Outline"
+            },
+            {
+              "value": "m-button--link",
+              "label": "Underline"
+            },
+            {
+              "value": "m-button--blank",
+              "label": "Plain"
+            }
+          ],
+          "default": "m-button--primary"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image banner",
+      "blocks": [
+        {
+          "type": "heading"
+        },
+        {
+          "type": "description"
+        },
+        {
+          "type": "button"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

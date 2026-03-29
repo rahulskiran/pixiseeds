@@ -1,0 +1,1 @@
+.m-featured-promotions__item{position:relative}@media screen and (min-width: 768px){.m-featured-promotions__item.m-item-border--right::after{position:absolute;content:"";right:0;width:1px;height:100%;top:0;bottom:0;background-color:rgba(var(--color-border));z-index:1}}

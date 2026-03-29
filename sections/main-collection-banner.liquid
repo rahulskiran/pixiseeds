@@ -1,0 +1,170 @@
+{{ 'section-main-collection-banner.css' | asset_url | stylesheet_tag }}
+{% liquid
+  assign header_height = section.settings.header_height
+  assign text_alignment = section.settings.text_alignment
+  assign enable_parallax = section.settings.enable_parallax
+
+  assign collection_desc = collection.description
+  if collection.handle == 'all'
+    assign collection_desc = section.settings.collection_all_desc
+  endif
+
+  assign animation_effect = settings.animations
+  assign animated = false
+  if animation_effect != 'none'
+    assign animated = true
+  endif
+
+  assign main_classes = 'm-section m-section--padding m-collection-page-header m-collection-page-header--' | append: header_height | append: custom_class
+  assign main_classes = main_classes | append: ' m-collection-page-header--v-' | append: section.settings.vertical_alignment | replace: 'start', 'top' | replace: 'end', 'bottom'
+  assign main_classes = main_classes | append: ' m-collection-page-header--' | append: section.id
+  if animated and section.settings.enable_bg_zoom_effect
+    assign main_classes = main_classes | append: ' m-scroll-trigger animate--zoom-fade'
+  endif
+  assign main_classes = main_classes | append: ' m-gradient m-color-' | append: section.settings.color_scheme
+%}
+
+<div
+  class="{{ main_classes }}"
+  data-section-type="collection-header"
+  data-section-id="{{ section.id }}"
+  style="
+    --section-padding-top: {{ section.settings.padding_top }}px;
+    --section-padding-bottom: {{ section.settings.padding_bottom }}px;
+  "
+>
+  <div class="m-page-width">
+    <div class="m-collection-page-header__inner m:text-{{ text_alignment }}">
+      <h1 class="m-collection-page-header__title {{ section.settings.heading_size }}{% if section.settings.upper_title %} m:uppercase{% else %} m:capitalize{% endif %}{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}">
+        {{ collection.title }}
+      </h1>
+      {% if section.settings.show_desc and collection_desc != blank %}
+        <div class="m-collection-page-header__description m:text-color-{{ section.settings.desc_text_color }}{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}">
+          {{ collection_desc }}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Collection banner",
+  "settings": [
+    {
+      "type": "header",
+      "content": "General"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme"
+    },
+    {
+      "type": "header",
+      "content": "Content settings"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Content alignment",
+      "default": "left",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "default": "h2",
+      "options": [
+        {
+          "value": "h1",
+          "label": "H1"
+        },
+        {
+          "value": "h2",
+          "label": "H2"
+        },
+        {
+          "value": "h3",
+          "label": "H3"
+        },
+        {
+          "value": "h4",
+          "label": "H4"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "upper_title",
+      "label": "Uppercase heading",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_desc",
+      "label": "Show description",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "desc_text_color",
+      "label": "Description style",
+      "options": [
+        {
+          "value": "body",
+          "label": "Body text"
+        },
+        {
+          "value": "subtext",
+          "label": "Subtext"
+        }
+      ],
+      "default": "body"
+    },
+    {
+      "type": "richtext",
+      "id": "collection_all_desc",
+      "label": "Description for all products"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "default": 44,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "default": 80,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px"
+    }
+  ]
+}
+{% endschema %}

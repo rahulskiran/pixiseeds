@@ -1,0 +1,147 @@
+<script>
+  function __scrollToTop(element, callback) {
+    if (!element) element = document.querySelector('#scroll-to-top-target')
+    element.scrollIntoView({ behavior: 'smooth' })
+    if (callback) callback();
+  }
+  
+  function __initScrollTop() {
+    const scrollTopButton = document.querySelector('#scroll-to-top-button')
+    if (scrollTopButton) {
+      scrollTopButton.addEventListener('click', () => __scrollToTop())
+      window.addEventListener('scroll', function () {
+        const method = window.scrollY > 100 ? 'add' : 'remove'
+        scrollTopButton.classList[method]('is-show')
+      })
+    }
+  }
+
+  function __initTermsCheckbox() {
+    addEventDelegate({
+      selector: '.m-terms-conditons [name="agree_terms"]',
+      event: 'change',
+      handler: (e, target) => {
+        const button = target.closest('.m-terms-conditons').nextElementSibling
+        if (button && button.hasAttributes('data-terms-action')) {
+          if (target.checked) {
+            button.removeAttribute('disabled')
+          } else {
+            button.setAttribute('disabled', true)
+          }
+        }
+      }
+    })
+  }
+
+  // Fixed: Largest Contentful Paint image
+  let checkConfig = setInterval(() => {
+    const config = MinimogTheme.config
+    if (config) {
+      clearInterval(checkConfig)
+      {% if template.name == 'product' %}
+      const mediaDesktop = document.querySelector('.m-product-media--desktop')
+      const first_image_media = mediaDesktop && mediaDesktop.querySelector('img');
+      if (config.mqlMobile) {
+        if (first_image_media) first_image_media.setAttribute('loading', 'lazy')
+      } else {
+        if (first_image_media) first_image_media.removeAttribute('loading')
+      }
+      {% endif %}
+      // Fix slideshow
+      const slidesImgDesktop = document.querySelectorAll(".m-slide__bg img");
+      slidesImgDesktop && slidesImgDesktop.forEach(img => {
+        if (config.mqlMobile) {
+          img.setAttribute('loading', 'lazy')
+        } else {
+          img.removeAttribute('loading')
+        }
+      });
+      // Fix logos
+      const logoDesktop = document.querySelector(".m-header__desktop .m-logo img");
+      if (config.mqlMobile) {
+        if (logoDesktop) logoDesktop.setAttribute('loading', 'lazy')
+      } else {
+        if (logoDesktop) logoDesktop.removeAttribute('loading')
+      }
+    }
+  }, 100)
+  
+  window.addEventListener('load', function () {
+    window.__sfWindowLoaded = true;
+    // Init tooltip
+    MinimogLibs.ToolTips = MinimogLibs.Tooltip('[data-tippy-content]', {
+      animation: 'shift-toward',
+      touch: false,
+      onCreate(instance) {
+        const theme = instance.reference.dataset.tippyTheme || 'm-color-background-1';
+        if (
+          instance.reference.classList.contains('m-wishlist-button') ||
+          instance.reference.classList.contains('m-compare-button')
+        ) {
+          instance.setProps({
+            hideOnClick: false,
+          });
+        }
+        instance.setProps({
+          theme: theme,
+        });
+      }
+    });
+
+    // Init scroll top
+    __initScrollTop();
+
+    // Init terms and conditions
+    __initTermsCheckbox();
+  });
+
+  // Calc screen height ratio
+  defineVH = function () {
+    document.documentElement.style.setProperty('--vh', window.innerHeight * 0.01 + 'px');
+  };
+  window.addEventListener('resize', defineVH);
+  window.addEventListener('orientationchange', defineVH);
+  defineVH();
+
+  // Page transition
+  var fader = document.querySelector('.m-page-transition')
+  function __fadeInPage() {
+    if (!window.AnimationEvent || !fader) return;
+
+    let ignore_beforeunload = false;
+
+    document.querySelectorAll('a[href^=mailto], a[href^=tel]').forEach(link => {
+      link.addEventListener( 'click', () => {
+        ignore_beforeunload = true;
+      });
+    });
+
+    // Page transition
+    window.addEventListener('beforeunload', () => {
+      if(!ignore_beforeunload) fader.classList.add('fade-in');
+    });
+    window.addEventListener('DOMContentLoaded', () => {
+      document.documentElement.classList.remove('m\:overflow-hidden')
+      document.body.classList.remove('m\:overflow-hidden')
+
+      fader.classList.remove('fade-in')
+      fader.classList.add('fade-out')
+
+      document.dispatchEvent(new CustomEvent('page:loaded'));
+    });
+    window.addEventListener('pageshow', (event) => {
+      // Removes unload class when returning to page via history
+      if (event.persisted) {
+        fader.classList.remove('fade-in')
+        fader.classList.add('fade-out')
+      }
+    });
+  }
+  __fadeInPage()
+
+  // Check if mega menu add class to body
+  const header = document.querySelector(".m-header");
+  const hasMega = header && header.hasAttribute("data-mega-menu");
+  hasMega ? document.body.classList.add('m-has-mega-menu') : document.body.classList.remove('m-has-mega-menu');
+
+</script>

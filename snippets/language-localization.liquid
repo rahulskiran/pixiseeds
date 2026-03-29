@@ -1,0 +1,37 @@
+<div class="m-disclosure">
+  <button
+    type="button"
+    class="m-disclosure__button m-localization-form__select m-localization-selector"
+    aria-expanded="false"
+    aria-controls="{{ localPosition }}List"
+    aria-describedby="{{ localPosition }}Label"
+  >
+    <span>{{ localization.language.endonym_name | capitalize }}</span>
+    <span class="m-disclosure__button-icon">
+      <svg class="m-svg-icon--small" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M9.75 5L6 8.75L2.25 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </span>
+  </button>
+  <div class="m-disclosure__list-wrapper m-gradient m-color-{{ section.settings.content_color }} m-disclosure__list-wrapper--{{ panelPosition | default: 'bottom' }}">
+    <ul id="{{ localPosition }}List" role="list" class="m-disclosure__list">
+      {%- for language in localization.available_languages -%}
+        <li class="disclosure__item" tabindex="-1">
+          <a
+            class="m-disclosure__link{% if language.iso_code == localization.language.iso_code %} m-disclosure__link--active{% endif %}"
+            href="#"
+            hreflang="{{ language.iso_code }}"
+            lang="{{ language.iso_code }}"
+            {% if language.iso_code == localization.language.iso_code %}
+              aria-current="true"
+            {% endif %}
+            data-value="{{ language.iso_code }}"
+          >
+            {{ language.endonym_name | capitalize }}
+          </a>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</div>
+<input type="hidden" name="locale_code" value="{{ localization.language.iso_code }}">

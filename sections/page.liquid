@@ -1,0 +1,108 @@
+{%- liquid
+  assign animation_effect = settings.animations
+  assign animated = false
+  if animation_effect != 'none'
+    assign animated = true
+  endif
+
+  assign boxed_layout = settings.enable_boxed_layout
+  assign boxed_color_scheme = settings.boxed_color_scheme
+-%}
+{%- capture page_header_style -%}
+--section-padding-top: {{ section.settings.page_header_padding_top }}px;
+--section-padding-bottom: {{ section.settings.page_header_padding_bottom }}px;
+{%- endcapture -%}
+{% render 'page-title', title: page.title, custom_style: page_header_style, show_breadcrumb: section.settings.show_breadcrumb %}
+{%- if page.content != blank and section.settings.show_page_content -%}
+  <section 
+    class="m-section m-section--padding{% if boxed_layout %} m-section--boxed{% endif %}"
+    style="
+    --section-padding-top: {{ section.settings.padding_top }}px;
+    --section-padding-bottom: {{ section.settings.padding_bottom }}px;
+    "
+  >
+    <div class="m-page-width{% if section.settings.use_container_narrow %} m-page-width--narrow{% endif %}">
+      <div class="m-section__wrapper m-section__content rte{% if boxed_layout %} m-gradient m-color-{{ boxed_color_scheme }}{% endif %}{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}">
+        <div class="rte">{{ page.content }}</div>
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Page",
+  "settings": [
+    {
+      "type": "header",
+      "content": "General"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_container_narrow",
+      "label": "Use container narrow",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_breadcrumb",
+      "label": "Show breadcrumb",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_page_content",
+      "label": "Show page content",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Page header padding"
+    },
+    {
+      "type": "range",
+      "id": "page_header_padding_top",
+      "label": "Padding top",
+      "default": 60,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "page_header_padding_bottom",
+      "label": "Padding bottom",
+      "default": 60,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "default": 0,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "default": 50,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px"
+    }
+  ]
+}
+{% endschema %}

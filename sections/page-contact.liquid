@@ -1,0 +1,107 @@
+{%- liquid
+  assign animation_effect = settings.animations
+  assign animated = false
+  if animation_effect != 'none'
+    assign animated = true
+  endif
+
+  assign boxed_layout = settings.enable_boxed_layout
+  assign boxed_color_scheme = settings.boxed_color_scheme
+-%}
+
+{% if section.blocks.size > 0 %}
+<section 
+  data-section-type="contact-information" 
+  data-section-id="{{ section.id }}" 
+  class="m-section m-section--padding{% if boxed_layout %} m-section--boxed{% endif %} m-contact-information" 
+  style="
+    --section-padding-top: {{ section.settings.padding_top }}px;
+    --section-padding-bottom: {{ section.settings.padding_bottom }}px;
+    --column-gap: 60px;
+    --column-gap-mobile: 30px;
+    --row-gap: 30px;
+  "
+>
+  <div class="m-page-width">
+    <div class="m-section__wrapper{% if boxed_layout %} m-gradient m-color-{{ boxed_color_scheme }}{% endif %}">
+      <div class="m-section__content m:flex m:flex-wrap">
+        {% for block in section.blocks %}
+          <div class="m-contact-information__{{ block.type }} m:text-left md:m:text-center m:column m:w-full md:m:w-6/12 lg:m:w-3/12{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}">
+            <h3 class="h5">{{ block.settings.title }}</h3>
+            {% case block.type %}
+              {% when 'textblock' %}
+                <div class="m-contact-information__text">{{ block.settings.content }}</div>
+              {% else %}
+                <div class="m-contact-information__social">{% render 'social-media-links', centermd: true %}</div>
+            {% endcase %}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Contact Information",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "default": 0,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "default": 50,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "textblock",
+      "name": "Text block",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "title",
+          "label": "Title",
+          "default": "Block Title"
+        },
+        {
+          "type": "textarea",
+          "id": "content",
+          "label": "Content",
+          "default": "7895 Piermont Dr NE Albuquerque, NM 198866, <a href='#'>See Our Stores</a>"
+        }
+      ]
+    },
+    {
+      "type": "socialmedia",
+      "name": "Social media",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "title",
+          "label": "Title",
+          "default": "Social Media"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

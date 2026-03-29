@@ -1,0 +1,479 @@
+
+{{ 'section-brands.css' | asset_url | stylesheet_tag }}
+{% liquid
+  assign padding_top = section.settings.section_padding_top
+  assign padding_bottom = section.settings.section_padding_bottom
+  assign item_gap_desktop = section.settings.item_gap
+  assign item_gap_mobile = section.settings.item_gap_mobile
+  assign row_gap_desktop = section.settings.row_gap
+  assign row_gap_mobile = section.settings.row_gap_mobile
+  assign items_per_row = section.settings.items_per_row
+  assign show_divide_between = section.settings.show_divide_between
+  assign heading = section.settings.heading
+  assign text_size = section.settings.text_size
+  assign custom_class = section.settings.custom_class
+  assign enable_swipe_mobile = section.settings.enable_swipe_mobile
+  assign mobile_layout = section.settings.mobile_layout
+
+  assign animation_effect = settings.animations
+  assign animated = false
+  if animation_effect != 'none'
+    assign animated = true
+    if section.settings.animations != 'inherit'
+      assign animation_effect = section.settings.animations
+    endif
+  endif
+%}
+
+{% style %}
+  .m-brands--{{ section.id }}.m-item--has-divide .m-mixed-layout__inner > *:nth-child({{ items_per_row }}n) {
+    @media(min-width: 768px) {
+      border-right-width: 0;
+    }
+  }
+
+  .m-brands--{{ section.id }}.m-item--has-divide .m-brands__item:nth-child({{ items_per_row }}n+1):nth-last-child(-n+{{ items_per_row }}),
+  .m-brands--{{ section.id }}.m-item--has-divide .m-brands__item:nth-child({{ items_per_row }}n+1):nth-last-child(-n+{{ items_per_row }}) ~ .m-brands__item {
+    @media(min-width: 768px) {
+     border-bottom-width: 0;
+    }
+  }
+{% endstyle %}
+
+<section class="m-section m-brands m-brands--{{ section.id }} m-section--padding m-color-{{ section.settings.color_scheme }} m-gradient {{ custom_class }}{% if section.settings.boxed_layout %} m-section--boxed {% if section.settings.show_divide_between %} m-section--grid-bordered{% endif %}{% endif %}{% if section.settings.header_divider %} m-section--header-separated{% endif %}{% if show_divide_between %} m-item--has-divide{% endif %}{% unless section.settings.boxed_layout %} m-section--no-boxed{% endunless %}"
+style="--section-padding-top: {{ padding_top }}px; --section-padding-bottom: {{ padding_bottom }}px;--column-gap: {{ item_gap_desktop }}px; --column-gap-mobile:{{ item_gap_mobile }}px;--items-per-row: {{ items_per_row }};--row-gap: {{ row_gap_desktop }}px; --row-gap-mobile:{{ row_gap_mobile }}px;"
+>
+  <div class="m-page-width">
+    <div class="m-section__wrapper{% if section.settings.boxed_layout %} m-gradient m-color-{{ section.settings.boxed_color_scheme }}{% endif %}">
+      {% if heading != blank or section.settings.button_text != blank %}
+        <div class="m-section__header m:display-flex m:flex-col{% if section.settings.header_alignment == 'left' %} m:items-start md:m:flex-row md:m:justify-between{% else %} m:flex-col m:items-center{% endif %}{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}">
+          {% if heading != blank %}
+            <h2 class="m-brands__top-heading {{ text_size }}">{{ heading }}</h2>
+          {% endif %}
+          {% if section.settings.button_text != blank %}
+            <div class="m-section__button sm:m:text-right m:text-left m:flex-1{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}">
+              {% capture arrow  %}<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4.5 2.25L8.25 6L4.5 9.75" stroke="CurrentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>{% endcapture %}
+              {% capture triangle %}<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.51531 5.73474L4.76531 1.98474C4.71287 1.93223 4.64602 1.89647 4.57324 1.88198C4.50046 1.86748 4.42501 1.87491 4.35645 1.90332C4.28789 1.93172 4.22931 1.97984 4.1881 2.04156C4.1469 2.10328 4.12494 2.17584 4.125 2.25005V9.75005C4.12494 9.82426 4.1469 9.89682 4.1881 9.95855C4.22931 10.0203 4.28789 10.0684 4.35645 10.0968C4.42501 10.1252 4.50046 10.1326 4.57324 10.1181C4.64602 10.1036 4.71287 10.0679 4.76531 10.0154L8.51531 6.26536C8.55018 6.23054 8.57784 6.18918 8.59671 6.14365C8.61558 6.09813 8.62529 6.04933 8.62529 6.00005C8.62529 5.95077 8.61558 5.90197 8.59671 5.85645C8.57784 5.81092 8.55018 5.76957 8.51531 5.73474Z" fill="currentColor"/></svg>{% endcapture %}
+              {% liquid 
+                assign is_button_icon = false
+                if section.settings.button_text contains '[arrow]' or section.settings.button_text contains '[triangle]'
+                  assign is_button_icon = true
+                endif
+              %}
+              <a
+                href="{{ section.settings.button_link | default: '#' }}"
+                class="m-button {{ section.settings.button_style }}{% if is_button_icon %} m-button--with-icon{% endif %}"
+              >
+                {{- section.settings.button_text | replace: '[arrow]', arrow | replace: '[triangle]', triangle -}}
+              </a>
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+      <div class="m-brands__container m-section__content">
+        <div class="m-mixed-layout{% if mobile_layout %} m-mixed-layout--mobile-grid{% if enable_swipe_mobile %} m-mixed-layout--mobile-scroll{% endif %}{% endif %}{% if mobile_layout %} m-mobile-{{ mobile_layout }}{% endif %}"
+          {% if section.settings.mobile_layout %}  
+            style="
+              --grid-columns-mobile: {{ section.settings.mobile_layout | replace: 'col-1', '1' | replace: 'col-2', '2' }};
+              --mobile-column-width: {{ section.settings.mobile_layout | replace: 'col-1', '66.66vw' | replace: 'col-2', '40vw' }};
+            "
+          {% endif %}
+        >
+          <div class="m-mixed-layout__wrapper">
+            <div class="m-mixed-layout__inner m:grid m:grid-2-cols md:m:grid-{{ items_per_row }}-cols m:items-center">
+              {% for block in section.blocks %}
+                {% liquid
+                  assign brand_image = block.settings.image
+                  assign brand_image_link = block.settings.image_link
+                %}
+                  <{% if brand_image_link != blank %}a href="{{ brand_image_link }}"{% else %}div{% endif %}
+                    class="m-brands__item m:column m:display-flex m:items-center m:justify-center m:w-full m:h-full{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}"
+                    aria-label="{{ heading }}"
+                    {% if animated %}
+                      data-cascade
+                    {% endif %}
+                    style="{% if animated %}--animation-order: {{ forloop.index }};{% endif %}"
+                  >
+                    <div class="m-brands__image"
+                      style="--image-size: {{ section.settings.image_size | default: '100%' }};"
+                    >
+                      {% if brand_image != blank %}
+                        <img
+                          srcset="
+                            {%- if brand_image.width >= 165 -%}{{ brand_image | image_url: width: 165 }} 165w,{%- endif -%}
+                            {%- if brand_image.width >= 330 -%}{{ brand_image | image_url: width: 330 }} 330w,{%- endif -%}
+                            {%- if brand_image.width >= 535 -%}{{ brand_image | image_url: width: 535 }} 535w,{%- endif -%}
+                            {%- if brand_image.width >= 750 -%}{{ brand_image | image_url: width: 750 }} 750w,{%- endif -%}
+                            {%- if brand_image.width >= 1000 -%}{{ brand_image | image_url: width: 1000 }} 1000w,{%- endif -%}
+                            {%- if brand_image.width >= 1500 -%}{{ brand_image | image_url: width: 1500 }} 1500w,{%- endif -%}
+                            {%- if brand_image.width >= 3000 -%}{{ brand_image | image_url: width: 3000 }} 3000w,{%- endif -%}
+                            {{ brand_image | image_url }} {{ brand_image.width }}w
+                          "
+                          src="{{ brand_image | image_url: width: 1500 }}"
+                          alt="{{ brand_image.alt | default: shop.name | escape }}"
+                          height="{{ brand_image.height }}"
+                          width="{{ brand_image.width }}"
+                          loading="lazy"
+                          class="m:inline-block"
+                        >
+                      {% else %}
+                        {{ 'image' | placeholder_svg_tag: 'm-placeholder-svg m-placeholder-svg--no-border m:object-cover m:w-full m:h-full' }}
+                      {% endif %}
+                    </div>
+                  </{% if brand_image_link != blank %}a{% else %}div{% endif %}>
+              {% endfor %}
+            </div>
+          </div>
+        </div>    
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Brands",
+  "disabled_on": {
+    "groups": [
+      "header",
+      "footer",
+      "aside"
+    ]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "General"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "default": "scheme-1",
+      "label": "Color scheme"
+    },
+    {
+      "type": "text",
+      "id": "image_size",
+      "label": "Image size",
+      "default": "100%",
+      "info": "Example: 80px,100%"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "color_scheme",
+      "id": "boxed_color_scheme",
+      "default": "scheme_1",
+      "label": "Boxed color Scheme"
+    },
+    {
+      "type": "checkbox",
+      "id": "boxed_layout",
+      "label": "Enable boxed layout",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_divide_between",
+      "label": "Show divider between items",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Section header"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Your brand lists"
+    },
+    {
+      "type": "select",
+      "id": "text_size",
+      "label": "Heading size",
+      "options": [
+        {
+          "value": "h1",
+          "label": "H1"
+        },
+        {
+          "value": "h2",
+          "label": "H2"
+        },
+        {
+          "value": "h3",
+          "label": "H3"
+        },
+        {
+          "value": "h4",
+          "label": "H4"
+        },
+        {
+          "value": "h5",
+          "label": "H5"
+        },
+        {
+          "value": "h6",
+          "label": "H6"
+        }
+      ],
+      "default": "h4"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button label",
+      "default": "View more",
+      "info": "Leave blank to hide"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button style",
+      "options": [
+        {
+          "value": "m-button--primary",
+          "label": "Primary"
+        },
+        {
+          "value": "m-button--secondary",
+          "label": "Secondary"
+        },
+        {
+          "value": "m-button--outline",
+          "label": "Outline"
+        },
+        {
+          "value": "m-button--link",
+          "label": "Underline"
+        },
+        {
+          "value": "m-button--blank",
+          "label": "Plain"
+        }
+      ],
+      "default": "m-button--link"
+    },
+    {
+      "type": "checkbox",
+      "id": "header_divider",
+      "label": "Show header divider",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "header_alignment",
+      "label": "Alignment",
+      "default": "left",
+      "options": [
+        {
+          "label": "Left",
+          "value": "left"
+        },
+        {
+          "label": "Center",
+          "value": "center"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Grid settings"
+    },
+    {
+      "type": "range",
+      "id": "items_per_row",
+      "label": "Items per row",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 7
+    },
+    {
+      "type": "range",
+      "id": "item_gap",
+      "label": "Column gap desktop",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "default": 30,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "row_gap",
+      "label": "Row gap desktop",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "default": 30,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "label": "Padding top",
+      "default": 50,
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "label": "Padding bottom",
+      "default": 50,
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Mobile settings"
+    },
+    {
+      "type": "select",
+      "id": "mobile_layout",
+      "label": "Mobile layout",
+      "default": "col-2",
+      "options": [
+        {
+          "value": "col-1",
+          "label": "1 column"
+        },
+        {
+          "value": "col-2",
+          "label": "2 columns"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "label": "Enable swipe on mobile",
+      "id": "enable_swipe_mobile",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "item_gap_mobile",
+      "label": "Column gap mobile",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "row_gap_mobile",
+      "label": "Row gap mobile",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "default": 24,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Animations"
+    },
+    {
+      "type": "select",
+      "id": "animations",
+      "label": "Visible in the view animation",
+      "default": "inherit",
+      "options": [
+        {
+          "value": "inherit",
+          "label": "Inherit global setting"
+        },
+        {
+          "value": "fade-in",
+          "label": "Fade in"
+        },
+        {
+          "value": "fade-in-up",
+          "label": "Fade in up"
+        },
+        {
+          "value": "fade-in-left",
+          "label": "Fade in left"
+        },
+        {
+          "value": "fade-in-right",
+          "label": "Fade in right"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Custom attributes"
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom classes"
+    }
+  ],
+  "blocks": [
+    {
+      "name": "Image",
+      "type": "image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "url",
+          "id": "image_link",
+          "label": "Image link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Brands",
+      "blocks": [
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

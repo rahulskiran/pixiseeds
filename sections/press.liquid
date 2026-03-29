@@ -1,0 +1,353 @@
+{{ 'section-press.css' | asset_url | stylesheet_tag }}
+{% liquid
+  assign items = section.blocks.size
+  assign color_scheme = section.settings.color_scheme
+
+  assign animation_effect = settings.animations
+  assign animated = false
+  if animation_effect != 'none'
+    assign animated = true
+    if section.settings.animations != 'inherit'
+      assign animation_effect = section.settings.animations
+    endif
+  endif
+%}
+<section
+  id="m-press-{{ section.id }}"
+  class="m-section m-press {{ section.settings.custom_class }} m-section--padding m-color-{{ color_scheme }} m-gradient{% if section.settings.boxed_layout %} m-section--boxed{% endif %}{% if section.settings.header_divider %} m-section--header-separated{% endif %}"
+  data-section-type="press"
+  data-section-id="{{ section.id }}"
+  style="--section-padding-top: {{ section.settings.padding_top }}px;--section-padding-bottom: {{ section.settings.padding_bottom }}px;"
+>
+  <div class="{% if section.settings.layout == 'grid' %}m-page-width{% else %}m:w-full{% endif %}">
+    <div class="m-section__wrapper{% if section.settings.boxed_layout %} m-gradient m-color-{{ section.settings.boxed_color_scheme }}{% endif %}">
+      {% render 'index-section-header', section_settings: section.settings %}
+      <m-press
+        data-autoplay="{{ section.settings.autoplay | default: false }}"
+        data-items="{{ items }}"
+        class="m-section__content"
+      >
+        <div class="m-press__inner{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}">
+          <div class="m-press__content swiper">
+            <div class="swiper-wrapper">
+              {% for block in section.blocks %}
+                {% if block.settings.title == blank %}
+                    {% continue %}
+                {% endif %}
+                <div class="swiper-slide" data-index="{{ forloop.index0 }}" {{ block.shopify_attributes }}>
+                  <div class="m-press__title">
+                    {{ block.settings.title }}
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+          <div class="m-press__list{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}">
+            <div class="swiper swiper--equal-height">
+              <div class="swiper-wrapper">
+                {% for block in section.blocks %}
+                  {% liquid
+                    if block.settings.title == blank
+                      continue
+                    endif
+                    assign max_width = '100%'
+                    if block.settings.image_width != blank
+                      assign max_width = block.settings.image_width
+                    endif
+                  %}
+                  <div class="swiper-slide m-press__logo" data-index="{{ forloop.index0 }}" {{ block.shopify_attributes }}>
+                    <div class="m-press__logo-wrapper m:w-full">
+                      {% if block.settings.image != blank %}
+                        {% render  'responsive-image', image: block.settings.image, max_width: max_width, wrapper_class: 'm:w-full', image_rounded: false %}
+                      {% else %}
+                        {{ 'image' | placeholder_svg_tag: 'm-image m-placeholder-svg' }}
+                      {% endif %}
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+          {% render 'slider-controls', show_nav: false, extra_classes: 'sm:m:hidden' %}
+        </div>
+      </m-press>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Press",
+  "disabled_on": {
+    "groups": [
+      "header",
+      "footer",
+      "aside"
+    ]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "General"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "default": "grid",
+      "options": [
+        {
+          "value": "full-width",
+          "label": "Full width"
+        },
+        {
+          "value": "grid",
+          "label": "Grid"
+        }
+      ]
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "default": "scheme-1",
+      "label": "Color scheme"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Auto-rotate content"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "checkbox",
+      "id": "boxed_layout",
+      "label": "Enable boxed layout",
+      "default": false
+    },
+    {
+      "type": "color_scheme",
+      "id": "boxed_color_scheme",
+      "default": "scheme_1",
+      "label": "Boxed color Scheme"
+    },
+    {
+      "type": "header",
+      "content": "Section header"
+    },
+    {
+      "type": "checkbox",
+      "id": "header_divider",
+      "label": "Show header divider",
+      "default": false
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Featured in"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "H2"
+        },
+        {
+          "value": "h3",
+          "label": "H3"
+        },
+        {
+          "value": "h4",
+          "label": "H4"
+        },
+        {
+          "value": "h5",
+          "label": "H5"
+        }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "subheading",
+      "label": "Subheading"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "select",
+      "id": "text_color",
+      "label": "Description style",
+      "options": [
+        {
+          "value": "body",
+          "label": "Body text"
+        },
+        {
+          "value": "subtext",
+          "label": "Subtext"
+        }
+      ],
+      "default": "body"
+    },
+    {
+      "type": "select",
+      "id": "header_alignment",
+      "label": "Text alignment",
+      "default": "center",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "header_mobile_alignment",
+      "label": "Mobile text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "default": 50,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "default": 50,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Custom attributes"
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom classes"
+    },
+    {
+      "type": "header",
+      "content": "Animations"
+    },
+    {
+      "type": "select",
+      "id": "animations",
+      "label": "Visible in the view animation",
+      "default": "inherit",
+      "options": [
+        {
+          "value": "inherit",
+          "label": "Inherit global setting"
+        },
+        {
+          "value": "fade-in",
+          "label": "Fade in"
+        },
+        {
+          "value": "fade-in-up",
+          "label": "Fade in up"
+        },
+        {
+          "value": "fade-in-left",
+          "label": "Fade in left"
+        },
+        {
+          "value": "fade-in-right",
+          "label": "Fade in right"
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "news",
+      "name": "Newspaper",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "title",
+          "label": "Content",
+          "default": "<p>Super class, cute, comfortable. You can wear them with just about anything.</p>"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "image_width",
+          "label": "Image width (px)",
+          "placeholder": "eg: 100px",
+          "default": "150px",
+          "info": "Leave blank to use original width."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Press",
+      "category": "Promotional",
+      "blocks": [
+        {
+          "type": "news"
+        },
+        {
+          "type": "news"
+        },
+        {
+          "type": "news"
+        },
+        {
+          "type": "news"
+        },
+        {
+          "type": "news"
+        },
+        {
+          "type": "news"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

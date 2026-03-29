@@ -1,0 +1,41 @@
+<details-modal class="m:display-flex m:items-center lg:m:hidden">
+  <div class="m-modal__container m:display-flex">
+    <button class="m-modal__toggle" aria-label="{{ 'accessibility.addons.search' | t }}">
+      <svg class="m-svg-icon--large" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10.5 18C14.6421 18 18 14.6421 18 10.5C18 6.35786 14.6421 3 10.5 3C6.35786 3 3 6.35786 3 10.5C3 14.6421 6.35786 18 10.5 18Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M15.8032 15.8035L20.9998 21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <div class="m-modal__content m-search-modal">
+      <div class="m-modal-overlay"></div>
+      <div class="m-search-modal__content" tabindex="-1">
+        <div class="m-search-modal__header m:block md:m:hidden">
+          <h5>{{ 'general.search.search' | t }}</h5>
+          <button type="button" class="m-search-modal__close-button m-modal__close-button m:block md:m:hidden" aria-label="{{ 'accessibility.close' | t }}">
+            <svg
+              class="m-icon-close m-svg-icon--large"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M18.75 5.25L5.25 18.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M18.75 18.75L5.25 5.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+        {%- render 'header-addon-search', classes: "m:flex-1", section: section, classes: 'm:w-full' -%}
+        <button type="button" class="m-search-modal__close-button m-modal__close-button m:hidden md:m:block" aria-label="{{ 'accessibility.close' | t }}">
+          <svg
+            class="m-icon-close m-svg-icon--large"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M18.75 5.25L5.25 18.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M18.75 18.75L5.25 5.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</details-modal>

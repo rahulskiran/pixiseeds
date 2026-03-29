@@ -1,0 +1,502 @@
+{% assign remove_pages = "login,register,404,reset_password" | split: ',' %} {%
+unless remove_pages contains template.name %}
+<style>
+    .mc-mainDiv {
+        visibility: visible !important;
+        display: flex;
+        min-height: 100%;
+        align-items: center;
+        justify-content: center;
+        background-color: #f9f9f9;
+        font-family: 'Open Sans', sans-serif;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 99999999999999999 !important;
+        background-color: #ffffff !important;
+
+    }
+
+    .mc-cardStyle {
+        width: 500px;
+        height: 390px;
+        border-color: white;
+        background: #fafafa;
+        padding: 36px 0;
+        border-radius: 4px;
+        margin: 30px 0;
+        box-shadow: 0px 0 2px 0 rgba(0, 0, 0, 0.25);
+        overflow: auto;
+
+    }
+    .mc-cardStyle-2 {
+        width: 500px;
+        height: 390px;
+        border-color: white;
+        background: #fafafa;
+        padding: 36px 0;
+        border-radius: 4px;
+        margin: 30px 0;
+        box-shadow: 0px 0 2px 0 rgba(0, 0, 0, 0.25);
+        overflow: hidden;
+    }
+    #mc-passcodelogo {
+        max-height: {{key}};
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .mc-formTitle {
+        font-weight: bold;
+        margin-top: 20px;
+        color: #000000;
+        text-align: center;
+        font-size: 18px;
+    }
+
+    .mc-inputLabel {
+        font-size: 12px;
+        color: #555;
+        margin-bottom: 6px;
+        margin-top: 24px;
+    }
+
+    .mc-inputDiv {
+        width: 70%;
+        display: flex;
+        flex-direction: column;
+        margin: auto;
+    }
+
+    .mc-passcode-input {
+        height: 40px;
+        font-size: 16px;
+        border-radius: 4px;
+        border: none;
+        border: solid 1px #ccc;
+        padding: 0 11px;
+    }
+
+    .mc-passcode-input:disabled {
+        cursor: not-allowed;
+        border: solid 1px #eee;
+    }
+
+    .mc-buttonWrapper {
+        margin-top: 40px;
+    }
+
+    .mc-submitButton {
+        width: 175px;
+        height: 40px;
+        margin: auto;
+        display: block;
+        color: #fff;
+        background-color: #23222a;
+        border-color: #000000;
+        text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);
+        box-shadow: 0 2px 0 rgba(0, 0, 0, 0.035);
+        border-radius: 4px;
+        font-size: 14px;
+        cursor: pointer;
+    }
+      .mc-backButton{
+          position:absolute;
+            box-shadow: none;
+          font-weight: 500;
+          top: 84% !important;
+          left: 90px !important;
+          border-radius: 3px !important;
+          cursor: pointer !important;
+          font-size: 42px;
+      }
+    .mc-submitButton:disabled {
+        border: 1px solid #cccccc;
+        background-color: #cccccc;
+        color: #666666;
+    }
+    .mc-logo{
+        position:absolute;
+        left:50px;
+        top:30px;
+    }
+    .mc-logo-pre{
+        position:absolute;
+        left:10px;
+        top:30px;
+    }
+    .extra {
+padding: 6px;
+}
+</style>
+
+<div class="mc-mainDiv" id="mc-mainDiv">
+   <div class="" id="mc-backButton">
+        <a class="mc-backButton" onclick="history.back()">&#8676;</a>
+    </div>
+    <!-- Restriction -->
+    <div id="restrict_type">
+        <h2 id="message_restriction"></h2>
+    </div>
+    <div class="mc-cardStyle" id="passcode_type">
+        <form action="" method="post" name="mc-passcode-form" id="mc-passcode-form">
+            <h2 class="mc-formTitle">Title</h2>
+
+            <div class="mc-inputDiv">
+                <label class="mc-inputLabel" for="mc-passcode-input">
+                    Password Title</label>
+                <input type="password" id="mc-passcode-input" name="mc-password" class="mc-passcode-input" required
+                    autofocus />
+                <span class="mc-passcode-error" id="mc-passcode-error"></span>
+            </div>
+
+            <div class="mc-buttonWrapper">
+                <button type="submit" id="mc-passcode-submit" class="mc-submitButton">
+                    <span>Continue</span>
+                </button>
+            </div>
+            <div class="extra"></div>
+        </form>
+    </div>
+</div>
+
+<script>
+    const element = document.querySelector("#restrict_type");
+    
+</script>
+
+<script>
+
+    const MC_MAIN_DIV_HTML = document.getElementById("mc-mainDiv").innerHTML;
+    var MC_LOCK_DATA;
+    var MC_C_COUNTRY_NAME;
+    const mc_lock_all_product_with_collection = "{{ mc_lock_all_product_with_collection }}" === "true" ? true : false;
+    const MC_MAIN_PASSCODE_FORM_HTML = document.getElementById("mc-passcode-form").innerHTML;
+    const MC_EXCLUDE_PAGE_PASSCODE = "login,register,404,reset_password";
+    const MC_OBSERVER = new MutationObserver(function () {
+        if (document.getElementById("mc-mainDiv").style.display == "none") {
+            document.getElementById("mc-mainDiv").style.setProperty("display", "flex", "important");
+        }
+        if (document.getElementById("mc-mainDiv").style.visibility !== "visible") {
+            document.getElementById("mc-mainDiv").style.setProperty("visibility", "visible", "important");
+        }
+        if (document.getElementById("mc-mainDiv").classList.contains("__web-inspector-hide-shortcut__")) {
+            document.getElementById("mc-mainDiv").classList.remove("__web-inspector-hide-shortcut__")
+        }
+    });
+    const MC_CONFIG_OBSERVER = { attributeFilter: ["class", "style"], attributes: true };
+
+    function mcGetProductCollections(isObj = false) {
+        let productCollections = "";
+        {% if template.name == "product" %}
+        {% for collection in product.collections %}
+        productCollections += "{{ collection.id }}";
+        {% if forloop.last == false %}
+        productCollections += ",";
+        {% endif %}
+        {% endfor %}
+        {% endif %}
+        if (isObj) {
+            if(productCollections) {
+                return productCollections.split(",");
+            }
+            return [];
+        }
+        return productCollections;
+    }
+    var MC_PRODUCT_COLLECTIONS = mcGetProductCollections();
+
+    // console.log(MC_PRODUCT_COLLECTIONS, "THIS IS PRODUCT COLLECTION");
+
+    function mcSetCookie(cvalue, exdays, extraInfo = {}) {
+        var cnameArray = getMcCookieName();
+        var cname;
+        if (Object.keys(extraInfo).length > 0) {
+            const { cookieId } = extraInfo;
+            if(cookieId) {
+                cnameArray.map((cnameEx) => {
+                    if (cnameEx.includes(cookieId)) {
+                        cname = cnameEx;
+                    }
+                });
+            }
+        }
+        if (!cname) {
+            cname = cnameArray[0];
+        }
+        const d = new Date();
+        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+        let expires = "expires=" + d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+        window.location.reload();
+    }
+
+    function getMcCookieName() {
+        const mc_template = "{{ template.name }}";
+        const mc_product_id = "{{ product.id }}";
+        const mc_collection_id = "{{ collection.id }}";
+        const mc_page_id = "{{ page.id }}";
+        const mc_customer_id = "{{ customer.id }}";
+        if (mc_template == "product") {
+            const productCollections = mcGetProductCollections(true);
+            var productCnames = [`mc-login-${mc_template}-${mc_product_id}`];
+            if (productCollections) {
+                productCollections.map(function (collect) {
+                    productCnames.push(`mc-login-collection-${collect}`);
+                })
+            }
+            return productCnames;
+        } else if (mc_template == "collection") {
+            return [`mc-login-${mc_template}-${mc_collection_id}`];
+        } else if (mc_page_id !== "" && mc_page_id !== null && mc_page_id) {
+            return [`mc-login-${mc_template}-${mc_page_id}`];
+        } else {
+            return [`mc-login-${mc_template}-all`];
+        }
+    }
+
+    function mcGetCookie() {
+        var cnameArray = getMcCookieName();
+        var cookieValue;
+        if (cnameArray.length > 0) {
+            cnameArray.map(function (cname) {
+                let name = cname + "=";
+                let decodedCookie = decodeURIComponent(document.cookie);
+                let ca = decodedCookie.split(';');
+                for (let i = 0; i < ca.length; i++) {
+                    let c = ca[i];
+                    while (c.charAt(0) == ' ') {
+                        c = c.substring(1);
+                    }
+                    if (c.indexOf(name) == 0) {
+                        cookieValue = c.substring(name.length, c.length);
+                    }
+                }
+            })
+        }
+        return cookieValue;
+    }
+
+    function onMcFormSubmit(event) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        const mc_template = "{{ template.name }}";
+        const mc_product_id = "{{ product.id }}";
+        const mc_collection_id = "{{ collection.id }}";
+        const mc_page_id = "{{ page.id }}";
+        const mc_customer_id = "{{ customer.id }}";
+        const mc_country = "{{ countryname }}";
+        var mc_customer_tags = "";
+
+
+        {% for tag in customer.tags %}
+        {% if forloop.last %}
+        mc_customer_tags += "{{ tag }}";
+        {% else %}
+        mc_customer_tags += "{{ tag }},";
+        {% endif %}
+        {% endfor %}
+        const mcPasscode = document.getElementById("mc-passcode-input").value;
+        const errorNode = document.getElementById("mc-passcode-error");
+        if (!mcPasscode) {
+            errorNode.innerHTML = "{{ mc_required_login_passcode_required_text }}";
+        } else {
+            errorNode.innerHTML = "";
+        }
+        if (mcPasscode) {
+            fetch('https://forcelogin.magecomp.net/api/passcode-check', {
+                method: "POST",
+                body: JSON.stringify({
+                    "passcode": mcPasscode,
+                    "shop": "{{ shop.permanent_domain }}",
+                    "product_id": mc_product_id,
+                    "collection_id": mc_collection_id,
+                    "page_id": mc_page_id,
+                    "customer_id": mc_customer_id,
+                    "customer_tags": mc_customer_tags,
+                    "template": mc_template,
+                    "country": MC_C_COUNTRY_NAME,
+                    "product_collections": mcGetProductCollections(true)
+                }),
+                headers: {
+                    "content-type": 'application/json',
+                }
+            }).then((res) => {
+                return res.json();
+            }).then((res) => {
+                if (res.status == 1) {
+                    let cookieId = res.data?.data?.cookieId;
+                    // console.log(res, "res");
+                    mcSetCookie(mcGenerateString(), 1, {cookieId});
+                } else {
+                    errorNode.innerHTML = res.data.error;
+                }
+            }).catch((e) => {
+                console.error(e);
+            })
+        }
+    }
+
+    function mcGenerateString() {
+        let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let result = '_';
+        const charactersLength = characters.length;
+        for (let i = 0; i < 32; i++) {
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        return result;
+    }
+
+    function onMcCheckValidity() {
+        var currentCookie = mcGetCookie();
+        if (currentCookie) {
+            return true;
+        }
+
+        const mc_template = "{{ template.name }}";
+        const collection_temp = "{{ collection.id }}";
+        const mc_is_login_coustomer = "{{ customer.id }}" ? true : false;
+        var mc_target_id = null;
+
+        switch (mc_template) {
+            case 'product':
+                mc_target_id = "{{ product.id }}";
+                break;
+
+            case 'collection':
+                mc_target_id = "{{ collection.id }}";
+                break;
+
+            case 'page':
+                mc_target_id = "{{ page.id }}";
+                break;
+
+            default:
+                mc_target_id = null;
+                break;
+        }
+
+        // console.log(MC_PRODUCT_COLLECTIONS, "THIS IS PRODUCT COLLECTION2");
+
+        const mc_required_login_json_data = JSON.parse(`{{ mc_required_login_json_data }}`);
+
+        // check for other restrictions
+        if (mc_template == "product" && mc_lock_all_product_with_collection && MC_PRODUCT_COLLECTIONS.length > 0 && mc_required_login_json_data.hasOwnProperty("collection")) {
+            const restrictedCollections = mc_required_login_json_data.collection;
+            const productCollections = mcGetProductCollections(true);
+            var isLockedData = null;
+            productCollections.map(function (collect) {
+                if (restrictedCollections.hasOwnProperty(collect)) {
+                    isLockedData = restrictedCollections[collect];
+                }
+            });
+            if (isLockedData) {
+                MC_LOCK_DATA = isLockedData;
+                if (mc_is_login_coustomer && MC_LOCK_DATA['is_only_guest']) {
+                    return true;
+                }
+                let lockData = setMcLockData(isLockedData);
+                return !lockData;
+            }
+        }
+
+        if (!mc_required_login_json_data.hasOwnProperty(mc_template)) {
+            return true;
+        }
+
+        if (mc_required_login_json_data[mc_template].hasOwnProperty(mc_target_id)) {
+            MC_LOCK_DATA = mc_required_login_json_data[mc_template][mc_target_id];
+            if (mc_is_login_coustomer && MC_LOCK_DATA['is_only_guest']) {
+                return true;
+            }
+            let lockData = setMcLockData(mc_required_login_json_data[mc_template][mc_target_id]);
+            return !lockData;
+        } else if (mc_required_login_json_data[mc_template].hasOwnProperty('all')) {
+            MC_LOCK_DATA = mc_required_login_json_data[mc_template]['all'];
+            if (mc_is_login_coustomer && MC_LOCK_DATA['is_only_guest']) {
+                return true;
+            }
+            let lockData = setMcLockData(mc_required_login_json_data[mc_template]['all']);
+            return !lockData;
+        }
+
+        return true;
+    }
+
+    function setMcLockData(targetData) {
+        var register = true;
+        if (targetData.country.length > 0 && MC_C_COUNTRY_NAME && targetData.country?.includes(MC_C_COUNTRY_NAME)) {
+            register = true;
+        } else if (targetData.country.length == 0) {
+            register = true;
+        } else {
+            register = false;
+        }
+        if (targetData?.is_restricted_by_passcode && register) {
+            if (document.getElementById("mc-passcode-form")) {
+                document.getElementById("mc-passcode-form").style.display = "block";
+            }
+            if (document.getElementById("message_restriction")) {
+                document.getElementById("message_restriction").innerHTML = "";
+                document.getElementById("message_restriction").style.display = "none";
+            }
+        }
+        if (targetData?.is_restricted_by_content && register) {
+            if (document.getElementById("mc-passcode-form")) {
+                document.getElementById("mc-passcode-form").innerHTML = "";
+                // document.getElementById("mc-passcode-form").style.display = "none";
+                document.getElementById("passcode_type").style.display = "none";
+            }
+            if (document.getElementById("message_restriction")) {
+                document.getElementById("message_restriction").innerHTML = targetData?.content;
+                document.getElementById("message_restriction").style.display = "block";
+            }
+        }
+        return register;
+    }
+    function onMcNodeRemove(event) {
+        addMcPasscodeFormToBody();
+    }
+    function addMcPasscodeFormToBody() {
+        MC_OBSERVER.disconnect();
+        document.getElementById("mc-mainDiv").removeEventListener("DOMNodeRemoved", onMcNodeRemove);
+        document.getElementById("mc-mainDiv").remove();
+        const newDiv = document.createElement('div');
+        newDiv.style.display = "block !important";
+        newDiv.setAttribute("id", "mc-mainDiv");
+        newDiv.setAttribute("class", "mc-mainDiv");
+        newDiv.innerHTML = MC_MAIN_DIV_HTML;
+        document.body.prepend(newDiv);
+        subscribeMcLoginEvent();
+    }
+    function subscribeMcLoginEvent() {
+        MC_OBSERVER.disconnect();
+        if (!onMcCheckValidity()) {
+            document.getElementById("mc-mainDiv").style.setProperty("display", "flex", "important");
+            document.getElementById("mc-mainDiv").style.setProperty("visibility", "visible", "important");
+            MC_OBSERVER.observe(document.getElementById("mc-mainDiv"), MC_CONFIG_OBSERVER);
+            document.getElementById("mc-passcode-submit")?.addEventListener("click", onMcFormSubmit);
+            document.getElementById("mc-passcode-form")?.addEventListener("submit", onMcFormSubmit);
+            document.getElementById("mc-mainDiv").addEventListener("DOMNodeRemoved", onMcNodeRemove);
+        } else {
+            MC_OBSERVER.disconnect();
+            document.getElementById("mc-mainDiv").style.setProperty("display", "done", "important");
+            document.getElementById("mc-mainDiv").style.setProperty("visibility", "hidden", "important");
+        }
+        if (!MC_C_COUNTRY_NAME) {
+            fetch("https://ipapi.co/json/")
+                .then((response) => response.json())
+                .then((data) => {
+                    MC_C_COUNTRY_NAME = data.country;
+                    subscribeMcLoginEvent();
+                });
+        }
+    }
+    subscribeMcLoginEvent();
+</script>
+
+<script></script>
+
+{% endunless %}

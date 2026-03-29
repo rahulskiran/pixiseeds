@@ -1,0 +1,493 @@
+{{ 'section-testimonials.css' | asset_url | stylesheet_tag }}
+{%- if section.settings.design == 'testimonials-5' -%}
+  {{ 'tabs.css' | asset_url | stylesheet_tag }}
+{%- endif -%}
+
+{% liquid
+  assign pagination_type = 'fraction'
+
+  assign animation_effect = settings.animations
+  assign animated = false
+  if animation_effect != 'none'
+    assign animated = true
+    if section.settings.animations != 'inherit'
+      assign animation_effect = section.settings.animations
+    endif
+  endif
+
+  assign color_scheme = section.settings.color_scheme
+  assign boxed_color_scheme = section.settings.boxed_color_scheme
+  assign header_divider = section.settings.header_divider
+  assign boxed_layout = section.settings.boxed_layout
+
+  assign layout = section.settings.design | replace: 'testimonials', 'layout'
+  assign total = 0
+  for block in section.blocks
+    assign total = forloop.length
+  endfor
+
+  assign fraction_class = ''
+  if section.settings.design == 'testimonials-6' and pagination_type == 'fraction' and section.settings.show_navigation or section.settings.show_pagination
+    assign fraction_class = 'm-slider--pagination-fraction'
+  endif
+
+%}
+
+<section
+  id="m-testimonials-{{ section.id }}"
+  class="m-section m-testimonials m-testimonials--{{ layout }} {{ fraction_class }} m-section--padding m-color-{{ color_scheme }} m-gradient {{ section.settings.custom_class }}{% if boxed_layout %} m-section--boxed{% endif %}{% if header_divider %} m-section--header-separated{% endif %}"
+  data-section-type="testimonials"
+  data-section-id="{{ section.id }}"
+  data-container="{{ section.settings.layout }}"
+  style="--star-color: {{ section.settings.star_color }};--section-padding-top: {{ section.settings.padding_top }}px; --section-padding-bottom: {{ section.settings.padding_bottom }}px;"
+>
+  <div class="{% if section.settings.layout == 'grid' %}m-page-width{% else %}m:w-full{% endif %}">
+    <div class="m-testimonials__wrapper m-section__wrapper{% if boxed_layout %} m-gradient m-color-{{ boxed_color_scheme }}{% endif %}">
+      <div class="m-testimonials__header{% if section.settings.design == 'testimonials-6' %} m-section__header{% endif %} m:text-{{ section.settings.header_alignment }}">
+        {% render 'index-section-header', section_settings: section.settings %}
+        {% if section.settings.design == 'testimonials-6' and section.settings.show_navigation or section.settings.show_pagination %}
+          {% render 'slider-controls', show_nav: section.settings.show_navigation, show_pagination: section.settings.show_pagination, pagination_type: pagination_type %}
+        {% endif %}
+      </div>
+
+      <m-testimonials
+        data-container="{{ section.settings.container }}"
+        data-design="{{ section.settings.design }}"
+        data-autoplay="{% if request.design_mode %}false{% else %}{{ section.settings.autorotate }}{% endif %}"
+        {% if section.settings.design == 'testimonials-6' %}
+          data-pagination-type="{{ pagination_type }}"
+        {% endif %}
+        data-total="{{ total }}"
+        class="m-testimonials-el m:block m-section__content"
+      >
+        {% liquid
+          case section.settings.design
+            when 'testimonials-1'
+              render 'testimonials-1', section: section, container_class: section.settings.container, animated: animated, animation_effect: animation_effect
+            when 'testimonials-2'
+              render 'testimonials-2', section: section, container_class: section.settings.container, animated: animated, animation_effect: animation_effect
+            when 'testimonials-3'
+              render 'testimonials-3', section: section, container_class: section.settings.container, animated: animated, animation_effect: animation_effect
+            when 'testimonials-4'
+              render 'testimonials-4', section: section, container_class: section.settings.container, animated: animated, animation_effect: animation_effect
+            when 'testimonials-5'
+              render 'testimonials-5', section: section, container_class: section.settings.container, animated: animated, animation_effect: animation_effect
+            when 'testimonials-6'
+              render 'testimonials-6', section: section, container_class: section.settings.container, animated: animated, animation_effect: animation_effect
+          endcase
+        %}
+      </m-testimonials>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Testimonials",
+  "disabled_on": {
+    "groups": [
+      "header",
+      "footer",
+      "aside"
+    ]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "General"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        {
+          "value": "full-width",
+          "label": "Full width"
+        },
+        {
+          "value": "grid",
+          "label": "Grid"
+        }
+      ],
+      "default": "full-width"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "default": "scheme-1",
+      "label": "Color scheme"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_stars",
+      "label": "Show stars",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "autorotate",
+      "label": "Auto-rotate content",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_navigation",
+      "label": "Show navigation",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_pagination",
+      "label": "Show pagination",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "star_color",
+      "label": "Stars color",
+      "default": "#000"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "checkbox",
+      "id": "boxed_layout",
+      "label": "Enable boxed layout",
+      "default": false
+    },
+    {
+      "type": "color_scheme",
+      "id": "boxed_color_scheme",
+      "default": "scheme_1",
+      "label": "Boxed color Scheme"
+    },
+    {
+      "type": "select",
+      "id": "design",
+      "label": "Layout",
+      "options": [
+        {
+          "value": "testimonials-1",
+          "label": "Layout 1"
+        },
+        {
+          "value": "testimonials-2",
+          "label": "Layout 2"
+        },
+        {
+          "value": "testimonials-3",
+          "label": "Layout 3"
+        },
+        {
+          "value": "testimonials-4",
+          "label": "Layout 4"
+        },
+        {
+          "value": "testimonials-5",
+          "label": "Layout 5"
+        },
+        {
+          "value": "testimonials-6",
+          "label": "Layout 6"
+        }
+      ],
+      "default": "testimonials-1"
+    },
+    {
+      "type": "header",
+      "content": "Section header"
+    },
+    {
+      "type": "checkbox",
+      "id": "header_divider",
+      "label": "Show header divider",
+      "default": false
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "What People Are Saying"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "H2"
+        },
+        {
+          "value": "h3",
+          "label": "H3"
+        },
+        {
+          "value": "h4",
+          "label": "H4"
+        },
+        {
+          "value": "h5",
+          "label": "H5"
+        }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "subheading",
+      "label": "Subheading"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "select",
+      "id": "text_color",
+      "label": "Description style",
+      "options": [
+        {
+          "value": "body",
+          "label": "Body text"
+        },
+        {
+          "value": "subtext",
+          "label": "Subtext"
+        }
+      ],
+      "default": "body"
+    },
+    {
+      "type": "select",
+      "id": "header_alignment",
+      "label": "Text alignment",
+      "default": "center",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "header_mobile_alignment",
+      "label": "Mobile text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "default": 50,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "default": 50,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Custom attributes"
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom classes"
+    },
+    {
+      "type": "header",
+      "content": "Animations"
+    },
+    {
+      "type": "select",
+      "id": "animations",
+      "label": "Visible in the view animation",
+      "default": "inherit",
+      "options": [
+        {
+          "value": "inherit",
+          "label": "Inherit global setting"
+        },
+        {
+          "value": "fade-in",
+          "label": "Fade in"
+        },
+        {
+          "value": "fade-in-up",
+          "label": "Fade in up"
+        },
+        {
+          "value": "fade-in-left",
+          "label": "Fade in left"
+        },
+        {
+          "value": "fade-in-right",
+          "label": "Fade in right"
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Contents"
+        },
+        {
+          "type": "color_scheme",
+          "id": "color_scheme",
+          "default": "scheme-1",
+          "label": "Color scheme",
+          "info": "Only work on layout 6"
+        },
+        {
+          "type": "textarea",
+          "id": "title",
+          "label": "Title",
+          "default": "Love it so much"
+        },
+        {
+          "type": "select",
+          "id": "text_size",
+          "label": "Text size",
+          "options": [
+            {
+              "value": "h2",
+              "label": "H2"
+            },
+            {
+              "value": "h3",
+              "label": "H3"
+            },
+            {
+              "value": "h4",
+              "label": "H4"
+            },
+            {
+              "value": "h5",
+              "label": "H5"
+            }
+          ],
+          "default": "h4"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description",
+          "default": "<p>\"Short dress in a printed viscose weave with a round neckline, opening with a button at the back of the Seams with small frill trims at the waist and on the sleeves and skirt. Unlined.\"</p>"
+        },
+        {
+          "type": "select",
+          "id": "text_color",
+          "label": "Description style",
+          "options": [
+            {
+              "value": "body",
+              "label": "Body text"
+            },
+            {
+              "value": "subtext",
+              "label": "Subtext"
+            }
+          ],
+          "default": "body"
+        },
+        {
+          "type": "richtext",
+          "id": "footer",
+          "label": "Author",
+          "default": "<p>Dean D. US</p>"
+        },
+        {
+          "type": "header",
+          "content": "Image settings"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "Optional"
+        },
+        {
+          "type": "richtext",
+          "id": "image_text",
+          "label": "Image text",
+          "info": "Optional"
+        },
+        {
+          "type": "url",
+          "id": "image_link",
+          "label": "Image link"
+        },
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product",
+          "info": "This option is use only for layout 6."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonials",
+      "category": "Promotional",
+      "blocks": [
+        {
+          "type": "testimonial"
+        },
+        {
+          "type": "testimonial"
+        },
+        {
+          "type": "testimonial"
+        },
+        {
+          "type": "testimonial"
+        },
+        {
+          "type": "testimonial"
+        },
+        {
+          "type": "testimonial"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

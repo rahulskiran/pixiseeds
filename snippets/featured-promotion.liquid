@@ -1,0 +1,44 @@
+{% liquid
+  assign promotion_image = block.settings.image
+  assign image_size = block.settings.image_size
+  assign text_size = block.settings.text_size
+  assign heading = block.settings.heading
+  assign description = block.settings.description
+  assign icon_alignment = block.settings.icon_alignment
+  assign image_radius = block.settings.image_radius
+  assign desc_text_color = block.settings.desc_text_color
+%}
+
+<div class="m-promotion-card m:display-flex m:justify-start m:items-{{ icon_alignment }}{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}"
+  {% if animated %}
+    data-cascade
+  {% endif %}
+  style="{% if animated %}--animation-order: {{ index }};{% endif %}"
+>
+  <div class="m-promotion-card__media" style="--image-width: {{ image_size }}px;--image-radius: {{ image_radius }}px;">
+    {% if promotion_image != blank %}
+      <div class="m-promotion-card__media-img">
+        {% render 'responsive-image', image: promotion_image, wrapper_class: 'm:w-full m:h-full', image_rounded: false %}
+      </div>
+    {% else %}
+      <div class="m-promotion-card__media-img">
+        {{ 'image' | placeholder_svg_tag: 'm-placeholder-svg m-placeholder-svg--no-border m:object-cover m:w-full m:h-full' }}
+      </div>
+    {% endif %}
+  </div>
+  {% if heading != blank or description != blank %}
+    <div class="m-promotion-card__content m-promotion-card__content--{{ text_size }}">
+      {% if heading != blank %}
+        <h2 class="m-promotion-card__content-heading {{ text_size }}">
+          {{ heading }}
+        </h2>
+      {% endif %}
+      {% if description != blank %}
+        <div class="m-promotion-card__content-description m:text-small-medium m:text-color-{{ desc_text_color }}">
+          {{ description }}
+        </div>
+      {% endif %}
+    </div>
+  {% endif %}
+
+</div>

@@ -1,0 +1,410 @@
+{% comment %}
+  Accepts:
+  - product: {Object} Product (required)
+  - view: {Object} Product view: grid, list. Default: grid (optional)
+  - show_variant_options: {Boolean} Show variant swatches at the bottom (optional)
+  - image_ratio: {String} Product media ratio (optional)
+  - pcard_alignment: {String} Product alignment (optional)
+  - show_vendor: {Boolean} Show product vendor (optional)
+  - show_cart_button: {Boolean} Show Add to cart button (optional)
+  - show_quickview_button: {Boolean} Show Quickview button (optional)
+  - show_wishlist_button: {Boolean} Show Wishlist button (optional)
+  - show_compare_button: {Boolean} Show Compare button (optional)
+  - column_wrapper: {Boolean} Wrap product card (optional)
+
+  Usage:
+  {% render 'product-card-1', product: product %}
+{% endcomment %}
+
+{% liquid
+  assign view = view | default: 'grid'
+  if color_scheme == nil
+    assign color_scheme = settings.pcard_color_scheme
+  endif
+
+  if show_variant_options == nil 
+    assign show_variant_options = settings.show_swatch_option
+  endif
+
+  if show_vendor == nil
+    assign show_vendor = settings.show_vendor
+  endif
+
+  if show_border == nil
+    assign show_border = settings.pcard_show_border
+  endif
+
+  assign sold_out = false
+  if product.available == false
+    assign sold_out = true
+  endif
+
+  assign discount = ''
+  assign compare_at_price = product.compare_at_price
+  assign price = product.price
+  assign on_sale = false
+  if compare_at_price > price and product.available
+    assign on_sale = true
+    assign discount = compare_at_price | minus: price | times: 100 | divided_by: compare_at_price
+  endif
+          
+  assign show_on_sale_badge = false
+  if settings.on_sale_badge != 'hide' and on_sale
+    assign show_on_sale_badge = true
+  endif
+
+  assign quick_add_text = 'products.product.quick_add' | t
+  unless product.has_only_default_variant
+    capture quick_add_text
+      echo 'products.product.select_options' | t
+    endcapture
+  endunless
+
+  assign sold_number = product.metafields.foxkit.sold_number
+
+  if product.available 
+    assign variant_id = product.first_available_variant.id
+  else 
+    assign variant_id = product.selected_or_first_available_variant.id
+  endif
+  assign selected_variant_id = ''
+  if section.settings.change_product_variant_on_fitlering
+    assign variant_id = product.selected_or_first_available_variant.id
+    assign selected_variant_id = product.selected_variant.id
+  endif
+
+  if pcard_alignment == nil
+    assign pcard_alignment = settings.pcard_alignment
+  endif
+
+  if show_cart_button == nil
+    assign show_cart_button = settings.show_cart_button
+  endif
+
+  if show_quickview_button == nil
+    assign show_quickview_button = settings.show_quickview_button
+  endif
+
+  if show_wishlist_button == nil
+    assign show_wishlist_button = settings.show_wishlist_button
+  endif
+
+  if show_compare_button == nil
+    assign show_compare_button = settings.show_compare_button
+  endif
+
+  if image_ratio == nil or image_ratio == blank
+    assign image_ratio = settings.pcard_image_ratio | default: '1/1'
+  endif
+  
+  if image_ratio == 'original'
+    assign image_ratio = product.media[0].aspect_ratio | default: '1/1'
+  endif
+
+  assign preview_image = product.media[0].preview_image
+  if section.settings.change_product_variant_on_fitlering == true and product.selected_variant.image != nil
+    assign preview_image = product.selected_variant.image
+  endif
+
+  assign second_image = ''
+  if settings.show_second_img and product.images.size > 1 and product.images[1] != blank
+    assign second_image = product.images[1]
+  endif
+
+  assign product_card_classes = 'm-product-card m-product-card--style-1 m-product-card--view-' | append: view
+  if sold_out
+    assign product_card_classes = product_card_classes | append: ' m-product-card--soldout'
+  endif
+  if on_sale
+    assign product_card_classes = product_card_classes | append: ' m-product-card--onsale'
+  endif
+  if settings.show_second_img and second_image != blank
+    assign product_card_classes = product_card_classes | append: ' m-product-card--show-second-img'
+  endif
+  if show_border or card_bordered == true
+    assign product_card_classes = product_card_classes | append: ' m-product-card--bordered'
+  endif
+  unless show_cart_button
+  assign product_card_classes = product_card_classes | append: ' m-product-card--catalog-mode'
+  endunless
+  assign product_card_classes = product_card_classes | append: ' ' | append: classes
+%}
+
+{%- if column_wrapper -%}<div class="m:column">{%- endif -%}
+  <div 
+    class="{{ product_card_classes }}{% if color_scheme %} m-gradient m-color-{{ color_scheme }}{% endif %}{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}" 
+    data-view="card"
+    {% if sold_number != blank %} 
+      data-sold-number="{{ sold_number }}"
+    {% endif %} 
+    data-product-id="{{ product.id }}"
+    {% if animated %}
+      data-cascade
+      style="--animation-order: {{ index }};"
+    {% endif %}
+  >  
+    <div class="m-product-card__media">
+      <a class="m-product-card__link m:block m:w-full" href="{{ product.url }}" aria-label="{{ product.title }}">
+        {%- capture sizes -%}(min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 130 | divided_by: 4 }}px, (min-width: 990px) calc((100vw - 130px) / 4), (min-width: 750px) calc((100vw - 120px) / 3), calc((100vw - 35px) / 2){%- endcapture -%}
+        {% if preview_image != blank %}
+          {% liquid
+            assign asp_rat = image_ratio | default: preview_image.aspect_ratio
+            if asp_rat == 'original'
+              assign asp_rat = preview_image.aspect_ratio
+            endif
+
+            assign alt = preview_image.alt | default: product.title | escape
+          %}
+          <responsive-image class="m-product-card__main-image m-image"  style="--aspect-ratio: {{ asp_rat }};">
+            {{ preview_image | image_url: width: 1100 | image_tag: loading: 'lazy', class: 'm:w-full m:h-full', alt: alt, sizes: sizes, width: '165, 360, 535, 750, 940, 1100' }}
+          </responsive-image>
+  
+          {%- if second_image != blank -%}
+            {% liquid
+              assign asp_rat = image_ratio | default: second_image.aspect_ratio
+              if asp_rat == 'original'
+                assign asp_rat = second_image.aspect_ratio
+              endif
+
+              assign alt = second_image.alt | default: product.title | escape
+            %}
+            <responsive-image class="m-product-card__hover-image m-image"  style="--aspect-ratio: {{ asp_rat }};">
+              {{ second_image | image_url: width: 1100 | image_tag: loading: 'lazy', class: 'm:w-full m:h-full', alt: alt, sizes: sizes, width: '165, 360, 535, 750, 940, 1100' }}
+            </responsive-image>
+          {%- endif -%}
+        {% else %}
+          <div class="m-image m-image--placeholder" style="--aspect-ratio: {{ image_ratio }}">
+            {{ 'product-1' | placeholder_svg_tag: 'm-placeholder-svg' }}
+          </div>
+        {% endif %}
+      </a>
+      <div class="m-product-card__tags">
+        {%- if settings.show_badge_soldout -%}
+          <span class="m-product-card__tag-name m-product-tag m-product-tag--soldout m-gradient m-color-{{ settings.sold_out_badge_scheme }}"{% unless sold_out %} style="display:none;"{% endunless %}>{{ 'products.product.sold_out' | t }}</span>
+        {%- endif -%}
+        {% if settings.show_badge_sale %}
+          {% for tag in product.tags %}
+            {% if tag contains 'tag__' %}
+              {%- liquid 
+                assign tag_content = tag | split: '__' | last
+                assign type = tag_content | split: '_' | first
+                assign tag_name = tag_content | split: '_' | last
+                assign badge_color_scheme = ''
+                case type
+                  when 'hot'
+                    assign badge_color_scheme = settings.hot_badge_scheme
+                  when 'new'
+                    assign badge_color_scheme = settings.new_badge_scheme
+                  when 'sale'
+                    assign badge_color_scheme = settings.sale_badge_scheme
+                endcase
+              -%}
+              <span class="m-product-card__tag-name m-product-tag m-product-tag--{{ type }} m-gradient m-color-{{ badge_color_scheme }}">{{ tag_name }}</span>
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+        <span class="m-product-card__tag-name m-product-tag m-product-tag--preorder" data-foxkit-preorder-badge="{{ product.id }}"></span>
+        {% if show_on_sale_badge %}
+          {%- liquid 
+            if settings.on_sale_badge == 'show_percentage'
+              assign sale_class = 'm-product-tag--discounted'
+            else
+              assign sale_class = 'm-product-tag--sale'
+            endif
+          -%}
+          <span class="m-product-card__tag-name m-product-tag m-gradient m-color-{{ settings.sale_badge_scheme }} {{ sale_class }}">
+            {%- if settings.on_sale_badge == 'show_text' -%}
+              {{ 'products.product.on_sale' | t }}
+            {%- elsif settings.on_sale_badge == 'show_percentage' -%}
+              {{ discount | append: '%' | prepend: '-' }}
+            {%- endif -%}
+          </span>
+        {% endif %}
+      </div>
+
+      {%- if view != 'list' and show_quickview_button or show_wishlist_button or show_compare_button -%}
+        <div class="m-product-card__action m-product-card__action--top m:hidden md:m:flex">
+          {% if show_quickview_button %}
+            <button
+              class="m-tooltip m-product-quickview-button m-spinner-button m-button--icon"
+              type="button"
+              aria-label="{{ 'products.product.quick_view' | t }}"
+              data-product-handle="{{ product.handle }}"
+              data-tippy-theme="m-color-{{ color_scheme }}"
+              data-tippy-content="{{ 'products.product.quick_view' | t }}"
+              data-tippy-placement="left"
+            >
+              <span class="m-spinner-icon">
+                <svg class="animate-spin m-svg-icon--medium" viewBox="0 0 24 24" fill="none">
+                  <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+              </span>
+              <span class="m-tooltip-icon m:block">
+                <svg class="m-svg-icon m-svg-icon--medium" viewBox="0 0 20 20" fill="none">
+                  <path d="M10 4.375C3.75 4.375 1.25 10 1.25 10C1.25 10 3.75 15.625 10 15.625C16.25 15.625 18.75 10 18.75 10C18.75 10 16.25 4.375 10 4.375Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M10 13.125C11.7259 13.125 13.125 11.7259 13.125 10C13.125 8.27411 11.7259 6.875 10 6.875C8.27411 6.875 6.875 8.27411 6.875 10C6.875 11.7259 8.27411 13.125 10 13.125Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+            </button>
+          {% endif %}
+          {% if show_wishlist_button %}
+            <button
+              class="m-tooltip m-wishlist-button m-button--icon"
+              type="button"
+              aria-label="{{ 'products.product.add_to_wishlist' | t }}"
+              data-product-handle="{{ product.handle }}"
+              data-tippy-theme="m-color-{{ color_scheme }}"
+              data-tippy-content="{{ 'products.product.add_to_wishlist' | t }}"
+              data-tippy-placement="left"
+              data-revert-text="{{ 'products.product.remove_from_wishlist' | t }}"
+              data-tippy-role="tooltip-wishlist-{{ product.handle }}"
+            >
+              <span class="m-tooltip-icon m:block">
+                <svg class="m-svg-icon m-svg-icon--medium" viewBox="0 0 20 20" fill="none">
+                  <path d="M10 16.875C10 16.875 1.875 12.5 1.875 7.34375C1.875 6.22487 2.31947 5.15181 3.11064 4.36064C3.90181 3.56947 4.97487 3.125 6.09375 3.125C7.85859 3.125 9.37031 4.08672 10 5.625C10.6297 4.08672 12.1414 3.125 13.9062 3.125C15.0251 3.125 16.0982 3.56947 16.8894 4.36064C17.6805 5.15181 18.125 6.22487 18.125 7.34375C18.125 12.5 10 16.875 10 16.875Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+            </button>
+          {% endif %}
+          {% if show_compare_button %}
+            <button
+              class="m-tooltip m-compare-button m-button--icon"
+              type="button"
+              aria-label="{{ 'products.product.add_to_compare' | t }}"
+              data-product-handle="{{ product.handle }}"
+              data-tippy-theme="m-color-{{ color_scheme }}"
+              data-tippy-content="{{ 'products.product.add_to_compare' | t }}"
+              data-tippy-placement="left"
+              data-revert-text="{{ 'products.product.remove_from_compare' | t }}"
+              data-tippy-role="tooltip-compare-{{ product.handle }}"
+            >
+              <span class="m-tooltip-icon m:block">
+                <svg class="m-svg-icon m-svg-icon--medium" viewBox="0 0 20 20" fill="none">
+                  <path d="M13.75 11.25L16.25 13.75L13.75 16.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M3.75 13.75H16.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M6.25 8.75L3.75 6.25L6.25 3.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M16.25 6.25H3.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+            </button>
+          {% endif %}
+        </div>
+      {%- endif -%}
+
+      {%- if view != 'list' %}
+        {% render 'product-card-quick-add-btn', product: product, quick_add_text: quick_add_text, section: section, show_icon: true, extra_classes: 'md:m:hidden' %}
+      {%- endif -%}
+    </div>
+    <div class="m-product-card__content m:text-{{ pcard_alignment }}">
+      <a class="m-product-card__hidden-link m:hidden" href="{{ product.url }}" aria-label="{{ product.title }}"></a>
+      <div class="m-product-card__info">
+        {%- if show_vendor -%}
+          <span class="m-product-card__vendor">{{ product.vendor }}</span>
+        {%- endif -%}
+
+        <h3 class="m-product-card__title h6">
+          <a href="{{ product.url }}" class="m-product-card__name{% if settings.uppercase_prd_name %} m:uppercase{% endif %}">
+            {{ product.title }}
+          </a>
+        </h3>
+
+        {% if settings.show_review_badge %}
+          <div class="m-product-card__reviews">
+            {% render 'product-reviews-app__badge', product: product %}
+          </div>
+        {% endif %}
+
+        <div class="m-product-card__price">
+          {% render 'product-prices', product: product, is_product_card: true %}
+        </div>
+
+        {% if view != 'list' and product.has_only_default_variant == false and show_variant_options %}
+          {% render 'product-card-option', product: product, show_variant_options: show_variant_options, pcard_alignment: pcard_alignment, color_scheme: color_scheme %}
+        {% endif %}
+
+        <div class="m-product-card__description">
+          {{ product.description | strip_html | truncatewords: 15, '...' }}
+        </div>
+
+        {%- if view != 'list' and show_quickview_button or show_wishlist_button or show_compare_button -%}
+          <div class="m-product-card__action">
+            {% if show_quickview_button %}
+              <button
+                class="m-tooltip m-product-quickview-button m-spinner-button m-button--icon"
+                type="button"
+                aria-label="{{ 'products.product.quick_view' | t }}"
+                data-product-handle="{{ product.handle }}"
+                data-tippy-theme="m-color-{{ color_scheme }}"
+                data-tippy-content="{{ 'products.product.quick_view' | t }}"
+              >
+                <span class="m-spinner-icon">
+                  <svg class="animate-spin m-svg-icon--medium" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                </span>
+                <span class="m-tooltip-icon m:block">
+                  <svg class="m-svg-icon m-svg-icon--medium" viewBox="0 0 20 20" fill="none">
+                    <path d="M10 4.375C3.75 4.375 1.25 10 1.25 10C1.25 10 3.75 15.625 10 15.625C16.25 15.625 18.75 10 18.75 10C18.75 10 16.25 4.375 10 4.375Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M10 13.125C11.7259 13.125 13.125 11.7259 13.125 10C13.125 8.27411 11.7259 6.875 10 6.875C8.27411 6.875 6.875 8.27411 6.875 10C6.875 11.7259 8.27411 13.125 10 13.125Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+              </button>
+            {% endif %}
+            {% if show_wishlist_button %}
+              <button
+                class="m-tooltip m-wishlist-button m-button--icon"
+                type="button"
+                aria-label="{{ 'products.product.add_to_wishlist' | t }}"
+                data-product-handle="{{ product.handle }}"
+                data-tippy-theme="m-color-{{ color_scheme }}"
+                data-tippy-content="{{ 'products.product.add_to_wishlist' | t }}"
+                data-revert-text="{{ 'products.product.remove_from_wishlist' | t }}"
+                data-tippy-role="tooltip-wishlist-{{ product.handle }}"
+              >
+                <span class="m-tooltip-icon m:block">
+                  <svg class="m-svg-icon m-svg-icon--medium" viewBox="0 0 20 20" fill="none">
+                    <path d="M10 16.875C10 16.875 1.875 12.5 1.875 7.34375C1.875 6.22487 2.31947 5.15181 3.11064 4.36064C3.90181 3.56947 4.97487 3.125 6.09375 3.125C7.85859 3.125 9.37031 4.08672 10 5.625C10.6297 4.08672 12.1414 3.125 13.9062 3.125C15.0251 3.125 16.0982 3.56947 16.8894 4.36064C17.6805 5.15181 18.125 6.22487 18.125 7.34375C18.125 12.5 10 16.875 10 16.875Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+              </button>
+            {% endif %}
+            {% if show_compare_button %}
+              <button
+                class="m-tooltip m-compare-button m-button--icon"
+                type="button"
+                aria-label="{{ 'products.product.add_to_compare' | t }}"
+                data-product-handle="{{ product.handle }}"
+                data-tippy-theme="m-color-{{ color_scheme }}"
+                data-tippy-content="{{ 'products.product.add_to_compare' | t }}"
+                data-tippy-placement="{{ placement }}"
+                data-revert-text="{{ 'products.product.remove_from_compare' | t }}"
+                data-tippy-role="tooltip-compare-{{ product.handle }}"
+              >
+                <span class="m-tooltip-icon m:block">
+                  <svg class="m-svg-icon m-svg-icon--medium" viewBox="0 0 20 20" fill="none">
+                    <path d="M13.75 11.25L16.25 13.75L13.75 16.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M3.75 13.75H16.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M6.25 8.75L3.75 6.25L6.25 3.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M16.25 6.25H3.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+              </button>
+            {% endif %}
+          </div>
+        {%- endif -%}
+      </div>
+      {% liquid
+        if view != 'list' and show_cart_button
+          render 'product-card-quick-add-btn', product: product, quick_add_text: quick_add_text, section: section, color_scheme: color_scheme
+        endif
+      %}
+    </div>
+
+    {%- if type == 'complementary' -%}
+      {% render 'product-card-quick-add-btn', product: product, quick_add_text: quick_add_text, section: section, show_icon: true %}
+    {%- endif -%}
+  <input hidden name="id" required value="{{ variant_id }}" data-selected-variant="{{ selected_variant_id }}">
+</div>
+{%- if column_wrapper -%}</div>{%- endif -%}

@@ -1,0 +1,19 @@
+{%- liquid
+  assign text = key | t
+  assign text_downcase = text | downcase
+-%}
+{%- capture text -%}
+  {%- if text_downcase contains 'translation missing' -%}
+    {%- case key -%}
+      {%- else -%}
+        <span style="display: none;">Translation key not found!</span>
+    {%- endcase -%}
+  {%- else -%}
+    {{ text }}
+  {%- endif -%}
+{%- endcapture -%}
+{%- if text contains param -%}
+  {%- assign text = text | replace: param, value -%}
+{%- endif -%}
+
+{{- text | strip_newlines | strip -}}

@@ -1,0 +1,1028 @@
+{{ 'component-collection-card.css' | asset_url | stylesheet_tag }}
+{{ 'section-collection-list.css' | asset_url | stylesheet_tag }}
+
+{% liquid
+  assign items_per_row = section.settings.items_per_row
+
+  assign collection_blocks =  section.blocks | where: 'type', 'collection_block'
+  assign image_card =  section.blocks | where: 'type', 'image_card'
+
+  assign enable_slider = section.settings.enable_slider
+  if collection_blocks.size <= items_per_row
+    assign enable_slider = false
+  endif
+
+  assign mobile_layout = section.settings.mobile_layout
+
+  if enable_slider and mobile_layout == 'inherit'
+    assign mobile_layout = 'slider'
+  endif
+
+  assign show_pagination = section.settings.show_pagination
+  assign show_navigation = section.settings.show_navigation
+  assign navigation_position = section.settings.navigation_position
+  assign pagination_type = 'fraction'
+
+  assign enable_swipe_mobile = section.settings.enable_swipe_mobile
+
+  assign animation_effect = settings.animations
+  assign animated = false
+  if animation_effect != 'none'
+    assign animated = true
+    if section.settings.animations != 'inherit'
+      assign animation_effect = section.settings.animations
+    endif
+  endif
+
+  assign heading = section.settings.heading
+  assign button_text = section.settings.button_text
+
+  assign tablet_items = items_per_row | at_most: 3
+  assign laptop_items = items_per_row | at_most: 4
+
+  if image_card.size > 0
+    assign tablet_items = tablet_items | minus: 1 | at_least: 2
+    assign laptop_items = laptop_items | minus: 1 | at_least: 2
+  endif
+
+  assign boxed_layout = section.settings.boxed_layout
+
+  assign card_bordered = false
+  if boxed_layout and section.settings.grid_bordered
+    assign card_bordered = true
+  endif
+
+  assign classes = 'm-section m-section--padding'
+  if boxed_layout
+    assign classes = classes | append: ' m-section--boxed'
+    
+    if section.settings.grid_bordered
+      assign classes = classes | append: ' m-section--grid-bordered'
+    endif
+  endif
+
+  if section.settings.header_divider
+    assign classes = classes | append: ' m-section--header-separated'
+  endif 
+
+  assign classes = classes | append: ' m-collection-list'
+
+  if image_card.size > 0
+    assign classes = classes | append: ' m-collection-list--has-banner'
+  endif
+
+  assign classes = classes | append: ' m-gradient m-color-' | append: section.settings.color_scheme
+
+  if section.settings.custom_class != blank
+    assign classes = classes | append: ' ' | append: section.settings.custom_class
+  endif
+%}
+
+<section
+  id="m-collection-list-{{ section.id }}"
+  data-section-type="collection-list"
+  data-section-id="{{ section.id }}"
+  class="{{ classes }}"
+  style="
+  --section-padding-top: {{ section.settings.padding_top }}px; 
+  --section-padding-bottom: {{ section.settings.padding_bottom }}px;
+  --column-gap: {{ section.settings.column_gap }}px; 
+  --column-gap-mobile: {{ section.settings.column_gap_mobile }}px; 
+  --row-gap: {{ section.settings.row_gap }}px; 
+  --row-gap-mobile: {{ section.settings.row_gap_mobile }}px; 
+  --items: {{ items_per_row }}
+  "
+>
+  <div class="m-page-width">
+    <div class="m-section__wrapper{% if boxed_layout %} m-gradient m-color-{{ section.settings.boxed_color_scheme }}{% endif %}">
+      {% if heading != blank or button_text != blank %}
+        <div class="m-section__header m:display-flex m:flex-col m:justify-between{% if section.settings.header_alignment == 'left' %} sm:m:flex-row m:items-start sm:m:items-center{% else %} sm:m:flex-col m:items-center{% endif %}">
+          {% if heading != blank %}<h2 class="m-section__heading {{ section.settings.heading_size }}{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}">{{ section.settings.heading }}</h2>{% endif %}
+          {% capture arrow  %}<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4.5 2.25L8.25 6L4.5 9.75" stroke="CurrentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>{% endcapture %}
+          {% capture triangle %}<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.51531 5.73474L4.76531 1.98474C4.71287 1.93223 4.64602 1.89647 4.57324 1.88198C4.50046 1.86748 4.42501 1.87491 4.35645 1.90332C4.28789 1.93172 4.22931 1.97984 4.1881 2.04156C4.1469 2.10328 4.12494 2.17584 4.125 2.25005V9.75005C4.12494 9.82426 4.1469 9.89682 4.1881 9.95855C4.22931 10.0203 4.28789 10.0684 4.35645 10.0968C4.42501 10.1252 4.50046 10.1326 4.57324 10.1181C4.64602 10.1036 4.71287 10.0679 4.76531 10.0154L8.51531 6.26536C8.55018 6.23054 8.57784 6.18918 8.59671 6.14365C8.61558 6.09813 8.62529 6.04933 8.62529 6.00005C8.62529 5.95077 8.61558 5.90197 8.59671 5.85645C8.57784 5.81092 8.55018 5.76957 8.51531 5.73474Z" fill="currentColor"/></svg>{% endcapture %}
+          {% liquid 
+            assign is_button_icon = false
+            if button_text contains '[arrow]' or button_text contains '[triangle]'
+              assign is_button_icon = true
+            endif
+          %}
+          {% if button_text != blank %}
+            <div class="m-section__button{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}">
+              <a href="{{ section.settings.button_link | default: '#' }}" class="m-button {{ section.settings.button_style }}{% if is_button_icon %} m-button--with-icon{% endif %}">
+                {{- button_text | replace: '[arrow]', arrow | replace: '[triangle]', triangle -}}
+              </a>
+            </div>
+            {% endif %}
+        </div>
+      {% endif %}
+      <div class="m-section__content">
+      {% if image_card.size > 0 %}
+        {{ 'component-image-card.css' | asset_url | stylesheet_tag }}
+        {% render 'image-card', block: image_card[0], animated: animated, animation_effect: animation_effect %}
+      {% endif %}
+        <m-collection-list
+          data-enable-slider="{{ enable_slider }}"
+          {% if enable_slider %}
+          data-items="{{ items_per_row }}"
+          data-laptop-items="{{ laptop_items }}"
+          data-tablet-items="{{ tablet_items }}"
+          data-mobile-items="2"
+          data-show-pagination="{{ show_pagination }}"
+          data-show-navigation="{{ show_navigation }}"
+          data-pagination-type="{{ pagination_type }}"
+          data-mobile-layout="{{ mobile_layout }}"
+          {% endif %}
+          class="m-collection-list__inner m:block"
+        >
+          <div 
+            class="m-mixed-layout{% if mobile_layout != 'slider' %} m-mixed-layout--mobile-grid{% if enable_swipe_mobile %} m-mixed-layout--mobile-scroll{% endif %}{% endif %}"
+            {% if section.settings.mobile_layout != 'inherit' %}
+              style="
+              --grid-columns-mobile: {{ section.settings.mobile_layout | replace: 'col-1', '1' | replace: 'col-2', '2' }};
+              --mobile-column-width: {{ section.settings.mobile_layout | replace: 'col-1', '66.66vw' | replace: 'col-2', '40vw' }};
+              "
+            {% endif %}
+          >
+            <div class="m-mixed-layout__wrapper{% if enable_slider %} swiper swiper--equal-height{% endif %}">
+              <div class="m-mixed-layout__inner m:grid md:m:grid-{{ tablet_items }}-cols lg:m:grid-{{ laptop_items }}-cols xl:m:grid-{{ items_per_row }}-cols{% if enable_slider %} swiper-wrapper{% endif %}">
+                {% for block in collection_blocks %}
+                  <div class="m:column{% if enable_slider %} swiper-slide{% endif %}">
+                    {% liquid 
+                      assign collection = collections[block.settings.collection]
+                      assign featured_image = collection.featured_image
+                      if block.settings.featured_image != blank
+                        assign featured_image = block.settings.featured_image
+                      endif
+                    %}
+                    {% render 'collection-card', 
+                      section: section, 
+                      card_bordered: card_bordered, 
+                      card_layout: section.settings.card_layout, 
+                      text_alignment: section.settings.card_text_alignment, 
+                      show_border: section.settings.card_show_border, 
+                      hover_effect: section.settings.card_hover_effect, 
+                      image_rounded: section.settings.card_image_rounded, 
+                      image_width: section.settings.card_image_width, 
+                      heading_size: section.settings.card_heading_size, 
+                      show_product_count: section.settings.card_show_product_count, 
+                      horizontal_align: section.settings.card_horizontal_align, 
+                      vertical_align: section.settings.card_vertical_align, 
+                      color_scheme: block.settings.card_color_scheme, 
+                      collection: collection, 
+                      featured_image: featured_image, 
+                      title: block.settings.title, 
+                      index: forloop.index,
+                      animated: animated, 
+                      animation_effect: animation_effect
+                    %}
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+            {% if enable_slider and section.settings.show_pagination or section.settings.show_navigation %}
+              {% render 'slider-controls', 
+                container: 'm-page-width',
+                show_nav: show_navigation, 
+                show_pagination: show_pagination,
+                navigation_position: navigation_position, 
+                pagination_type: pagination_type,
+              %}
+            {% endif %}
+          </div>
+        </m-collection-list>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Collection list",
+  "disabled_on": {
+    "groups": [
+      "header",
+      "footer",
+      "aside"
+    ]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "General"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "default": "scheme_1",
+      "label": "Color scheme"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "checkbox",
+      "id": "boxed_layout",
+      "label": "Enable boxed layout",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "grid_bordered",
+      "label": "Grid bordered",
+      "default": false,
+      "info": "Only works if Boxed layout is enabled."
+    },
+    {
+      "type": "color_scheme",
+      "id": "boxed_color_scheme",
+      "default": "scheme_1",
+      "label": "Color scheme",
+      "info": "Only works if Boxed layout is enabled."
+    },
+    {
+      "type": "header",
+      "content": "Section header"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Shop by collections"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "default": "h3",
+      "options": [
+        {
+          "value": "h2",
+          "label": "H2"
+        },
+        {
+          "value": "h3",
+          "label": "H3"
+        },
+        {
+          "value": "h4",
+          "label": "H4"
+        },
+        {
+          "value": "h5",
+          "label": "H5"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button label",
+      "default": "View more",
+      "info": "Leave blank to hide"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button style",
+      "options": [
+        {
+          "value": "m-button--primary",
+          "label": "Primary"
+        },
+        {
+          "value": "m-button--secondary",
+          "label": "Secondary"
+        },
+        {
+          "value": "m-button--outline",
+          "label": "Outline"
+        },
+        {
+          "value": "m-button--link",
+          "label": "Underline"
+        },
+        {
+          "value": "m-button--blank",
+          "label": "Plain"
+        }
+      ],
+      "default": "m-button--link"
+    },
+    {
+      "type": "checkbox",
+      "id": "header_divider",
+      "label": "Show header divider",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "header_alignment",
+      "label": "Alignment",
+      "default": "left",
+      "options": [
+        {
+          "label": "Left",
+          "value": "left"
+        },
+        {
+          "label": "Center",
+          "value": "center"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Collection card settings"
+    },
+    {
+      "type": "select",
+      "id": "card_layout",
+      "label": "Layout",
+      "default": "standard",
+      "options": [
+        {
+          "value": "standard",
+          "label": "Standard"
+        },
+        {
+          "value": "inline",
+          "label": "Product count inline"
+        },
+        {
+          "value": "inside",
+          "label": "Content inside"
+        },
+        {
+          "value": "horizontal",
+          "label": "Horizontal"
+        }
+      ]
+    },
+    {
+      "type": "text_alignment",
+      "id": "card_text_alignment",
+      "label": "Text alignment",
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "card_horizontal_align",
+      "label": "Horizontal alignment",
+      "default": "center",
+      "options": [
+        {
+          "label": "Left",
+          "value": "start"
+        },
+        {
+          "label": "Center",
+          "value": "center"
+        },
+        {
+          "label": "Right",
+          "value": "end"
+        }
+      ],
+      "info": "Works with Content inside layout only."
+    },
+    {
+      "type": "select",
+      "id": "card_vertical_align",
+      "label": "Vertical alignment",
+      "default": "center",
+      "options": [
+        {
+          "value": "start",
+          "label": "Top"
+        },
+        {
+          "value": "center",
+          "label": "Middle"
+        },
+        {
+          "value": "end",
+          "label": "Bottom"
+        },
+        {
+          "value": "between",
+          "label": "Space between"
+        },
+        {
+          "value": "around",
+          "label": "Space around"
+        },
+        {
+          "value": "evenly",
+          "label": "Space evenly"
+        }
+      ],
+      "info": "Work with Content inside layout and Horizontal layout"
+    },
+    {
+      "type": "checkbox",
+      "id": "card_show_border",
+      "label": "Show border",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "card_image_width",
+      "label": "Image width",
+      "options": [
+        {
+          "value": "32px",
+          "label": "Extra small"
+        },
+        {
+          "value": "48px",
+          "label": "Small"
+        },
+        {
+          "value": "64px",
+          "label": "Medium"
+        },
+        {
+          "value": "80px",
+          "label": "Large"
+        },
+        {
+          "value": "128px",
+          "label": "Extra large"
+        },
+        {
+          "value": "100%",
+          "label": "Full width"
+        }
+      ],
+      "default": "100%"
+    },
+    {
+      "type": "range",
+      "id": "card_image_rounded",
+      "label": "Image rounded",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "card_hover_effect",
+      "label": "Image hover effect",
+      "default": "scaling-down",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "scaling-down",
+          "label": "Scaling down"
+        },
+        {
+          "value": "scaling-up",
+          "label": "Scaling up"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "card_heading_size",
+      "label": "Heading size",
+      "default": "h6",
+      "options": [
+        {
+          "value": "h3",
+          "label": "H3"
+        },
+        {
+          "value": "h4",
+          "label": "H4"
+        },
+        {
+          "value": "h5",
+          "label": "H5"
+        },
+        {
+          "value": "h6",
+          "label": "H6"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "card_show_product_count",
+      "label": "Show product count",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Grid settings"
+    },
+    {
+      "type": "range",
+      "id": "items_per_row",
+      "label": "Number of columns on desktop",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "column_gap",
+      "label": "Column gap",
+      "min": 0,
+      "max": 50,
+      "default": 30,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "row_gap",
+      "label": "Row gap",
+      "min": 0,
+      "max": 50,
+      "default": 30,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Slider settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_slider",
+      "label": "Enable slider",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_pagination",
+      "label": "Show pagination",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_navigation",
+      "label": "Show navigation",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "navigation_position",
+      "label": "Navigation position",
+      "default": "inside",
+      "options": [
+        {
+          "label": "Inside container",
+          "value": "inside"
+        },
+        {
+          "label": "Outside container",
+          "value": "outside"
+        },
+        {
+          "label": "Inline",
+          "value": "inline"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Mobile settings"
+    },
+    {
+      "type": "select",
+      "id": "mobile_layout",
+      "label": "Mobile layout",
+      "default": "inherit",
+      "options": [
+        {
+          "value": "inherit",
+          "label": "Inherit"
+        },
+        {
+          "value": "col-1",
+          "label": "1 column"
+        },
+        {
+          "value": "col-2",
+          "label": "2 columns"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "label": "Enable swipe on mobile",
+      "id": "enable_swipe_mobile",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "column_gap_mobile",
+      "label": "Column gap mobile",
+      "min": 0,
+      "max": 50,
+      "default": 10,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "row_gap_mobile",
+      "label": "Row gap mobile",
+      "min": 0,
+      "max": 50,
+      "default": 10,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "default": 50,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "default": 50,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Animations"
+    },
+    {
+      "type": "select",
+      "id": "animations",
+      "label": "Visible in the view animation",
+      "default": "inherit",
+      "options": [
+        {
+          "value": "inherit",
+          "label": "Inherit global setting"
+        },
+        {
+          "value": "fade-in",
+          "label": "Fade in"
+        },
+        {
+          "value": "fade-in-up",
+          "label": "Fade in up"
+        },
+        {
+          "value": "fade-in-left",
+          "label": "Fade in left"
+        },
+        {
+          "value": "fade-in-right",
+          "label": "Fade in right"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Custom attributes"
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom classes"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection_block",
+      "name": "Collection",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "image_picker",
+          "id": "featured_image",
+          "label": "Featured image"
+        },
+        {
+          "type": "textarea",
+          "id": "title",
+          "label": "Title",
+          "default": "Example collection title",
+          "info": "Leave blank to use collection's title"
+        },
+        {
+          "type": "header",
+          "content": "Color"
+        },
+        {
+          "type": "color_scheme",
+          "id": "card_color_scheme",
+          "default": "scheme_1",
+          "label": "Color scheme"
+        }
+      ]
+    },
+    {
+      "name": "Image card",
+      "type": "image_card",
+      "settings": [
+        {
+          "type": "header",
+          "content": "General"
+        },
+        {
+          "type": "color_scheme",
+          "id": "color_scheme",
+          "default": "scheme_1",
+          "label": "Color scheme"
+        },
+        {
+          "type": "header",
+          "content": "Images"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_desktop",
+          "label": "Image desktop"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_mobile",
+          "label": "Image mobile"
+        },
+        {
+          "type": "header",
+          "content": "Link"
+        },
+        {
+          "type": "url",
+          "id": "card_link",
+          "label": "Card link"
+        },
+        {
+          "type": "select",
+          "id": "apply_link_on",
+          "label": "Apply link on",
+          "options": [
+            {
+              "value": "card",
+              "label": "Whole card"
+            },
+            {
+              "value": "button",
+              "label": "Button only"
+            }
+          ],
+          "default": "card"
+        },
+        {
+          "type": "header",
+          "content": "Content"
+        },
+        {
+          "type": "textarea",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Heading"
+        },
+        {
+          "type": "select",
+          "id": "text_size",
+          "label": "Heading size",
+          "options": [
+            {
+              "value": "h2",
+              "label": "H2"
+            },
+            {
+              "value": "h3",
+              "label": "H3"
+            },
+            {
+              "value": "h4",
+              "label": "H4"
+            },
+            {
+              "value": "h5",
+              "label": "H5"
+            }
+          ],
+          "default": "h2"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "sub_heading",
+          "label": "Subheading",
+          "default": "Subheading"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description"
+        },
+        {
+          "type": "select",
+          "id": "desc_text_color",
+          "label": "Description style",
+          "options": [
+            {
+              "value": "body",
+              "label": "Body text"
+            },
+            {
+              "value": "subtext",
+              "label": "Subtext"
+            }
+          ],
+          "default": "body"
+        },
+        {
+          "type": "select",
+          "id": "content_position",
+          "label": "Content position",
+          "options": [
+            {
+              "value": "top_left",
+              "label": "Top-left"
+            },
+            {
+              "value": "top_right",
+              "label": "Top-right"
+            },
+            {
+              "value": "top_center",
+              "label": "Top-center"
+            },
+            {
+              "value": "middle_left",
+              "label": "Middle-left"
+            },
+            {
+              "value": "middle_right",
+              "label": "Middle-right"
+            },
+            {
+              "value": "middle_center",
+              "label": "Middle-center"
+            },
+            {
+              "value": "bottom_left",
+              "label": "Bottom-left"
+            },
+            {
+              "value": "bottom_right",
+              "label": "Bottom-right"
+            },
+            {
+              "value": "bottom_center",
+              "label": "Bottom-center"
+            }
+          ],
+          "default": "middle_center"
+        },
+        {
+          "type": "select",
+          "id": "content_alignment",
+          "label": "Content alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "checkbox",
+          "id": "is_last_block_bottom",
+          "label": "Push last block to bottom",
+          "default": false
+        },
+        {
+          "type": "header",
+          "content": "Button"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "default": "Button label"
+        },
+        {
+          "type": "select",
+          "id": "button_style",
+          "label": "Button style",
+          "options": [
+            {
+              "value": "m-button--primary",
+              "label": "Primary"
+            },
+            {
+              "value": "m-button--secondary",
+              "label": "Secondary"
+            },
+            {
+              "value": "m-button--outline",
+              "label": "Outline"
+            },
+            {
+              "value": "m-button--link",
+              "label": "Underline"
+            },
+            {
+              "value": "m-button--blank",
+              "label": "Plain"
+            }
+          ],
+          "default": "m-button--primary"
+        },
+        {
+          "type": "header",
+          "content": "Padding"
+        },
+        {
+          "type": "range",
+          "id": "content_padding_desktop",
+          "label": "Padding desktop",
+          "default": 30,
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px"
+        },
+        {
+          "type": "range",
+          "id": "content_padding_mobile",
+          "label": "Padding mobile",
+          "default": 19,
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection list",
+      "category": "Collection",
+      "blocks": [
+        {
+          "type": "collection_block",
+          "settings": {
+            "title": "Example collection title"
+          }
+        },
+        {
+          "type": "collection_block",
+          "settings": {
+            "title": "Example collection title"
+          }
+        },
+        {
+          "type": "collection_block",
+          "settings": {
+            "title": "Example collection title"
+          }
+        },
+        {
+          "type": "collection_block",
+          "settings": {
+            "title": "Example collection title"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

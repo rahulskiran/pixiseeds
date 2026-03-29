@@ -1,0 +1,118 @@
+{% liquid
+  assign image_desktop = block.settings.image_desktop 
+  assign image_mobile = block.settings.image_mobile 
+  assign text_size = block.settings.text_size | default: 'h2' 
+  assign color_default = block.settings.color_scheme
+  assign content_alignment = block.settings.content_alignment
+  assign desc_color = block.settings.desc_text_color
+  assign content_padding_desktop = block.settings.content_padding_desktop
+  assign content_padding_mobile = block.settings.content_padding_mobile
+  assign card_link = block.settings.card_link
+
+  assign apply_link_on = block.settings.apply_link_on | default: 'card'
+  if block.settings.button_label == blank
+    assign apply_link_on = 'card'
+  endif
+
+  assign content_position = ''
+  case block.settings.content_position
+    when 'top_left'
+      assign content_position = ' m:items-start m:justify-start'
+    when 'top_right'
+      assign content_position = ' m:justify-start m:items-end'
+    when 'top_center'
+      assign content_position = ' m:items-center m:justify-start'
+    when 'middle_left'
+      assign content_position = ' m:items-start m:justify-center'
+    when 'middle_right'
+      assign content_position = ' m:justify-center m:items-end'
+    when 'middle_center'
+      assign content_position = ' m:items-center m:justify-center'
+    when 'bottom_left'
+      assign content_position = ' m:items-start m:justify-end'
+    when 'bottom_right'
+      assign content_position = ' m:items-end m:justify-end'
+    when 'bottom_center'
+      assign content_position = ' m:justify-end m:items-center'
+    else
+        assign content_position = ' m:items-center m:justify-center'
+  endcase
+
+  assign no_image = false
+  if image_desktop == blank or image_mobile != blank and image_desktop == blank or image_mobile == blank and image_desktop == blank
+    assign no_image = true
+  endif
+%}
+<div class="m-image-card m:h-full m-image-card__{{ block.id }} {{ classes }}{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}{% if block.settings.is_last_block_bottom %} m-image-card--cta-bottom{% endif %}"
+  style="--content-padding-desktop:{{ content_padding_desktop }}px; --content-padding-mobile:{{ content_padding_mobile }}px"
+>
+  <div class="m-image-card__inner m-color-{{ color_default }} m-gradient m-hover-box m-hover-box--scale-up m:w-full m:h-full{% if no_image %} m-placeholder-wrapper{% endif %}">
+    {% if card_link != blank and apply_link_on == 'card' %}<a href="{{ card_link }}" class="m-image-card__link"></a>{% endif %}
+    <div class="m-image-card__media m:h-full">
+      {% if no_image %}
+        <div class="m-image-card__img m-image-loaded m:w-full m:h-full m:block{% if image_mobile != blank %} m:hidden md:m:block{% endif %}" aria-labelledby="CardNoMediaLink-{{ block.id }}">
+          {%- capture current -%}
+            {%- cycle 1, 2, 3, 4 -%}
+          {%- endcapture -%}
+          {{ 'collection-' | append: current | placeholder_svg_tag: 'm-placeholder-svg m-placeholder-svg--no-border m:object-cover m:w-full m:h-full' }}
+        </div>
+      {% endif %}
+      {% if image_desktop != blank %}
+        <div
+          class="m-image-card__desktop m:w-full m:h-full {% if image_mobile != blank %} m:hidden md:m:block{% else %} m:block{% endif %}"
+          aria-labelledby="CardNoMediaLink-{{ block.id }}"
+        >
+          {% render 'responsive-image', image: image_desktop, wrapper_class: 'm:w-full m:h-full', image_class: 'm-image-card__desktop', image_rounded: false %}
+        </div>
+      {% endif %}
+      {% if image_mobile != blank %}
+        <div
+          class="m-image-card__mobile m:w-full m:h-full m:block md:m:hidden"
+          aria-labelledby="CardNoMediaLink-{{ block.id }}"
+        >
+          {% render 'responsive-image', image: image_mobile, wrapper_class: 'm:w-full m:h-full', image_rounded: false %}
+        </div>
+      {% endif %}
+    </div>
+    <div class="m-image-card__content {{ content_position }} m:text-{{ content_alignment }} m-image-card--{{ text_size }}">
+      <div class="m-image-card__content-inner">
+        <div class="m-image-card__content-main">
+          {% if block.settings.sub_heading != blank %}
+            <p class="m-image-card__content-subheading">{{ block.settings.sub_heading }}</p>
+          {% endif %}
+          {% if block.settings.heading != blank %}
+            <h2 class="m-image-card__content-heading {{ text_size }}" id="CardNoMediaLink-{{ block.id }}">
+              {{ block.settings.heading }}
+            </h2>
+          {% endif %}
+        </div>
+        {% if block.settings.description != blank or block.settings.button_label != blank %}
+          <div class="m-image-card__content-cta">
+            {% if block.settings.description != blank %}
+              <div class="m-image-card__content-description m:text-color-{{ desc_color }}">
+                {{ block.settings.description }}
+              </div>
+            {% endif %}
+            {% if block.settings.button_label != blank %}
+              {% capture arrow %}<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4.5 2.25L8.25 6L4.5 9.75" stroke="CurrentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>{% endcapture %}
+              {% capture triangle %}<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.51531 5.73474L4.76531 1.98474C4.71287 1.93223 4.64602 1.89647 4.57324 1.88198C4.50046 1.86748 4.42501 1.87491 4.35645 1.90332C4.28789 1.93172 4.22931 1.97984 4.1881 2.04156C4.1469 2.10328 4.12494 2.17584 4.125 2.25005V9.75005C4.12494 9.82426 4.1469 9.89682 4.1881 9.95855C4.22931 10.0203 4.28789 10.0684 4.35645 10.0968C4.42501 10.1252 4.50046 10.1326 4.57324 10.1181C4.64602 10.1036 4.71287 10.0679 4.76531 10.0154L8.51531 6.26536C8.55018 6.23054 8.57784 6.18918 8.59671 6.14365C8.61558 6.09813 8.62529 6.04933 8.62529 6.00005C8.62529 5.95077 8.61558 5.90197 8.59671 5.85645C8.57784 5.81092 8.55018 5.76957 8.51531 5.73474Z" fill="currentColor"/></svg>{% endcapture %}
+              {% liquid 
+                assign is_button_icon = false
+                if block.settings.button_label contains '[arrow]' or block.settings.button_label contains '[triangle]'
+                  assign is_button_icon = true
+                endif
+              %}
+              <div class="m-image-card__content-button">
+                <{% if card_link != blank and apply_link_on == 'button' %}a href="{{ card_link }}"{% else %}div{% endif %}
+                  class="m-button {{ block.settings.button_style }}{% if is_button_icon %} m-button--with-icon{% endif %}"
+                >
+                  {{- block.settings.button_label | replace: '[arrow]', arrow | replace: '[triangle]', triangle -}}
+                </{% if card_link != blank and apply_link_on == 'button' %}a{% else %}div{% endif %}>
+              </div>
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>

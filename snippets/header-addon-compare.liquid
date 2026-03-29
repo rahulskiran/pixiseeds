@@ -1,0 +1,21 @@
+{% liquid
+  if settings.product_compare_page != blank
+    assign url = pages[settings.product_compare_page].url
+  else
+    assign url = '/pages/product-compare'
+  endif
+%}
+
+{% if show_compare %}
+  <a href="{{ url }}" class="m-header__icon m-header__icon--compare m:hidden md:m:block" aria-label="{{ 'accessibility.addons.compare' | t }}">
+    <span class="m:block m-header__icon-group" data-tippy-theme="m-color-{{ color_scheme }}" data-tippy-content="{{ 'layout.compare.title' | t }}" data-tippy-placement="bottom">
+      <svg class="m-svg-icon--{{ icon_size }}" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M13.75 11.25L16.25 13.75L13.75 16.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M3.75 13.75H16.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M6.25 8.75L3.75 6.25L6.25 3.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M16.25 6.25H3.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <sup class="m-compare-count m:hidden"></sup>
+    </span>
+  </a>
+{% endif %}

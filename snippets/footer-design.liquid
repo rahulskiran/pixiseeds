@@ -1,0 +1,69 @@
+{% liquid
+  assign show_follow_on_shop = false
+  if shop.features.follow_on_shop? and section.settings.enable_follow_on_shop
+    assign show_follow_on_shop = true
+  endif
+
+  assign animation_effect = settings.animations
+  assign animated = false
+  if animation_effect != 'none'
+    assign animated = true
+  endif
+%}
+<div class="m-footer-bottom{% if animated %} m-footer-bottom--{{ animation_effect }}{% endif %}">
+  <div class="m-page-width">
+    <div class="m-footer-bottom__inner m:flex m:flex-col lg:m:flex-row m:justify-between m:items-center">
+      {% if section.settings.copyright != blank %}
+        <div class="m-footer-bottom__left m:w-full m:text-left{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}">
+          <span class="m-footer__copyright m:text-color-subtext">{{ section.settings.copyright }}</span>
+          {%- if show_follow_on_shop -%}
+            <div class="m-follow-on-shop">
+              {% comment %} TODO: enable theme-check once `login_button` is accepted as valid filter {% endcomment %}
+              {% # theme-check-disable %}
+              {{ shop | login_button: action: 'follow' }}
+              {% # theme-check-enable %}
+            </div>
+          {%- endif -%}
+        </div>
+      {% endif %}
+      <div class="m-footer-bottom__right m:w-full m:flex-col lg:m:flex-row m:flex m:flex-wrap lg:m:items-center m:items-start lg:m:w-auto{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}">
+        {%- liquid 
+          assign menu = linklists[section.settings.footer_bottom_menu]
+        -%}
+        {% if menu.links != blank %}
+          <ul class="m-footer-bottom__menu m-link-lists m-link-lists--inline list-unstyled">
+            {% for link in menu.links %}
+              <li class="m-link-lists__item">
+                <a href="{{ link.url }}" class="m-link">{{ link.title }}</a>
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+        {% if section.settings.show_country_selector or section.settings.show_language_selector %}
+          <div class="m-footer__localization m:flex m:items-center">
+            {% if section.settings.show_country_selector %}
+              <localization-form>
+                {%- form 'localization', id: 'FooterCountryForm', class: 'm-localization-form' -%}
+                  {%- render 'country-localization', localPosition: 'FooterCountry', panelPosition: 'top' -%}
+                {%- endform -%}
+              </localization-form>
+            {% endif %}
+            {% if section.settings.show_language_selector %}
+              <localization-form>
+                {%- form 'localization', id: 'FooterLanguageForm', class: 'm-localization-form' -%}
+                  {%- render 'language-localization', localPosition: 'FooterLanguage', panelPosition: 'top' -%}
+                {%- endform -%}
+              </localization-form>
+            {% endif %}
+          </div>
+        {% endif %}
+        {% if section.settings.show_social_links %}
+          {% render 'social-media-links', extra_classes: 'm:justify-center md:m:justify-end' %}
+        {% endif %}
+        {% if section.settings.show_payment_icons %}
+          {% render 'payment-icons', section: section, classes: 'm:justify-center' %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>

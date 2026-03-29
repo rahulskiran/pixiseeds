@@ -1,0 +1,154 @@
+{{ 'component-collection-card.css' | asset_url | stylesheet_tag }}
+
+{% liquid
+  assign animation_effect = settings.animations
+  assign animated = false
+  if animation_effect != 'none'
+    assign animated = true
+  endif
+
+  assign boxed_layout = section.settings.boxed_layout
+  assign boxed_color_scheme = section.settings.boxed_color_scheme
+
+  assign card_bordered = false
+  if boxed_layout and section.settings.grid_bordered
+    assign card_bordered = true
+  endif
+%}
+{%- capture page_header_style -%}
+--section-padding-top: {{ section.settings.page_header_padding_top }}px;
+--section-padding-bottom: {{ section.settings.page_header_padding_bottom }}px;
+{%- endcapture -%}
+{% render 'page-title', title: section.settings.title, heading_size: 'h2', description: section.settings.description, show_breadcrumb: false, custom_style: page_header_style %}
+
+<div 
+  class="m-section m-section--padding{% if boxed_layout %} m-section--boxed{% if section.settings.grid_bordered %} m-section--grid-bordered{% endif %}{% endif %} m-collection-list-template" 
+  style="
+  --section-padding-top: {{ section.settings.padding_top }}px; 
+  --section-padding-bottom: {{ section.settings.padding_bottom }}px;
+  --column-gap: 30px; 
+  --column-gap-mobile: 15px; 
+  --row-gap: 30px; 
+  --row-gap-mobile: 30px; 
+  "
+>
+  <div class="m-page-width">
+    <div class="m-section__wrapper m-section__content{% if boxed_layout %} m-gradient m-color-{{ boxed_color_scheme }}{% endif %}">
+      <div class="m-collection-list-template__wrapper m:grid m:grid-2-cols lg:m:grid-3-cols xl:m:grid-4-cols">
+        {% for collection in collections %}
+          <div class="m:column">
+            {% render 'collection-card', 
+              section: section, 
+              card_bordered: card_bordered, 
+              card_layout: 'standard', 
+              text_alignment: 'center', 
+              hover_effect: 'scaling-up', 
+              show_product_count: false, 
+              collection: collection, 
+              featured_image: collection.featured_image, 
+              title: collection.title, 
+              index: forloop.index,
+              animated: animated, 
+              animation_effect: animation_effect
+            %}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Collections list page",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "All of your collections are listed by default."
+    },
+    {
+      "type": "header",
+      "content": "Page header"
+    },
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "Page title",
+      "default": "All collections"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "range",
+      "id": "page_header_padding_top",
+      "label": "Padding top",
+      "default": 60,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "page_header_padding_bottom",
+      "label": "Padding bottom",
+      "default": 60,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "checkbox",
+      "id": "boxed_layout",
+      "label": "Enable boxed layout",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "grid_bordered",
+      "label": "Grid bordered",
+      "default": false,
+      "info": "Only works if Boxed layout is enabled."
+    },
+    {
+      "type": "color_scheme",
+      "id": "boxed_color_scheme",
+      "default": "scheme_1",
+      "label": "Color scheme",
+      "info": "Only works if Boxed layout is enabled."
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "default": 0,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "default": 0,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px"
+    }
+  ]
+}
+{% endschema %}

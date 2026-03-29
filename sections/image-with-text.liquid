@@ -1,0 +1,546 @@
+{%- comment -%}
+  This is a required section for the Shopify Theme Store.
+  It is available when you add the "Image with text" section in the theme editor.
+
+  Theme Store required settings
+  - Image
+  - Heading: title of the block
+  - Text: description of the block
+
+  Theme Store optional settings
+  - Button label: label associated with the button
+  - Button link: link of the button
+{%- endcomment -%}
+
+{% liquid
+  assign animation_effect = settings.animations
+  assign animated = false
+  if animation_effect != 'none'
+    assign animated = true
+    if section.settings.animations != 'inherit'
+      assign animation_effect = section.settings.animations
+    endif
+  endif
+
+  assign color_scheme = section.settings.color_scheme
+%}
+
+{%- capture section_classes -%}
+m-section m-image-with-text {{ section.settings.custom_class }} m-section-{{ section.id }}
+{%- endcapture -%}
+
+{%- style -%}
+  .m-section-{{ section.id }} {
+    --section-padding-top: {{ section.settings.padding_top }}px; 
+    --section-padding-bottom: {{ section.settings.padding_bottom }}px;
+    --column-gap: {{ section.settings.item_gap }}px; 
+    --row-gap: {{ section.settings.item_gap | divided_by: 2 }}px; 
+    --column-gap-mobile: {{ section.settings.item_gap_mobile }}px; 
+    --row-gap-mobile: {{ section.settings.item_gap_mobile }}px;
+  }
+{%- endstyle -%}
+
+<section id="m-section-{{ section.id }}" class="m-section {{ section_classes }} m-section--padding m-color-{{ color_scheme }} m-gradient{% if section.settings.boxed_layout %} m-section--boxed{% endif %}{% if section.settings.header_divider %} m-section--header-separated{% endif %}">
+  <div class="m-page-width">
+    <div class="m-section__wrapper{% if section.settings.boxed_layout %} m-color-{{ section.settings.boxed_color_scheme }} m-gradient{% endif %}">
+      {% render 'index-section-header', section_settings: section.settings %}
+
+      <div class="m-image-with-text__inner m-section__content m:flex m:flex-wrap{% if section.settings.layout == 'right' %} m:flex-row-reverse{% endif %}">
+        <div 
+          class="m-image-with-text__image m:column m:w-full md:m:w-1/2 lg:m:w-{{ section.settings.image_column_size }}/12{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}"
+          {% if animated %}
+            data-cascade
+            style="--animation-order: 1;"
+          {% endif %}
+        >
+          <{% if section.settings.link %}a{% else %}div{% endif %}{% if section.settings.link %} href="{{ section.settings.link }}"{% endif %} class="m-image-box">
+            {% if section.settings.image != blank %}
+              {% render 'responsive-image', image: section.settings.image, image_class: 'm:w-full m:h-full' %}
+            {% else %}
+              <div class="m-image m-image--placeholder m-image--rounded">
+                {{ 'image' | placeholder_svg_tag: 'm-placeholder-svg m:w-full m:h-full m:object-cover' }}
+              </div>
+            {% endif %}
+          </{% if section.settings.link %}a{% else %}div{% endif %}>
+        </div>
+        <div 
+          class="m-image-with-text__content m:column m:w-full md:m:w-1/2 lg:m:w-{{ 12 | minus: section.settings.image_column_size }}/12 {% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}"
+          {% if animated %}
+            data-cascade
+            style="--animation-order: 2;"
+          {% endif %}
+        >
+          <div class="m-content-box m-richtext m:w-full m:text-{{ section.settings.content_alignment }}">
+            {% for block in section.blocks %}
+              {% case block.type %}
+                {% when 'subtext' %}
+                    {% if block.settings.sub_title != blank %}
+                      <p class="m-richtext__subtitle m-content-box__subheading">{{ block.settings.sub_title }}</p>
+                    {% endif %}
+                {% when 'text' %}
+                    {% if block.settings.title != blank %}
+                      <h3 class="m-richtext__title m-content-box__heading {{ block.settings.text_size }}">{{ block.settings.title }}</h3>
+                    {% endif %}
+                {% when 'description' %}
+                  {% if block.settings.text != blank %}
+                    <div class="m-richtext__description m-content-box__description m:text-color-{{ block.settings.text_color }}">{{ block.settings.text }}</div>
+                  {% endif %}
+                {% when 'button_block' %}
+                  {% if block.settings.button_label != blank %}
+                    <div class="m-richtext__button">
+                      {% capture arrow  %}<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4.5 2.25L8.25 6L4.5 9.75" stroke="CurrentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>{% endcapture %}
+                      {% capture triangle %}<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.51531 5.73474L4.76531 1.98474C4.71287 1.93223 4.64602 1.89647 4.57324 1.88198C4.50046 1.86748 4.42501 1.87491 4.35645 1.90332C4.28789 1.93172 4.22931 1.97984 4.1881 2.04156C4.1469 2.10328 4.12494 2.17584 4.125 2.25005V9.75005C4.12494 9.82426 4.1469 9.89682 4.1881 9.95855C4.22931 10.0203 4.28789 10.0684 4.35645 10.0968C4.42501 10.1252 4.50046 10.1326 4.57324 10.1181C4.64602 10.1036 4.71287 10.0679 4.76531 10.0154L8.51531 6.26536C8.55018 6.23054 8.57784 6.18918 8.59671 6.14365C8.61558 6.09813 8.62529 6.04933 8.62529 6.00005C8.62529 5.95077 8.61558 5.90197 8.59671 5.85645C8.57784 5.81092 8.55018 5.76957 8.51531 5.73474Z" fill="currentColor"/></svg>{% endcapture %}
+                      {% liquid 
+                        assign is_button_icon = false
+                        if block.settings.button_label contains '[arrow]' or block.settings.button_label contains '[triangle]'
+                          assign is_button_icon = true
+                        endif
+                      %}
+                      <a
+                        href="{{ block.settings.button_link | default: '#' }}"
+                        class="m-button {{ block.settings.button_style }}{% if is_button_icon %} m-button--with-icon{% endif %}"
+                      >
+                        {{- block.settings.button_label | replace: '[arrow]', arrow | replace: '[triangle]', triangle -}}
+                      </a>
+                    </div>
+                  {% endif %}
+              {% endcase %}
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Image with text",
+  "disabled_on": {
+    "groups": [
+      "header",
+      "footer",
+      "aside"
+    ]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "General"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "default": "scheme-1",
+      "label": "Color scheme"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "color_scheme",
+      "id": "boxed_color_scheme",
+      "default": "scheme_1",
+      "label": "Boxed color Scheme"
+    },
+    {
+      "type": "checkbox",
+      "id": "boxed_layout",
+      "label": "Enable boxed layout",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Section header"
+    },
+    {
+      "type": "select",
+      "id": "header_alignment",
+      "label": "Text alignment",
+      "default": "left",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "header_mobile_alignment",
+      "label": "Mobile text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "header_divider",
+      "label": "Show header divider",
+      "default": false
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "H2"
+        },
+        {
+          "value": "h3",
+          "label": "H3"
+        },
+        {
+          "value": "h4",
+          "label": "H4"
+        },
+        {
+          "value": "h5",
+          "label": "H5"
+        }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "subheading",
+      "label": "Subheading"
+    },
+    {
+      "type": "header",
+      "content": "Grid settings"
+    },
+    {
+      "type": "range",
+      "id": "item_gap",
+      "label": "Column gap",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "default": 100,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "item_gap_mobile",
+      "label": "Column gap on mobile",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "default": 30,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Image settings"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Image link"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Image alignment",
+      "default": "left",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "image_column_size",
+      "label": "Image container width",
+      "default": "6",
+      "options": [
+        {
+          "value": "2",
+          "label": "16%"
+        },
+        {
+          "value": "3",
+          "label": "25%"
+        },
+        {
+          "value": "4",
+          "label": "33%"
+        },
+        {
+          "value": "5",
+          "label": "41%"
+        },
+        {
+          "value": "6",
+          "label": "50%"
+        },
+        {
+          "value": "7",
+          "label": "58%"
+        },
+        {
+          "value": "8",
+          "label": "66%"
+        },
+        {
+          "value": "9",
+          "label": "75%"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "default": 50,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "default": 50,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Custom attributes"
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom classes"
+    },
+    {
+      "type": "header",
+      "content": "Animations"
+    },
+    {
+      "type": "select",
+      "id": "animations",
+      "label": "Visible in the view animation",
+      "default": "inherit",
+      "options": [
+        {
+          "value": "inherit",
+          "label": "Inherit global setting"
+        },
+        {
+          "value": "fade-in",
+          "label": "Fade in"
+        },
+        {
+          "value": "fade-in-up",
+          "label": "Fade in up"
+        },
+        {
+          "value": "fade-in-left",
+          "label": "Fade in left"
+        },
+        {
+          "value": "fade-in-right",
+          "label": "Fade in right"
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "name": "Subtext",
+      "type": "subtext",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "sub_title",
+          "label": "Subtext"
+        }
+      ]
+    },
+    {
+      "name": "Text",
+      "type": "text",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Content settings"
+        },
+        {
+          "type": "textarea",
+          "id": "title",
+          "label": "Heading",
+          "default": "Image with text"
+        },
+        {
+          "type": "select",
+          "id": "text_size",
+          "label": "Heading size",
+          "options": [
+            {
+              "value": "h2",
+              "label": "H2"
+            },
+            {
+              "value": "h3",
+              "label": "H3"
+            },
+            {
+              "value": "h4",
+              "label": "H4"
+            },
+            {
+              "value": "h5",
+              "label": "H5"
+            }
+          ],
+          "default": "h2"
+        }
+      ]
+    },
+    {
+      "name": "Description",
+      "type": "description",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Pair large text with an image to give focus to your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>"
+        },
+        {
+          "type": "select",
+          "id": "text_color",
+          "label": "Description style",
+          "options": [
+            {
+              "value": "body",
+              "label": "Body text"
+            },
+            {
+              "value": "subtext",
+              "label": "Subtext"
+            }
+          ],
+          "default": "body"
+        }
+      ]
+    },
+    {
+      "name": "Button",
+      "type": "button_block",
+      "limit": 1,
+      "settings": [
+        {
+          "content": "Button settings",
+          "type": "header"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "default": "Shop Collection"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        },
+        {
+          "type": "select",
+          "id": "button_style",
+          "label": "Button style",
+          "options": [
+            {
+              "value": "m-button--primary",
+              "label": "Primary"
+            },
+            {
+              "value": "m-button--secondary",
+              "label": "Secondary"
+            },
+            {
+              "value": "m-button--outline",
+              "label": "Outline"
+            },
+            {
+              "value": "m-button--link",
+              "label": "Underline"
+            },
+            {
+              "value": "m-button--blank",
+              "label": "Plain"
+            }
+          ],
+          "default": "m-button--primary"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image with text",
+      "category": "Image",
+      "blocks": [
+        {
+          "type": "subtext"
+        },
+        {
+          "type": "text"
+        },
+        {
+          "type": "description"
+        },
+        {
+          "type": "button_block"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

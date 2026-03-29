@@ -1,0 +1,80 @@
+{% liquid
+  assign text_alignment = text_alignment | default: 'left'
+  assign heading_size = heading_size | default: 'h5'
+  assign image_rounded = image_rounded | default: '0' 
+  assign image_width = image_width | default: '100%' 
+  assign description_color = description_color | default: 'body'
+
+  assign color_default = block.settings.color_scheme
+  assign card_link = block.settings.card_link
+  assign card_image = block.settings.image
+  assign heading = block.settings.heading
+  assign description = block.settings.description
+  assign button_text = block.settings.button_label
+  assign button_style = block.settings.button_style
+
+  assign hover = 'm-hover-box'
+  case hover_effect
+    when 'scaling-down'
+      assign hover = hover | append: ' m-hover-box--scale-down'
+    when 'scaling-up'
+      assign hover = hover | append: ' m-hover-box--scale-up'
+    when 'zoom-in'
+      assign hover = hover | append: ' m-hover-box--zoom-in'
+    else
+      assign hover = ''
+  endcase
+%}
+
+<div
+  class="m-column-card{% if card_bordered %} m-column-card--bordered{% endif %} m:text-{{ text_alignment }} m-color-{{ color_default }} m-gradient {{ classes }}"
+  style="
+      --image-size: {{ image_width }};
+      --image-radius: {{ image_rounded }}px;
+    "
+  >
+    <div 
+      class="m-column-card__wrapper{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}"
+      {% if animated %}
+        data-cascade
+        style="--animation-order: {{ index }};"
+      {% endif %}
+    >
+      <div class="m-column-card__media {{ hover }}">
+        {% if card_link != blank %}<a href="{{ card_link }}" class="m-hidden-link m:hidden" aria-label="{{ heading }}"></a>{% endif %}
+        {% if card_image == blank %}
+          <div class="m-image--placeholder" style="--aspect-ratio: 1/1;">
+            {{ 'image' | placeholder_svg_tag: 'm-placeholder-svg m-placeholder-svg--no-border m:w-full' }}
+          </div>
+        {% else %}
+          {% render 'responsive-image', image: card_image, wrapper_class: 'm:w-full', image_rounded: false %}
+        {% endif %}
+      </div>
+
+      {% if heading != blank or description != blank or button_label != blank %}
+        <div class="m-column-card__content">
+          {% if heading != blank %}
+            <h2 class="m-column-card__heading {{ heading_size }}">{{ heading }}</h2>
+          {% endif %}
+          {% if description != blank %}
+            <div class="m-column-card__description m:text-color-{{ description_color }}">{{ description }}</div>
+          {% endif %}
+          {% capture arrow  %}<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4.5 2.25L8.25 6L4.5 9.75" stroke="CurrentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>{% endcapture %}
+          {% capture triangle %}<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.51531 5.73474L4.76531 1.98474C4.71287 1.93223 4.64602 1.89647 4.57324 1.88198C4.50046 1.86748 4.42501 1.87491 4.35645 1.90332C4.28789 1.93172 4.22931 1.97984 4.1881 2.04156C4.1469 2.10328 4.12494 2.17584 4.125 2.25005V9.75005C4.12494 9.82426 4.1469 9.89682 4.1881 9.95855C4.22931 10.0203 4.28789 10.0684 4.35645 10.0968C4.42501 10.1252 4.50046 10.1326 4.57324 10.1181C4.64602 10.1036 4.71287 10.0679 4.76531 10.0154L8.51531 6.26536C8.55018 6.23054 8.57784 6.18918 8.59671 6.14365C8.61558 6.09813 8.62529 6.04933 8.62529 6.00005C8.62529 5.95077 8.61558 5.90197 8.59671 5.85645C8.57784 5.81092 8.55018 5.76957 8.51531 5.73474Z" fill="currentColor"/></svg>{% endcapture %}
+          {% liquid 
+            assign is_button_icon = false
+            if button_text contains '[arrow]' or button_text contains '[triangle]'
+              assign is_button_icon = true
+            endif
+          %}
+          {% if button_text != blank %}
+            <div class="m-column-card__button">
+              <a href="{{ card_link | default: '#' }}" class="m-button {{ button_style }}{% if is_button_icon %} m-button--with-icon{% endif %}">
+                {{- button_text | replace: '[arrow]', arrow | replace: '[triangle]', triangle -}}
+              </a>
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+</div>

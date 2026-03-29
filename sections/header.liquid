@@ -1,0 +1,634 @@
+{{ 'section-header.css' | asset_url | stylesheet_tag }}
+{% comment %}{{ 'foxkit-mega-menu.css' | asset_url | stylesheet_tag }}{% endcomment %}
+<link
+  rel="stylesheet"
+  href="{{ 'foxkit-mega-menu.css' | asset_url }}"
+  media="print"
+  onload="this.media='all'"
+>
+<link
+  rel="stylesheet"
+  href="{{ 'component-country-flag.css' | asset_url }}"
+  media="print"
+  onload="this.media='all'"
+>
+<script src="{{ 'search-form.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'localization-form.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign color_scheme = section.settings.color_scheme
+  assign menu_color_scheme = section.settings.menu_color_scheme
+  assign customers = section.settings.customers
+  assign show_wishlist = section.settings.show_wishlist
+  assign show_compare = section.settings.show_compare
+
+  assign toggle_button_position = section.settings.toggle_button_position
+  assign hasMega = false
+  if section.settings.mega_menu_heading != blank
+    assign hasMega = true
+  endif
+-%}
+<{% if section.settings.sticky_header_type != 'none' %}sticky-header data-sticky-type="{{ section.settings.sticky_header_type }}"{% else %}div{% endif %} 
+  class="m-header m:block {% if section.settings.separator_line == 'bottom' or section.settings.separator_line == 'middle-bottom' %} m-header--show-separator-line{% endif %}"
+  {% if section.settings.mega_menu_heading != blank and section.settings.open_default %}
+    data-mega-menu
+  {% endif %}
+>
+  <div 
+    class="m-header__top-wrapper m-section--padding m-color-{{ color_scheme }} m-gradient{% if section.settings.separator_line == 'middle' or section.settings.separator_line == 'middle-bottom' %} m-header__top-wrapper--show-separator-line{% endif %}"
+    style="--section-padding-top: {{ section.settings.padding_top }}px;"
+  >
+  <div 
+    class="m-header__top m-page-width{% if cart != empty %} m-show-bubble{% endif %}"
+  >
+      {%- liquid 
+        if section.settings.menu != blank
+          render 'header-drawer', section: section
+        endif  
+      -%}
+      <div class="m-header__heading">
+        <button class="m-header-menu-icon">
+          <span class="m-header-menu-icon--open">
+            <svg class="m-svg-icon--medium m-icon-hamburger" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3.125 10H16.875" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+              <path d="M3.125 5H16.875" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+              <path d="M3.125 15H16.875" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+          </span>
+          <span class="m-header-menu-icon--close">
+            <svg class="m-icon-close m-svg-icon--large" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M18.75 5.25L5.25 18.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+              <path d="M18.75 18.75L5.25 5.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+          </span>
+        </button>
+        {%- if request.page_type == 'index' -%}
+          <h1 class="m:inline-flex">
+        {%- endif -%}
+        <a href="{{ routes.root_url }}" class="m-header__heading--link m:inline-flex">
+          {%- if settings.logo != blank -%}
+            <div class="m-header__heading--logo-wrapper">
+              {%- assign logo_alt = settings.logo.alt | default: shop.name | escape -%}
+              {%- assign logo_height = settings.logo_width | divided_by: settings.logo.aspect_ratio -%}
+              {% capture sizes %}(max-width: {{ settings.logo_width | times: 2 }}px) 50vw, {{ settings.logo_width }}px{% endcapture %}
+              {% capture widths %}{{ settings.logo_width }}, {{ settings.logo_width | times: 1.5 | round }}, {{ settings.logo_width | times: 2 }}{% endcapture %}
+              {{
+                settings.logo
+                | image_url: width: 600
+                | image_tag:
+                  class: 'header__heading-logo',
+                  widths: widths,
+                  height: logo_height,
+                  width: settings.logo_width,
+                  alt: logo_alt,
+                  sizes: sizes,
+                  preload: true
+              }}
+            </div>
+          {%- else -%}
+            <span class="h4">{{ shop.name }}</span>
+          {%- endif -%}
+        </a>
+        {%- if request.page_type == 'index' -%}
+          </h1>
+        {%- endif -%}
+      </div>
+      <div class="m-header__search m:hidden lg:m:flex">
+        {%- liquid 
+          if toggle_button_position == 'top' and hasMega
+            render 'header-addon-mega-menu', section: section, classes: 'm:hidden xl:m:block show-close-button m-megamenu--top'
+          endif
+          render 'header-addon-search', classes: "m:flex-1"
+        -%}
+      </div>
+      <div class="m-header__icons">
+        {% if section.settings.custom_icon != blank %}
+          <div class="m:hidden xl:m:block">
+            {{ section.settings.custom_icon }}
+          </div>
+        {% endif %}
+        {%- liquid
+          render 'header-addon-customer', customers: customers, icon_size: section.settings.icon_size, color_scheme: color_scheme
+          render 'header-addon-wishlist', show_wishlist: show_wishlist, icon_size: section.settings.icon_size, color_scheme: color_scheme
+          render 'header-addon-compare', show_compare: show_compare, icon_size: section.settings.icon_size, color_scheme: color_scheme
+          render 'search-modal', section: section
+          render 'header-addon-cart', icon_size: section.settings.icon_size, color_scheme: color_scheme
+        -%}
+      </div>
+    </div>
+  </div>
+  <div 
+    class="m-header__nav m-section--padding m-color-{{ menu_color_scheme }} m-gradient m:hidden xl:m:block"
+    style="--section-padding-bottom: {{ section.settings.padding_bottom }}px;"
+  >
+    <div class="m-page-width">
+      <div class="m-header__menu{% if section.settings.menu_show_separator_line %} m-header__menu--show-separator-line{% endif %}">
+        {% if toggle_button_position == 'menu' and hasMega %}
+          <div class="m-header__menu-left">
+            {%- liquid
+              render 'header-addon-mega-menu', section: section, classes: 'm:block'
+            -%}
+          </div>
+        {% endif %}
+        <div class="m-header__menu-center">
+          {%- liquid
+            if section.settings.menu != blank
+              render 'header-dropdown-menu', hasMega: hasMega
+            endif
+          -%}
+        </div>
+        <div class="m-header__menu-right m:display-flex">
+          {% if section.blocks.size > 0 %}
+            {%- liquid
+              assign hasLinks = section.blocks | where: 'type', 'link'
+              assign hasHtml = section.blocks | where: 'type', 'html'
+            -%}
+            <div class="m-header__menu-blocks m:display-flex">
+              {% if hasLinks %}
+                <ul class="m-list-menu--inline m:h-full">
+                  {% for block in section.blocks %}
+                    {% if block.type == 'link' and block.settings.link_title != blank %}
+                      <li class="m-list-menu__item m-header__menu-item--parent"><a class="m:display-flex m:items-center" href="{{ block.settings.link_url }}">{{ block.settings.link_title }}</a></li>
+                    {% endif %}
+                  {% endfor %}
+                </ul>
+              {% endif %}
+              {% if hasHtml %}
+                {% for block in section.blocks %}
+                  {% if block.type == 'html' and block.settings.html != blank %}
+                    <div class="m-header__menu-custom-html m:display-flex m:items-center">{{ block.settings.html }}</div>
+                  {% endif %}
+                {% endfor %}
+              {% endif %}
+            </div>
+          {% endif %}
+          {% if section.settings.enable_country_selector or section.settings.enable_language_selector %}
+            <div class="m-header__menu-disclosure m:display-flex m:items-center">
+              {% if section.settings.enable_country_selector %}
+                <localization-form>
+                  {%- form 'localization', id: 'HeaderCountryForm', class: 'm-localization-form' -%}
+                    {%- render 'country-localization', localPosition: 'HeaderCountry' -%}
+                  {%- endform -%}
+                </localization-form>
+              {% endif %}
+              {% if section.settings.enable_language_selector %}
+                <localization-form>
+                  {%- form 'localization', id: 'HeaderLanguageForm', class: 'm-localization-form' -%}
+                    {%- render 'language-localization', localPosition: 'HeaderLanguage' -%}
+                  {%- endform -%}
+                </localization-form>
+              {% endif %}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</{% if section.settings.sticky_header_type != 'none' %}sticky-header data-sticky-type="{{ section.settings.sticky_header_type }}"{% else %}div{% endif %}>
+{% javascript %}
+  class StickyHeader extends HTMLElement {
+    constructor() {
+      super();
+    }
+
+    connectedCallback() {
+      this.header = document.querySelector('.m-section-header');
+      this.megamenu = document.querySelector("mega-menu");
+      this.navBar = this.querySelector('.m-header__nav');
+      this.headerTop = this.querySelector('.m-header__top-wrapper');
+      this.headerIsAlwaysSticky = this.getAttribute('data-sticky-type') === 'always';
+      this.headerMenuIcon = this.querySelector('.m-header-menu-icon');
+      this.headerBounds = {};
+      this.headerTop = this.querySelector('.m-header__top-wrapper');
+
+      this.setHeaderHeight();
+
+      if (this.headerIsAlwaysSticky) {
+        this.header.classList.add('m-section-header-sticky');
+      };
+
+      this.currentScrollTop = 0;
+      this.preventReveal = false;
+
+      this.onScrollHandler = this.onScroll.bind(this);
+      this.hideHeaderOnScrollUp = () => this.preventReveal = true;
+
+      this.addEventListener('preventHeaderReveal', this.hideHeaderOnScrollUp);
+      window.addEventListener('scroll', this.onScrollHandler, false);
+
+      this.headerMenuIcon.addEventListener("click", this.toggleMenuBar.bind(this));
+
+      this.createObserver();
+    }
+
+    disconnectedCallback() {
+      this.removeEventListener('preventHeaderReveal', this.hideHeaderOnScrollUp);
+      window.removeEventListener('scroll', this.onScrollHandler);
+    }
+
+    toggleMenuBar() {
+      if (this.headerMenuIcon.classList.contains('is-open')) {
+        this.headerMenuIcon.classList.remove('is-open');
+      } else {
+        this.headerMenuIcon.classList.add('is-open');
+      }
+      if (this.navBar.classList.contains('nav-bar-hidden')) {
+        this.navBar.classList.remove('nav-bar-hidden');
+        this.headerTop.classList.remove('nav-bar-hidden');
+      } else {
+        this.navBar.classList.add('nav-bar-hidden');
+        this.headerTop.classList.add('nav-bar-hidden');
+        
+      }
+    }
+
+    setHeaderTopHeight () {
+      document.documentElement.style.setProperty('--header-height', `${this.headerTop.offsetHeight}px`);
+    }
+
+    setHeaderHeight() {
+      document.documentElement.style.setProperty('--header-height', `${this.header.offsetHeight}px`);
+      document.documentElement.style.setProperty('--nav-bar-height', `${this.navBar.offsetHeight}px`);
+    }
+
+    createObserver() {
+      let observer = new IntersectionObserver((entries, observer) => {
+        this.headerBounds = entries[0].intersectionRect;
+        observer.disconnect();
+      });
+
+      observer.observe(this.header);
+    }
+
+    onScroll() {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+      if (scrollTop > this.currentScrollTop && scrollTop > this.headerBounds.bottom) {
+        this.header.classList.add('scrolled-past-header');
+        document.documentElement.classList.add('scrolled-past-header');
+        this.setHeaderTopHeight();
+        if (!this.headerMenuIcon.classList.contains('is-open')) {
+          this.navBar.classList.add('nav-bar-hidden');
+          this.headerTop.classList.add('nav-bar-hidden');
+        }
+        this.megamenu && this.megamenu.init();
+        this.megamenu && this.megamenu.close();
+        this.headerIsAlwaysSticky && this.megamenu && this.megamenu.setAttribute("data-toggle", "true");
+        if (this.preventHide) return;
+        requestAnimationFrame(this.hide.bind(this));
+      } else if (scrollTop < this.currentScrollTop && scrollTop > this.headerBounds.bottom) {
+        this.header.classList.add('scrolled-past-header');
+        if (!this.preventReveal) {
+          requestAnimationFrame(this.reveal.bind(this));
+        } else {
+          window.clearTimeout(this.isScrolling);
+
+          this.isScrolling = setTimeout(() => {
+            this.preventReveal = false;
+          }, 66);
+
+          requestAnimationFrame(this.hide.bind(this));
+        }
+      } else if (scrollTop <= this.headerBounds.top) {
+        this.header.classList.remove('scrolled-past-header');
+        document.documentElement.classList.remove('scrolled-past-header');
+        this.navBar.classList.remove('nav-bar-hidden');
+        this.headerTop.classList.remove('nav-bar-hidden');
+        this.headerMenuIcon.classList.remove('is-open');
+        this.setHeaderHeight();
+        requestAnimationFrame(this.reset.bind(this));
+      }
+      this.currentScrollTop = scrollTop;
+    }
+
+    hide() {
+      if (this.headerIsAlwaysSticky) return;
+      this.megamenu && this.megamenu.removeAttribute("data-toggle");
+      this.header.classList.add('m-section-header-hidden', 'm-section-header-sticky');
+      document.documentElement.classList.add('m-section-header-hidden');
+      this.closeLocalizationForm();
+      this.closePredictiveSearch();
+    }
+
+    reveal() {
+      if (this.headerIsAlwaysSticky) return;
+      this.megamenu && this.megamenu.setAttribute("data-toggle", "true");
+      this.header.classList.add('m-section-header-sticky', 'animate');
+      this.header.classList.remove('m-section-header-hidden');
+      document.documentElement.classList.remove('m-section-header-hidden');
+    }
+
+    reset() {
+      if (this.megamenu && this.megamenu.openDefault && this.megamenu.template === 'index') {
+        this.megamenu && this.megamenu.open();
+      }
+      if (this.currentScrollTop === 0) {
+        this.megamenu && this.megamenu.removeAttribute("data-toggle");
+      }
+      if (this.headerIsAlwaysSticky) return;
+      this.header.classList.remove('m-section-header-hidden', 'm-section-header-sticky', 'animate');
+    }
+
+    closePredictiveSearch() {
+      this.predictiveSearch = this.predictiveSearch || this.header.querySelector('predictive-search');
+      this.predictiveSearch.close(false);
+    }
+
+    closeLocalizationForm() {
+      this.localization = this.localization || this.header.querySelectorAll('localization-form');
+      this.localization.forEach(localization => localization.hidePanel());
+    }
+  }
+  customElements.define('sticky-header', StickyHeader);
+{% endjavascript %}
+{% schema %}
+{
+  "name": "Header",
+  "class": "m-section-header",
+  "enabled_on": {
+    "groups": [
+      "header"
+    ]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "General"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "default": "scheme_1",
+      "label": "Color scheme"
+    },
+    {
+      "type": "select",
+      "id": "sticky_header_type",
+      "label": "Sticky header",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "on-scroll-up",
+          "label": "On scroll up"
+        },
+        {
+          "value": "always",
+          "label": "Always"
+        }
+      ],
+      "default": "on-scroll-up"
+    },
+    {
+      "type": "select",
+      "id": "separator_line",
+      "label": "Separator line",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "bottom",
+          "label": "Bottom"
+        },
+        {
+          "value": "middle",
+          "label": "Middle"
+        },
+        {
+          "value": "middle-bottom",
+          "label": "Both middle & bottom"
+        }
+      ],
+      "default": "bottom"
+    },
+    {
+      "type": "header",
+      "content": "Header icons"
+    },
+    {
+      "type": "select",
+      "id": "customers",
+      "label": "Account",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "icon",
+          "label": "Only icon"
+        },
+        {
+          "value": "icon-text",
+          "label": "Icon & text"
+        }
+      ],
+      "default": "icon"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_wishlist",
+      "label": "Show wishlist icon",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_compare",
+      "label": "Show compare icon",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "icon_size",
+      "label": "Icons size",
+      "default": "large",
+      "options": [
+        {
+          "value": "large",
+          "label": "Medium"
+        },
+        {
+          "value": "xlarge",
+          "label": "Large"
+        }
+      ]
+    },
+    {
+      "type": "html",
+      "id": "custom_icon",
+      "label": "Custom icons",
+      "info": "Use html to customize the icon as you like. Refer to our demos for html samples"
+    },
+    {
+      "type": "header",
+      "content": "Search settings"
+    },
+    {
+      "type": "select",
+      "label": "Search button",
+      "id": "search_button",
+      "options": [
+        {
+          "value": "icon",
+          "label": "Icon"
+        },
+        {
+          "value": "icon-plain",
+          "label": "Icon plain"
+        },
+        {
+          "value": "text",
+          "label": "Text"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Menu settings"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "default": "main-menu",
+      "label": "Menu"
+    },
+    {
+      "type": "color_scheme",
+      "id": "menu_color_scheme",
+      "default": "scheme_1",
+      "label": "Color scheme"
+    },
+    {
+      "type": "checkbox",
+      "id": "menu_show_separator_line",
+      "label": "Show separator line",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_country_selector",
+      "label": "Enable country/region selector",
+      "default": false,
+      "info": "To add a country/region, go to your [market settings.](/admin/settings/markets)"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_language_selector",
+      "label": "Enable language selector",
+      "info": "To add a language, go to your [language settings.](/admin/settings/languages)"
+    },
+    {
+      "type": "header",
+      "content": "Mega menu"
+    },
+    {
+      "type": "paragraph",
+      "content": "Mega menu installed through [Foxkit](https://foxecom.link/megamogxfoxkit) app."
+    },
+    {
+      "type": "text",
+      "id": "mega_menu_heading",
+      "label": "Heading",
+      "info": "Leave blank to disable this feature"
+    },
+    {
+      "type": "text",
+      "id": "foxkit_menu_element",
+      "label": "Foxkit menu element",
+      "info": "This setting only works for desktop mega menu. If you also want to display on mobile, you can use \"Replace by selectors\" in Foxkit mega menu settings."
+    },
+    {
+      "type": "select",
+      "id": "toggle_button_position",
+      "label": "Toggle button position",
+      "default": "menu",
+      "options": [
+        {
+          "value": "menu",
+          "label": "On menu"
+        },
+        {
+          "value": "top",
+          "label": "On top"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "open_default",
+      "label": "Open by default",
+      "default": false,
+      "info": "Only work on homepage"
+    },
+    {
+      "type": "color_scheme",
+      "id": "megamenu_color",
+      "label": "Color scheme"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "default": 30,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "default": 0,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "link",
+      "limit": 5,
+      "name": "Link",
+      "settings": [
+        {
+          "type": "text",
+          "id": "link_title",
+          "label": "Title"
+        },
+        {
+          "type": "url",
+          "id": "link_url",
+          "label": "Url"
+        }
+      ]
+    },
+    {
+      "type": "html",
+      "limit": 1,
+      "name": "Html",
+      "settings": [
+        {
+          "type": "html",
+          "id": "html",
+          "label": "Custom html"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Header"
+    }
+  ]
+}
+{% endschema %}

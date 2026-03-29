@@ -1,0 +1,28 @@
+{%- if section.settings.mega_menu_heading != blank and section.settings.toggle_button_position == 'menu' -%}
+  <li
+    class="m-menu-drawer__menu-item m-list-menu__item"
+    data-main-details-toggle
+  >
+    <a data-summary-button class="m:display-flex m:justify-between m:w-full">
+      {{ section.settings.mega_menu_heading }}
+      <span class="m-menu-drawer__menu-icon">
+        <svg class="m-svg-icon--small" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4.5 2.25L8.25 6L4.5 9.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+    </a>
+    <div class="m-menu-drawer__submenu m-has-submenu" tabindex="-1">
+      <div class="m-menu-drawer__inner-submenu m-scrollbar--vertical">
+        <button class="m-menu-drawer__close-button m-link m-link--text" aria-expanded="true">
+          <svg class="m-svg-icon--small" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7.5 2.25L3.75 6L7.5 9.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          {{ section.settings.mega_menu_heading }}
+        </button>
+        <header-dropdown-menu class="m:block m-foxkit-menu-mobile">
+          <ul class="m-menu-dropdown__menu" id="m-megamenu-mobile-{{ section.id }}"></ul>
+        </header-dropdown-menu>
+      </div>
+    </div>
+  </li>
+{%- endif -%}
