@@ -1,1 +1,243 @@
-{"type":"footer","name":"Footer","sections":{"a76f4314-395f-4e7d-bdc8-4260fd09fffe":{"type":"featured-promotion","blocks":{"sections--21255729283345__a76f4314-395f-4e7d-bdc8-4260fd09fffe-promotion-1":{"type":"promotion","settings":{"text_size":"h6","heading":"","description":"<p>Free Shipping All Over India<\/p>","desc_text_color":"subtext","icon_alignment":"center","image":"shopify:\/\/shop_images\/free-shipping.png","image_size":35,"image_radius":0}},"sections--21255729283345__a76f4314-395f-4e7d-bdc8-4260fd09fffe-promotion-2":{"type":"promotion","settings":{"text_size":"h6","heading":"","description":"<p>High Quality Products<\/p>","desc_text_color":"subtext","icon_alignment":"start","image":"shopify:\/\/shop_images\/quality.png","image_size":35,"image_radius":0}},"sections--21255729283345__a76f4314-395f-4e7d-bdc8-4260fd09fffe-promotion-3":{"type":"promotion","settings":{"text_size":"h6","heading":"","description":"<p>Splendid Customer Service<\/p>","desc_text_color":"subtext","icon_alignment":"start","image":"shopify:\/\/shop_images\/customer-service_1.png","image_size":35,"image_radius":0}},"sections--21255729283345__a76f4314-395f-4e7d-bdc8-4260fd09fffe-promotion-4":{"type":"promotion","settings":{"text_size":"h6","heading":"","description":"<p>Safe & Secure Payments<\/p>","desc_text_color":"subtext","icon_alignment":"start","image":"shopify:\/\/shop_images\/protection.png","image_size":35,"image_radius":0}}},"block_order":["sections--21255729283345__a76f4314-395f-4e7d-bdc8-4260fd09fffe-promotion-1","sections--21255729283345__a76f4314-395f-4e7d-bdc8-4260fd09fffe-promotion-2","sections--21255729283345__a76f4314-395f-4e7d-bdc8-4260fd09fffe-promotion-3","sections--21255729283345__a76f4314-395f-4e7d-bdc8-4260fd09fffe-promotion-4"],"custom_css":[".m-section--boxed .m-section__wrapper:after {border-right-width: 0; border-left-width: 0;}",".m-promotion-card,.m-promotion-card__content-heading {--font-weight-body: 500; font-family: var(--font-stack-body); font-weight: var(--font-weight-body);}",".m-section--boxed .m-section__content {padding: 19px;}","@media (max-width: 767px) {.m-section--boxed .m-section__content {padding: 48px 0; }}"],"settings":{"color_scheme":"","item_divide":false,"boxed_layout":false,"boxed_color_scheme":"background-1","section_padding_top":61,"section_padding_bottom":61,"items_per_row":4,"gap_desktop":31,"row_gap_desktop":30,"row_gap_mobile":19,"animations":"inherit","custom_classes":""}},"footer":{"type":"footer","blocks":{"block-3":{"type":"menu","settings":{"block_width":24,"menu":"main-menu","title":"Shop Now","order_first":false,"open_default":false}},"block-4":{"type":"menu","settings":{"block_width":23,"menu":"footer","title":"Links","order_first":false,"open_default":false}},"e70c37cf-fbdd-4140-95a0-a35c6e56a8c2":{"type":"our_store","settings":{"block_width":23,"title":"Contact Us","description":"<p>Plot-890,Mayuri Nagar             Miyapur,                                                                         Hyderabad-500049<\/p>","show_email":true,"show_phone":true,"show_socials_link":false,"order_first":false,"open_default":true}},"newsletter_mEbYBr":{"type":"newsletter","settings":{"block_width":25,"title":"Subscribe","description":"Sign up and get to know our latest Discounts!","email_placeholder":"Enter your mail","show_social":false,"show_agree_checkbox":false,"form_width":"","order_first":true,"open_default":true}},"our_store_aHAKtR":{"type":"our_store","disabled":true,"settings":{"block_width":25,"title":"Our store","description":"","show_email":false,"show_phone":false,"show_socials_link":false,"order_first":false,"open_default":false}}},"block_order":["block-3","block-4","e70c37cf-fbdd-4140-95a0-a35c6e56a8c2","newsletter_mEbYBr","our_store_aHAKtR"],"custom_css":[".m-footer .m-footer-widget__title {font-family: var(--font-stack-body);}",".m-footer-widget__wrapper {font-weight: 400;}",".m-footer__copyright {color: rgb(var(--color-foreground-secondary));}","@media (min-width: 1280px) {.m-footer__block {padding-top: 60px; padding-bottom: 60px; }}","@media (max-width: 767px) {.m-footer-bottom__right, .m-footer-bottom__right .m-payment-icons {order: 0; } .m-footer-bottom__left, .m-footer-bottom__right .m-footer-bottom__menu {order: 1; }}"],"settings":{"color_scheme":"scheme-e9bb5a59-eed5-4362-ab5e-3d6441907328","show_divider":false,"copyright":"","show_country_selector":false,"show_language_selector":false,"show_social_links":true,"enable_follow_on_shop":false,"show_payment_icons":true,"payment_icons_width":300,"footer_bottom_menu":""}},"mobile-sticky-bar":{"type":"mobile-sticky-bar","disabled":true,"settings":{"show_mobile_sticky":true,"color_scheme":"","show_home_icon":true,"show_collection_icon":true,"show_cart_icon":true,"show_account_icon":true,"show_wishlist_icon":true}},"age-verifier-popup":{"type":"age-verifier-popup","blocks":{"block-1":{"type":"heading","settings":{"heading":"Confirm your age"}},"block-2":{"type":"text","settings":{"text":"<p>Are you 18 years old or older?<\/p>"}},"block-3":{"type":"buttons","settings":{"decline_button":"No, I'm not","approve_button":"Yes, I am"}}},"block_order":["block-1","block-2","block-3"],"settings":{"design_mode":false,"enable":false,"color_scheme":"","bg_blur":true,"decline_heading":"Come back when you're older","decline_content":"<p>Sorry, the content of this store can't be seen by a younger audience. Come back when you're older.<\/p>","return_button":"Oops, I entered incorrectly"}}},"order":["a76f4314-395f-4e7d-bdc8-4260fd09fffe","footer","mobile-sticky-bar","age-verifier-popup"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "type": "footer",
+  "name": "Footer",
+  "sections": {
+    "a76f4314-395f-4e7d-bdc8-4260fd09fffe": {
+      "type": "featured-promotion",
+      "blocks": {
+        "sections--21255729283345__a76f4314-395f-4e7d-bdc8-4260fd09fffe-promotion-1": {
+          "type": "promotion",
+          "settings": {
+            "text_size": "h6",
+            "heading": "",
+            "description": "<p>Free Shipping All Over India</p>",
+            "desc_text_color": "subtext",
+            "icon_alignment": "center",
+            "image_size": 35,
+            "image_radius": 0
+          }
+        },
+        "sections--21255729283345__a76f4314-395f-4e7d-bdc8-4260fd09fffe-promotion-2": {
+          "type": "promotion",
+          "settings": {
+            "text_size": "h6",
+            "heading": "",
+            "description": "<p>High Quality Products</p>",
+            "desc_text_color": "subtext",
+            "icon_alignment": "start",
+            "image_size": 35,
+            "image_radius": 0
+          }
+        },
+        "sections--21255729283345__a76f4314-395f-4e7d-bdc8-4260fd09fffe-promotion-3": {
+          "type": "promotion",
+          "settings": {
+            "text_size": "h6",
+            "heading": "",
+            "description": "<p>Splendid Customer Service</p>",
+            "desc_text_color": "subtext",
+            "icon_alignment": "start",
+            "image_size": 35,
+            "image_radius": 0
+          }
+        },
+        "sections--21255729283345__a76f4314-395f-4e7d-bdc8-4260fd09fffe-promotion-4": {
+          "type": "promotion",
+          "settings": {
+            "text_size": "h6",
+            "heading": "",
+            "description": "<p>Safe & Secure Payments</p>",
+            "desc_text_color": "subtext",
+            "icon_alignment": "start",
+            "image_size": 35,
+            "image_radius": 0
+          }
+        }
+      },
+      "block_order": [
+        "sections--21255729283345__a76f4314-395f-4e7d-bdc8-4260fd09fffe-promotion-1",
+        "sections--21255729283345__a76f4314-395f-4e7d-bdc8-4260fd09fffe-promotion-2",
+        "sections--21255729283345__a76f4314-395f-4e7d-bdc8-4260fd09fffe-promotion-3",
+        "sections--21255729283345__a76f4314-395f-4e7d-bdc8-4260fd09fffe-promotion-4"
+      ],
+      "custom_css": [
+        ".m-section--boxed .m-section__wrapper:after {border-right-width: 0; border-left-width: 0;}",
+        ".m-promotion-card,.m-promotion-card__content-heading {--font-weight-body: 500; font-family: var(--font-stack-body); font-weight: var(--font-weight-body);}",
+        ".m-section--boxed .m-section__content {padding: 19px;}",
+        "@media (max-width: 767px) {.m-section--boxed .m-section__content {padding: 48px 0; }}"
+      ],
+      "settings": {
+        "color_scheme": "",
+        "item_divide": false,
+        "boxed_layout": false,
+        "boxed_color_scheme": "background-1",
+        "section_padding_top": 61,
+        "section_padding_bottom": 61,
+        "items_per_row": 4,
+        "gap_desktop": 31,
+        "row_gap_desktop": 30,
+        "row_gap_mobile": 19,
+        "animations": "inherit",
+        "custom_classes": ""
+      }
+    },
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "block-3": {
+          "type": "menu",
+          "settings": {
+            "block_width": 24,
+            "menu": "main-menu",
+            "title": "Shop Now",
+            "order_first": false,
+            "open_default": false
+          }
+        },
+        "block-4": {
+          "type": "menu",
+          "settings": {
+            "block_width": 23,
+            "menu": "footer",
+            "title": "Links",
+            "order_first": false,
+            "open_default": false
+          }
+        },
+        "e70c37cf-fbdd-4140-95a0-a35c6e56a8c2": {
+          "type": "our_store",
+          "settings": {
+            "block_width": 23,
+            "title": "Contact Us",
+            "description": "<p>Plot-890,Mayuri Nagar             Miyapur,                                                                         Hyderabad-500049</p>",
+            "show_email": true,
+            "show_phone": true,
+            "show_socials_link": false,
+            "order_first": false,
+            "open_default": true
+          }
+        },
+        "newsletter_mEbYBr": {
+          "type": "newsletter",
+          "settings": {
+            "block_width": 25,
+            "title": "Subscribe",
+            "description": "Sign up and get to know our latest Discounts!",
+            "email_placeholder": "Enter your mail",
+            "show_social": false,
+            "show_agree_checkbox": false,
+            "form_width": "",
+            "order_first": true,
+            "open_default": true
+          }
+        },
+        "our_store_aHAKtR": {
+          "type": "our_store",
+          "disabled": true,
+          "settings": {
+            "block_width": 25,
+            "title": "Our store",
+            "description": "",
+            "show_email": false,
+            "show_phone": false,
+            "show_socials_link": false,
+            "order_first": false,
+            "open_default": false
+          }
+        }
+      },
+      "block_order": [
+        "block-3",
+        "block-4",
+        "e70c37cf-fbdd-4140-95a0-a35c6e56a8c2",
+        "newsletter_mEbYBr",
+        "our_store_aHAKtR"
+      ],
+      "custom_css": [
+        ".m-footer .m-footer-widget__title {font-family: var(--font-stack-body);}",
+        ".m-footer-widget__wrapper {font-weight: 400;}",
+        ".m-footer__copyright {color: rgb(var(--color-foreground-secondary));}",
+        "@media (min-width: 1280px) {.m-footer__block {padding-top: 60px; padding-bottom: 60px; }}",
+        "@media (max-width: 767px) {.m-footer-bottom__right, .m-footer-bottom__right .m-payment-icons {order: 0; } .m-footer-bottom__left, .m-footer-bottom__right .m-footer-bottom__menu {order: 1; }}"
+      ],
+      "settings": {
+        "color_scheme": "scheme-e9bb5a59-eed5-4362-ab5e-3d6441907328",
+        "show_divider": false,
+        "copyright": "",
+        "show_country_selector": false,
+        "show_language_selector": false,
+        "show_social_links": true,
+        "enable_follow_on_shop": false,
+        "show_payment_icons": true,
+        "payment_icons_width": 300,
+        "footer_bottom_menu": ""
+      }
+    },
+    "mobile-sticky-bar": {
+      "type": "mobile-sticky-bar",
+      "disabled": true,
+      "settings": {
+        "show_mobile_sticky": true,
+        "color_scheme": "",
+        "show_home_icon": true,
+        "show_collection_icon": true,
+        "show_cart_icon": true,
+        "show_account_icon": true,
+        "show_wishlist_icon": true
+      }
+    },
+    "age-verifier-popup": {
+      "type": "age-verifier-popup",
+      "blocks": {
+        "block-1": {
+          "type": "heading",
+          "settings": {
+            "heading": "Confirm your age"
+          }
+        },
+        "block-2": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Are you 18 years old or older?</p>"
+          }
+        },
+        "block-3": {
+          "type": "buttons",
+          "settings": {
+            "decline_button": "No, I'm not",
+            "approve_button": "Yes, I am"
+          }
+        }
+      },
+      "block_order": [
+        "block-1",
+        "block-2",
+        "block-3"
+      ],
+      "settings": {
+        "design_mode": false,
+        "enable": false,
+        "color_scheme": "",
+        "bg_blur": true,
+        "decline_heading": "Come back when you're older",
+        "decline_content": "<p>Sorry, the content of this store can't be seen by a younger audience. Come back when you're older.</p>",
+        "return_button": "Oops, I entered incorrectly"
+      }
+    }
+  },
+  "order": [
+    "a76f4314-395f-4e7d-bdc8-4260fd09fffe",
+    "footer",
+    "mobile-sticky-bar",
+    "age-verifier-popup"
+  ]
+}
