@@ -15,6 +15,8 @@
     "use_ajax_atc": true,
     "show_scroll_top_button": true,
     "page_width": 1400,
+    "enable_full_width": true,
+    "site_padding_left": 40,
     "enable_boxed_layout": false,
     "boxed_color_scheme": "background-1",
     "page_transition": true,
