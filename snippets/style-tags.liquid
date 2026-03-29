@@ -131,6 +131,11 @@
      --collection-card-corner-radius: {{ settings.collection_card_corner_radius }}px;
      --article-card-corner-radius: {{ settings.blog_card_corner_radius }}px;
      --corner-radius: {{ settings.corner_radius }}px;
+
+     /* Search bar styling */
+     --search-bar-radius: {{ settings.search_bar_radius | default: 30 }}px;
+     --search-bar-bg: {{ settings.search_bar_bg_color | default: '#f2f2f2' }};
+     --search-bar-text: {{ settings.search_bar_text_color | default: '#000000' }};
   }
    {%- endcapture -%}
 
