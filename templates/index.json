@@ -139,9 +139,9 @@
         "image_slide_yiWFMc"
       ],
       "settings": {
-        "layout": "full-width",
+        "layout": "grid",
         "slide_effect": "slide",
-        "slide_height": "small",
+        "slide_height": "medium",
         "show_navigation": false,
         "show_pagination": false,
         "autorotate": true,
