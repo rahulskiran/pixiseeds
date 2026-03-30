@@ -46,6 +46,7 @@
     --m-newcol-label-size: {{ section.settings.label_font_size }}px;
     --m-newcol-heading-ls: {{ section.settings.heading_letter_spacing | times: 0.01 }}em;
     --m-newcol-label-ls: {{ section.settings.label_letter_spacing | times: 0.001 }}em;
+    --m-newcol-card-radius: {{ section.settings.card_border_radius }}px;
   }
   {% if heading_c != blank %}
     .m-newcol--{{ section.id }} {
@@ -169,7 +170,7 @@
   .m-newcol--{{ section.id }} .m-newcol__card {
     background: var(--m-newcol-card-bg, rgb(var(--color-background)));
     border: 1px solid var(--m-newcol-card-border, rgba(var(--color-border), 0.45));
-    border-radius: var(--corner-radius, 6px);
+    border-radius: var(--m-newcol-card-radius, var(--corner-radius, 6px));
     box-shadow: 0 1px 3px rgba(var(--color-foreground), 0.06);
     overflow: hidden;
     min-width: 0;
@@ -460,6 +461,17 @@
       "unit": "px",
       "label": "Card padding",
       "default": 24
+    },
+    {
+      "type": "range",
+      "id": "card_border_radius",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "label": "Card corner radius",
+      "default": 6,
+      "info": "0 for square cards. Rounds all four corners of each card."
     },
     {
       "type": "header",
