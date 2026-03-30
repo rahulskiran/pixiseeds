@@ -93,7 +93,35 @@
       },
       {
         "type": "paragraph",
-        "content": "Controls the left and right padding for the entire website. Works best with full width layout enabled."
+        "content": "Set horizontal padding for small screens and desktop separately. Works best with full width layout enabled. Desktop applies from 768px and up (same breakpoint as the theme)."
+      },
+      {
+        "type": "header",
+        "content": "Mobile (below 768px)"
+      },
+      {
+        "type": "range",
+        "id": "site_padding_left_mobile",
+        "label": "Left padding",
+        "default": 20,
+        "min": 0,
+        "max": 150,
+        "step": 5,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "site_padding_right_mobile",
+        "label": "Right padding",
+        "default": 20,
+        "min": 0,
+        "max": 150,
+        "step": 5,
+        "unit": "px"
+      },
+      {
+        "type": "header",
+        "content": "Desktop (768px and up)"
       },
       {
         "type": "range",

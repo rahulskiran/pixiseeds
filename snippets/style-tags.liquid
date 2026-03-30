@@ -5,6 +5,10 @@
   assign h3_font_size = settings.type_header_base_size
   assign h4_font_size = settings.h4_font_size
   assign header_letter_spacing = settings.type_header_spacing
+  assign site_padding_left_resolved = settings.site_padding_left | default: 40
+  assign site_padding_right_resolved = settings.site_padding_right | default: 40
+  assign site_padding_left_mobile_resolved = settings.site_padding_left_mobile | default: site_padding_left_resolved
+  assign site_padding_right_mobile_resolved = settings.site_padding_right_mobile | default: site_padding_right_resolved
 %}
 
 {%- style -%}
@@ -121,8 +125,8 @@
 
   	/* LAYOUT */
   	--page-width: {{ settings.page_width }}px;
-  	--site-padding-left: {{ settings.site_padding_left | default: 40 }}px;
-  	--site-padding-right: {{ settings.site_padding_right | default: 40 }}px;
+  	--site-padding-left: {{ site_padding_left_mobile_resolved }}px;
+  	--site-padding-right: {{ site_padding_right_mobile_resolved }}px;
   	{% if settings.enable_full_width %}
   	--page-width: 100%;
   	{% endif %}
@@ -169,6 +173,12 @@
      --search-bar-radius: {{ settings.search_bar_radius | default: 30 }}px;
      --search-bar-bg: {{ settings.search_bar_bg_color | default: '#f2f2f2' }};
      --search-bar-text: {{ settings.search_bar_text_color | default: '#000000' }};
+  }
+  @media screen and (min-width: 768px) {
+    :root {
+      --site-padding-left: {{ site_padding_left_resolved }}px;
+      --site-padding-right: {{ site_padding_right_resolved }}px;
+    }
   }
    {%- endcapture -%}
 
