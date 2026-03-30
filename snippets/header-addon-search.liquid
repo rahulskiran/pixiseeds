@@ -30,6 +30,7 @@
   if all_product_type.size > 0
     assign has_search_product_type = true
   endif
+  assign input_id = input_id | default: 'Search-In-Header'
 -%}
 {%- if settings.predictive_search_enabled -%}
   <predictive-search class="m-search {{ classes }}" data-loading-text="{{ 'accessibility.loading' | t }}">

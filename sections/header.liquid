@@ -93,12 +93,12 @@
           </h1>
         {%- endif -%}
       </div>
-      <div class="m-header__search m:hidden lg:m:flex">
+      <div class="m-header__search m:flex">
         {%- liquid 
           if toggle_button_position == 'top' and hasMega
             render 'header-addon-mega-menu', section: section, classes: 'm:hidden xl:m:block show-close-button m-megamenu--top'
           endif
-          render 'header-addon-search', classes: "m:flex-1"
+          render 'header-addon-search', classes: 'm:flex-1 m:w-full', input_id: 'Search-In-Header'
         -%}
       </div>
       <div class="m-header__icons">
@@ -111,7 +111,6 @@
           render 'header-addon-customer', customers: customers, icon_size: section.settings.icon_size, color_scheme: color_scheme
           render 'header-addon-wishlist', show_wishlist: show_wishlist, icon_size: section.settings.icon_size, color_scheme: color_scheme
           render 'header-addon-compare', show_compare: show_compare, icon_size: section.settings.icon_size, color_scheme: color_scheme
-          render 'search-modal', section: section
           render 'header-addon-cart', icon_size: section.settings.icon_size, color_scheme: color_scheme
         -%}
       </div>
