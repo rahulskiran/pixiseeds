@@ -3,6 +3,33 @@
   assign pb = section.settings.padding_bottom
   assign gap = section.settings.grid_gap
   assign gap_mobile = section.settings.grid_gap_mobile
+
+  assign heading_ff = 'var(--font-stack-header)'
+  if section.settings.heading_font == 'body'
+    assign heading_ff = 'var(--font-stack-body)'
+  endif
+
+  assign label_ff = 'var(--font-stack-body)'
+  if section.settings.label_font == 'heading'
+    assign label_ff = 'var(--font-stack-header)'
+  endif
+
+  assign heading_c = ''
+  if section.settings.heading_color_mode == 'custom'
+    assign heading_c = section.settings.heading_color
+  endif
+
+  assign label_c = ''
+  if section.settings.label_color_mode == 'custom'
+    assign label_c = section.settings.label_color
+  endif
+
+  assign card_bg = ''
+  assign card_bd = ''
+  if section.settings.card_color_mode == 'custom'
+    assign card_bg = section.settings.card_background
+    assign card_bd = section.settings.card_border_color
+  endif
 -%}
 
 {% style %}
@@ -10,7 +37,36 @@
     --m-newcol-gap: {{ gap_mobile }}px;
     --m-newcol-card-pad: {{ section.settings.card_padding }}px;
     --m-newcol-heading-gap: {{ section.settings.heading_spacing }}px;
+    --m-newcol-heading-font: {{ heading_ff }};
+    --m-newcol-label-font: {{ label_ff }};
+    --m-newcol-heading-weight: {{ section.settings.heading_font_weight }};
+    --m-newcol-label-weight: {{ section.settings.label_font_weight }};
+    --m-newcol-heading-size-mobile: {{ section.settings.heading_font_size_mobile }}px;
+    --m-newcol-heading-size-desktop: {{ section.settings.heading_font_size_desktop }}px;
+    --m-newcol-label-size: {{ section.settings.label_font_size }}px;
+    --m-newcol-heading-ls: {{ section.settings.heading_letter_spacing | times: 0.01 }}em;
+    --m-newcol-label-ls: {{ section.settings.label_letter_spacing | times: 0.001 }}em;
   }
+  {% if heading_c != blank %}
+    .m-newcol--{{ section.id }} {
+      --m-newcol-heading-color: {{ heading_c }};
+    }
+  {% endif %}
+  {% if label_c != blank %}
+    .m-newcol--{{ section.id }} {
+      --m-newcol-label-color: {{ label_c }};
+    }
+  {% endif %}
+  {% if card_bg != blank %}
+    .m-newcol--{{ section.id }} {
+      --m-newcol-card-bg: {{ card_bg }};
+    }
+  {% endif %}
+  {% if card_bd != blank %}
+    .m-newcol--{{ section.id }} {
+      --m-newcol-card-border: {{ card_bd }};
+    }
+  {% endif %}
   @media screen and (min-width: 1024px) {
     .m-newcol--{{ section.id }} {
       --m-newcol-gap: {{ gap }}px;
@@ -24,7 +80,7 @@
 >
   <div class="m-page-width">
     {% if section.settings.heading != blank %}
-      <h2 class="m-newcol__heading {{ section.settings.heading_size }}">{{ section.settings.heading | escape }}</h2>
+      <h2 class="m-newcol__heading">{{ section.settings.heading | escape }}</h2>
     {% endif %}
 
     <div class="m-newcol__grid">
@@ -80,14 +136,24 @@
 </section>
 
 {% style %}
-  .m-newcol__heading {
+  .m-newcol--{{ section.id }} .m-newcol__heading {
     text-align: center;
     margin: 0 0 var(--m-newcol-heading-gap, 32px);
     max-width: 48rem;
     margin-left: auto;
     margin-right: auto;
+    font-family: var(--m-newcol-heading-font, var(--font-stack-header));
+    font-weight: var(--m-newcol-heading-weight, 400);
+    letter-spacing: var(--m-newcol-heading-ls, 0);
+    font-size: var(--m-newcol-heading-size-mobile, 1.5rem);
+    color: var(--m-newcol-heading-color, rgb(var(--color-foreground)));
   }
-  .m-newcol__grid {
+  @media screen and (min-width: 1024px) {
+    .m-newcol--{{ section.id }} .m-newcol__heading {
+      font-size: var(--m-newcol-heading-size-desktop, 2rem);
+    }
+  }
+  .m-newcol--{{ section.id }} .m-newcol__grid {
     display: grid;
     grid-template-columns: 1fr;
     gap: var(--m-newcol-gap, 12px);
@@ -96,23 +162,23 @@
     margin: 0;
   }
   @media screen and (min-width: 1024px) {
-    .m-newcol__grid {
+    .m-newcol--{{ section.id }} .m-newcol__grid {
       grid-template-columns: repeat(6, minmax(0, 1fr));
     }
   }
-  .m-newcol__card {
-    background: rgb(var(--color-background));
-    border: 1px solid rgba(var(--color-border), 0.45);
+  .m-newcol--{{ section.id }} .m-newcol__card {
+    background: var(--m-newcol-card-bg, rgb(var(--color-background)));
+    border: 1px solid var(--m-newcol-card-border, rgba(var(--color-border), 0.45));
     border-radius: var(--corner-radius, 6px);
     box-shadow: 0 1px 3px rgba(var(--color-foreground), 0.06);
     overflow: hidden;
     min-width: 0;
     transition: box-shadow 0.2s ease, transform 0.2s ease;
   }
-  .m-newcol__card--link:hover {
+  .m-newcol--{{ section.id }} .m-newcol__card--link:hover {
     box-shadow: 0 4px 12px rgba(var(--color-foreground), 0.1);
   }
-  .m-newcol__card-inner {
+  .m-newcol--{{ section.id }} .m-newcol__card-inner {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -125,13 +191,13 @@
     text-decoration: none;
     gap: 14px;
   }
-  .m-newcol__icon-wrap {
+  .m-newcol--{{ section.id }} .m-newcol__icon-wrap {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
   }
-  .m-newcol__icon-img {
+  .m-newcol--{{ section.id }} .m-newcol__icon-img {
     width: 48px;
     height: auto;
     max-height: 48px;
@@ -139,29 +205,30 @@
     display: block;
   }
   @media screen and (min-width: 1024px) {
-    .m-newcol__icon-img {
+    .m-newcol--{{ section.id }} .m-newcol__icon-img {
       width: 56px;
       max-height: 56px;
     }
   }
-  .m-newcol__icon-placeholder {
+  .m-newcol--{{ section.id }} .m-newcol__icon-placeholder {
     display: flex;
     width: 48px;
     height: 48px;
     opacity: 0.35;
   }
-  .m-newcol__icon-placeholder .m-placeholder-svg {
+  .m-newcol--{{ section.id }} .m-newcol__icon-placeholder .m-placeholder-svg {
     width: 100%;
     height: 100%;
   }
-  .m-newcol__label {
+  .m-newcol--{{ section.id }} .m-newcol__label {
     margin: 0;
-    font-size: 0.75rem;
+    font-family: var(--m-newcol-label-font, var(--font-stack-body));
+    font-size: var(--m-newcol-label-size, 12px);
     line-height: 1.35;
-    font-weight: 500;
-    letter-spacing: 0.12em;
+    font-weight: var(--m-newcol-label-weight, 500);
+    letter-spacing: var(--m-newcol-label-ls, 0.12em);
     text-transform: uppercase;
-    color: rgb(var(--color-foreground));
+    color: var(--m-newcol-label-color, rgb(var(--color-foreground)));
   }
 {% endstyle %}
 
@@ -181,15 +248,101 @@
       "default": "Shop by Growing Condition"
     },
     {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
       "type": "select",
-      "id": "heading_size",
-      "label": "Heading size",
+      "id": "heading_font",
+      "label": "Heading font",
       "options": [
-        { "value": "h3", "label": "Small" },
-        { "value": "h2", "label": "Medium" },
-        { "value": "h1", "label": "Large" }
+        { "value": "heading", "label": "Theme heading (serif / display)" },
+        { "value": "body", "label": "Theme body (sans)" }
       ],
-      "default": "h2"
+      "default": "heading",
+      "info": "Uses your theme fonts from Theme settings → Typography."
+    },
+    {
+      "type": "select",
+      "id": "label_font",
+      "label": "Card label font",
+      "options": [
+        { "value": "body", "label": "Theme body" },
+        { "value": "heading", "label": "Theme heading" }
+      ],
+      "default": "body"
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size_mobile",
+      "min": 18,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "label": "Heading size (mobile)",
+      "default": 26
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size_desktop",
+      "min": 20,
+      "max": 56,
+      "step": 1,
+      "unit": "px",
+      "label": "Heading size (desktop)",
+      "default": 34
+    },
+    {
+      "type": "range",
+      "id": "heading_font_weight",
+      "min": 300,
+      "max": 800,
+      "step": 100,
+      "label": "Heading weight",
+      "default": 400
+    },
+    {
+      "type": "range",
+      "id": "heading_letter_spacing",
+      "min": -5,
+      "max": 20,
+      "step": 1,
+      "unit": "%",
+      "label": "Heading letter spacing",
+      "default": 0,
+      "info": "Percentage of font size (0 = theme default)."
+    },
+    {
+      "type": "range",
+      "id": "label_font_size",
+      "min": 10,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Card label size",
+      "default": 12
+    },
+    {
+      "type": "select",
+      "id": "label_font_weight",
+      "label": "Card label weight",
+      "options": [
+        { "value": "400", "label": "Regular" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semibold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "500"
+    },
+    {
+      "type": "range",
+      "id": "label_letter_spacing",
+      "min": 0,
+      "max": 300,
+      "step": 10,
+      "label": "Card label letter spacing",
+      "default": 120,
+      "info": " em × 1000 (120 ≈ 0.12em, caps style)."
     },
     {
       "type": "range",
@@ -204,8 +357,75 @@
     {
       "type": "color_scheme",
       "id": "color_scheme",
-      "label": "Color scheme",
-      "default": "scheme_1"
+      "label": "Section color scheme",
+      "default": "scheme_1",
+      "info": "Sets section background and default text/icon colors from your color schemes."
+    },
+    {
+      "type": "header",
+      "content": "Custom colors"
+    },
+    {
+      "type": "paragraph",
+      "content": "Optional overrides. Choose “Custom” only when you want fixed colors instead of the color scheme."
+    },
+    {
+      "type": "select",
+      "id": "heading_color_mode",
+      "label": "Heading text color",
+      "options": [
+        { "value": "scheme", "label": "Use color scheme" },
+        { "value": "custom", "label": "Custom" }
+      ],
+      "default": "scheme"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#1a1a1a",
+      "visible_if": "{{ section.settings.heading_color_mode == 'custom' }}"
+    },
+    {
+      "type": "select",
+      "id": "label_color_mode",
+      "label": "Card label color",
+      "options": [
+        { "value": "scheme", "label": "Use color scheme" },
+        { "value": "custom", "label": "Custom" }
+      ],
+      "default": "scheme"
+    },
+    {
+      "type": "color",
+      "id": "label_color",
+      "label": "Label color",
+      "default": "#1a1a1a",
+      "visible_if": "{{ section.settings.label_color_mode == 'custom' }}"
+    },
+    {
+      "type": "select",
+      "id": "card_color_mode",
+      "label": "Card surface",
+      "options": [
+        { "value": "scheme", "label": "Use color scheme (cards use scheme background)" },
+        { "value": "custom", "label": "Custom background & border" }
+      ],
+      "default": "scheme"
+    },
+    {
+      "type": "color",
+      "id": "card_background",
+      "label": "Card background",
+      "default": "#ffffff",
+      "visible_if": "{{ section.settings.card_color_mode == 'custom' }}"
+    },
+    {
+      "type": "color",
+      "id": "card_border_color",
+      "label": "Card border",
+      "default": "#e8e8e8",
+      "visible_if": "{{ section.settings.card_color_mode == 'custom' }}"
     },
     {
       "type": "header",
