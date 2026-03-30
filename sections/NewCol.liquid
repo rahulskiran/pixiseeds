@@ -30,6 +30,14 @@
     assign card_bg = section.settings.card_background
     assign card_bd = section.settings.card_border_color
   endif
+
+  assign mobile_grid_cols = section.settings.mobile_columns | default: '2' | plus: 0
+  if mobile_grid_cols < 1
+    assign mobile_grid_cols = 1
+  endif
+  if mobile_grid_cols > 2
+    assign mobile_grid_cols = 2
+  endif
 -%}
 
 {% style %}
@@ -156,7 +164,7 @@
   }
   .m-newcol--{{ section.id }} .m-newcol__grid {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat({{ mobile_grid_cols }}, minmax(0, 1fr));
     gap: var(--m-newcol-gap, 12px);
     list-style: none;
     padding: 0;
@@ -431,6 +439,17 @@
     {
       "type": "header",
       "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "mobile_columns",
+      "label": "Cards per row (mobile)",
+      "options": [
+        { "value": "1", "label": "1 — full width, stacked" },
+        { "value": "2", "label": "2 — side by side" }
+      ],
+      "default": "2",
+      "info": "Below 1024px width. Desktop stays 6 columns in one row."
     },
     {
       "type": "range",
