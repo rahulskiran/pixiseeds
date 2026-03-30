@@ -914,10 +914,84 @@
         "animations": "inherit",
         "custom_classes": ""
       }
+    },
+    "new_col_6MtRnX": {
+      "type": "NewCol",
+      "blocks": {
+        "card_jAwxAB": {
+          "type": "card",
+          "settings": {
+            "title": "Full sun",
+            "link": "",
+            "open_new_tab": false
+          }
+        },
+        "card_dnCLLD": {
+          "type": "card",
+          "settings": {
+            "title": "Shade tolerant",
+            "link": "",
+            "open_new_tab": false
+          }
+        },
+        "card_VG6rxP": {
+          "type": "card",
+          "settings": {
+            "title": "Balcony containers",
+            "link": "",
+            "open_new_tab": false
+          }
+        },
+        "card_kiMJ6N": {
+          "type": "card",
+          "settings": {
+            "title": "Pollinator friendly",
+            "link": "",
+            "open_new_tab": false
+          }
+        },
+        "card_X4mzP6": {
+          "type": "card",
+          "settings": {
+            "title": "Deer resistant",
+            "link": "",
+            "open_new_tab": false
+          }
+        },
+        "card_HcM3KQ": {
+          "type": "card",
+          "settings": {
+            "title": "Drought hardy",
+            "link": "",
+            "open_new_tab": false
+          }
+        }
+      },
+      "block_order": [
+        "card_jAwxAB",
+        "card_dnCLLD",
+        "card_VG6rxP",
+        "card_kiMJ6N",
+        "card_X4mzP6",
+        "card_HcM3KQ"
+      ],
+      "name": "Shop by condition",
+      "settings": {
+        "heading": "Shop by Growing Condition",
+        "heading_size": "h2",
+        "heading_spacing": 32,
+        "color_scheme": "",
+        "grid_gap_mobile": 12,
+        "grid_gap": 16,
+        "card_padding": 24,
+        "padding_top": 52,
+        "padding_bottom": 52
+      }
     }
   },
   "order": [
     "slideshow_4HbFcY",
+    "new_col_6MtRnX",
     "3d92e37f-b44b-49a7-8000-f53f057128ae",
     "0bb7c3df-f5b4-4745-b7be-7842c5658f4a",
     "4c1b5e9a-4007-49bc-ad24-b1ad612a2316",
