@@ -40,6 +40,8 @@
     "btn_weight": "500",
     "inputs_border_thickness": 0,
     "product_card_corner_radius": 5,
+    "modal_corner_radius": 0,
+    "tooltip_corner_radius": 0,
     "corner_radius": 0,
     "sale_badge_scheme": "background-5",
     "new_badge_scheme": "background-2",
