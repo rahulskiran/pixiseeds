@@ -139,7 +139,7 @@
         "image_slide_yiWFMc"
       ],
       "settings": {
-        "layout": "grid",
+        "layout": "full-width",
         "slide_effect": "slide",
         "slide_height": "medium",
         "show_navigation": false,
