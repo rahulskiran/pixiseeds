@@ -151,6 +151,94 @@
         "custom_class": ""
       }
     },
+    "new_col_6MtRnX": {
+      "type": "NewCol",
+      "blocks": {
+        "card_jAwxAB": {
+          "type": "card",
+          "settings": {
+            "title": "Full sun",
+            "link": "",
+            "open_new_tab": false
+          }
+        },
+        "card_dnCLLD": {
+          "type": "card",
+          "settings": {
+            "title": "Shade tolerant",
+            "link": "",
+            "open_new_tab": false
+          }
+        },
+        "card_VG6rxP": {
+          "type": "card",
+          "settings": {
+            "title": "Balcony containers",
+            "link": "",
+            "open_new_tab": false
+          }
+        },
+        "card_kiMJ6N": {
+          "type": "card",
+          "settings": {
+            "title": "Pollinator friendly",
+            "link": "",
+            "open_new_tab": false
+          }
+        },
+        "card_X4mzP6": {
+          "type": "card",
+          "settings": {
+            "title": "Deer resistant",
+            "link": "",
+            "open_new_tab": false
+          }
+        },
+        "card_HcM3KQ": {
+          "type": "card",
+          "settings": {
+            "title": "Drought hardy",
+            "link": "",
+            "open_new_tab": false
+          }
+        }
+      },
+      "block_order": [
+        "card_jAwxAB",
+        "card_dnCLLD",
+        "card_VG6rxP",
+        "card_kiMJ6N",
+        "card_X4mzP6",
+        "card_HcM3KQ"
+      ],
+      "name": "Shop by condition",
+      "settings": {
+        "heading": "Shop by Growing Condition",
+        "heading_font": "body",
+        "label_font": "body",
+        "heading_font_size_mobile": 26,
+        "heading_font_size_desktop": 34,
+        "heading_font_weight": 400,
+        "heading_letter_spacing": 0,
+        "label_font_size": 12,
+        "label_font_weight": "500",
+        "label_letter_spacing": 120,
+        "heading_spacing": 32,
+        "color_scheme": "scheme-8ac6f64d-2ef8-41e0-8df5-0a7cb3580fdd",
+        "heading_color_mode": "scheme",
+        "heading_color": "#1a1a1a",
+        "label_color_mode": "scheme",
+        "label_color": "#1a1a1a",
+        "card_color_mode": "custom",
+        "card_background": "#fef9f0",
+        "card_border_color": "#cfcaca",
+        "grid_gap_mobile": 12,
+        "grid_gap": 16,
+        "card_padding": 24,
+        "padding_top": 52,
+        "padding_bottom": 52
+      }
+    },
     "3d92e37f-b44b-49a7-8000-f53f057128ae": {
       "type": "collection-list",
       "blocks": {
@@ -913,79 +1001,6 @@
         "section_padding_bottom": 50,
         "animations": "inherit",
         "custom_classes": ""
-      }
-    },
-    "new_col_6MtRnX": {
-      "type": "NewCol",
-      "blocks": {
-        "card_jAwxAB": {
-          "type": "card",
-          "settings": {
-            "title": "Full sun",
-            "link": "",
-            "open_new_tab": false
-          }
-        },
-        "card_dnCLLD": {
-          "type": "card",
-          "settings": {
-            "title": "Shade tolerant",
-            "link": "",
-            "open_new_tab": false
-          }
-        },
-        "card_VG6rxP": {
-          "type": "card",
-          "settings": {
-            "title": "Balcony containers",
-            "link": "",
-            "open_new_tab": false
-          }
-        },
-        "card_kiMJ6N": {
-          "type": "card",
-          "settings": {
-            "title": "Pollinator friendly",
-            "link": "",
-            "open_new_tab": false
-          }
-        },
-        "card_X4mzP6": {
-          "type": "card",
-          "settings": {
-            "title": "Deer resistant",
-            "link": "",
-            "open_new_tab": false
-          }
-        },
-        "card_HcM3KQ": {
-          "type": "card",
-          "settings": {
-            "title": "Drought hardy",
-            "link": "",
-            "open_new_tab": false
-          }
-        }
-      },
-      "block_order": [
-        "card_jAwxAB",
-        "card_dnCLLD",
-        "card_VG6rxP",
-        "card_kiMJ6N",
-        "card_X4mzP6",
-        "card_HcM3KQ"
-      ],
-      "name": "Shop by condition",
-      "settings": {
-        "heading": "Shop by Growing Condition",
-        "heading_size": "h2",
-        "heading_spacing": 32,
-        "color_scheme": "",
-        "grid_gap_mobile": 12,
-        "grid_gap": 16,
-        "card_padding": 24,
-        "padding_top": 52,
-        "padding_bottom": 52
       }
     }
   },
