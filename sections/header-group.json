@@ -56,9 +56,7 @@
     },
     "header_yWqLw4": {
       "type": "header",
-      "custom_css": [
-        ".m-header__search {padding-left: 150px; padding-right: 150px; max-width: 2000px; position: center; top: 25%; right: 300px;}"
-      ],
+      "custom_css": [],
       "settings": {
         "color_scheme": "background-1",
         "sticky_header_type": "none",
