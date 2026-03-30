@@ -9,6 +9,9 @@
   assign site_padding_right_resolved = settings.site_padding_right | default: 40
   assign site_padding_left_mobile_resolved = settings.site_padding_left_mobile | default: site_padding_left_resolved
   assign site_padding_right_mobile_resolved = settings.site_padding_right_mobile | default: site_padding_right_resolved
+  assign search_bar_text_resolved = settings.search_bar_text_color | default: '#000000'
+  assign search_bar_icon_resolved = settings.search_bar_icon_color | default: search_bar_text_resolved
+  assign search_bar_border_resolved = settings.search_bar_border_color | default: '#E8E8E8'
 %}
 
 {%- style -%}
@@ -169,10 +172,12 @@
      --drawer-border-width: {{ settings.drawer_border_width | default: 0 }}px;
      --drawer-border-color: {{ settings.drawer_border_color | default: '#EEEEEE' }};
 
-     /* Search bar styling */
+     /* Search bar styling (header, modal, search page) */
      --search-bar-radius: {{ settings.search_bar_radius | default: 30 }}px;
      --search-bar-bg: {{ settings.search_bar_bg_color | default: '#f2f2f2' }};
-     --search-bar-text: {{ settings.search_bar_text_color | default: '#000000' }};
+     --search-bar-text: {{ search_bar_text_resolved }};
+     --search-bar-border-color: {{ search_bar_border_resolved }};
+     --search-bar-icon-color: {{ search_bar_icon_resolved }};
   }
   @media screen and (min-width: 768px) {
     :root {

@@ -2541,9 +2541,24 @@
       },
       {
         "type": "color",
+        "id": "search_bar_border_color",
+        "label": "Search bar border color",
+        "default": "#E8E8E8",
+        "info": "1px border around the search field in the header, search modal, and search template."
+      },
+      {
+        "type": "color",
         "id": "search_bar_text_color",
-        "label": "Search bar text/icon color",
-        "default": "#000000"
+        "label": "Search bar text color",
+        "default": "#000000",
+        "info": "Applies to typed text and placeholder in the search field."
+      },
+      {
+        "type": "color",
+        "id": "search_bar_icon_color",
+        "label": "Search bar icon color",
+        "default": "#000000",
+        "info": "Magnifying glass, clear (reset), and icon-style search buttons. Falls back to text color if unset."
       }
     ]
   },
