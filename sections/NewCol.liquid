@@ -14,16 +14,6 @@
     assign label_ff = 'var(--font-stack-header)'
   endif
 
-  assign heading_c = ''
-  if section.settings.heading_color_mode == 'custom'
-    assign heading_c = section.settings.heading_color
-  endif
-
-  assign label_c = ''
-  if section.settings.label_color_mode == 'custom'
-    assign label_c = section.settings.label_color
-  endif
-
   assign mobile_grid_cols = section.settings.mobile_columns | default: '2' | plus: 0
   if mobile_grid_cols < 1
     assign mobile_grid_cols = 1
@@ -53,17 +43,10 @@
     --m-newcol-card-border: {{ section.settings.card_border_color }};
     --m-newcol-aspect-ratio: {{ section.settings.card_aspect_ratio }};
     --m-newcol-overlay: {{ section.settings.image_overlay_opacity | divided_by: 100.0 }};
+    --m-newcol-heading-color: {{ section.settings.heading_color }};
+    --m-newcol-label-color: {{ section.settings.label_color }};
+    background-color: {{ section.settings.section_background }};
   }
-  {% if heading_c != blank %}
-    .m-newcol--{{ section.id }} {
-      --m-newcol-heading-color: {{ heading_c }};
-    }
-  {% endif %}
-  {% if label_c != blank %}
-    .m-newcol--{{ section.id }} {
-      --m-newcol-label-color: {{ label_c }};
-    }
-  {% endif %}
   @media screen and (min-width: 1024px) {
     .m-newcol--{{ section.id }} {
       --m-newcol-gap: {{ gap }}px;
@@ -72,7 +55,7 @@
 {% endstyle %}
 
 <section
-  class="m-section m-newcol m-newcol--{{ section.id }} m-section--padding m-color-{{ section.settings.color_scheme }} m-gradient"
+  class="m-section m-newcol m-newcol--{{ section.id }} m-section--padding m-gradient"
   style="--section-padding-top: {{ pt }}px; --section-padding-bottom: {{ pb }}px;"
 >
   <div class="m-page-width">
@@ -147,7 +130,7 @@
     font-weight: var(--m-newcol-heading-weight, 400);
     letter-spacing: var(--m-newcol-heading-ls, 0);
     font-size: var(--m-newcol-heading-size-mobile, 1.5rem);
-    color: var(--m-newcol-heading-color, rgb(var(--color-foreground)));
+    color: var(--m-newcol-heading-color);
   }
   @media screen and (min-width: 1024px) {
     .m-newcol--{{ section.id }} .m-newcol__heading {
@@ -169,15 +152,15 @@
   }
   .m-newcol--{{ section.id }} .m-newcol__card {
     background: transparent;
-    border: 1px solid var(--m-newcol-card-border, rgba(var(--color-border), 0.45));
+    border: 1px solid var(--m-newcol-card-border);
     border-radius: var(--m-newcol-card-radius, var(--corner-radius, 6px));
-    box-shadow: 0 1px 3px rgba(var(--color-foreground), 0.06);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
     overflow: hidden;
     min-width: 0;
     transition: box-shadow 0.3s ease, transform 0.3s ease;
   }
   .m-newcol--{{ section.id }} .m-newcol__card--link:hover {
-    box-shadow: 0 8px 24px rgba(var(--color-foreground), 0.12);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   }
   .m-newcol--{{ section.id }} .m-newcol__card-inner {
     display: flex;
@@ -240,7 +223,7 @@
     font-weight: var(--m-newcol-label-weight, 600);
     letter-spacing: var(--m-newcol-label-ls, 0.12em);
     text-transform: var(--m-newcol-label-transform, uppercase);
-    color: var(--m-newcol-label-color, rgb(var(--color-foreground)));
+    color: var(--m-newcol-label-color);
   }
   @media screen and (min-width: 1024px) {
     .m-newcol--{{ section.id }} .m-newcol__label {
@@ -394,49 +377,26 @@
       "default": 32
     },
     {
-      "type": "color_scheme",
-      "id": "color_scheme",
-      "label": "Section color scheme",
-      "default": "scheme_1",
-      "info": "Sets section background and default heading colors."
-    },
-    {
       "type": "header",
-      "content": "Custom colors"
+      "content": "Colors"
     },
     {
-      "type": "select",
-      "id": "heading_color_mode",
-      "label": "Heading text color",
-      "options": [
-        { "value": "scheme", "label": "Use color scheme" },
-        { "value": "custom", "label": "Custom" }
-      ],
-      "default": "scheme"
+      "type": "color",
+      "id": "section_background",
+      "label": "Section background",
+      "default": "#ffffff"
     },
     {
       "type": "color",
       "id": "heading_color",
       "label": "Heading color",
-      "default": "#1a1a1a",
-      "visible_if": "{{ section.settings.heading_color_mode == 'custom' }}"
-    },
-    {
-      "type": "select",
-      "id": "label_color_mode",
-      "label": "Card label color",
-      "options": [
-        { "value": "scheme", "label": "Use color scheme" },
-        { "value": "custom", "label": "Custom" }
-      ],
-      "default": "custom"
+      "default": "#1a1a1a"
     },
     {
       "type": "color",
       "id": "label_color",
-      "label": "Label color",
-      "default": "#ffffff",
-      "visible_if": "{{ section.settings.label_color_mode == 'custom' }}"
+      "label": "Card label color",
+      "default": "#ffffff"
     },
     {
       "type": "color",
