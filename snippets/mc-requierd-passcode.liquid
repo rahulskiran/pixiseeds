@@ -482,8 +482,12 @@ padding: 6px;
             document.getElementById("mc-mainDiv").addEventListener("DOMNodeRemoved", onMcNodeRemove);
         } else {
             MC_OBSERVER.disconnect();
-            document.getElementById("mc-mainDiv").style.setProperty("display", "done", "important");
-            document.getElementById("mc-mainDiv").style.setProperty("visibility", "hidden", "important");
+            var mcMainEl = document.getElementById("mc-mainDiv");
+            if (mcMainEl) {
+                mcMainEl.style.setProperty("display", "none", "important");
+                mcMainEl.style.setProperty("visibility", "hidden", "important");
+                mcMainEl.style.setProperty("pointer-events", "none", "important");
+            }
         }
         if (!MC_C_COUNTRY_NAME) {
             fetch("https://ipapi.co/json/")
