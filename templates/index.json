@@ -1010,6 +1010,63 @@
         "animations": "inherit",
         "custom_classes": ""
       }
+    },
+    "new_product_sec_M84LcH": {
+      "type": "NewProductSec",
+      "blocks": {
+        "category_pad7Um": {
+          "type": "category",
+          "settings": {
+            "title": "Vegetables",
+            "collection": "frontpage"
+          }
+        },
+        "category_HkmJN9": {
+          "type": "category",
+          "settings": {
+            "title": "Flowers",
+            "collection": ""
+          }
+        },
+        "category_Axc6Ej": {
+          "type": "category",
+          "settings": {
+            "title": "Herbs",
+            "collection": ""
+          }
+        }
+      },
+      "block_order": [
+        "category_pad7Um",
+        "category_HkmJN9",
+        "category_Axc6Ej"
+      ],
+      "name": "Community favorites",
+      "settings": {
+        "heading": "Community Favorites",
+        "heading_alignment": "left",
+        "color_scheme": "",
+        "accent_color": "#D97748",
+        "accent_text_color": "#FFFFFF",
+        "tab_inactive_color": "#8B7355",
+        "star_color": "#D4A017",
+        "show_badge": true,
+        "badge_tag": "bestseller",
+        "badge_text": "BEST SELLER",
+        "badge_bg_color": "#E8C547",
+        "badge_text_color": "#1a1a1a",
+        "products_to_show": 8,
+        "products_per_row": 4,
+        "mobile_columns": "2",
+        "grid_gap_mobile": 14,
+        "grid_gap": 24,
+        "card_border_radius": 12,
+        "show_reviews": true,
+        "button_label": "Add to Cart",
+        "empty_state": "Choose a collection for this tab.",
+        "padding_top": 52,
+        "padding_bottom": 52
+      }
     }
   },
   "order": [
@@ -1023,6 +1080,7 @@
     "6c4f10ba-2c26-4691-95ce-2e3c9dfb089e",
     "02777377-8dc3-477f-8f06-08ee6c367afe",
     "8d4fab03-a6d0-46ee-ac9f-e0e3f073aa13",
-    "banner_grid_QmnCHV"
+    "banner_grid_QmnCHV",
+    "new_product_sec_M84LcH"
   ]
 }
