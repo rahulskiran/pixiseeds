@@ -23,6 +23,11 @@
 
   assign q1 = section.settings.query_param_1 | default: 'planting' | strip | replace: ' ', '_'
   assign q2 = section.settings.query_param_2 | default: 'sunlight' | strip | replace: ' ', '_'
+
+  assign ns_input_radius = 999
+  if section.settings.input_corner_style == 'rounded'
+    assign ns_input_radius = section.settings.input_border_radius | default: 16
+  endif
 -%}
 
 {% style %}
@@ -51,7 +56,7 @@
     --ns-btn-size-m: {{ section.settings.button_font_size_mobile | default: 16 }}px;
     --ns-btn-size-d: {{ section.settings.button_font_size_desktop | default: 17 }}px;
     --ns-inner-max: {{ section.settings.content_max_width | default: 720 }}px;
-    --ns-input-radius: {{ section.settings.input_border_radius | default: 999 }}px;
+    --ns-input-radius: {{ ns_input_radius }}px;
     --ns-field-gap: {{ section.settings.field_row_gap | default: 16 }}px;
     --section-padding-top: {{ pt_m }}px;
     --section-padding-bottom: {{ pb_m }}px;
@@ -652,15 +657,26 @@
       "default": 720
     },
     {
+      "type": "select",
+      "id": "input_corner_style",
+      "label": "Dropdown corners",
+      "options": [
+        { "value": "pill", "label": "Pill (fully rounded)" },
+        { "value": "rounded", "label": "Rounded rectangle" }
+      ],
+      "default": "pill"
+    },
+    {
       "type": "range",
       "id": "input_border_radius",
       "min": 8,
-      "max": 999,
+      "max": 40,
       "step": 1,
       "unit": "px",
       "label": "Dropdown corner radius",
-      "default": 999,
-      "info": "999 = pill shape."
+      "default": 16,
+      "info": "Only used when corners are “Rounded rectangle”. Pill uses a large radius in CSS.",
+      "visible_if": "{{ section.settings.input_corner_style == 'rounded' }}"
     },
     {
       "type": "range",
