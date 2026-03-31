@@ -201,10 +201,6 @@
               {% endfor %}
             </div>
           {% elsif show_editor_placeholders %}
-            <div class="m-newproductsec__preview-callout" role="note">
-              <strong>{{ section.settings.preview_callout_title | escape }}</strong>
-              {{ section.settings.preview_callout_body | strip_html | newline_to_br }}
-            </div>
             <div
               class="m-newproductsec__grid m-newproductsec__grid--placeholder"
               style="--np-m: {{ mobile_cols }}; --np-d: {{ desktop_cols }};"
@@ -457,20 +453,6 @@
     line-height: 1.5;
     color: rgb(var(--color-foreground-secondary));
     max-width: 42rem;
-  }
-  .m-newproductsec__preview-callout {
-    margin: 0 0 1rem;
-    padding: 0.85rem 1rem;
-    font-size: 0.875rem;
-    line-height: 1.55;
-    color: rgb(var(--color-foreground));
-    background: rgba(var(--color-foreground), 0.06);
-    border: 1px dashed rgba(var(--color-border), 0.85);
-    border-radius: var(--np-card-radius, 12px);
-  }
-  .m-newproductsec__preview-callout strong {
-    display: block;
-    margin-bottom: 0.35rem;
   }
   .m-newproductsec__card--placeholder {
     opacity: 1;
@@ -732,18 +714,6 @@
       "label": "Show sample cards in theme editor",
       "default": true,
       "info": "Only in Customize. When a tab has no collection or no products, placeholder cards show the layout. The live store hides these and shows the messages above instead."
-    },
-    {
-      "type": "text",
-      "id": "preview_callout_title",
-      "label": "Editor preview — callout title",
-      "default": "Reference layout (editor only)"
-    },
-    {
-      "type": "textarea",
-      "id": "preview_callout_body",
-      "label": "Editor preview — explanation",
-      "default": "These cards are placeholders. Assign a collection to this tab to show real products. Customers never see this box."
     },
     {
       "type": "text",
