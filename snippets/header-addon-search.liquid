@@ -225,40 +225,41 @@
         {% endif %}
       </div>
     {% endif %}
-    <input
-      class="search__input field__input form-field form-field--input m-search__input"
-      id="{{ input_id }}"
-      type="search"
-      name="q"
-      value="{{ search.terms | escape }}"
-      placeholder="{{ 'general.search.search_field_placeholder' | t }}"
-      {%- if settings.predictive_search_enabled -%}
-        role="combobox"
-        aria-expanded="false"
-        aria-owns="predictive-search-results"
-        aria-controls="predictive-search-results"
-        aria-haspopup="listbox"
-        aria-autocomplete="list"
-        autocorrect="off"
-        autocomplete="off"
-        autocapitalize="off"
-        spellcheck="false"
-      {%- endif -%}
-    >
-    <input type="hidden" name="options[prefix]" value="last">
-    <input type="hidden" id="product_type_input" name="filter.p.product_type">
-    <div class="m-search-form__buttons">
-      <button
-        type="reset"
-        class="reset__button m-search-form__reset--button {% if search.terms == blank %} m:hidden{% endif %}"
-        aria-label="{{ 'general.search.reset' | t }}"
+    <div class="m-search-form__main">
+      <input
+        class="search__input field__input form-field form-field--input m-search__input"
+        id="{{ input_id }}"
+        type="search"
+        name="q"
+        value="{{ search.terms | escape }}"
+        placeholder="{{ 'general.search.search_field_placeholder' | t }}"
+        {%- if settings.predictive_search_enabled -%}
+          role="combobox"
+          aria-expanded="false"
+          aria-owns="predictive-search-results"
+          aria-controls="predictive-search-results"
+          aria-haspopup="listbox"
+          aria-autocomplete="list"
+          autocorrect="off"
+          autocomplete="off"
+          autocapitalize="off"
+          spellcheck="false"
+        {%- endif -%}
       >
+      <input type="hidden" name="options[prefix]" value="last">
+      <input type="hidden" id="product_type_input" name="filter.p.product_type">
+      <div class="m-search-form__buttons">
+        <button
+          type="reset"
+          class="reset__button m-search-form__reset--button {% if search.terms == blank %} m:hidden{% endif %}"
+          aria-label="{{ 'general.search.reset' | t }}"
+        >
         <svg class="m-svg-icon--large" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M18.75 5.25L5.25 18.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
           <path d="M18.75 18.75L5.25 5.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
-      </button>
-      <button class="search__button m-search-form__search--button m-spinner-button search__button--{{ section.settings.search_button }}" aria-label="{{ 'general.search.search' | t }}">
+        </button>
+        <button class="search__button m-search-form__search--button m-spinner-button search__button--{{ section.settings.search_button }}" aria-label="{{ 'general.search.search' | t }}">
         {% if section.settings.search_button == 'icon' or section.settings.search_button == 'icon-plain' %}
           <svg class="m-svg-icon--large" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M10.5 18C14.6421 18 18 14.6421 18 10.5C18 6.35786 14.6421 3 10.5 3C6.35786 3 3 6.35786 3 10.5C3 14.6421 6.35786 18 10.5 18Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -278,7 +279,8 @@
             <path fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
           </svg>
         </span>
-      </button>
+        </button>
+      </div>
     </div>
   </div>
   {%- if settings.predictive_search_enabled -%}
