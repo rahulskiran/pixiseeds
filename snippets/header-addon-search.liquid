@@ -31,6 +31,20 @@
     assign has_search_product_type = true
   endif
   assign input_id = input_id | default: 'Search-In-Header'
+
+  assign has_type_filter = false
+  if has_search_product_type and product_type_search_enabled and settings.predictive_search_enabled
+    assign has_type_filter = true
+  endif
+  assign show_header_sort = true
+  if section.settings.header_search_show_sort == false
+    assign show_header_sort = false
+  endif
+  assign has_left_cluster = false
+  if has_type_filter or show_header_sort
+    assign has_left_cluster = true
+  endif
+  assign header_sort_current = search.sort_by | default: search.default_sort_by | default: 'relevance'
 -%}
 {%- if settings.predictive_search_enabled -%}
   <predictive-search class="m-search {{ classes }}" data-loading-text="{{ 'accessibility.loading' | t }}">
@@ -38,17 +52,60 @@
   <search-form class="m-search {{ classes }}">
 {%- endif -%}
 <form action="{{ routes.search_url }}" method="get" role="search" class="m-search-form">
-  <div class="m-search-form__wrapper{% if has_search_product_type and product_type_search_enabled and settings.predictive_search_enabled %} m-search-form__has-filter{% endif %}">
-    {% if has_search_product_type and product_type_search_enabled and settings.predictive_search_enabled %}
-      <div class="m-search-form__select">
-        <label for="search-product-type" class="m:hidden">{{ 'sections.header.search_filter.option_1' | t }}</label>
-        <select data-predictive-search-filter id="search-product-type">
-          <option disabled>{{ 'sections.header.search_filter.option_1' | t }}</option>
-          <option data-index="0" value selected>{{ 'sections.header.search_filter.option_2' | t }}</option>
-          {% for product_type in product_types %}
-            <option data-index="{{ forloop.index }}" value="{{ product_type | strip }}">{{ product_type }}</option>
-          {% endfor %}
-        </select>
+  <div class="m-search-form__wrapper{% if has_type_filter %} m-search-form__has-filter{% endif %}{% if show_header_sort %} m-search-form__has-sort{% endif %}">
+    {% if has_left_cluster %}
+      <div class="m-search-form__left-cluster">
+        {% if has_type_filter %}
+          <div class="m-search-form__select">
+            <label for="search-product-type-{{ input_id }}" class="m:hidden">{{ 'sections.header.search_filter.option_1' | t }}</label>
+            <select data-predictive-search-filter id="search-product-type-{{ input_id }}">
+              <option disabled>{{ 'sections.header.search_filter.option_1' | t }}</option>
+              <option data-index="0" value selected>{{ 'sections.header.search_filter.option_2' | t }}</option>
+              {% for product_type in product_types %}
+                <option data-index="{{ forloop.index }}" value="{{ product_type | strip }}">{{ product_type }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        {% endif %}
+        {% if show_header_sort %}
+          <div class="m-search-form__select m-search-form__select--sort">
+            <label for="search-sort-by-{{ input_id }}" class="m:hidden">{{ 'sections.header.search_sort.label' | t }}</label>
+            <select name="sort_by" id="search-sort-by-{{ input_id }}">
+              {% if search.sort_options.size > 0 %}
+                {% for option in search.sort_options %}
+                  <option
+                    value="{{ option.value | escape }}"
+                    {% if option.value == header_sort_current %}selected="selected"{% endif %}
+                  >
+                    {{ option.name | escape }}
+                  </option>
+                {% endfor %}
+              {% else %}
+                <option value="relevance" {% if header_sort_current == 'relevance' %}selected="selected"{% endif %}>
+                  {{ 'sections.header.search_sort.option_relevance' | t }}
+                </option>
+                <option value="price-ascending" {% if header_sort_current == 'price-ascending' %}selected="selected"{% endif %}>
+                  {{ 'sections.header.search_sort.option_price_asc' | t }}
+                </option>
+                <option value="price-descending" {% if header_sort_current == 'price-descending' %}selected="selected"{% endif %}>
+                  {{ 'sections.header.search_sort.option_price_desc' | t }}
+                </option>
+                <option value="created-descending" {% if header_sort_current == 'created-descending' %}selected="selected"{% endif %}>
+                  {{ 'sections.header.search_sort.option_created_desc' | t }}
+                </option>
+                <option value="created-ascending" {% if header_sort_current == 'created-ascending' %}selected="selected"{% endif %}>
+                  {{ 'sections.header.search_sort.option_created_asc' | t }}
+                </option>
+                <option value="title-ascending" {% if header_sort_current == 'title-ascending' %}selected="selected"{% endif %}>
+                  {{ 'sections.header.search_sort.option_title_asc' | t }}
+                </option>
+                <option value="title-descending" {% if header_sort_current == 'title-descending' %}selected="selected"{% endif %}>
+                  {{ 'sections.header.search_sort.option_title_desc' | t }}
+                </option>
+              {% endif %}
+            </select>
+          </div>
+        {% endif %}
       </div>
     {% endif %}
     <input
