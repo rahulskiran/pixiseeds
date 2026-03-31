@@ -1,0 +1,729 @@
+{%- liquid
+  assign pt = section.settings.padding_top
+  assign pb = section.settings.padding_bottom
+  assign pt_m = section.settings.padding_top_mobile | default: 32
+  assign pb_m = section.settings.padding_bottom_mobile | default: 32
+
+  assign heading_ff = 'var(--font-stack-header)'
+  if section.settings.heading_font == 'body'
+    assign heading_ff = 'var(--font-stack-body)'
+  endif
+  assign sub_ff = 'var(--font-stack-body)'
+  if section.settings.subheading_font == 'heading'
+    assign sub_ff = 'var(--font-stack-header)'
+  endif
+  assign label_ff = 'var(--font-stack-body)'
+  if section.settings.label_font == 'heading'
+    assign label_ff = 'var(--font-stack-header)'
+  endif
+
+  assign opt1_lines = section.settings.select_1_options | newline_to_br | split: '<br />'
+  assign opt2_lines = section.settings.select_2_options | newline_to_br | split: '<br />'
+  assign heading_display = section.settings.heading | strip | newline_to_br | split: '<br />' | first | strip
+
+  assign q1 = section.settings.query_param_1 | default: 'planting' | strip | replace: ' ', '_'
+  assign q2 = section.settings.query_param_2 | default: 'sunlight' | strip | replace: ' ', '_'
+-%}
+
+{% style %}
+  .m-notsure--{{ section.id }} {
+    --ns-bg: {{ section.settings.background_color }};
+    --ns-badge-bg: {{ section.settings.badge_background }};
+    --ns-badge-text: {{ section.settings.badge_text_color }};
+    --ns-heading: {{ section.settings.heading_color }};
+    --ns-sub: {{ section.settings.subheading_color }};
+    --ns-label: {{ section.settings.label_color }};
+    --ns-input-bg: {{ section.settings.input_background }};
+    --ns-input-text: {{ section.settings.input_text_color }};
+    --ns-input-border: {{ section.settings.input_border_color }};
+    --ns-btn-bg: {{ section.settings.button_background }};
+    --ns-btn-text: {{ section.settings.button_text_color }};
+    --ns-heading-font: {{ heading_ff }};
+    --ns-sub-font: {{ sub_ff }};
+    --ns-label-font: {{ label_ff }};
+    --ns-heading-size-m: {{ section.settings.heading_size_mobile | default: 28 }}px;
+    --ns-heading-size-d: {{ section.settings.heading_size_desktop | default: 40 }}px;
+    --ns-sub-size-m: {{ section.settings.subheading_size_mobile | default: 16 }}px;
+    --ns-sub-size-d: {{ section.settings.subheading_size_desktop | default: 18 }}px;
+    --ns-badge-size: {{ section.settings.badge_font_size | default: 11 }}px;
+    --ns-label-size: {{ section.settings.label_font_size | default: 15 }}px;
+    --ns-select-size: {{ section.settings.select_font_size | default: 15 }}px;
+    --ns-btn-size-m: {{ section.settings.button_font_size_mobile | default: 16 }}px;
+    --ns-btn-size-d: {{ section.settings.button_font_size_desktop | default: 17 }}px;
+    --ns-inner-max: {{ section.settings.content_max_width | default: 720 }}px;
+    --ns-input-radius: {{ section.settings.input_border_radius | default: 999 }}px;
+    --ns-field-gap: {{ section.settings.field_row_gap | default: 16 }}px;
+    --section-padding-top: {{ pt_m }}px;
+    --section-padding-bottom: {{ pb_m }}px;
+  }
+  @media screen and (min-width: 1024px) {
+    .m-notsure--{{ section.id }} {
+      --section-padding-top: {{ pt }}px;
+      --section-padding-bottom: {{ pb }}px;
+    }
+  }
+{% endstyle %}
+
+<section
+  class="m-section m-notsure m-notsure--{{ section.id }} m-section--padding section-notsure"
+  id="notsure-{{ section.id }}"
+>
+  <div class="m-page-width">
+    <div class="m-notsure__inner">
+      {% if section.settings.badge_text != blank %}
+        <p class="m-notsure__badge">{{ section.settings.badge_text | escape }}</p>
+      {% endif %}
+
+      {% if heading_display != blank %}
+        <h2 class="m-notsure__heading">{{ heading_display | escape }}</h2>
+      {% endif %}
+
+      {% if section.settings.subheading != blank %}
+        <p class="m-notsure__sub">{{ section.settings.subheading | escape }}</p>
+      {% endif %}
+
+      <div class="m-notsure__fields">
+        <div class="m-notsure__field">
+          {% if section.settings.label_1 != blank %}
+            <label class="m-notsure__label" for="notsure-s1-{{ section.id }}">{{ section.settings.label_1 | escape }}</label>
+          {% endif %}
+          <div class="m-notsure__select-wrap">
+            <select
+              id="notsure-s1-{{ section.id }}"
+              class="m-notsure__select"
+              data-notsure-select="1"
+              aria-label="{{ section.settings.label_1 | default: 'Option 1' | escape }}"
+            >
+              {% if section.settings.select_1_placeholder != blank %}
+                <option value="" selected disabled>{{ section.settings.select_1_placeholder | escape }}</option>
+              {% endif %}
+              {% for line in opt1_lines %}
+                {% assign line_strip = line | strip %}
+                {% if line_strip != blank %}
+                  {% assign opt_val = line_strip | handle %}
+                  <option value="{{ opt_val }}">{{ line_strip | escape }}</option>
+                {% endif %}
+              {% endfor %}
+            </select>
+            <span class="m-notsure__chevron" aria-hidden="true">
+              <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+          </div>
+        </div>
+
+        <div class="m-notsure__field">
+          {% if section.settings.label_2 != blank %}
+            <label class="m-notsure__label" for="notsure-s2-{{ section.id }}">{{ section.settings.label_2 | escape }}</label>
+          {% endif %}
+          <div class="m-notsure__select-wrap">
+            <select
+              id="notsure-s2-{{ section.id }}"
+              class="m-notsure__select"
+              data-notsure-select="2"
+              aria-label="{{ section.settings.label_2 | default: 'Option 2' | escape }}"
+            >
+              {% if section.settings.select_2_placeholder != blank %}
+                <option value="" selected disabled>{{ section.settings.select_2_placeholder | escape }}</option>
+              {% endif %}
+              {% for line in opt2_lines %}
+                {% assign line_strip = line | strip %}
+                {% if line_strip != blank %}
+                  {% assign opt_val = line_strip | handle %}
+                  <option value="{{ opt_val }}">{{ line_strip | escape }}</option>
+                {% endif %}
+              {% endfor %}
+            </select>
+            <span class="m-notsure__chevron" aria-hidden="true">
+              <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {% if section.settings.button_label != blank and section.settings.button_link != blank %}
+        <div class="m-notsure__cta-wrap">
+          <a
+            href="{{ section.settings.button_link }}"
+            class="m-notsure__cta"
+            data-notsure-submit
+            {% if section.settings.append_query_params %}
+              data-append-query="true"
+            {% endif %}
+          >
+            {{ section.settings.button_label | escape }}
+          </a>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% style %}
+  .m-notsure--{{ section.id }} {
+    background-color: var(--ns-bg) !important;
+  }
+  .m-notsure--{{ section.id }} .m-notsure__inner {
+    max-width: var(--ns-inner-max);
+    margin: 0 auto;
+    text-align: center;
+    padding: 0 4px;
+  }
+  .m-notsure--{{ section.id }} .m-notsure__badge {
+    display: inline-block;
+    margin: 0 0 1.25rem;
+    padding: 0.45rem 1rem;
+    border-radius: 999px;
+    background: var(--ns-badge-bg);
+    color: var(--ns-badge-text);
+    font-family: var(--ns-label-font);
+    font-size: var(--ns-badge-size);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    line-height: 1.2;
+  }
+  .m-notsure--{{ section.id }} .m-notsure__heading {
+    margin: 0 0 1rem;
+    font-family: var(--ns-heading-font);
+    font-size: var(--ns-heading-size-m);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--ns-heading);
+    letter-spacing: -0.02em;
+  }
+  @media screen and (min-width: 768px) {
+    .m-notsure--{{ section.id }} .m-notsure__heading {
+      font-size: var(--ns-heading-size-d);
+    }
+  }
+  .m-notsure--{{ section.id }} .m-notsure__sub {
+    margin: 0 0 2rem;
+    font-family: var(--ns-sub-font);
+    font-size: var(--ns-sub-size-m);
+    line-height: 1.6;
+    color: var(--ns-sub);
+    max-width: 36rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  @media screen and (min-width: 768px) {
+    .m-notsure--{{ section.id }} .m-notsure__sub {
+      font-size: var(--ns-sub-size-d);
+      margin-bottom: 2.25rem;
+    }
+  }
+  .m-notsure--{{ section.id }} .m-notsure__fields {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--ns-field-gap);
+    margin-bottom: 1.75rem;
+    text-align: left;
+  }
+  @media screen and (min-width: 768px) {
+    .m-notsure--{{ section.id }} .m-notsure__fields {
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem 1.25rem;
+      align-items: end;
+    }
+  }
+  .m-notsure--{{ section.id }} .m-notsure__field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    min-width: 0;
+  }
+  .m-notsure--{{ section.id }} .m-notsure__label {
+    font-family: var(--ns-label-font);
+    font-size: var(--ns-label-size);
+    font-weight: 700;
+    color: var(--ns-label);
+    line-height: 1.3;
+  }
+  .m-notsure--{{ section.id }} .m-notsure__select-wrap {
+    position: relative;
+    display: block;
+  }
+  .m-notsure--{{ section.id }} .m-notsure__select {
+    width: 100%;
+    margin: 0;
+    padding: 0.85rem 2.5rem 0.85rem 1.1rem;
+    font-family: var(--font-stack-body);
+    font-size: var(--ns-select-size);
+    line-height: 1.35;
+    color: var(--ns-input-text);
+    background-color: var(--ns-input-bg);
+    border: 1px solid var(--ns-input-border);
+    border-radius: var(--ns-input-radius);
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  .m-notsure--{{ section.id }} .m-notsure__select:focus {
+    outline: none;
+    border-color: var(--ns-btn-bg);
+    box-shadow: 0 0 0 3px rgba(217, 119, 70, 0.2);
+  }
+  .m-notsure--{{ section.id }} .m-notsure__chevron {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--ns-input-text);
+    opacity: 0.65;
+    pointer-events: none;
+    display: flex;
+  }
+  .m-notsure--{{ section.id }} .m-notsure__cta-wrap {
+    margin-top: 0.25rem;
+  }
+  .m-notsure--{{ section.id }} .m-notsure__cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: min(100%, 280px);
+    padding: 0.9rem 2rem;
+    font-family: var(--font-stack-body);
+    font-size: var(--ns-btn-size-m);
+    font-weight: 700;
+    text-decoration: none;
+    color: var(--ns-btn-text) !important;
+    background: var(--ns-btn-bg);
+    border-radius: 999px;
+    box-shadow: 0 8px 22px rgba(55, 35, 20, 0.15);
+    transition: transform 0.15s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+  }
+  @media screen and (min-width: 768px) {
+    .m-notsure--{{ section.id }} .m-notsure__cta {
+      font-size: var(--ns-btn-size-d);
+      padding: 1rem 2.25rem;
+    }
+  }
+  .m-notsure--{{ section.id }} .m-notsure__cta:hover {
+    opacity: 0.96;
+    transform: translateY(-1px);
+    box-shadow: 0 10px 26px rgba(55, 35, 20, 0.18);
+  }
+{% endstyle %}
+
+{% if section.settings.append_query_params and section.settings.button_link != blank %}
+  <script>
+    (function () {
+      var root = document.getElementById('notsure-{{ section.id }}');
+      if (!root) return;
+      var btn = root.querySelector('[data-notsure-submit]');
+      var s1 = root.querySelector('[data-notsure-select="1"]');
+      var s2 = root.querySelector('[data-notsure-select="2"]');
+      if (!btn || !s1 || !s2 || btn.getAttribute('data-append-query') !== 'true') return;
+      var base = btn.getAttribute('href');
+      var q1 = {{ q1 | json }};
+      var q2 = {{ q2 | json }};
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        var u;
+        try {
+          u = new URL(base, window.location.href);
+        } catch (err) {
+          u = new URL(window.location.origin + (base.charAt(0) === '/' ? base : '/' + base));
+        }
+        if (s1.value) u.searchParams.set(q1, s1.value);
+        if (s2.value) u.searchParams.set(q2, s2.value);
+        window.location.assign(u.toString());
+      });
+    })();
+  </script>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Product finder intro",
+  "tag": "section",
+  "class": "m-notsure-section",
+  "disabled_on": { "groups": ["header", "aside", "footer"] },
+  "settings": [
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge text",
+      "default": "PERSONALIZED FOR YOU"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Not sure what to plant? Let's find your match."
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Answer three simple questions about your space, and we'll curate the perfect selection for your unique garden."
+    },
+    {
+      "type": "header",
+      "content": "Dropdown 1"
+    },
+    {
+      "type": "text",
+      "id": "label_1",
+      "label": "Label",
+      "default": "Where are you planting?"
+    },
+    {
+      "type": "text",
+      "id": "select_1_placeholder",
+      "label": "Placeholder option",
+      "default": "Choose an option",
+      "info": "Shown as the first disabled option until the customer picks a value."
+    },
+    {
+      "type": "textarea",
+      "id": "select_1_options",
+      "label": "Options (one per line)",
+      "default": "Backyard Garden Bed\nRaised Beds\nContainers / Pots\nBalcony or patio"
+    },
+    {
+      "type": "header",
+      "content": "Dropdown 2"
+    },
+    {
+      "type": "text",
+      "id": "label_2",
+      "label": "Label",
+      "default": "How much sun do you get?"
+    },
+    {
+      "type": "text",
+      "id": "select_2_placeholder",
+      "label": "Placeholder option",
+      "default": "Choose an option"
+    },
+    {
+      "type": "textarea",
+      "id": "select_2_options",
+      "label": "Options (one per line)",
+      "default": "Full Sun (6+ hours)\nPart Sun (3–6 hours)\nShade (under 3 hours)"
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "See My Matches"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link",
+      "info": "e.g. a collection, search page, or quiz page."
+    },
+    {
+      "type": "checkbox",
+      "id": "append_query_params",
+      "label": "Append dropdown values to URL",
+      "default": false,
+      "info": "Adds query parameters from both dropdowns when the button is clicked (uses parameter names below)."
+    },
+    {
+      "type": "text",
+      "id": "query_param_1",
+      "label": "URL parameter name (dropdown 1)",
+      "default": "planting"
+    },
+    {
+      "type": "text",
+      "id": "query_param_2",
+      "label": "URL parameter name (dropdown 2)",
+      "default": "sunlight"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#FDF5EE"
+    },
+    {
+      "type": "color",
+      "id": "badge_background",
+      "label": "Badge background",
+      "default": "#F5E6D8"
+    },
+    {
+      "type": "color",
+      "id": "badge_text_color",
+      "label": "Badge text",
+      "default": "#5C4033"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading",
+      "default": "#2A1810"
+    },
+    {
+      "type": "color",
+      "id": "subheading_color",
+      "label": "Subheading",
+      "default": "#5C4033"
+    },
+    {
+      "type": "color",
+      "id": "label_color",
+      "label": "Field labels",
+      "default": "#3D2918"
+    },
+    {
+      "type": "color",
+      "id": "input_background",
+      "label": "Dropdown background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "input_text_color",
+      "label": "Dropdown text",
+      "default": "#3D3D3D"
+    },
+    {
+      "type": "color",
+      "id": "input_border_color",
+      "label": "Dropdown border",
+      "default": "#E8DDD4"
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Button background",
+      "default": "#D97746"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "select",
+      "id": "heading_font",
+      "label": "Heading font",
+      "options": [
+        { "value": "heading", "label": "Theme heading" },
+        { "value": "body", "label": "Theme body" }
+      ],
+      "default": "heading"
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "min": 22,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "label": "Heading size (mobile)",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "heading_size_desktop",
+      "min": 28,
+      "max": 52,
+      "step": 1,
+      "unit": "px",
+      "label": "Heading size (desktop)",
+      "default": 40
+    },
+    {
+      "type": "select",
+      "id": "subheading_font",
+      "label": "Subheading font",
+      "options": [
+        { "value": "body", "label": "Theme body" },
+        { "value": "heading", "label": "Theme heading" }
+      ],
+      "default": "body"
+    },
+    {
+      "type": "range",
+      "id": "subheading_size_mobile",
+      "min": 14,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "label": "Subheading size (mobile)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "subheading_size_desktop",
+      "min": 15,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Subheading size (desktop)",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "badge_font_size",
+      "min": 9,
+      "max": 14,
+      "step": 1,
+      "unit": "px",
+      "label": "Badge text size",
+      "default": 11
+    },
+    {
+      "type": "select",
+      "id": "label_font",
+      "label": "Label font (badge + fields)",
+      "options": [
+        { "value": "body", "label": "Theme body" },
+        { "value": "heading", "label": "Theme heading" }
+      ],
+      "default": "body"
+    },
+    {
+      "type": "range",
+      "id": "label_font_size",
+      "min": 13,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Field label size",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "select_font_size",
+      "min": 13,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Dropdown text size",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "button_font_size_mobile",
+      "min": 14,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Button text (mobile)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "button_font_size_desktop",
+      "min": 15,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "label": "Button text (desktop)",
+      "default": 17
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "content_max_width",
+      "min": 480,
+      "max": 900,
+      "step": 20,
+      "unit": "px",
+      "label": "Content max width",
+      "default": 720
+    },
+    {
+      "type": "range",
+      "id": "input_border_radius",
+      "min": 8,
+      "max": 999,
+      "step": 1,
+      "unit": "px",
+      "label": "Dropdown corner radius",
+      "default": 999,
+      "info": "999 = pill shape."
+    },
+    {
+      "type": "range",
+      "id": "field_row_gap",
+      "min": 8,
+      "max": 28,
+      "step": 2,
+      "unit": "px",
+      "label": "Space between stacked fields (mobile)",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top (mobile)",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom (mobile)",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top (desktop)",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom (desktop)",
+      "default": 56
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product finder intro",
+      "settings": {
+        "button_link": "shopify://collections/all"
+      }
+    }
+  ]
+}
+{% endschema %}
