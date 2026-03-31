@@ -155,19 +155,21 @@
     {% endif %}
 
     <form class="plant-comp__form" action="{{ section.settings.button_link }}" method="GET">
+      {% assign location_options_array = section.settings.location_options | split: ',' %}
       <div class="plant-comp__field">
         <label class="plant-comp__label" for="location-{{ section.id }}">{{ section.settings.location_label }}</label>
         <select class="plant-comp__select" id="location-{{ section.id }}" name="location">
-          {% for option in section.settings.location_options | split: ',' %}
+          {% for option in location_options_array %}
             <option value="{{ option | strip | handleize }}">{{ option | strip }}</option>
           {% endfor %}
         </select>
       </div>
 
+      {% assign sun_options_array = section.settings.sun_options | split: ',' %}
       <div class="plant-comp__field">
         <label class="plant-comp__label" for="sun-{{ section.id }}">{{ section.settings.sun_label }}</label>
         <select class="plant-comp__select" id="sun-{{ section.id }}" name="sun">
-          {% for option in section.settings.sun_options | split: ',' %}
+          {% for option in sun_options_array %}
             <option value="{{ option | strip | handleize }}">{{ option | strip }}</option>
           {% endfor %}
         </select>
