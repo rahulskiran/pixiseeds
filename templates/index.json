@@ -32,6 +32,7 @@
         },
         "image_slide_V7jbXq": {
           "type": "image_slide",
+          "disabled": true,
           "settings": {
             "color_scheme": "",
             "image_link": "",
@@ -48,6 +49,7 @@
         },
         "image_slide_zzThRF": {
           "type": "image_slide",
+          "disabled": true,
           "settings": {
             "color_scheme": "",
             "image_link": "",
@@ -422,7 +424,7 @@
           "type": "tab",
           "settings": {
             "collection": "humidifiers",
-            "heading": "Humidifiers",
+            "heading": "Vegetables",
             "icon_image_width": 30,
             "icon_svg": ""
           }
@@ -431,7 +433,7 @@
           "type": "tab",
           "settings": {
             "collection": "anemometers",
-            "heading": "Anemometers",
+            "heading": "Flowers",
             "icon_image_width": 30,
             "icon_svg": ""
           }
@@ -440,13 +442,14 @@
           "type": "tab",
           "settings": {
             "collection": "power-hand-tools",
-            "heading": "Power & Hand Tools",
+            "heading": "Herbs",
             "icon_image_width": 30,
             "icon_svg": ""
           }
         },
         "9e460bec-bde8-4147-adfa-a188e4910f87": {
           "type": "tab",
+          "disabled": true,
           "settings": {
             "collection": "airflow-air-quality",
             "heading": "Air Quality Monitors",
@@ -462,11 +465,11 @@
         "9e460bec-bde8-4147-adfa-a188e4910f87"
       ],
       "settings": {
-        "color_scheme": "scheme-e9bb5a59-eed5-4362-ab5e-3d6441907328",
+        "color_scheme": "background-4",
         "boxed_layout": false,
         "grid_bordered": false,
         "boxed_color_scheme": "",
-        "heading": "Home, Kitchen & Outdoor",
+        "heading": "Community Favorites",
         "heading_size": "h3",
         "tab_header_style": "1",
         "header_divider": false,
