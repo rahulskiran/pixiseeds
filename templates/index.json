@@ -649,7 +649,7 @@
         "template--21255729119505__b2b4af79-d2e4-4d09-917b-3c92638f5460-tab-3"
       ],
       "settings": {
-        "color_scheme": "",
+        "color_scheme": "background-1",
         "boxed_layout": false,
         "grid_bordered": false,
         "boxed_color_scheme": "",
@@ -682,6 +682,7 @@
     },
     "image_banner_afrWdQ": {
       "type": "Image-banner",
+      "disabled": true,
       "settings": {
         "layout": "grid",
         "image_height": "small",
@@ -834,6 +835,7 @@
         "collection_block_zYTJyd",
         "collection_block_hDKy8Q"
       ],
+      "disabled": true,
       "custom_css": [
         "@media (max-width: 767px) {.m-collection-card--inline .m-collection-card__info {flex-direction: column; }}"
       ],
