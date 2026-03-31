@@ -479,6 +479,7 @@
         "pcard_layout": "1",
         "pcard_image_ratio": "original",
         "show_vendor": true,
+        "show_add_to_cart": true,
         "pt_card_border": "inherit",
         "pt_use_pcard_scheme": false,
         "pt_pcard_color_scheme": "",
@@ -675,6 +676,7 @@
         "pcard_layout": "",
         "pcard_image_ratio": "",
         "show_vendor": false,
+        "show_add_to_cart": true,
         "pt_card_border": "inherit",
         "pt_use_pcard_scheme": false,
         "pt_pcard_color_scheme": "",
@@ -967,6 +969,7 @@
         "pcard_layout": "",
         "pcard_image_ratio": "",
         "show_vendor": true,
+        "show_add_to_cart": true,
         "pt_card_border": "inherit",
         "pt_use_pcard_scheme": false,
         "pt_pcard_color_scheme": "",
@@ -1093,6 +1096,7 @@
         "category_HkmJN9",
         "category_Axc6Ej"
       ],
+      "disabled": true,
       "name": "Community favorites",
       "settings": {
         "heading": "Community Favorites",
