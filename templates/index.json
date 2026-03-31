@@ -664,7 +664,7 @@
         "template--21255729119505__b2b4af79-d2e4-4d09-917b-3c92638f5460-tab-3"
       ],
       "settings": {
-        "color_scheme": "background-1",
+        "color_scheme": "scheme-f08d43fd-4b1f-4a68-b4fd-0103c8af3c3c",
         "boxed_layout": false,
         "grid_bordered": false,
         "boxed_color_scheme": "",
@@ -1097,7 +1097,7 @@
       "settings": {
         "heading": "Community Favorites",
         "heading_alignment": "left",
-        "color_scheme": "",
+        "color_scheme": "scheme-f08d43fd-4b1f-4a68-b4fd-0103c8af3c3c",
         "heading_font": "heading",
         "heading_size_mobile": 26,
         "heading_size_desktop": 36,

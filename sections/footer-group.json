@@ -76,10 +76,10 @@
         "@media (max-width: 767px) {.m-section--boxed .m-section__content {padding: 48px 0; }}"
       ],
       "settings": {
-        "color_scheme": "",
+        "color_scheme": "scheme-f08d43fd-4b1f-4a68-b4fd-0103c8af3c3c",
         "item_divide": false,
         "boxed_layout": false,
-        "boxed_color_scheme": "background-1",
+        "boxed_color_scheme": "scheme-f08d43fd-4b1f-4a68-b4fd-0103c8af3c3c",
         "section_padding_top": 61,
         "section_padding_bottom": 61,
         "items_per_row": 4,
@@ -170,7 +170,7 @@
         "@media (max-width: 767px) {.m-footer-bottom__right, .m-footer-bottom__right .m-payment-icons {order: 0; } .m-footer-bottom__left, .m-footer-bottom__right .m-footer-bottom__menu {order: 1; }}"
       ],
       "settings": {
-        "color_scheme": "scheme-e9bb5a59-eed5-4362-ab5e-3d6441907328",
+        "color_scheme": "background-5",
         "show_divider": false,
         "copyright": "",
         "show_country_selector": false,
