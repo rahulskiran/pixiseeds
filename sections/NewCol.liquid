@@ -24,10 +24,15 @@
     assign label_c = section.settings.label_color
   endif
 
-  assign card_bg = ''
+  assign card_inner_fill = ''
+  if section.settings.card_inner_background_enabled
+    assign card_inner_fill = section.settings.card_inner_background
+  elsif section.settings.card_color_mode == 'custom'
+    assign card_inner_fill = section.settings.card_background
+  endif
+
   assign card_bd = ''
   if section.settings.card_color_mode == 'custom'
-    assign card_bg = section.settings.card_background
     assign card_bd = section.settings.card_border_color
   endif
 
@@ -66,9 +71,9 @@
       --m-newcol-label-color: {{ label_c }};
     }
   {% endif %}
-  {% if card_bg != blank %}
+  {% if card_inner_fill != blank %}
     .m-newcol--{{ section.id }} {
-      --m-newcol-card-bg: {{ card_bg }};
+      --m-newcol-card-inner-bg: {{ card_inner_fill }};
     }
   {% endif %}
   {% if card_bd != blank %}
@@ -176,7 +181,7 @@
     }
   }
   .m-newcol--{{ section.id }} .m-newcol__card {
-    background: var(--m-newcol-card-bg, rgb(var(--color-background)));
+    background: transparent;
     border: 1px solid var(--m-newcol-card-border, rgba(var(--color-border), 0.45));
     border-radius: var(--m-newcol-card-radius, var(--corner-radius, 6px));
     box-shadow: 0 1px 3px rgba(var(--color-foreground), 0.06);
@@ -199,6 +204,7 @@
     color: inherit;
     text-decoration: none;
     gap: 14px;
+    background: var(--m-newcol-card-inner-bg, rgb(var(--color-background)));
   }
   .m-newcol--{{ section.id }} .m-newcol__icon-wrap {
     display: flex;
@@ -413,19 +419,34 @@
       "visible_if": "{{ section.settings.label_color_mode == 'custom' }}"
     },
     {
+      "type": "checkbox",
+      "id": "card_inner_background_enabled",
+      "label": "Custom color inside each card",
+      "default": false,
+      "info": "Fills the padded area behind the icon and label—not the icon image."
+    },
+    {
+      "type": "color",
+      "id": "card_inner_background",
+      "label": "Inside of card",
+      "default": "#faf8f3",
+      "visible_if": "{{ section.settings.card_inner_background_enabled }}"
+    },
+    {
       "type": "select",
       "id": "card_color_mode",
-      "label": "Card surface",
+      "label": "Card border (& optional inner fill)",
       "options": [
-        { "value": "scheme", "label": "Use color scheme (cards use scheme background)" },
-        { "value": "custom", "label": "Custom background & border" }
+        { "value": "scheme", "label": "From color scheme" },
+        { "value": "custom", "label": "Custom border and inner fill" }
       ],
-      "default": "scheme"
+      "default": "scheme",
+      "info": "Custom: pick border and inner below. Or keep scheme borders and only change the inner area with the checkbox above."
     },
     {
       "type": "color",
       "id": "card_background",
-      "label": "Card background",
+      "label": "Inside fill (with custom border mode)",
       "default": "#ffffff",
       "visible_if": "{{ section.settings.card_color_mode == 'custom' }}"
     },
