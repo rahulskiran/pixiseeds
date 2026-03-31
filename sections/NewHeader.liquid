@@ -528,7 +528,21 @@
       "id": "header_search_category_bg",
       "label": "Category dropdown background",
       "default": "#E8E8E8",
-      "info": "Background only for the “All” / collections control. Match your search bar background for a flat look."
+      "info": "Fills the “All” control: left segment in the segmented search bar (header and search modal), or the control background in the single-row bar."
+    },
+    {
+      "type": "color",
+      "id": "header_search_category_text_color",
+      "label": "Category dropdown text color",
+      "default": "#000000",
+      "info": "Color for “All”, collection names in the trigger, and the chevron. Use a light color on dark backgrounds (e.g. #FFFFFF on #222222)."
+    },
+    {
+      "type": "checkbox",
+      "id": "header_search_category_bold",
+      "label": "Bold category text",
+      "default": true,
+      "info": "Make the category dropdown text bold."
     },
     {
       "type": "range",
@@ -548,7 +562,7 @@
       "step": 2,
       "unit": "px",
       "label": "Category dropdown width (mobile)",
-      "default": 64
+      "default": 90
     },
     {
       "type": "range",
