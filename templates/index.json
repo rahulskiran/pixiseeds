@@ -233,14 +233,16 @@
         "heading_color": "#1a1a1a",
         "label_color_mode": "scheme",
         "label_color": "#1a1a1a",
+        "card_inner_background_enabled": false,
+        "card_inner_background": "#faf8f3",
         "card_color_mode": "custom",
-        "card_background": "#fef9f0",
-        "card_border_color": "#cfcaca",
+        "card_background": "#ffffff",
+        "card_border_color": "#eadfcd",
         "mobile_columns": "2",
         "grid_gap_mobile": 12,
         "grid_gap": 16,
         "card_padding": 24,
-        "card_border_radius": 6,
+        "card_border_radius": 22,
         "padding_top": 52,
         "padding_bottom": 52
       }
@@ -464,6 +466,7 @@
         "b0e6fc3f-c467-4492-a155-e29e1c1f0daf",
         "9e460bec-bde8-4147-adfa-a188e4910f87"
       ],
+      "disabled": true,
       "settings": {
         "color_scheme": "background-4",
         "boxed_layout": false,
@@ -574,6 +577,7 @@
         "857e3d23-75d2-409d-897c-61830ebe8968",
         "024506f3-168b-4590-a64f-81eb1b582630"
       ],
+      "disabled": true,
       "custom_css": [
         ".m-image-card {min-height: 200px;}"
       ],
@@ -1046,14 +1050,15 @@
         "heading": "Community Favorites",
         "heading_alignment": "left",
         "color_scheme": "",
-        "accent_color": "#D97748",
-        "accent_text_color": "#FFFFFF",
-        "tab_inactive_color": "#8B7355",
-        "star_color": "#D4A017",
+        "accent_color": "#d97748",
+        "accent_text_color": "#ffffff",
+        "tab_inactive_color": "#8b7355",
+        "show_reviews": true,
+        "star_color": "#d4a017",
         "show_badge": true,
         "badge_tag": "bestseller",
         "badge_text": "BEST SELLER",
-        "badge_bg_color": "#E8C547",
+        "badge_bg_color": "#e8c547",
         "badge_text_color": "#1a1a1a",
         "products_to_show": 8,
         "products_per_row": 4,
@@ -1061,9 +1066,14 @@
         "grid_gap_mobile": 14,
         "grid_gap": 24,
         "card_border_radius": 12,
-        "show_reviews": true,
         "button_label": "Add to Cart",
         "empty_state": "Choose a collection for this tab.",
+        "empty_no_collection": "Select a collection for this tab.",
+        "empty_no_products": "This collection has no products yet.",
+        "empty_hint_assign_collection": "In this tab’s block settings, open Collection and choose a collection that contains your products.",
+        "empty_hint_add_products": "In Shopify admin, go to Products, open a product, and under Organization add it to this collection.",
+        "show_editor_preview": true,
+        "preview_badge_text": "SAMPLE",
         "padding_top": 52,
         "padding_bottom": 52
       }
