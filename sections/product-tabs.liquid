@@ -50,6 +50,18 @@
     assign tablet_items = tablet_items | minus: 1 | at_least: 2
     assign laptop_items = laptop_items | minus: 1 | at_least: 2
   endif
+
+  assign pc_scheme = settings.pcard_color_scheme
+  if section.settings.pt_use_pcard_scheme
+    assign pc_scheme = section.settings.pt_pcard_color_scheme
+  endif
+
+  assign pc_align = settings.pcard_alignment
+  if section.settings.pt_pcard_text_align != 'inherit'
+    assign pc_align = section.settings.pt_pcard_text_align
+  endif
+
+  assign pt_card_border_setting = section.settings.pt_card_border | default: 'inherit'
 %}
 <section
   class="m-section m-section--padding{% if image_card.size > 0 %} m-product-tabs--has-banner{% endif %}{% if section.settings.boxed_layout %} m-section--boxed{% if section.settings.grid_bordered %} m-section--grid-bordered{% endif %}{% endif %}{% if section.settings.header_divider %} m-section--header-separated{% endif %} m-gradient m-color-{{ section.settings.color_scheme }} {{ section.settings.custom_class }}"
@@ -174,22 +186,33 @@
                   {%- if current_collection != blank and current_collection.products.size > 0 -%}
                     {% for product in current_collection.products limit: product_to_show %}
                       <div class="m:column{% if enable_slider %} swiper-slide{% endif %}">
-                        {% liquid
-                          case card_style
-                            when '1'
-                              render 'product-card-1', product: product, image_ratio: image_ratio, card_bordered: card_bordered, show_vendor: show_vendor, index: forloop.index, animated: animated, animation_effect: animation_effect
-                            when '2'
-                              render 'product-card-2', product: product, image_ratio: image_ratio, card_bordered: card_bordered, show_vendor: show_vendor, index: forloop.index, animated: animated, animation_effect: animation_effect
-                            when '3'
-                              render 'product-card-3', product: product, image_ratio: image_ratio, card_bordered: card_bordered, show_vendor: show_vendor, index: forloop.index, animated: animated, animation_effect: animation_effect
-                          endcase
+                        {% render 'product-tabs-card',
+                          card_style: card_style,
+                          product: product,
+                          image_ratio: image_ratio,
+                          card_bordered: card_bordered,
+                          card_border_setting: pt_card_border_setting,
+                          show_vendor: show_vendor,
+                          index: forloop.index,
+                          animated: animated,
+                          animation_effect: animation_effect,
+                          color_scheme: pc_scheme,
+                          pcard_alignment: pc_align
                         %}
                       </div>
                     {% endfor %}
                   {%- else -%}
                     {% for i in (1..product_to_show) %}
                       <div class="m:column{% if enable_slider %} swiper-slide{% endif %}">
-                        {% render 'product-card-placeholder', card_bordered: card_bordered, index: forloop.index, animated: animated, animation_effect: animation_effect %}
+                        {% render 'product-tabs-placeholder',
+                          card_bordered: card_bordered,
+                          card_border_setting: pt_card_border_setting,
+                          index: forloop.index,
+                          animated: animated,
+                          animation_effect: animation_effect,
+                          color_scheme: pc_scheme,
+                          pcard_alignment: pc_align
+                        %}
                       </div>
                     {% endfor %}
                   {%- endif -%}
@@ -231,6 +254,35 @@
     </product-tabs>
   </div>
 </section>
+{% style %}
+  {% if section.settings.pt_custom_card_surfaces %}
+    #shopify-section-{{ section.id }} .m-product-card__media {
+      background-color: {{ section.settings.pt_media_bg }} !important;
+    }
+    #shopify-section-{{ section.id }} .m-product-card__content {
+      background-color: {{ section.settings.pt_content_bg }} !important;
+    }
+  {% endif %}
+  {% if section.settings.pt_card_radius > 0 %}
+    #shopify-section-{{ section.id }} .m-product-card,
+    #shopify-section-{{ section.id }} .m-product-card__media {
+      --product-card-corner-radius: {{ section.settings.pt_card_radius }}px;
+    }
+  {% endif %}
+  {% if section.settings.pt_tab_custom_colors %}
+    #shopify-section-{{ section.id }} .m-product-tabs__buttons--style-2 .m-product-tabs__button {
+      background-color: {{ section.settings.pt_tab_bg }} !important;
+      border-color: {{ section.settings.pt_tab_border }} !important;
+      color: {{ section.settings.pt_tab_text }} !important;
+    }
+    #shopify-section-{{ section.id }} .m-product-tabs__buttons--style-2 .m-product-tabs__button.m-tab-active,
+    #shopify-section-{{ section.id }} .m-product-tabs__buttons--style-2 .m-product-tabs__button:hover {
+      background-color: {{ section.settings.pt_tab_active_bg }} !important;
+      border-color: {{ section.settings.pt_tab_active_border }} !important;
+      color: {{ section.settings.pt_tab_active_text }} !important;
+    }
+  {% endif %}
+{% endstyle %}
 {% schema %}
 {
   "name": "Product tabs",
@@ -399,6 +451,132 @@
       "id": "show_vendor",
       "label": "Show product vendors",
       "default": false
+    },
+    {
+      "type": "header",
+      "content": "Product card appearance"
+    },
+    {
+      "type": "select",
+      "id": "pt_card_border",
+      "label": "Card border",
+      "options": [
+        { "value": "inherit", "label": "Theme default" },
+        { "value": "on", "label": "Always show" },
+        { "value": "off", "label": "Hide (no outline)" }
+      ],
+      "default": "inherit"
+    },
+    {
+      "type": "checkbox",
+      "id": "pt_use_pcard_scheme",
+      "label": "Use section color scheme on cards",
+      "default": false,
+      "info": "Overrides Theme settings → Product cards color scheme for this section only."
+    },
+    {
+      "type": "color_scheme",
+      "id": "pt_pcard_color_scheme",
+      "label": "Product card color scheme",
+      "default": "background-1",
+      "visible_if": "{{ section.settings.pt_use_pcard_scheme }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "pt_custom_card_surfaces",
+      "label": "Custom card backgrounds",
+      "default": false,
+      "info": "Image area and text area only; does not recolor product photos."
+    },
+    {
+      "type": "color",
+      "id": "pt_media_bg",
+      "label": "Image / placeholder area",
+      "default": "#f4f1eb",
+      "visible_if": "{{ section.settings.pt_custom_card_surfaces }}"
+    },
+    {
+      "type": "color",
+      "id": "pt_content_bg",
+      "label": "Title and price area",
+      "default": "#ffffff",
+      "visible_if": "{{ section.settings.pt_custom_card_surfaces }}"
+    },
+    {
+      "type": "range",
+      "id": "pt_card_radius",
+      "min": 0,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "label": "Card corner radius",
+      "default": 0,
+      "info": "0 uses the theme default."
+    },
+    {
+      "type": "select",
+      "id": "pt_pcard_text_align",
+      "label": "Title and price alignment",
+      "options": [
+        { "value": "inherit", "label": "Theme default" },
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "inherit"
+    },
+    {
+      "type": "header",
+      "content": "Tab buttons (style 2)"
+    },
+    {
+      "type": "checkbox",
+      "id": "pt_tab_custom_colors",
+      "label": "Custom pill tab colors",
+      "default": false,
+      "info": "Applies when Tab header style is Style 2 (outlined pills)."
+    },
+    {
+      "type": "color",
+      "id": "pt_tab_bg",
+      "label": "Inactive background",
+      "default": "#ffffff",
+      "visible_if": "{{ section.settings.pt_tab_custom_colors }}"
+    },
+    {
+      "type": "color",
+      "id": "pt_tab_border",
+      "label": "Inactive border",
+      "default": "#e5e5e5",
+      "visible_if": "{{ section.settings.pt_tab_custom_colors }}"
+    },
+    {
+      "type": "color",
+      "id": "pt_tab_text",
+      "label": "Inactive text",
+      "default": "#1a1a1a",
+      "visible_if": "{{ section.settings.pt_tab_custom_colors }}"
+    },
+    {
+      "type": "color",
+      "id": "pt_tab_active_bg",
+      "label": "Active / hover background",
+      "default": "#2c2c2c",
+      "visible_if": "{{ section.settings.pt_tab_custom_colors }}"
+    },
+    {
+      "type": "color",
+      "id": "pt_tab_active_border",
+      "label": "Active / hover border",
+      "default": "#2c2c2c",
+      "visible_if": "{{ section.settings.pt_tab_custom_colors }}"
+    },
+    {
+      "type": "color",
+      "id": "pt_tab_active_text",
+      "label": "Active / hover text",
+      "default": "#ffffff",
+      "visible_if": "{{ section.settings.pt_tab_custom_colors }}"
     },
     {
       "type": "header",

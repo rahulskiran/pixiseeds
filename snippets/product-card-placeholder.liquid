@@ -19,6 +19,8 @@
     assign show_border = settings.pcard_show_border
   endif
 
+  assign label_align = pcard_alignment | default: settings.pcard_alignment
+
   assign product_card_classes = 'm-product-card m-product-card--placeholder m-product-card--view-' | append: view
   if show_border or card_bordered == true
     assign product_card_classes = product_card_classes | append: ' m-product-card--bordered'
@@ -40,7 +42,7 @@
       | placeholder_svg_tag: 'm-placeholder-svg m:object-cover m:w-full m:h-full'
     }}
   </div>
-  <div class="m-product-card__content m:text-{{ settings.pcard_alignment }}">
+  <div class="m-product-card__content m:text-{{ label_align }}">
     <div class="m-product-card__info">
       <div class="m-product-card__name{% if settings.uppercase_prd_name %} m:uppercase{% endif %}">
         {{ 'homepage.onboarding.product_title' | t }}

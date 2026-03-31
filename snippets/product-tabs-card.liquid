@@ -1,0 +1,43 @@
+{% comment %}
+  Renders product-card-1|2|3 for product-tabs with section-level border + color overrides.
+  Accepts:
+    - card_style, product, image_ratio, card_bordered, show_vendor, index, animated, animation_effect
+    - color_scheme, pcard_alignment
+    - card_border_setting: 'inherit' | 'on' | 'off'
+{% endcomment %}
+{% liquid
+  unless card_style == '1' or card_style == '2' or card_style == '3'
+    assign card_style = '1'
+  endunless
+
+  case card_border_setting
+    when 'off'
+      assign _sb = false
+      assign _cb = false
+    when 'on'
+      assign _sb = true
+      assign _cb = true
+    else
+      assign _sb = 'inherit'
+      assign _cb = card_bordered
+  endcase
+%}
+{% if _sb == 'inherit' %}
+  {% case card_style %}
+    {% when '1' %}
+      {% render 'product-card-1', product: product, image_ratio: image_ratio, card_bordered: _cb, show_vendor: show_vendor, index: index, animated: animated, animation_effect: animation_effect, color_scheme: color_scheme, pcard_alignment: pcard_alignment %}
+    {% when '2' %}
+      {% render 'product-card-2', product: product, image_ratio: image_ratio, card_bordered: _cb, show_vendor: show_vendor, index: index, animated: animated, animation_effect: animation_effect, color_scheme: color_scheme, pcard_alignment: pcard_alignment %}
+    {% when '3' %}
+      {% render 'product-card-3', product: product, image_ratio: image_ratio, card_bordered: _cb, show_vendor: show_vendor, index: index, animated: animated, animation_effect: animation_effect, color_scheme: color_scheme, pcard_alignment: pcard_alignment %}
+  {% endcase %}
+{% else %}
+  {% case card_style %}
+    {% when '1' %}
+      {% render 'product-card-1', product: product, image_ratio: image_ratio, card_bordered: _cb, show_border: _sb, show_vendor: show_vendor, index: index, animated: animated, animation_effect: animation_effect, color_scheme: color_scheme, pcard_alignment: pcard_alignment %}
+    {% when '2' %}
+      {% render 'product-card-2', product: product, image_ratio: image_ratio, card_bordered: _cb, show_border: _sb, show_vendor: show_vendor, index: index, animated: animated, animation_effect: animation_effect, color_scheme: color_scheme, pcard_alignment: pcard_alignment %}
+    {% when '3' %}
+      {% render 'product-card-3', product: product, image_ratio: image_ratio, card_bordered: _cb, show_border: _sb, show_vendor: show_vendor, index: index, animated: animated, animation_effect: animation_effect, color_scheme: color_scheme, pcard_alignment: pcard_alignment %}
+  {% endcase %}
+{% endif %}
