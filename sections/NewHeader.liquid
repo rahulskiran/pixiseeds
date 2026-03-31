@@ -502,10 +502,21 @@
         },
         {
           "value": "category",
-          "label": "Category (collection list)"
+          "label": "Category (search dropdown)"
         }
       ],
-      "info": "Sort: submits sort order (Search & Discovery). Category: use “Search category” blocks below to pick collections; shoppers open a themed dropdown (All + your collections). Searching with a collection chosen opens that collection with the query. Featured/Oldest sort is hidden in this mode."
+      "info": "Sort: order for search (Search & Discovery). Category: pick collections under “Search bar categories” below. The bar shows a dropdown: default “All” (whole store), or only the collection you choose."
+    },
+    {
+      "type": "header",
+      "content": "Search bar categories"
+    },
+    {
+      "type": "collection_list",
+      "id": "header_search_collections",
+      "label": "Collections in search dropdown",
+      "limit": 50,
+      "info": "Add the collections you want in the search bar list. “All” is always first. Drag to reorder. Not the same as the main navigation menu."
     },
     {
       "type": "header",
@@ -642,23 +653,6 @@
           "type": "html",
           "id": "html",
           "label": "Custom html"
-        }
-      ]
-    },
-    {
-      "type": "search_category_collection",
-      "name": "Search category",
-      "settings": [
-        {
-          "type": "collection",
-          "id": "collection",
-          "label": "Collection"
-        },
-        {
-          "type": "text",
-          "id": "custom_label",
-          "label": "Custom label",
-          "info": "Optional. Uses the collection title when blank."
         }
       ]
     }

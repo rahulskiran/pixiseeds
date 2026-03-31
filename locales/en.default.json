@@ -119,9 +119,9 @@
       },
       "search_category": {
         "label": "Category",
-        "all": "All categories",
+        "all": "All",
         "choose": "Choose a category",
-        "empty_menu": "Add collection links to your category menu"
+        "empty_menu": "Add collections under “Search bar categories” in the header settings"
       }
     }
   },

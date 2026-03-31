@@ -50,27 +50,24 @@
   endif
   assign header_sort_current = search.sort_by | default: search.default_sort_by | default: 'relevance'
   assign collections_base = routes.root_url | append: 'collections/'
+  assign header_search_cols = section.settings.header_search_collections
   assign header_category_current_handle = ''
   if template.name == 'collection' and collection.handle != blank
     assign header_category_current_handle = collection.handle
   endif
   assign category_selected_handle = ''
-  if header_category_current_handle != blank
-    for block in section.blocks
-      if block.type == 'search_category_collection' and block.settings.collection != blank
-        if block.settings.collection.handle == header_category_current_handle
-          assign category_selected_handle = header_category_current_handle
-        endif
+  if header_category_current_handle != blank and header_search_cols != blank
+    for col in header_search_cols
+      if col != blank and col.handle == header_category_current_handle
+        assign category_selected_handle = header_category_current_handle
       endif
     endfor
   endif
   assign category_selected_label = 'sections.header.search_category.all' | t
-  if category_selected_handle != blank
-    for block in section.blocks
-      if block.type == 'search_category_collection' and block.settings.collection != blank
-        if block.settings.collection.handle == category_selected_handle
-          assign category_selected_label = block.settings.custom_label | default: block.settings.collection.title
-        endif
+  if category_selected_handle != blank and header_search_cols != blank
+    for col in header_search_cols
+      if col != blank and col.handle == category_selected_handle
+        assign category_selected_label = col.title
       endif
     endfor
   endif
@@ -202,25 +199,25 @@
                       {{ 'sections.header.search_category.all' | t }}
                     </button>
                   </li>
-                  {% for block in section.blocks %}
-                    {% if block.type == 'search_category_collection' and block.settings.collection != blank %}
-                      {% assign col = block.settings.collection %}
-                      {% assign opt_label = block.settings.custom_label | default: col.title %}
-                      <li role="presentation">
-                        <button
-                          type="button"
-                          role="option"
-                          class="m-search-category-dd__option{% if category_selected_handle == col.handle %} is-selected{% endif %}"
-                          data-search-category-option
-                          data-value="{{ col.handle | escape }}"
-                          data-label="{{ opt_label | escape }}"
-                          aria-selected="{% if category_selected_handle == col.handle %}true{% else %}false{% endif %}"
-                        >
-                          {{ opt_label | escape }}
-                        </button>
-                      </li>
-                    {% endif %}
-                  {% endfor %}
+                  {% if header_search_cols != blank %}
+                    {% for col in header_search_cols %}
+                      {% if col != blank %}
+                        <li role="presentation">
+                          <button
+                            type="button"
+                            role="option"
+                            class="m-search-category-dd__option{% if category_selected_handle == col.handle %} is-selected{% endif %}"
+                            data-search-category-option
+                            data-value="{{ col.handle | escape }}"
+                            data-label="{{ col.title | escape }}"
+                            aria-selected="{% if category_selected_handle == col.handle %}true{% else %}false{% endif %}"
+                          >
+                            {{ col.title | escape }}
+                          </button>
+                        </li>
+                      {% endif %}
+                    {% endfor %}
+                  {% endif %}
                 </ul>
               </div>
             </div>
