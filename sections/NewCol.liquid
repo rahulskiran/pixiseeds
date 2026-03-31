@@ -44,9 +44,11 @@
     --m-newcol-label-weight: {{ section.settings.label_font_weight }};
     --m-newcol-heading-size-mobile: {{ section.settings.heading_font_size_mobile }}px;
     --m-newcol-heading-size-desktop: {{ section.settings.heading_font_size_desktop }}px;
-    --m-newcol-label-size: {{ section.settings.label_font_size }}px;
+    --m-newcol-label-size-mobile: {{ section.settings.label_font_size_mobile }}px;
+    --m-newcol-label-size-desktop: {{ section.settings.label_font_size_desktop }}px;
     --m-newcol-heading-ls: {{ section.settings.heading_letter_spacing | times: 0.01 }}em;
     --m-newcol-label-ls: {{ section.settings.label_letter_spacing | times: 0.001 }}em;
+    --m-newcol-label-transform: {{ section.settings.label_text_transform }};
     --m-newcol-card-radius: {{ section.settings.card_border_radius }}px;
     --m-newcol-card-border: {{ section.settings.card_border_color }};
     --m-newcol-aspect-ratio: {{ section.settings.card_aspect_ratio }};
@@ -233,12 +235,17 @@
   .m-newcol--{{ section.id }} .m-newcol__label {
     margin: 0;
     font-family: var(--m-newcol-label-font, var(--font-stack-body));
-    font-size: var(--m-newcol-label-size, 14px);
+    font-size: var(--m-newcol-label-size-mobile, 14px);
     line-height: 1.35;
     font-weight: var(--m-newcol-label-weight, 600);
     letter-spacing: var(--m-newcol-label-ls, 0.12em);
-    text-transform: uppercase;
+    text-transform: var(--m-newcol-label-transform, uppercase);
     color: var(--m-newcol-label-color, rgb(var(--color-foreground)));
+  }
+  @media screen and (min-width: 1024px) {
+    .m-newcol--{{ section.id }} .m-newcol__label {
+      font-size: var(--m-newcol-label-size-desktop, 16px);
+    }
   }
 {% endstyle %}
 
@@ -324,13 +331,23 @@
     },
     {
       "type": "range",
-      "id": "label_font_size",
+      "id": "label_font_size_mobile",
       "min": 10,
-      "max": 24,
+      "max": 30,
       "step": 1,
       "unit": "px",
-      "label": "Card label size",
+      "label": "Card label size (mobile)",
       "default": 14
+    },
+    {
+      "type": "range",
+      "id": "label_font_size_desktop",
+      "min": 10,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "label": "Card label size (desktop)",
+      "default": 16
     },
     {
       "type": "select",
@@ -340,9 +357,21 @@
         { "value": "400", "label": "Regular" },
         { "value": "500", "label": "Medium" },
         { "value": "600", "label": "Semibold" },
-        { "value": "700", "label": "Bold" }
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra Bold" }
       ],
       "default": "600"
+    },
+    {
+      "type": "select",
+      "id": "label_text_transform",
+      "label": "Card label text transform",
+      "options": [
+        { "value": "none", "label": "Normal" },
+        { "value": "uppercase", "label": "Uppercase" },
+        { "value": "capitalize", "label": "Capitalize" }
+      ],
+      "default": "uppercase"
     },
     {
       "type": "range",
