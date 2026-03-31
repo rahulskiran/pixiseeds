@@ -68,7 +68,9 @@
         "custom_icon": "",
         "search_button": "icon-plain",
         "header_search_second_control": "category",
-        "header_search_collections": [],
+        "header_search_collections": [
+          "frontpage"
+        ],
         "header_search_category_width_desktop": 104,
         "header_search_category_width_mobile": 64,
         "header_search_category_padding_x_desktop": 10,
