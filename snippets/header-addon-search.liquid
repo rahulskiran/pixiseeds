@@ -106,8 +106,15 @@
 {%- if show_header_category -%}
   {%- liquid
     assign hsc_bg = section.settings.header_search_category_bg | default: 'transparent'
+    assign hsc_text = section.settings.header_search_category_text_color | default: 'inherit'
+    assign hsc_bold = section.settings.header_search_category_bold
+    if hsc_bold == true
+      assign hsc_fw = '700'
+    else
+      assign hsc_fw = '500'
+    endif
     assign hsc_w_d = section.settings.header_search_category_width_desktop | default: 104
-    assign hsc_w_m = section.settings.header_search_category_width_mobile | default: 64
+    assign hsc_w_m = section.settings.header_search_category_width_mobile | default: 90
     assign hsc_pxd = section.settings.header_search_category_padding_x_desktop | default: 10
     assign hsc_pyd = section.settings.header_search_category_padding_y_desktop | default: 0
     assign hsc_pxm = section.settings.header_search_category_padding_x_mobile | default: 6
@@ -116,6 +123,8 @@
   {% style %}
     .m-search-form {
       --header-search-category-bg: {{ hsc_bg }};
+      --header-search-category-text: {{ hsc_text }};
+      --header-search-category-font-weight: {{ hsc_fw }};
       --header-search-category-w-desktop: {{ hsc_w_d }}px;
       --header-search-category-w-mobile: {{ hsc_w_m }}px;
       --header-search-category-px-desktop: {{ hsc_pxd }}px;
