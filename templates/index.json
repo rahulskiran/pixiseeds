@@ -161,7 +161,7 @@
         "card_jAwxAB": {
           "type": "card",
           "settings": {
-            "image": "shopify://shop_images/Sunflower.jpg",
+            "image": "shopify://shop_images/Monstera_and_snake_202603312231.jpg",
             "title": "Full sun",
             "link": "",
             "open_new_tab": false
@@ -170,6 +170,7 @@
         "card_dnCLLD": {
           "type": "card",
           "settings": {
+            "image": "shopify://shop_images/Monstera_and_snake_202603312230.jpg",
             "title": "Shade tolerant",
             "link": "",
             "open_new_tab": false
@@ -178,6 +179,7 @@
         "card_VG6rxP": {
           "type": "card",
           "settings": {
+            "image": "shopify://shop_images/Monstera_and_snake_202603312234.jpg",
             "title": "Balcony containers",
             "link": "",
             "open_new_tab": false
@@ -186,6 +188,7 @@
         "card_kiMJ6N": {
           "type": "card",
           "settings": {
+            "image": "shopify://shop_images/Monarch_butterfly_landing_202603312237.jpg",
             "title": "Pollinator friendly",
             "link": "",
             "open_new_tab": false
@@ -225,14 +228,15 @@
         "heading_font_size_desktop": 34,
         "heading_font_weight": 400,
         "heading_letter_spacing": 0,
+        "label_font_size_mobile": 14,
+        "label_font_size_desktop": 16,
         "label_font_weight": "500",
+        "label_text_transform": "uppercase",
         "label_letter_spacing": 120,
         "heading_spacing": 32,
-        "color_scheme": "scheme-8ac6f64d-2ef8-41e0-8df5-0a7cb3580fdd",
-        "heading_color_mode": "scheme",
+        "section_background": "#fff8f5",
         "heading_color": "#1a1a1a",
-        "label_color_mode": "scheme",
-        "label_color": "#1a1a1a",
+        "label_color": "#ffffff",
         "card_border_color": "#eadfcd",
         "mobile_columns": "2",
         "card_aspect_ratio": "1 / 1",
