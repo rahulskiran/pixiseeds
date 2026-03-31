@@ -14,6 +14,7 @@
 >
 <script src="{{ 'search-form.js' | asset_url }}" defer="defer"></script>
 <script src="{{ 'header-search-category.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'header-search-typewriter.js' | asset_url }}" defer="defer"></script>
 <script src="{{ 'localization-form.js' | asset_url }}" defer="defer"></script>
 
 {%- liquid
@@ -517,6 +518,29 @@
       "label": "Collections in search dropdown",
       "limit": 50,
       "info": "Add the collections you want in the search bar list. “All” is always first. Drag to reorder. Not the same as the main navigation menu."
+    },
+    {
+      "type": "header",
+      "content": "Search placeholder animation"
+    },
+    {
+      "type": "checkbox",
+      "id": "header_search_placeholder_typewriter",
+      "label": "Enable typing animation in search placeholder",
+      "default": true
+    },
+    {
+      "type": "textarea",
+      "id": "header_search_placeholder_phrases",
+      "label": "Placeholder phrases",
+      "default": "Search for seeds, What are you looking for?, Find your plants, Browse collections",
+      "info": "Comma-separated. Each phrase cycles with a typewriter effect when the field is empty."
+    },
+    {
+      "type": "text",
+      "id": "header_search_placeholder_fallback",
+      "label": "Static placeholder (fallback)",
+      "info": "Shown when animation is off, while typing, or when focused. Leave blank to use the theme default."
     },
     {
       "type": "header",
