@@ -59,7 +59,7 @@
       "custom_css": [],
       "settings": {
         "color_scheme": "background-1",
-        "sticky_header_type": "none",
+        "sticky_header_type": "always",
         "separator_line": "none",
         "customers": "icon",
         "show_wishlist": false,
