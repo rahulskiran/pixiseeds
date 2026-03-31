@@ -71,11 +71,12 @@
         "header_search_collections": [
           "frontpage"
         ],
+        "header_search_category_bg": "#d96c3a",
         "header_search_category_width_desktop": 104,
-        "header_search_category_width_mobile": 64,
-        "header_search_category_padding_x_desktop": 10,
+        "header_search_category_width_mobile": 74,
+        "header_search_category_padding_x_desktop": 15,
         "header_search_category_padding_y_desktop": 0,
-        "header_search_category_padding_x_mobile": 6,
+        "header_search_category_padding_x_mobile": 9,
         "header_search_category_padding_y_mobile": 0,
         "header_search_placeholder_typewriter": true,
         "header_search_placeholder_phrases": "Search for seeds, What are you looking for?, Find your plants, Browse collections",
