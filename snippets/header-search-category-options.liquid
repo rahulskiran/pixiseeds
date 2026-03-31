@@ -1,0 +1,28 @@
+{%- comment -%}
+  Outputs <option> tags for collection links from a menu, including nested levels.
+  @param {linklist.links} links
+  @param {string} [prefix] - visual indent prefix for nested labels
+  @param {string} [current_handle] - selects this collection when it matches
+{%- endcomment -%}
+{%- liquid
+  assign opt_prefix = prefix | default: ''
+  assign cur = current_handle | default: ''
+-%}
+{%- for link in links -%}
+  {%- if link.type == 'collection_link' and link.object != blank -%}
+    <option
+      value="{{ link.object.handle | escape }}"
+      {% if cur != blank and link.object.handle == cur %}selected="selected"{% endif %}
+    >
+      {{ opt_prefix }}{{ link.title | escape }}
+    </option>
+  {%- endif -%}
+  {%- if link.links != blank -%}
+    {%- assign deeper = opt_prefix | append: '— ' -%}
+    {%- render 'header-search-category-options',
+      links: link.links,
+      prefix: deeper,
+      current_handle: cur
+    -%}
+  {%- endif -%}
+{%- endfor -%}

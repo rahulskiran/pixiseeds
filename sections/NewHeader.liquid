@@ -13,6 +13,7 @@
   onload="this.media='all'"
 >
 <script src="{{ 'search-form.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'header-search-category.js' | asset_url }}" defer="defer"></script>
 <script src="{{ 'localization-form.js' | asset_url }}" defer="defer"></script>
 
 {%- liquid
@@ -486,11 +487,31 @@
       ]
     },
     {
-      "type": "checkbox",
-      "id": "header_search_show_sort",
-      "label": "Show sort dropdown in search bar",
-      "default": true,
-      "info": "Submits sort order with your search. Results page must use filters/sorting (Search & Discovery) for all options to apply."
+      "type": "select",
+      "id": "header_search_second_control",
+      "label": "Second search control",
+      "default": "sort",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "sort",
+          "label": "Sort"
+        },
+        {
+          "value": "category",
+          "label": "Category (collections menu)"
+        }
+      ],
+      "info": "Sort: submits sort order (Search & Discovery). Category: lists every collection from your menu (including nested items) and searches only inside the collection picked—no Featured/Oldest sort dropdown."
+    },
+    {
+      "type": "link_list",
+      "id": "header_search_category_menu",
+      "label": "Category menu",
+      "info": "Pick the same menu you use for categories. Each item must link to a collection (Navigation: add collection links). Nested menu levels are included."
     },
     {
       "type": "header",
