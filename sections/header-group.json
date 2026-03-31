@@ -72,9 +72,9 @@
           "frontpage"
         ],
         "header_search_category_bg": "#d96c3a",
-        "header_search_category_text_color": "#000000",
+        "header_search_category_text_color": "#ffffff",
         "header_search_category_bold": false,
-        "header_search_category_width_desktop": 104,
+        "header_search_category_width_desktop": 100,
         "header_search_category_width_mobile": 74,
         "header_search_category_padding_x_desktop": 15,
         "header_search_category_padding_y_desktop": 0,
