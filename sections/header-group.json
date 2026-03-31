@@ -67,7 +67,7 @@
         "icon_size": "large",
         "custom_icon": "",
         "search_button": "icon-plain",
-        "header_search_second_control": "sort",
+        "header_search_second_control": "category",
         "header_search_category_menu": "search-bar-menu",
         "menu": "main-menu",
         "menu_color_scheme": "background-1",
