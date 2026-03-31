@@ -105,7 +105,7 @@
 -%}
 {%- if show_header_category -%}
   {%- liquid
-    {% comment %} assign hsc_bg = section.settings.header_search_category_bg | default: '#E8E8E8' {% endcomment %}
+    assign hsc_bg = section.settings.header_search_category_bg | default: 'transparent'
     assign hsc_w_d = section.settings.header_search_category_width_desktop | default: 104
     assign hsc_w_m = section.settings.header_search_category_width_mobile | default: 64
     assign hsc_pxd = section.settings.header_search_category_padding_x_desktop | default: 10
@@ -113,6 +113,17 @@
     assign hsc_pxm = section.settings.header_search_category_padding_x_mobile | default: 6
     assign hsc_pym = section.settings.header_search_category_padding_y_mobile | default: 0
   -%}
+  {% style %}
+    .m-search-form {
+      --header-search-category-bg: {{ hsc_bg }};
+      --header-search-category-w-desktop: {{ hsc_w_d }}px;
+      --header-search-category-w-mobile: {{ hsc_w_m }}px;
+      --header-search-category-px-desktop: {{ hsc_pxd }}px;
+      --header-search-category-py-desktop: {{ hsc_pyd }}px;
+      --header-search-category-px-mobile: {{ hsc_pxm }}px;
+      --header-search-category-py-mobile: {{ hsc_pym }}px;
+    }
+  {% endstyle %}
 {%- endif -%}
 {%- if settings.predictive_search_enabled -%}
   <predictive-search class="m-search {{ classes }}" data-loading-text="{{ 'accessibility.loading' | t }}">
