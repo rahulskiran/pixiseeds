@@ -24,18 +24,6 @@
     assign label_c = section.settings.label_color
   endif
 
-  assign card_inner_fill = ''
-  if section.settings.card_inner_background_enabled
-    assign card_inner_fill = section.settings.card_inner_background
-  elsif section.settings.card_color_mode == 'custom'
-    assign card_inner_fill = section.settings.card_background
-  endif
-
-  assign card_bd = ''
-  if section.settings.card_color_mode == 'custom'
-    assign card_bd = section.settings.card_border_color
-  endif
-
   assign mobile_grid_cols = section.settings.mobile_columns | default: '2' | plus: 0
   if mobile_grid_cols < 1
     assign mobile_grid_cols = 1
@@ -60,6 +48,9 @@
     --m-newcol-heading-ls: {{ section.settings.heading_letter_spacing | times: 0.01 }}em;
     --m-newcol-label-ls: {{ section.settings.label_letter_spacing | times: 0.001 }}em;
     --m-newcol-card-radius: {{ section.settings.card_border_radius }}px;
+    --m-newcol-card-border: {{ section.settings.card_border_color }};
+    --m-newcol-aspect-ratio: {{ section.settings.card_aspect_ratio }};
+    --m-newcol-overlay: {{ section.settings.image_overlay_opacity | divided_by: 100.0 }};
   }
   {% if heading_c != blank %}
     .m-newcol--{{ section.id }} {
@@ -69,16 +60,6 @@
   {% if label_c != blank %}
     .m-newcol--{{ section.id }} {
       --m-newcol-label-color: {{ label_c }};
-    }
-  {% endif %}
-  {% if card_inner_fill != blank %}
-    .m-newcol--{{ section.id }} {
-      --m-newcol-card-inner-bg: {{ card_inner_fill }};
-    }
-  {% endif %}
-  {% if card_bd != blank %}
-    .m-newcol--{{ section.id }} {
-      --m-newcol-card-border: {{ card_bd }};
     }
   {% endif %}
   @media screen and (min-width: 1024px) {
@@ -116,27 +97,31 @@
             <div class="m-newcol__card-inner">
           {% endif %}
 
-          <div class="m-newcol__icon-wrap">
+          <div class="m-newcol__image-wrap">
             {% if block.settings.image != blank %}
               {%- assign card_alt = block.settings.image.alt | default: block.settings.title | escape -%}
               {{
                 block.settings.image
-                | image_url: width: 120
+                | image_url: width: 800
                 | image_tag:
                   loading: 'lazy',
-                  class: 'm-newcol__icon-img',
-                  widths: '60, 80, 120',
-                  sizes: '(min-width: 1024px) 80px, 64px',
+                  class: 'm-newcol__image-img',
+                  widths: '200, 400, 600, 800',
+                  sizes: '(min-width: 1024px) calc(100vw / 6), calc(100vw / 2)',
                   alt: card_alt
               }}
             {% else %}
-              <span class="m-newcol__icon-placeholder">{{ 'image' | placeholder_svg_tag: 'm-placeholder-svg' }}</span>
+              <div class="m-newcol__image-placeholder">
+                {{ 'collection-1' | placeholder_svg_tag: 'm-placeholder-svg' }}
+              </div>
             {% endif %}
           </div>
 
-          {% if block.settings.title != blank %}
-            <p class="m-newcol__label">{{ block.settings.title | escape }}</p>
-          {% endif %}
+          <div class="m-newcol__content">
+            {% if block.settings.title != blank %}
+              <p class="m-newcol__label">{{ block.settings.title | escape }}</p>
+            {% endif %}
+          </div>
 
           {% if block.settings.link != blank %}
             </a>
@@ -187,60 +172,70 @@
     box-shadow: 0 1px 3px rgba(var(--color-foreground), 0.06);
     overflow: hidden;
     min-width: 0;
-    transition: box-shadow 0.2s ease, transform 0.2s ease;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
   }
   .m-newcol--{{ section.id }} .m-newcol__card--link:hover {
-    box-shadow: 0 4px 12px rgba(var(--color-foreground), 0.1);
+    box-shadow: 0 8px 24px rgba(var(--color-foreground), 0.12);
   }
   .m-newcol--{{ section.id }} .m-newcol__card-inner {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end; /* Align text at the bottom */
+    position: relative;
     text-align: center;
     padding: var(--m-newcol-card-pad, 24px) 16px;
-    min-height: 140px;
     height: 100%;
+    aspect-ratio: var(--m-newcol-aspect-ratio, 1 / 1);
     color: inherit;
     text-decoration: none;
-    gap: 14px;
-    background: var(--m-newcol-card-inner-bg, rgb(var(--color-background)));
+    overflow: hidden;
   }
-  .m-newcol--{{ section.id }} .m-newcol__icon-wrap {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
+  .m-newcol--{{ section.id }} .m-newcol__image-wrap {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
   }
-  .m-newcol--{{ section.id }} .m-newcol__icon-img {
-    width: 48px;
-    height: auto;
-    max-height: 48px;
-    object-fit: contain;
-    display: block;
+  .m-newcol--{{ section.id }} .m-newcol__image-wrap::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,var(--m-newcol-overlay)) 0%, rgba(0,0,0,0) 60%);
+    pointer-events: none;
   }
-  @media screen and (min-width: 1024px) {
-    .m-newcol--{{ section.id }} .m-newcol__icon-img {
-      width: 56px;
-      max-height: 56px;
-    }
-  }
-  .m-newcol--{{ section.id }} .m-newcol__icon-placeholder {
-    display: flex;
-    width: 48px;
-    height: 48px;
-    opacity: 0.35;
-  }
-  .m-newcol--{{ section.id }} .m-newcol__icon-placeholder .m-placeholder-svg {
+  .m-newcol--{{ section.id }} .m-newcol__image-img {
     width: 100%;
     height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .m-newcol--{{ section.id }} .m-newcol__card--link:hover .m-newcol__image-img {
+    transform: scale(1.08); /* Slight zoom on hover */
+  }
+  .m-newcol--{{ section.id }} .m-newcol__image-placeholder {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    background-color: #f3f3f3;
+  }
+  .m-newcol--{{ section.id }} .m-newcol__image-placeholder .m-placeholder-svg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    fill: #ccc;
+  }
+  .m-newcol--{{ section.id }} .m-newcol__content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
   }
   .m-newcol--{{ section.id }} .m-newcol__label {
     margin: 0;
     font-family: var(--m-newcol-label-font, var(--font-stack-body));
-    font-size: var(--m-newcol-label-size, 12px);
+    font-size: var(--m-newcol-label-size, 14px);
     line-height: 1.35;
-    font-weight: var(--m-newcol-label-weight, 500);
+    font-weight: var(--m-newcol-label-weight, 600);
     letter-spacing: var(--m-newcol-label-ls, 0.12em);
     text-transform: uppercase;
     color: var(--m-newcol-label-color, rgb(var(--color-foreground)));
@@ -331,11 +326,11 @@
       "type": "range",
       "id": "label_font_size",
       "min": 10,
-      "max": 18,
+      "max": 24,
       "step": 1,
       "unit": "px",
       "label": "Card label size",
-      "default": 12
+      "default": 14
     },
     {
       "type": "select",
@@ -347,7 +342,7 @@
         { "value": "600", "label": "Semibold" },
         { "value": "700", "label": "Bold" }
       ],
-      "default": "500"
+      "default": "600"
     },
     {
       "type": "range",
@@ -374,15 +369,11 @@
       "id": "color_scheme",
       "label": "Section color scheme",
       "default": "scheme_1",
-      "info": "Sets section background and default text/icon colors from your color schemes."
+      "info": "Sets section background and default heading colors."
     },
     {
       "type": "header",
       "content": "Custom colors"
-    },
-    {
-      "type": "paragraph",
-      "content": "Optional overrides. Choose “Custom” only when you want fixed colors instead of the color scheme."
     },
     {
       "type": "select",
@@ -409,57 +400,24 @@
         { "value": "scheme", "label": "Use color scheme" },
         { "value": "custom", "label": "Custom" }
       ],
-      "default": "scheme"
+      "default": "custom"
     },
     {
       "type": "color",
       "id": "label_color",
       "label": "Label color",
-      "default": "#1a1a1a",
-      "visible_if": "{{ section.settings.label_color_mode == 'custom' }}"
-    },
-    {
-      "type": "checkbox",
-      "id": "card_inner_background_enabled",
-      "label": "Custom color inside each card",
-      "default": false,
-      "info": "Fills the padded area behind the icon and label—not the icon image."
-    },
-    {
-      "type": "color",
-      "id": "card_inner_background",
-      "label": "Inside of card",
-      "default": "#faf8f3",
-      "visible_if": "{{ section.settings.card_inner_background_enabled }}"
-    },
-    {
-      "type": "select",
-      "id": "card_color_mode",
-      "label": "Card border (& optional inner fill)",
-      "options": [
-        { "value": "scheme", "label": "From color scheme" },
-        { "value": "custom", "label": "Custom border and inner fill" }
-      ],
-      "default": "scheme",
-      "info": "Custom: pick border and inner below. Or keep scheme borders and only change the inner area with the checkbox above."
-    },
-    {
-      "type": "color",
-      "id": "card_background",
-      "label": "Inside fill (with custom border mode)",
       "default": "#ffffff",
-      "visible_if": "{{ section.settings.card_color_mode == 'custom' }}"
+      "visible_if": "{{ section.settings.label_color_mode == 'custom' }}"
     },
     {
       "type": "color",
       "id": "card_border_color",
-      "label": "Card border",
-      "default": "#e8e8e8",
-      "visible_if": "{{ section.settings.card_color_mode == 'custom' }}"
+      "label": "Card border color",
+      "default": "#e8e8e8"
     },
     {
       "type": "header",
-      "content": "Layout"
+      "content": "Layout & Shape"
     },
     {
       "type": "select",
@@ -471,6 +429,18 @@
       ],
       "default": "2",
       "info": "Below 1024px width. Desktop stays 6 columns in one row."
+    },
+    {
+      "type": "select",
+      "id": "card_aspect_ratio",
+      "label": "Card shape",
+      "options": [
+        { "value": "1 / 1", "label": "Square (1:1)" },
+        { "value": "4 / 5", "label": "Portrait (4:5)" },
+        { "value": "3 / 4", "label": "Tall Portrait (3:4)" },
+        { "value": "3 / 2", "label": "Landscape (3:2)" }
+      ],
+      "default": "1 / 1"
     },
     {
       "type": "range",
@@ -499,7 +469,7 @@
       "max": 40,
       "step": 2,
       "unit": "px",
-      "label": "Card padding",
+      "label": "Text padding (inside card)",
       "default": 24
     },
     {
@@ -511,7 +481,18 @@
       "unit": "px",
       "label": "Card corner radius",
       "default": 6,
-      "info": "0 for square cards. Rounds all four corners of each card."
+      "info": "0 for square corners."
+    },
+    {
+      "type": "range",
+      "id": "image_overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Image overlay opacity",
+      "default": 30,
+      "info": "Adds a dark gradient to the bottom of the image so white text stays readable."
     },
     {
       "type": "header",
@@ -546,7 +527,8 @@
         {
           "type": "image_picker",
           "id": "image",
-          "label": "Icon"
+          "label": "Card Image",
+          "info": "Recommended high quality image"
         },
         {
           "type": "text",
