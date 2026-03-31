@@ -1,0 +1,615 @@
+{% liquid
+  assign animation_effect = settings.animations
+  assign animated = false
+  if animation_effect != 'none'
+    assign animated = true
+    if section.settings.animations != 'inherit'
+      assign animation_effect = section.settings.animations
+    endif
+  endif
+%}
+
+<style>
+  .video-card-section {
+    background-color: {{ section.settings.background_color }};
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+
+  .video-card-section__container {
+    max-width: {{ section.settings.container_width }}px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .video-card-section__header {
+    text-align: {{ section.settings.header_alignment }};
+    margin-bottom: 32px;
+  }
+
+  .video-card-section__heading {
+    color: {{ section.settings.heading_color }};
+    font-size: {{ section.settings.heading_size }}px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+
+  .video-card-section__subheading {
+    color: {{ section.settings.text_color }};
+    font-size: {{ section.settings.text_size }}px;
+    line-height: 1.5;
+  }
+
+  .video-card-grid {
+    display: grid;
+    grid-template-columns: repeat({{ section.settings.columns_desktop }}, 1fr);
+    gap: {{ section.settings.card_gap }}px;
+  }
+
+  .video-card {
+    background-color: {{ section.settings.card_background }};
+    border-radius: {{ section.settings.card_radius }}px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .video-card__media {
+    position: relative;
+    aspect-ratio: {{ section.settings.video_aspect_ratio }};
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .video-card__media img,
+  .video-card__media video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .video-card__play-btn {
+    position: absolute;
+    width: 48px;
+    height: 48px;
+    background-color: {{ section.settings.play_button_background }};
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    border: none;
+    padding: 0;
+  }
+
+  .video-card__play-btn:hover {
+    transform: scale(1.1);
+  }
+
+  .video-card__play-btn svg {
+    width: 20px;
+    height: 20px;
+    fill: {{ section.settings.play_button_icon_color }};
+    margin-left: 3px;
+  }
+
+  .video-card__info {
+    padding: 12px 16px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .video-card__details {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .video-card__title {
+    color: {{ section.settings.card_title_color }};
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .video-card__price {
+    color: {{ section.settings.card_price_color }};
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .video-card__quick-add {
+    flex-shrink: 0;
+  }
+
+  .video-card__quick-add-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background-color: {{ section.settings.quick_add_background }};
+    color: {{ section.settings.quick_add_text_color }};
+    font-size: 12px;
+    font-weight: 600;
+    padding: 8px 14px;
+    border-radius: 16px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .video-card__quick-add-btn:hover {
+    opacity: 0.9;
+  }
+
+  .video-card__quick-add-btn svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 1024px) {
+    .video-card-grid {
+      grid-template-columns: repeat({{ section.settings.columns_tablet }}, 1fr);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .video-card-section__container {
+      padding: 0 16px;
+    }
+
+    .video-card-section__heading {
+      font-size: {{ section.settings.heading_size | times: 0.85 }}px;
+    }
+
+    .video-card-grid {
+      grid-template-columns: repeat({{ section.settings.columns_mobile }}, 1fr);
+      gap: {{ section.settings.card_gap | times: 0.8 }}px;
+    }
+
+    .video-card__info {
+      padding: 10px 12px 12px;
+    }
+
+    .video-card__quick-add-btn {
+      padding: 6px 10px;
+      font-size: 11px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .video-card__title {
+      font-size: 12px;
+    }
+
+    .video-card__price {
+      font-size: 12px;
+    }
+
+    .video-card__play-btn {
+      width: 40px;
+      height: 40px;
+    }
+
+    .video-card__play-btn svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+</style>
+
+<section class="video-card-section" data-section-id="{{ section.id }}">
+  <div class="video-card-section__container">
+    {% if section.settings.heading != blank or section.settings.subheading != blank %}
+      <div class="video-card-section__header{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}">
+        {% if section.settings.heading != blank %}
+          <h2 class="video-card-section__heading">{{ section.settings.heading }}</h2>
+        {% endif %}
+        {% if section.settings.subheading != blank %}
+          <p class="video-card-section__subheading">{{ section.settings.subheading }}</p>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <div class="video-card-grid{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}">
+      {% for block in section.blocks %}
+        <div class="video-card" {{ block.shopify_attributes }}>
+          <div class="video-card__media">
+            {% if block.settings.video_url != blank %}
+              {% if block.settings.cover_image != blank %}
+                <img src="{{ block.settings.cover_image | img_url: '800x' }}" alt="{{ block.settings.title | escape }}" loading="lazy">
+              {% endif %}
+              <button class="video-card__play-btn" type="button" data-video-url="{{ block.settings.video_url }}" aria-label="Play video">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M8 5v14l11-7z"/>
+                </svg>
+              </button>
+            {% elsif block.settings.cover_image != blank %}
+              <img src="{{ block.settings.cover_image | img_url: '800x' }}" alt="{{ block.settings.title | escape }}" loading="lazy">
+            {% else %}
+              {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+            {% endif %}
+          </div>
+
+          <div class="video-card__info">
+            <div class="video-card__details">
+              {% if block.settings.title != blank %}
+                <div class="video-card__title">{{ block.settings.title }}</div>
+              {% endif %}
+              {% if block.settings.price != blank %}
+                <div class="video-card__price">{{ block.settings.price }}</div>
+              {% endif %}
+            </div>
+
+            {% if block.settings.product != blank %}
+              <div class="video-card__quick-add">
+                <a href="{{ block.settings.product.url }}" class="video-card__quick-add-btn">
+                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 7V5C8 3.34315 9.34315 2 11 2H13C14.6569 2 16 3.34315 16 5V7M3 7H21V19C21 20.1046 20.1046 21 19 21H5C3.89543 21 3 20.1046 3 19V7Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12 12V16M10 14H14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  {{ block.settings.quick_add_text }}
+                </a>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const playButtons = document.querySelectorAll('.video-card__play-btn');
+  playButtons.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      const videoUrl = this.getAttribute('data-video-url');
+      if (videoUrl) {
+        window.open(videoUrl, '_blank');
+      }
+    });
+  });
+});
+</script>
+
+{% schema %}
+{
+  "name": "Video Cards",
+  "max_blocks": 10,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Header"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Seed to Bloom"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Watch the magic happen — then shop it"
+    },
+    {
+      "type": "select",
+      "id": "header_alignment",
+      "label": "Header alignment",
+      "default": "left",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 20,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "text_size",
+      "label": "Text size",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "container_width",
+      "label": "Container width",
+      "min": 1000,
+      "max": 1600,
+      "step": 50,
+      "unit": "px",
+      "default": 1400
+    },
+    {
+      "type": "select",
+      "id": "columns_desktop",
+      "label": "Columns on desktop",
+      "default": "5",
+      "options": [
+        {
+          "value": "2",
+          "label": "2"
+        },
+        {
+          "value": "3",
+          "label": "3"
+        },
+        {
+          "value": "4",
+          "label": "4"
+        },
+        {
+          "value": "5",
+          "label": "5"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "columns_tablet",
+      "label": "Columns on tablet",
+      "default": "3",
+      "options": [
+        {
+          "value": "2",
+          "label": "2"
+        },
+        {
+          "value": "3",
+          "label": "3"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Columns on mobile",
+      "default": "2",
+      "options": [
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "card_gap",
+      "label": "Card gap",
+      "min": 8,
+      "max": 40,
+      "step": 4,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "text",
+      "id": "video_aspect_ratio",
+      "label": "Video aspect ratio",
+      "default": "3/4",
+      "info": "Examples: 16/9, 4/3, 1/1, 3/4"
+    },
+    {
+      "type": "header",
+      "content": "Card Styling"
+    },
+    {
+      "type": "color",
+      "id": "card_background",
+      "label": "Card background",
+      "default": "#3D3833"
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "label": "Card border radius",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "color",
+      "id": "card_title_color",
+      "label": "Title color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "card_price_color",
+      "label": "Price color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "quick_add_background",
+      "label": "Quick add button background",
+      "default": "#D97B4A"
+    },
+    {
+      "type": "color",
+      "id": "quick_add_text_color",
+      "label": "Quick add button text color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "play_button_background",
+      "label": "Play button background",
+      "default": "rgba(255,255,255,0.9)"
+    },
+    {
+      "type": "color",
+      "id": "play_button_icon_color",
+      "label": "Play button icon color",
+      "default": "#3D3833"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Section background",
+      "default": "#F5F0E8"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#1A1A1A"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#666666"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "header",
+      "content": "Animations"
+    },
+    {
+      "type": "select",
+      "id": "animations",
+      "label": "Visible in the view animation",
+      "default": "inherit",
+      "options": [
+        {
+          "value": "inherit",
+          "label": "Inherit global setting"
+        },
+        {
+          "value": "fade-in",
+          "label": "Fade in"
+        },
+        {
+          "value": "fade-in-up",
+          "label": "Fade in up"
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "video_card",
+      "name": "Video Card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "cover_image",
+          "label": "Cover image"
+        },
+        {
+          "type": "url",
+          "id": "video_url",
+          "label": "Video URL",
+          "info": "Link to video (YouTube, Vimeo, etc.)"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Product Name"
+        },
+        {
+          "type": "text",
+          "id": "price",
+          "label": "Price",
+          "default": "$0.00"
+        },
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        },
+        {
+          "type": "text",
+          "id": "quick_add_text",
+          "label": "Quick add button text",
+          "default": "Quick Add"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Video Cards",
+      "blocks": [
+        {
+          "type": "video_card"
+        },
+        {
+          "type": "video_card"
+        },
+        {
+          "type": "video_card"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
