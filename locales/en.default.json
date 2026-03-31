@@ -120,7 +120,8 @@
       "search_category": {
         "label": "Category",
         "all": "All categories",
-        "choose": "Choose a category"
+        "choose": "Choose a category",
+        "empty_menu": "Add collection links to your category menu"
       }
     }
   },

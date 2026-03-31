@@ -50,10 +50,38 @@
   endif
   assign header_sort_current = search.sort_by | default: search.default_sort_by | default: 'relevance'
   assign category_menu = section.settings.header_search_category_menu
+  assign category_menu_links = nil
+  if category_menu != blank
+    if category_menu.links != blank
+      assign category_menu_links = category_menu.links
+    endif
+    if category_menu_links == blank or category_menu_links.size == 0
+      if category_menu.handle != blank
+        assign category_menu_links = linklists[category_menu.handle].links
+      endif
+    endif
+  endif
   assign collections_base = routes.root_url | append: 'collections/'
   assign header_category_current_handle = ''
   if template.name == 'collection' and collection.handle != blank
     assign header_category_current_handle = collection.handle
+  endif
+  assign first_menu_collection_handle = ''
+  if category_menu_links != blank and category_menu_links.size > 0
+    capture first_menu_collection_handle
+      render 'header-search-category-first', links: category_menu_links
+    endcapture
+    assign first_menu_collection_handle = first_menu_collection_handle | strip
+  endif
+  assign category_selected_handle = first_menu_collection_handle
+  if header_category_current_handle != blank
+    assign category_selected_handle = header_category_current_handle
+  endif
+  assign header_category_select_works = false
+  if show_header_category
+    if category_menu_links != blank and category_menu_links.size > 0 and first_menu_collection_handle != blank
+      assign header_category_select_works = true
+    endif
   endif
 -%}
 {%- if settings.predictive_search_enabled -%}
@@ -66,7 +94,7 @@
   method="get"
   role="search"
   class="m-search-form"
-  {% if show_header_category %}
+  {% if header_category_select_works %}
     data-category-search="true"
     data-collections-base="{{ collections_base | escape }}"
     {% if template.name == 'collection' and collection.handle != blank %}
@@ -131,25 +159,28 @@
         {% if show_header_category %}
           <div class="m-search-form__select m-search-form__select--category">
             <label for="search-category-{{ input_id }}" class="m:hidden">{{ 'sections.header.search_category.label' | t }}</label>
-            <select
-              data-header-search-category-select
-              id="search-category-{{ input_id }}"
-              required
-            >
-              <option
-                value=""
-                disabled
-                {% if header_category_current_handle == blank %}selected="selected"{% endif %}
+            {% if category_menu_links != blank
+              and category_menu_links.size > 0
+              and first_menu_collection_handle != blank
+            %}
+              <select
+                data-header-search-category-select
+                id="search-category-{{ input_id }}"
+                required
               >
-                {{ 'sections.header.search_category.choose' | t }}
-              </option>
-              {% if category_menu != blank and category_menu.links.size > 0 %}
                 {% render 'header-search-category-options',
-                  links: category_menu.links,
-                  current_handle: header_category_current_handle
+                  links: category_menu_links,
+                  selected_handle: category_selected_handle
                 %}
-              {% endif %}
-            </select>
+              </select>
+            {% else %}
+              <select
+                id="search-category-{{ input_id }}"
+                disabled
+              >
+                <option value="">{{ 'sections.header.search_category.empty_menu' | t }}</option>
+              </select>
+            {% endif %}
           </div>
         {% endif %}
       </div>
