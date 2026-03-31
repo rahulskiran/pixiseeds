@@ -62,6 +62,11 @@
   endif
 
   assign pt_card_border_setting = section.settings.pt_card_border | default: 'inherit'
+
+  assign pt_show_cart = true
+  if section.settings.show_add_to_cart == false
+    assign pt_show_cart = false
+  endif
 %}
 <section
   class="m-section m-section--padding{% if image_card.size > 0 %} m-product-tabs--has-banner{% endif %}{% if section.settings.boxed_layout %} m-section--boxed{% if section.settings.grid_bordered %} m-section--grid-bordered{% endif %}{% endif %}{% if section.settings.header_divider %} m-section--header-separated{% endif %} m-gradient m-color-{{ section.settings.color_scheme }} {{ section.settings.custom_class }}"
@@ -193,6 +198,7 @@
                           card_bordered: card_bordered,
                           card_border_setting: pt_card_border_setting,
                           show_vendor: show_vendor,
+                          show_cart_button: pt_show_cart,
                           index: forloop.index,
                           animated: animated,
                           animation_effect: animation_effect,
@@ -451,6 +457,13 @@
       "id": "show_vendor",
       "label": "Show product vendors",
       "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_add_to_cart",
+      "label": "Show add to cart button",
+      "default": true,
+      "info": "Renders quick add or add to cart on each card, matching your product card style and Theme settings → Product cards. Turn off for catalog-style cards that only link to the product page."
     },
     {
       "type": "header",
