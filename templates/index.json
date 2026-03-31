@@ -197,6 +197,7 @@
         "card_X4mzP6": {
           "type": "card",
           "settings": {
+            "image": "shopify://shop_images/Monarch_butterfly_landing_202603312237.jpg",
             "title": "Deer resistant",
             "link": "",
             "open_new_tab": false
@@ -205,6 +206,7 @@
         "card_HcM3KQ": {
           "type": "card",
           "settings": {
+            "image": "shopify://shop_images/Monstera_and_snake_202603312230.jpg",
             "title": "Drought hardy",
             "link": "",
             "open_new_tab": false
@@ -381,7 +383,6 @@
         "4b726e24-769f-44d3-acbf-12eb18816ec4",
         "311b2a1d-395b-4385-b2f3-29512c9bc0dd"
       ],
-      "disabled": true,
       "settings": {
         "color_scheme": "scheme-e9bb5a59-eed5-4362-ab5e-3d6441907328",
         "boxed_layout": true,
@@ -468,7 +469,6 @@
         "b0e6fc3f-c467-4492-a155-e29e1c1f0daf",
         "9e460bec-bde8-4147-adfa-a188e4910f87"
       ],
-      "disabled": true,
       "settings": {
         "color_scheme": "background-4",
         "boxed_layout": false,
@@ -595,7 +595,6 @@
         "857e3d23-75d2-409d-897c-61830ebe8968",
         "024506f3-168b-4590-a64f-81eb1b582630"
       ],
-      "disabled": true,
       "custom_css": [
         ".m-image-card {min-height: 200px;}"
       ],
@@ -716,7 +715,6 @@
     },
     "image_banner_afrWdQ": {
       "type": "Image-banner",
-      "disabled": true,
       "settings": {
         "layout": "grid",
         "image_height": "small",
@@ -733,7 +731,6 @@
     },
     "6c4f10ba-2c26-4691-95ce-2e3c9dfb089e": {
       "type": "featured-collection",
-      "disabled": true,
       "custom_css": [
         ".m-section__header {gap: 20px;}"
       ],
@@ -869,7 +866,6 @@
         "collection_block_zYTJyd",
         "collection_block_hDKy8Q"
       ],
-      "disabled": true,
       "custom_css": [
         "@media (max-width: 767px) {.m-collection-card--inline .m-collection-card__info {flex-direction: column; }}"
       ],
@@ -958,7 +954,6 @@
         "6f6a2d7f-5e7a-454e-92af-8a6a64d3bd36",
         "62bda09e-177a-4775-9869-4f1bbce09cd3"
       ],
-      "disabled": true,
       "settings": {
         "color_scheme": "",
         "boxed_layout": false,
@@ -1055,7 +1050,6 @@
         "image_biPGaN",
         "image_4MRNMQ"
       ],
-      "disabled": true,
       "settings": {
         "layout": "3",
         "gap_desktop": 0,
@@ -1098,7 +1092,6 @@
         "category_HkmJN9",
         "category_Axc6Ej"
       ],
-      "disabled": true,
       "name": "Community favorites",
       "settings": {
         "heading": "Community Favorites",
