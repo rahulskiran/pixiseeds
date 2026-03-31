@@ -1147,6 +1147,74 @@
         "padding_top": 52,
         "padding_bottom": 52
       }
+    },
+    "video_card_7Lz7pX": {
+      "type": "VideoCard",
+      "blocks": {
+        "video_card_HNNG3H": {
+          "type": "video_card",
+          "settings": {
+            "video_url": "",
+            "title": "Product Name",
+            "price": "$0.00",
+            "product": "",
+            "quick_add_text": "Quick Add"
+          }
+        },
+        "video_card_3bYai7": {
+          "type": "video_card",
+          "settings": {
+            "video_url": "",
+            "title": "Product Name",
+            "price": "$0.00",
+            "product": "",
+            "quick_add_text": "Quick Add"
+          }
+        },
+        "video_card_Y6kkEA": {
+          "type": "video_card",
+          "settings": {
+            "video_url": "",
+            "title": "Product Name",
+            "price": "$0.00",
+            "product": "",
+            "quick_add_text": "Quick Add"
+          }
+        }
+      },
+      "block_order": [
+        "video_card_HNNG3H",
+        "video_card_3bYai7",
+        "video_card_Y6kkEA"
+      ],
+      "name": "Video Cards",
+      "settings": {
+        "heading": "Seed to Bloom",
+        "subheading": "Watch the magic happen — then shop it",
+        "header_alignment": "left",
+        "heading_size": 28,
+        "text_size": 14,
+        "container_width": 1400,
+        "columns_desktop": "5",
+        "columns_tablet": "3",
+        "columns_mobile": "2",
+        "card_gap": 16,
+        "video_aspect_ratio": "3/4",
+        "card_background": "#3D3833",
+        "card_radius": 12,
+        "card_title_color": "#FFFFFF",
+        "card_price_color": "#FFFFFF",
+        "quick_add_background": "#D97B4A",
+        "quick_add_text_color": "#FFFFFF",
+        "play_button_background": "rgba(255,255,255,0.9)",
+        "play_button_icon_color": "#3D3833",
+        "background_color": "#F5F0E8",
+        "heading_color": "#1A1A1A",
+        "text_color": "#666666",
+        "padding_top": 60,
+        "padding_bottom": 60,
+        "animations": "inherit"
+      }
     }
   },
   "order": [
@@ -1161,6 +1229,7 @@
     "02777377-8dc3-477f-8f06-08ee6c367afe",
     "8d4fab03-a6d0-46ee-ac9f-e0e3f073aa13",
     "banner_grid_QmnCHV",
-    "new_product_sec_M84LcH"
+    "new_product_sec_M84LcH",
+    "video_card_7Lz7pX"
   ]
 }
