@@ -49,39 +49,34 @@
     assign has_left_cluster = true
   endif
   assign header_sort_current = search.sort_by | default: search.default_sort_by | default: 'relevance'
-  assign category_menu = section.settings.header_search_category_menu
-  assign category_menu_links = nil
-  if category_menu != blank
-    if category_menu.links != blank
-      assign category_menu_links = category_menu.links
-    endif
-    if category_menu_links == blank or category_menu_links.size == 0
-      if category_menu.handle != blank
-        assign category_menu_links = linklists[category_menu.handle].links
-      endif
-    endif
-  endif
   assign collections_base = routes.root_url | append: 'collections/'
   assign header_category_current_handle = ''
   if template.name == 'collection' and collection.handle != blank
     assign header_category_current_handle = collection.handle
   endif
-  assign first_menu_collection_handle = ''
-  if category_menu_links != blank and category_menu_links.size > 0
-    capture first_menu_collection_handle
-      render 'header-search-category-first', links: category_menu_links
-    endcapture
-    assign first_menu_collection_handle = first_menu_collection_handle | strip
-  endif
-  assign category_selected_handle = first_menu_collection_handle
+  assign category_selected_handle = ''
   if header_category_current_handle != blank
-    assign category_selected_handle = header_category_current_handle
+    for block in section.blocks
+      if block.type == 'search_category_collection' and block.settings.collection != blank
+        if block.settings.collection.handle == header_category_current_handle
+          assign category_selected_handle = header_category_current_handle
+        endif
+      endif
+    endfor
+  endif
+  assign category_selected_label = 'sections.header.search_category.all' | t
+  if category_selected_handle != blank
+    for block in section.blocks
+      if block.type == 'search_category_collection' and block.settings.collection != blank
+        if block.settings.collection.handle == category_selected_handle
+          assign category_selected_label = block.settings.custom_label | default: block.settings.collection.title
+        endif
+      endif
+    endfor
   endif
   assign header_category_select_works = false
   if show_header_category
-    if category_menu_links != blank and category_menu_links.size > 0 and first_menu_collection_handle != blank
-      assign header_category_select_works = true
-    endif
+    assign header_category_select_works = true
   endif
 -%}
 {%- if settings.predictive_search_enabled -%}
@@ -158,29 +153,77 @@
         {% endif %}
         {% if show_header_category %}
           <div class="m-search-form__select m-search-form__select--category">
-            <label for="search-category-{{ input_id }}" class="m:hidden">{{ 'sections.header.search_category.label' | t }}</label>
-            {% if category_menu_links != blank
-              and category_menu_links.size > 0
-              and first_menu_collection_handle != blank
-            %}
-              <select
-                data-header-search-category-select
-                id="search-category-{{ input_id }}"
-                required
+            <span class="m:hidden" id="search-category-label-{{ input_id }}">{{ 'sections.header.search_category.label' | t }}</span>
+            <div class="m-search-category-dd" data-search-category-dropdown>
+              <input
+                type="hidden"
+                value="{{ category_selected_handle | escape }}"
+                data-header-search-category-value
+                autocomplete="off"
               >
-                {% render 'header-search-category-options',
-                  links: category_menu_links,
-                  selected_handle: category_selected_handle
-                %}
-              </select>
-            {% else %}
-              <select
-                id="search-category-{{ input_id }}"
-                disabled
+              <button
+                type="button"
+                class="m-search-category-dd__toggle"
+                aria-expanded="false"
+                aria-haspopup="listbox"
+                aria-controls="search-category-panel-{{ input_id }}"
+                aria-labelledby="search-category-label-{{ input_id }} search-category-btn-{{ input_id }}"
+                id="search-category-btn-{{ input_id }}"
               >
-                <option value="">{{ 'sections.header.search_category.empty_menu' | t }}</option>
-              </select>
-            {% endif %}
+                <span
+                  class="m-search-category-dd__label"
+                  data-search-category-current
+                  id="search-category-current-{{ input_id }}"
+                >
+                  {{- category_selected_label | escape -}}
+                </span>
+                <span class="m-search-category-dd__chevron" aria-hidden="true">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+              </button>
+              <div
+                class="m-search-category-dd__panel"
+                id="search-category-panel-{{ input_id }}"
+                hidden
+              >
+                <ul class="m-search-category-dd__list" role="listbox" aria-labelledby="search-category-label-{{ input_id }}">
+                  <li role="presentation">
+                    <button
+                      type="button"
+                      role="option"
+                      class="m-search-category-dd__option{% if category_selected_handle == blank %} is-selected{% endif %}"
+                      data-search-category-option
+                      data-value=""
+                      data-label="{{ 'sections.header.search_category.all' | t | escape }}"
+                      aria-selected="{% if category_selected_handle == blank %}true{% else %}false{% endif %}"
+                    >
+                      {{ 'sections.header.search_category.all' | t }}
+                    </button>
+                  </li>
+                  {% for block in section.blocks %}
+                    {% if block.type == 'search_category_collection' and block.settings.collection != blank %}
+                      {% assign col = block.settings.collection %}
+                      {% assign opt_label = block.settings.custom_label | default: col.title %}
+                      <li role="presentation">
+                        <button
+                          type="button"
+                          role="option"
+                          class="m-search-category-dd__option{% if category_selected_handle == col.handle %} is-selected{% endif %}"
+                          data-search-category-option
+                          data-value="{{ col.handle | escape }}"
+                          data-label="{{ opt_label | escape }}"
+                          aria-selected="{% if category_selected_handle == col.handle %}true{% else %}false{% endif %}"
+                        >
+                          {{ opt_label | escape }}
+                        </button>
+                      </li>
+                    {% endif %}
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
           </div>
         {% endif %}
       </div>

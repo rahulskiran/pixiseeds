@@ -68,7 +68,6 @@
         "custom_icon": "",
         "search_button": "icon-plain",
         "header_search_second_control": "category",
-        "header_search_category_menu": "search-bar-menu",
         "menu": "main-menu",
         "menu_color_scheme": "background-1",
         "menu_show_separator_line": false,

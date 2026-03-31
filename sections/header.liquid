@@ -502,16 +502,10 @@
         },
         {
           "value": "category",
-          "label": "Category (collections menu)"
+          "label": "Category (collection list)"
         }
       ],
-      "info": "Sort: submits sort order (Search & Discovery). Category: lists every collection from your menu (including nested items) and searches only inside the collection picked—no Featured/Oldest sort dropdown."
-    },
-    {
-      "type": "link_list",
-      "id": "header_search_category_menu",
-      "label": "Category menu",
-      "info": "Pick the same menu you use for categories. Each item must link to a collection (Navigation: add collection links). Nested menu levels are included."
+      "info": "Sort: submits sort order (Search & Discovery). Category: use “Search category” blocks below to pick collections; shoppers open a themed dropdown (All + your collections). Searching with a collection chosen opens that collection with the query. Featured/Oldest sort is hidden in this mode."
     },
     {
       "type": "header",
@@ -648,6 +642,23 @@
           "type": "html",
           "id": "html",
           "label": "Custom html"
+        }
+      ]
+    },
+    {
+      "type": "search_category_collection",
+      "name": "Search category",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "text",
+          "id": "custom_label",
+          "label": "Custom label",
+          "info": "Optional. Uses the collection title when blank."
         }
       ]
     }
