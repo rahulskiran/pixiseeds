@@ -2480,8 +2480,9 @@
       {
         "type": "checkbox",
         "id": "predictive_search_enabled",
-        "label": "Enable search suggestions",
-        "default": true
+        "label": "Enable search suggestions (predictive search)",
+        "default": true,
+        "info": "When on, typing in the header search bar (and search page) loads live results in a panel directly under the search field. Requires the “Predictive search results” section in your theme (included by default)."
       },
       {
         "type": "checkbox",
