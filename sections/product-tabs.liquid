@@ -69,7 +69,7 @@
   endif
 %}
 <section
-  class="m-section m-section--padding{% if image_card.size > 0 %} m-product-tabs--has-banner{% endif %}{% if section.settings.boxed_layout %} m-section--boxed{% if section.settings.grid_bordered %} m-section--grid-bordered{% endif %}{% endif %}{% if section.settings.header_divider %} m-section--header-separated{% endif %} m-gradient m-color-{{ section.settings.color_scheme }} {{ section.settings.custom_class }}{% if section.settings.atc_always_show %} m-product-tabs--atc-always-show{% endif %}"
+  class="m-section m-section--padding{% if image_card.size > 0 %} m-product-tabs--has-banner{% endif %}{% if section.settings.boxed_layout %} m-section--boxed{% if section.settings.grid_bordered %} m-section--grid-bordered{% endif %}{% endif %}{% if section.settings.header_divider %} m-section--header-separated{% endif %} m-gradient m-color-{{ section.settings.color_scheme }} {{ section.settings.custom_class }}{% if pt_show_cart %} m-product-tabs--atc-always-show{% endif %}"
   data-product-card-style="{{ card_style }}"
   style="
     --column-gap: {{ section.settings.column_gap }}px;
@@ -500,7 +500,7 @@
       "id": "atc_always_show",
       "label": "Always show add to cart button",
       "default": false,
-      "info": "If enabled, the Add to Cart button will be visible by default without needing to hover over the product card."
+      "info": "No longer required: when ‘Show add to cart’ is on, this section already keeps the button visible on large screens (theme default is hover-only). You can leave this off."
     },
     {
       "type": "header",

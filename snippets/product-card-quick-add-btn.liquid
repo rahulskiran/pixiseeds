@@ -1,4 +1,8 @@
 {%- liquid
+  if product_form_id == blank
+    assign product_form_id = 'product-card-atc-' | append: section.id | append: '-' | append: product.id
+  endif
+
   if product.available
     assign variant_id = product.first_available_variant.id
   else
