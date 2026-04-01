@@ -69,7 +69,7 @@
   endif
 %}
 <section
-  class="m-section m-section--padding{% if image_card.size > 0 %} m-product-tabs--has-banner{% endif %}{% if section.settings.boxed_layout %} m-section--boxed{% if section.settings.grid_bordered %} m-section--grid-bordered{% endif %}{% endif %}{% if section.settings.header_divider %} m-section--header-separated{% endif %} m-gradient m-color-{{ section.settings.color_scheme }} {{ section.settings.custom_class }}"
+  class="m-section m-section--padding{% if image_card.size > 0 %} m-product-tabs--has-banner{% endif %}{% if section.settings.boxed_layout %} m-section--boxed{% if section.settings.grid_bordered %} m-section--grid-bordered{% endif %}{% endif %}{% if section.settings.header_divider %} m-section--header-separated{% endif %} m-gradient m-color-{{ section.settings.color_scheme }} {{ section.settings.custom_class }}{% if section.settings.atc_always_show %} m-product-tabs--atc-always-show{% endif %}"
   data-product-card-style="{{ card_style }}"
   style="
     --column-gap: {{ section.settings.column_gap }}px;
@@ -288,6 +288,36 @@
       color: {{ section.settings.pt_tab_active_text }} !important;
     }
   {% endif %}
+  #shopify-section-{{ section.id }} .m-add-to-cart {
+    background-color: {{ section.settings.atc_bg_color }} !important;
+    color: {{ section.settings.atc_text_color }} !important;
+    border-color: {{ section.settings.atc_bg_color }} !important;
+  }
+  #shopify-section-{{ section.id }} .m-add-to-cart:hover {
+    background-color: {{ section.settings.atc_hover_bg_color }} !important;
+    color: {{ section.settings.atc_hover_text_color }} !important;
+    border-color: {{ section.settings.atc_hover_bg_color }} !important;
+  }
+  @media screen and (min-width: 1280px) {
+    .m-product-tabs--atc-always-show #shopify-section-{{ section.id }} .m-product-card--style-1 .m-product-card__content .m-product-card__quick-add {
+      position: relative !important;
+      top: auto !important;
+      left: auto !important;
+      right: auto !important;
+      padding: 0 !important;
+      opacity: 1 !important;
+      pointer-events: auto !important;
+      margin-top: 15px !important;
+      z-index: 1 !important;
+      border: none !important;
+    }
+    .m-product-tabs--atc-always-show #shopify-section-{{ section.id }} .m-product-card--style-1:after {
+      display: none !important;
+    }
+  }
+  .m-product-tabs--atc-always-show #shopify-section-{{ section.id }} .m-product-card__quick-add {
+      display: block !important;
+  }
 {% endstyle %}
 {% schema %}
 {
@@ -464,6 +494,41 @@
       "label": "Show add to cart button",
       "default": true,
       "info": "Renders quick add or add to cart on each card, matching your product card style and Theme settings → Product cards. Turn off for catalog-style cards that only link to the product page."
+    },
+    {
+      "type": "checkbox",
+      "id": "atc_always_show",
+      "label": "Always show add to cart button",
+      "default": false,
+      "info": "If enabled, the Add to Cart button will be visible by default without needing to hover over the product card."
+    },
+    {
+      "type": "header",
+      "content": "Add to cart button colors"
+    },
+    {
+      "type": "color",
+      "id": "atc_bg_color",
+      "label": "Button background color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "atc_text_color",
+      "label": "Button text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "atc_hover_bg_color",
+      "label": "Button hover background color",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "atc_hover_text_color",
+      "label": "Button hover text color",
+      "default": "#ffffff"
     },
     {
       "type": "header",
