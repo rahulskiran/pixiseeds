@@ -62,14 +62,9 @@
   endif
 
   assign pt_card_border_setting = section.settings.pt_card_border | default: 'inherit'
-
-  assign pt_show_cart = true
-  if section.settings.show_add_to_cart == false
-    assign pt_show_cart = false
-  endif
 %}
 <section
-  class="m-section m-section--padding{% if image_card.size > 0 %} m-product-tabs--has-banner{% endif %}{% if section.settings.boxed_layout %} m-section--boxed{% if section.settings.grid_bordered %} m-section--grid-bordered{% endif %}{% endif %}{% if section.settings.header_divider %} m-section--header-separated{% endif %} m-gradient m-color-{{ section.settings.color_scheme }} {{ section.settings.custom_class }}{% if pt_show_cart %} m-product-tabs--atc-always-show{% endif %}"
+  class="m-section m-section--padding{% if image_card.size > 0 %} m-product-tabs--has-banner{% endif %}{% if section.settings.boxed_layout %} m-section--boxed{% if section.settings.grid_bordered %} m-section--grid-bordered{% endif %}{% endif %}{% if section.settings.header_divider %} m-section--header-separated{% endif %} m-gradient m-color-{{ section.settings.color_scheme }} {{ section.settings.custom_class }}"
   data-product-card-style="{{ card_style }}"
   style="
     --column-gap: {{ section.settings.column_gap }}px;
@@ -198,7 +193,6 @@
                           card_bordered: card_bordered,
                           card_border_setting: pt_card_border_setting,
                           show_vendor: show_vendor,
-                          show_cart_button: pt_show_cart,
                           index: forloop.index,
                           animated: animated,
                           animation_effect: animation_effect,
@@ -298,8 +292,11 @@
     color: {{ section.settings.atc_hover_text_color }} !important;
     border-color: {{ section.settings.atc_hover_bg_color }} !important;
   }
-  @media screen and (min-width: 1280px) {
-    .m-product-tabs--atc-always-show #shopify-section-{{ section.id }} .m-product-card--style-1 .m-product-card__content .m-product-card__quick-add {
+  {% if settings.show_cart_button %}
+    #shopify-section-{{ section.id }} .m-product-card--style-1 .m-product-card__media .m-product-card__quick-add-icon {
+      display: none !important;
+    }
+    #shopify-section-{{ section.id }} .m-product-card--style-1 .m-product-card__content .m-product-card__quick-add {
       position: relative !important;
       top: auto !important;
       left: auto !important;
@@ -310,14 +307,12 @@
       margin-top: 15px !important;
       z-index: 1 !important;
       border: none !important;
+      display: block !important;
     }
-    .m-product-tabs--atc-always-show #shopify-section-{{ section.id }} .m-product-card--style-1:after {
+    #shopify-section-{{ section.id }} .m-product-card--style-1:after {
       display: none !important;
     }
-  }
-  .m-product-tabs--atc-always-show #shopify-section-{{ section.id }} .m-product-card__quick-add {
-      display: block !important;
-  }
+  {% endif %}
 {% endstyle %}
 {% schema %}
 {
@@ -489,18 +484,8 @@
       "default": false
     },
     {
-      "type": "checkbox",
-      "id": "show_add_to_cart",
-      "label": "Show add to cart button",
-      "default": true,
-      "info": "Renders quick add or add to cart on each card, matching your product card style and Theme settings → Product cards. Turn off for catalog-style cards that only link to the product page."
-    },
-    {
-      "type": "checkbox",
-      "id": "atc_always_show",
-      "label": "Always show add to cart button",
-      "default": false,
-      "info": "No longer required: when ‘Show add to cart’ is on, this section already keeps the button visible on large screens (theme default is hover-only). You can leave this off."
+      "type": "paragraph",
+      "content": "Add to cart follows Theme settings → Product cards → Show add to cart. In this section, cards use a normal always-visible button (no hover-only reveal)."
     },
     {
       "type": "header",

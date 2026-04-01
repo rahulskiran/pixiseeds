@@ -1,13 +1,13 @@
 {% comment %}
   Renders product-card-1|2|3 for product-tabs with section-level border + color overrides.
   Accepts:
-    - card_style, product, image_ratio, card_bordered, show_vendor, show_cart_button, index, animated, animation_effect
+    - card_style, product, image_ratio, card_bordered, show_vendor, show_cart_button (optional; defaults to theme settings.show_cart_button), index, animated, animation_effect
     - color_scheme, pcard_alignment
     - card_border_setting: 'inherit' | 'on' | 'off'
 {% endcomment %}
 {% liquid
   if show_cart_button == nil
-    assign show_cart_button = true
+    assign show_cart_button = settings.show_cart_button
   endif
   unless card_style == '1' or card_style == '2' or card_style == '3'
     assign card_style = '1'
