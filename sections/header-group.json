@@ -24,7 +24,7 @@
         "text_w7jAWQ": {
           "type": "text",
           "settings": {
-            "position": "center",
+            "position": "left",
             "text": "Free Shipping On All Orders"
           }
         },
@@ -38,9 +38,10 @@
         },
         "menu_ebrqpt": {
           "type": "menu",
+          "disabled": true,
           "settings": {
             "position": "right",
-            "menu": ""
+            "menu": "customer-account-main-menu"
           }
         }
       },
@@ -58,13 +59,15 @@
       "type": "header",
       "custom_css": [],
       "settings": {
-        "color_scheme": "background-1",
-        "sticky_header_type": "none",
+        "color_scheme": "background-4",
+        "sticky_header_type": "always",
         "separator_line": "none",
         "customers": "icon",
-        "show_wishlist": false,
+        "show_wishlist": true,
         "show_compare": false,
         "icon_size": "large",
+        "header_icons_use_custom_color": true,
+        "header_icons_color": "#d96c3b",
         "custom_icon": "",
         "search_button": "icon-plain",
         "header_search_second_control": "category",
@@ -72,17 +75,19 @@
           "frontpage"
         ],
         "header_search_category_bg": "#d96c3a",
-        "header_search_category_width_desktop": 104,
+        "header_search_category_text_color": "#d96c3a",
+        "header_search_category_bold": false,
+        "header_search_category_width_desktop": 100,
         "header_search_category_width_mobile": 74,
         "header_search_category_padding_x_desktop": 15,
         "header_search_category_padding_y_desktop": 0,
         "header_search_category_padding_x_mobile": 9,
         "header_search_category_padding_y_mobile": 0,
         "header_search_placeholder_typewriter": true,
-        "header_search_placeholder_phrases": "Search for seeds, What are you looking for?, Find your plants, Browse collections",
+        "header_search_placeholder_phrases": "Search for seeds, Find your plants, Browse collections",
         "header_search_placeholder_fallback": "",
         "menu": "main-menu",
-        "menu_color_scheme": "background-1",
+        "menu_color_scheme": "background-4",
         "menu_show_separator_line": false,
         "enable_country_selector": false,
         "enable_language_selector": false,

@@ -5,7 +5,7 @@
   | plus: predictive_search.resources.articles.size
 %}
 {%- if predictive_search.performed -%}
-  <div id="m-predictive-search-results" role="listbox">
+  <div id="predictive-search-results" role="listbox">
     {%- if first_column_results_size > 0 or predictive_search.resources.products.size > 0 -%}
       <div
         id="m-predictive-search-results-groups-wrapper"
@@ -192,7 +192,7 @@
                   role="option"
                   aria-selected="false"
                 >
-                  <a href="{{ article.url }}" class="m predictive-search__item" tabindex="-1">
+                  <a href="{{ article.url }}" class="m-predictive-search__item" tabindex="-1">
                     <div class="m-predictive-search__item-content m-predictive-search__item-content--centered">
                       <p class="m-predictive-search__item-heading ">{{ article.title }}</p>
                     </div>
@@ -245,3 +245,10 @@
     %}
   </span>
 {%- endif -%}
+
+{% schema %}
+{
+  "name": "Predictive search results",
+  "settings": []
+}
+{% endschema %}

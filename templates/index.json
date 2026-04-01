@@ -161,6 +161,7 @@
         "card_jAwxAB": {
           "type": "card",
           "settings": {
+            "image": "shopify://shop_images/Monstera_and_snake_202603312231.jpg",
             "title": "Full sun",
             "link": "",
             "open_new_tab": false
@@ -169,6 +170,7 @@
         "card_dnCLLD": {
           "type": "card",
           "settings": {
+            "image": "shopify://shop_images/Monstera_and_snake_202603312230.jpg",
             "title": "Shade tolerant",
             "link": "",
             "open_new_tab": false
@@ -177,6 +179,7 @@
         "card_VG6rxP": {
           "type": "card",
           "settings": {
+            "image": "shopify://shop_images/Monstera_and_snake_202603312234.jpg",
             "title": "Balcony containers",
             "link": "",
             "open_new_tab": false
@@ -185,6 +188,7 @@
         "card_kiMJ6N": {
           "type": "card",
           "settings": {
+            "image": "shopify://shop_images/Monarch_butterfly_landing_202603312237.jpg",
             "title": "Pollinator friendly",
             "link": "",
             "open_new_tab": false
@@ -193,6 +197,7 @@
         "card_X4mzP6": {
           "type": "card",
           "settings": {
+            "image": "shopify://shop_images/Monarch_butterfly_landing_202603312237.jpg",
             "title": "Deer resistant",
             "link": "",
             "open_new_tab": false
@@ -201,6 +206,7 @@
         "card_HcM3KQ": {
           "type": "card",
           "settings": {
+            "image": "shopify://shop_images/Monstera_and_snake_202603312230.jpg",
             "title": "Drought hardy",
             "link": "",
             "open_new_tab": false
@@ -218,31 +224,29 @@
       "name": "Shop by condition",
       "settings": {
         "heading": "Shop by Growing Condition",
-        "heading_font": "body",
+        "heading_font": "heading",
         "label_font": "body",
         "heading_font_size_mobile": 26,
         "heading_font_size_desktop": 34,
         "heading_font_weight": 400,
         "heading_letter_spacing": 0,
-        "label_font_size": 12,
+        "label_font_size_mobile": 14,
+        "label_font_size_desktop": 16,
         "label_font_weight": "500",
+        "label_text_transform": "uppercase",
         "label_letter_spacing": 120,
         "heading_spacing": 32,
-        "color_scheme": "scheme-8ac6f64d-2ef8-41e0-8df5-0a7cb3580fdd",
-        "heading_color_mode": "scheme",
+        "section_background": "#f6efe2",
         "heading_color": "#1a1a1a",
-        "label_color_mode": "scheme",
-        "label_color": "#1a1a1a",
-        "card_inner_background_enabled": false,
-        "card_inner_background": "#faf8f3",
-        "card_color_mode": "custom",
-        "card_background": "#ffffff",
+        "label_color": "#ffffff",
         "card_border_color": "#eadfcd",
         "mobile_columns": "2",
+        "card_aspect_ratio": "1 / 1",
         "grid_gap_mobile": 12,
         "grid_gap": 16,
         "card_padding": 24,
         "card_border_radius": 22,
+        "image_overlay_opacity": 30,
         "padding_top": 52,
         "padding_bottom": 52
       }
@@ -405,7 +409,7 @@
         "items_per_row": 7,
         "column_gap": 30,
         "row_gap": 40,
-        "enable_slider": false,
+        "enable_slider": true,
         "show_pagination": false,
         "show_navigation": false,
         "navigation_position": "inside",
@@ -414,7 +418,7 @@
         "column_gap_mobile": 16,
         "row_gap_mobile": 24,
         "padding_top": 62,
-        "padding_bottom": 0,
+        "padding_bottom": 62,
         "animations": "inherit",
         "custom_class": ""
       }
@@ -425,7 +429,7 @@
         "48dec5f3-b589-4fbe-a810-0f92c0b33f16": {
           "type": "tab",
           "settings": {
-            "collection": "humidifiers",
+            "collection": "homegrown-plants",
             "heading": "Vegetables",
             "icon_image_width": 30,
             "icon_svg": ""
@@ -466,17 +470,16 @@
         "b0e6fc3f-c467-4492-a155-e29e1c1f0daf",
         "9e460bec-bde8-4147-adfa-a188e4910f87"
       ],
-      "disabled": true,
       "settings": {
         "color_scheme": "background-4",
         "boxed_layout": false,
-        "grid_bordered": true,
+        "grid_bordered": false,
         "boxed_color_scheme": "scheme-98abe1c5-d453-445f-a04d-6584e08129ae",
         "heading": "Community Favorites",
         "heading_size": "h2",
         "tab_header_style": "1",
         "header_divider": false,
-        "pcard_layout": "1",
+        "pcard_layout": "",
         "pcard_image_ratio": "original",
         "show_vendor": true,
         "show_add_to_cart": true,
@@ -624,7 +627,7 @@
         "tab_kazzUX": {
           "type": "tab",
           "settings": {
-            "collection": "electric-massagers",
+            "collection": "homegrown-plants",
             "heading": "Electric Massagers",
             "icon_image_width": 30,
             "icon_svg": ""
@@ -706,15 +709,14 @@
         "enable_swipe_mobile": true,
         "button_label": "",
         "button_style": "m-button--primary",
-        "padding_top": 60,
-        "padding_bottom": 78,
+        "padding_top": 80,
+        "padding_bottom": 100,
         "custom_class": "m-hide-pagination-md",
         "animations": "inherit"
       }
     },
     "image_banner_afrWdQ": {
       "type": "Image-banner",
-      "disabled": true,
       "settings": {
         "layout": "grid",
         "image_height": "small",
@@ -740,7 +742,7 @@
         "boxed_layout": false,
         "grid_bordered": false,
         "boxed_color_scheme": "background-1",
-        "heading": "Best Sellers",
+        "heading": "",
         "heading_size": "h3",
         "button_text": "Shop All",
         "button_link": "shopify://collections/bathroom-accessories-organization",
@@ -867,7 +869,6 @@
         "collection_block_zYTJyd",
         "collection_block_hDKy8Q"
       ],
-      "disabled": true,
       "custom_css": [
         "@media (max-width: 767px) {.m-collection-card--inline .m-collection-card__info {flex-direction: column; }}"
       ],
@@ -956,7 +957,6 @@
         "6f6a2d7f-5e7a-454e-92af-8a6a64d3bd36",
         "62bda09e-177a-4775-9869-4f1bbce09cd3"
       ],
-      "disabled": true,
       "settings": {
         "color_scheme": "",
         "boxed_layout": false,
@@ -1053,7 +1053,6 @@
         "image_biPGaN",
         "image_4MRNMQ"
       ],
-      "disabled": true,
       "settings": {
         "layout": "3",
         "gap_desktop": 0,
@@ -1096,7 +1095,6 @@
         "category_HkmJN9",
         "category_Axc6Ej"
       ],
-      "disabled": true,
       "name": "Community favorites",
       "settings": {
         "heading": "Community Favorites",
@@ -1125,7 +1123,7 @@
         "badge_bg_color": "#e8c547",
         "badge_text_color": "#1a1a1a",
         "products_to_show": 8,
-        "products_per_row": 4,
+        "products_per_row": 5,
         "mobile_columns": "2",
         "tablet_columns": 3,
         "grid_gap_mobile": 14,

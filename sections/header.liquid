@@ -30,6 +30,17 @@
     assign hasMega = true
   endif
 -%}
+{%- if section.settings.header_icons_use_custom_color -%}
+  {% style %}
+    #shopify-section-{{ section.id }} .m-header__top-wrapper .m-header__icons,
+    #shopify-section-{{ section.id }} .m-header__top-wrapper .m-header__icons a,
+    #shopify-section-{{ section.id }} .m-header__top-wrapper .m-header__icons button,
+    #shopify-section-{{ section.id }} .m-header__top-wrapper .m-header__icons .m-header__icon-text-small,
+    #shopify-section-{{ section.id }} .m-header__top-wrapper .m-header__icons .m-icon-text{
+      color:{{ section.settings.header_icons_color }} !important;
+    }
+  {% endstyle %}
+{%- endif -%}
 <{% if section.settings.sticky_header_type != 'none' %}sticky-header data-sticky-type="{{ section.settings.sticky_header_type }}"{% else %}div{% endif %} 
   class="m-header m:block {% if section.settings.separator_line == 'bottom' or section.settings.separator_line == 'middle-bottom' %} m-header--show-separator-line{% endif %}"
   {% if section.settings.mega_menu_heading != blank and section.settings.open_default %}
@@ -459,6 +470,19 @@
       ]
     },
     {
+      "type": "checkbox",
+      "id": "header_icons_use_custom_color",
+      "label": "Use custom color for header icons",
+      "default": false,
+      "info": "When enabled, sets the color for the account, wishlist, compare, and cart icons (and their “icon + text” labels) in the top bar."
+    },
+    {
+      "type": "color",
+      "id": "header_icons_color",
+      "label": "Header icons color",
+      "default": "#1a1a1a"
+    },
+    {
       "type": "html",
       "id": "custom_icon",
       "label": "Custom icons",
@@ -528,14 +552,14 @@
       "id": "header_search_category_bg",
       "label": "Category dropdown background",
       "default": "#E8E8E8",
-      "info": "Background color for the 'All' / collections dropdown control inside the search bar."
+      "info": "Currently unused in the flat search bar (category uses the same background as the field). Kept for future styling."
     },
     {
       "type": "color",
       "id": "header_search_category_text_color",
       "label": "Category dropdown text color",
       "default": "#000000",
-      "info": "Text color for the collection names in the category dropdown."
+      "info": "Color for “All”, collection names in the trigger, and the chevron. Use a light color on dark backgrounds (e.g. #FFFFFF on #222222)."
     },
     {
       "type": "checkbox",
@@ -625,6 +649,7 @@
       "type": "text",
       "id": "header_search_placeholder_fallback",
       "label": "Static placeholder (fallback)",
+      "default": "What are you looking for?",
       "info": "Shown when animation is off, while typing, or when focused. Leave blank to use the theme default."
     },
     {
