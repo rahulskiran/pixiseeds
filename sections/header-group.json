@@ -81,7 +81,7 @@
         "header_search_category_padding_x_mobile": 9,
         "header_search_category_padding_y_mobile": 0,
         "header_search_placeholder_typewriter": true,
-        "header_search_placeholder_phrases": "Search for seeds, What are you looking for?, Find your plants, Browse collections",
+        "header_search_placeholder_phrases": "Search for seeds, Find your plants, Browse collections",
         "header_search_placeholder_fallback": "",
         "menu": "main-menu",
         "menu_color_scheme": "background-1",
