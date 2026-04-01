@@ -1,1 +1,39 @@
-{"sections":{"main":{"type":"page-search","settings":{}}},"order":["main"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "page-search",
+      "disabled": true,
+      "settings": {
+        "grid_columns": "3",
+        "grid_bordered": false,
+        "column_gap": 30,
+        "row_gap": 30,
+        "column_gap_mobile": 10,
+        "row_gap_mobile": 10,
+        "results_per_page": 12,
+        "show_sorting": true,
+        "show_filter": true,
+        "sidebar_title": "Filters",
+        "filter_title_divider": false,
+        "collapsed_groups": "Brand, Vendor, Size",
+        "color_swatches": "color,colour,couleur,farbe",
+        "limit_height_widget": false,
+        "limit_height": 300,
+        "padding_top": 30,
+        "padding_bottom": 60
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}
