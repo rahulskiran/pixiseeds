@@ -72,7 +72,7 @@
           "frontpage"
         ],
         "header_search_category_bg": "#d96c3a",
-        "header_search_category_text_color": "#ffffff",
+        "header_search_category_text_color": "#d96c3a",
         "header_search_category_bold": false,
         "header_search_category_width_desktop": 100,
         "header_search_category_width_mobile": 74,
