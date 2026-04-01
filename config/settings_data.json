@@ -228,10 +228,10 @@
       },
       "background-4": {
         "settings": {
-          "primary_accent": "#222222",
+          "primary_accent": "#ae5000",
           "background": "#fff8f5",
           "background_gradient": "",
-          "text": "#222222",
+          "text": "#ae5000",
           "subtext": "#222222",
           "button": "#222222",
           "button_label": "#000000",

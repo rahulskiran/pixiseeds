@@ -709,8 +709,8 @@
         "enable_swipe_mobile": true,
         "button_label": "",
         "button_style": "m-button--primary",
-        "padding_top": 60,
-        "padding_bottom": 78,
+        "padding_top": 80,
+        "padding_bottom": 100,
         "custom_class": "m-hide-pagination-md",
         "animations": "inherit"
       }
@@ -733,6 +733,7 @@
     },
     "6c4f10ba-2c26-4691-95ce-2e3c9dfb089e": {
       "type": "featured-collection",
+      "disabled": true,
       "custom_css": [
         ".m-section__header {gap: 20px;}"
       ],
@@ -741,7 +742,7 @@
         "boxed_layout": false,
         "grid_bordered": false,
         "boxed_color_scheme": "background-1",
-        "heading": "Best Sellers",
+        "heading": "",
         "heading_size": "h3",
         "button_text": "Shop All",
         "button_link": "shopify://collections/bathroom-accessories-organization",
