@@ -85,7 +85,7 @@
         "header_search_placeholder_phrases": "Search for seeds, Find your plants, Browse collections",
         "header_search_placeholder_fallback": "",
         "menu": "main-menu",
-        "menu_color_scheme": "background-1",
+        "menu_color_scheme": "background-4",
         "menu_show_separator_line": false,
         "enable_country_selector": false,
         "enable_language_selector": false,
