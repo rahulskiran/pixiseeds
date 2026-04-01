@@ -1,1 +1,269 @@
-{"sections":{"f49571f8-057f-459a-be31-3baf33dd91e0":{"type":"breadcrumb","settings":{"text_alignment":"left","hide_current":false,"hide_on_mb":false,"padding_top":10,"padding_bottom":10,"animations":"inherit"}},"main":{"type":"main-product","blocks":{"569262ef-b84b-475c-8f61-0c14620f8fae":{"type":"breadcrumb","settings":{}},"81d0515f-440e-4127-8a79-aa458f08c46c":{"type":"badge","settings":{}},"title":{"type":"title","settings":{"heading_size":"h5"}},"price":{"type":"price","settings":{"show_saving":false,"sale_badge_type":"percentage"}},"f62f65dc-7525-452d-a18c-2109730a02ec":{"type":"short_description","settings":{}},"variant_picker":{"type":"variant_picker","settings":{"size_title":"Size"}},"buy_buttons":{"type":"buy_buttons","settings":{"show_quantity_selector":true,"show_atc_button":true,"show_dynamic_checkout":true,"show_gift_card_recipient":true}},"addons":{"type":"addons","settings":{"show_atcp":true,"show_ask_a_question":true,"show_social":true}},"faa71e88-5273-4515-9496-6bdd0db8fa4b":{"type":"trust_badge","settings":{"trust_badges_text":"<p>Guarantee safe & secure checkout<\/p>","trust_badges_image_width":"80%","position":"below"}},"0bc3a698-43be-4210-ba1a-66152f676b2a":{"type":"shipping","settings":{"show_delivery_times":true,"deliver_text":"Estimated Delivery","deliver_days":"12-15","date_format":"%b %d","show_shipping_text":true,"shipping_title":"Shipping Information","shipping_text":"<p>Free shipping on all orders over India<\/p>","show_returns_text":true,"returns_title":"Verified Seller @ Amazon.in","returns_text":""}},"5ba1c1d8-5464-4914-95ff-a86f8545a6dd":{"type":"complementary","settings":{"block_heading":"Buy it with","heading_size":"h5","product_list_limit":10,"products_per_column":"1","pcard_image_ratio":"original","color_scheme":"scheme-f08d43fd-4b1f-4a68-b4fd-0103c8af3c3c"}}},"block_order":["569262ef-b84b-475c-8f61-0c14620f8fae","81d0515f-440e-4127-8a79-aa458f08c46c","title","price","f62f65dc-7525-452d-a18c-2109730a02ec","variant_picker","buy_buttons","addons","faa71e88-5273-4515-9496-6bdd0db8fa4b","0bc3a698-43be-4210-ba1a-66152f676b2a","5ba1c1d8-5464-4914-95ff-a86f8545a6dd"],"custom_css":[".foxkit-product-countdown * {color: rgb(var(--color-price-sale)); font-size: calc(var(--font-base-size, 16) * 1px); font-weight: 500;}",".foxkit-product-countdown__number {font-size: 18px;}",".foxkit-stock-countdown__progress {--color-progress-bg: rgb(var(--color-price-sale));}",".main-product__block .m-product-addon {border-bottom-width: 0;}",".foxkit-product-countdown__wrapper {padding: 8px 20px; background-color: #faeee4; border-color: #e3c6ad;}",".main-product__block .m-breadcrumb {margin-top: 30;}"],"settings":{"enable_history_state":true,"enable_variant_group_images":true,"show_atwl":true,"layout":"h-slider","show_featured_media":false,"show_zoom_button":true,"enable_video_autoplay":true,"show_thumbnails_on_mobile":true,"boxed_layout":false,"boxed_color_scheme":"","use_sticky_atc":false,"use_sticky_atc_on_mobile":false,"enable_dynamic_checkout":false,"sticky_atc_wishtlist":false,"sticky_atc_compare":false,"padding_top":48,"padding_bottom":0}},"product-details-tabs":{"type":"product-details-tabs","blocks":{"description":{"type":"description","settings":{"header":"Product description"}},"tab":{"type":"tab","settings":{"header":"Shipping & Return","content":"<p>Shipping cost is based on weight. Just add products to your cart and use the Shipping Calculator to see the shipping price.<\/p><p>We want you to be 100% satisfied with your purchase. Items can be returned or exchanged within 30 days of delivery.<\/p>","content_page":""}}},"block_order":["description","tab"],"custom_css":[],"settings":{"color_scheme":"","boxed_layout":false,"boxed_color_scheme":"","tabs_divider":true,"default_open":false,"padding_top":74,"padding_bottom":0,"animations":"inherit"}},"1715169300e2d60786":{"type":"apps","settings":{"color_scheme":"","include_margins":true,"boxed_layout":false,"boxed_color_scheme":"","padding_top":0,"padding_bottom":0,"custom_class":""}},"product-recommendations":{"type":"product-recommendations","settings":{"color_scheme":"","boxed_layout":false,"grid_bordered":false,"boxed_color_scheme":"","heading":"Recommended for you","heading_size":"h3","header_divider":true,"header_alignment":"left","pcard_layout":"","pcard_image_ratio":"","show_vendor":true,"product_to_show":8,"items_per_row":5,"column_gap":30,"row_gap":30,"enable_slider":true,"show_pagination":true,"show_navigation":true,"navigation_position":"outside","mobile_layout":"inherit","enable_swipe_mobile":true,"column_gap_mobile":16,"row_gap_mobile":24,"padding_top":100,"padding_bottom":0,"custom_class":"m-hide-pagination-md","animations":"inherit"}},"recent-viewed-products":{"type":"recent-viewed-products","settings":{"color_scheme":"","boxed_layout":false,"grid_bordered":false,"boxed_color_scheme":"","heading":"Recently viewed","heading_size":"h3","header_divider":true,"header_alignment":"left","pcard_layout":"","pcard_image_ratio":"","show_vendor":true,"product_to_show":6,"items_per_row":5,"column_gap":30,"row_gap":30,"enable_slider":true,"show_pagination":true,"show_navigation":true,"navigation_position":"outside","mobile_layout":"inherit","enable_swipe_mobile":true,"column_gap_mobile":10,"row_gap_mobile":10,"padding_top":100,"padding_bottom":0,"custom_class":"m-hide-pagination-md","animations":"inherit"}}},"order":["f49571f8-057f-459a-be31-3baf33dd91e0","main","product-details-tabs","1715169300e2d60786","product-recommendations","recent-viewed-products"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "f49571f8-057f-459a-be31-3baf33dd91e0": {
+      "type": "breadcrumb",
+      "settings": {
+        "text_alignment": "left",
+        "hide_current": false,
+        "hide_on_mb": false,
+        "padding_top": 10,
+        "padding_bottom": 10,
+        "animations": "inherit"
+      }
+    },
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "569262ef-b84b-475c-8f61-0c14620f8fae": {
+          "type": "breadcrumb",
+          "settings": {}
+        },
+        "81d0515f-440e-4127-8a79-aa458f08c46c": {
+          "type": "badge",
+          "settings": {}
+        },
+        "title": {
+          "type": "title",
+          "settings": {
+            "heading_size": "h3"
+          }
+        },
+        "price": {
+          "type": "price",
+          "settings": {
+            "show_saving": false,
+            "sale_badge_type": "percentage"
+          }
+        },
+        "f62f65dc-7525-452d-a18c-2109730a02ec": {
+          "type": "short_description",
+          "settings": {}
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "size_title": "Size"
+          }
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_quantity_selector": true,
+            "show_atc_button": true,
+            "show_dynamic_checkout": true,
+            "show_gift_card_recipient": true
+          }
+        },
+        "addons": {
+          "type": "addons",
+          "settings": {
+            "show_atcp": true,
+            "show_ask_a_question": true,
+            "show_social": true
+          }
+        },
+        "faa71e88-5273-4515-9496-6bdd0db8fa4b": {
+          "type": "trust_badge",
+          "settings": {
+            "trust_badges_text": "<p>Guarantee safe & secure checkout</p>",
+            "trust_badges_image_width": "80%",
+            "position": "below"
+          }
+        },
+        "0bc3a698-43be-4210-ba1a-66152f676b2a": {
+          "type": "shipping",
+          "settings": {
+            "show_delivery_times": true,
+            "deliver_text": "Estimated Delivery",
+            "deliver_days": "12-15",
+            "date_format": "%b %d",
+            "show_shipping_text": true,
+            "shipping_title": "Shipping Information",
+            "shipping_text": "<p>Free shipping on all orders over India</p>",
+            "show_returns_text": true,
+            "returns_title": "Verified Seller @ Amazon.in",
+            "returns_text": ""
+          }
+        },
+        "5ba1c1d8-5464-4914-95ff-a86f8545a6dd": {
+          "type": "complementary",
+          "settings": {
+            "block_heading": "Buy it with",
+            "heading_size": "h5",
+            "product_list_limit": 10,
+            "products_per_column": "1",
+            "pcard_image_ratio": "original",
+            "color_scheme": "scheme-f08d43fd-4b1f-4a68-b4fd-0103c8af3c3c"
+          }
+        }
+      },
+      "block_order": [
+        "569262ef-b84b-475c-8f61-0c14620f8fae",
+        "81d0515f-440e-4127-8a79-aa458f08c46c",
+        "title",
+        "price",
+        "f62f65dc-7525-452d-a18c-2109730a02ec",
+        "variant_picker",
+        "buy_buttons",
+        "addons",
+        "faa71e88-5273-4515-9496-6bdd0db8fa4b",
+        "0bc3a698-43be-4210-ba1a-66152f676b2a",
+        "5ba1c1d8-5464-4914-95ff-a86f8545a6dd"
+      ],
+      "custom_css": [
+        ".foxkit-product-countdown * {color: rgb(var(--color-price-sale)); font-size: calc(var(--font-base-size, 16) * 1px); font-weight: 500;}",
+        ".foxkit-product-countdown__number {font-size: 18px;}",
+        ".foxkit-stock-countdown__progress {--color-progress-bg: rgb(var(--color-price-sale));}",
+        ".main-product__block .m-product-addon {border-bottom-width: 0;}",
+        ".foxkit-product-countdown__wrapper {padding: 8px 20px; background-color: #faeee4; border-color: #e3c6ad;}",
+        ".main-product__block .m-breadcrumb {margin-top: 30;}"
+      ],
+      "settings": {
+        "enable_history_state": true,
+        "enable_variant_group_images": true,
+        "show_atwl": true,
+        "layout": "h-slider",
+        "show_featured_media": false,
+        "show_zoom_button": true,
+        "enable_video_autoplay": true,
+        "show_thumbnails_on_mobile": true,
+        "boxed_layout": false,
+        "boxed_color_scheme": "scheme-f08d43fd-4b1f-4a68-b4fd-0103c8af3c3c",
+        "use_sticky_atc": false,
+        "use_sticky_atc_on_mobile": false,
+        "enable_dynamic_checkout": false,
+        "sticky_atc_wishtlist": false,
+        "sticky_atc_compare": false,
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "product-details-tabs": {
+      "type": "product-details-tabs",
+      "blocks": {
+        "description": {
+          "type": "description",
+          "settings": {
+            "header": "Product description"
+          }
+        },
+        "tab": {
+          "type": "tab",
+          "settings": {
+            "header": "Shipping & Return",
+            "content": "<p>Shipping cost is based on weight. Just add products to your cart and use the Shipping Calculator to see the shipping price.</p><p>We want you to be 100% satisfied with your purchase. Items can be returned or exchanged within 30 days of delivery.</p>",
+            "content_page": ""
+          }
+        }
+      },
+      "block_order": [
+        "description",
+        "tab"
+      ],
+      "custom_css": [],
+      "settings": {
+        "color_scheme": "",
+        "boxed_layout": false,
+        "boxed_color_scheme": "",
+        "tabs_divider": true,
+        "default_open": false,
+        "padding_top": 74,
+        "padding_bottom": 0,
+        "animations": "inherit"
+      }
+    },
+    "1715169300e2d60786": {
+      "type": "apps",
+      "settings": {
+        "color_scheme": "",
+        "include_margins": true,
+        "boxed_layout": false,
+        "boxed_color_scheme": "",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "custom_class": ""
+      }
+    },
+    "product-recommendations": {
+      "type": "product-recommendations",
+      "settings": {
+        "color_scheme": "",
+        "boxed_layout": false,
+        "grid_bordered": false,
+        "boxed_color_scheme": "",
+        "heading": "Recommended for you",
+        "heading_size": "h3",
+        "header_divider": true,
+        "header_alignment": "left",
+        "pcard_layout": "",
+        "pcard_image_ratio": "",
+        "show_vendor": true,
+        "product_to_show": 8,
+        "items_per_row": 5,
+        "column_gap": 30,
+        "row_gap": 30,
+        "enable_slider": true,
+        "show_pagination": true,
+        "show_navigation": true,
+        "navigation_position": "outside",
+        "mobile_layout": "inherit",
+        "enable_swipe_mobile": true,
+        "column_gap_mobile": 16,
+        "row_gap_mobile": 24,
+        "padding_top": 100,
+        "padding_bottom": 0,
+        "custom_class": "m-hide-pagination-md",
+        "animations": "inherit"
+      }
+    },
+    "recent-viewed-products": {
+      "type": "recent-viewed-products",
+      "settings": {
+        "color_scheme": "",
+        "boxed_layout": false,
+        "grid_bordered": false,
+        "boxed_color_scheme": "",
+        "heading": "Recently viewed",
+        "heading_size": "h3",
+        "header_divider": true,
+        "header_alignment": "left",
+        "pcard_layout": "",
+        "pcard_image_ratio": "",
+        "show_vendor": true,
+        "product_to_show": 6,
+        "items_per_row": 5,
+        "column_gap": 30,
+        "row_gap": 30,
+        "enable_slider": true,
+        "show_pagination": true,
+        "show_navigation": true,
+        "navigation_position": "outside",
+        "mobile_layout": "inherit",
+        "enable_swipe_mobile": true,
+        "column_gap_mobile": 10,
+        "row_gap_mobile": 10,
+        "padding_top": 100,
+        "padding_bottom": 0,
+        "custom_class": "m-hide-pagination-md",
+        "animations": "inherit"
+      }
+    }
+  },
+  "order": [
+    "f49571f8-057f-459a-be31-3baf33dd91e0",
+    "main",
+    "product-details-tabs",
+    "1715169300e2d60786",
+    "product-recommendations",
+    "recent-viewed-products"
+  ]
+}
