@@ -68,7 +68,7 @@
   data-section-id="{{ section.id }}"
   style="--data-autoplay-speed: {{ section.settings.autorotate_speed }}s;"
 >
-  <div class="m-slide__wrapper{% if section.settings.layout == 'grid' %} m-page-width{% else %} m:w-full{% endif %}">
+  <div class="m-slide__wrapper{% if section.settings.layout == 'grid' %} m-page-width{% else %} m:w-full{% endif %}{% if enable_split_promo and section.settings.split_mobile_full_width and section.settings.layout == 'grid' %} m-slide-split--wrapper-mobile-full{% endif %}">
     <div
       class="m-slide-split{% if enable_split_promo %} m-slide-split--with-panel{% endif %}"
       {% if enable_split_promo %}
@@ -292,7 +292,7 @@
       </div>
       {% if enable_split_promo %}
         <aside
-          class="m-slide-split__panel m:relative"
+          class="m-slide-split__panel m:relative{% if section.settings.split_hide_panel_on_mobile %} m-slide-split__panel--hide-mobile{% endif %}"
           style="background-color: {{ section.settings.split_panel_bg | default: '#3d4f34' }}; padding: {{ section.settings.split_padding_vertical | default: 40 }}px {{ section.settings.split_padding_horizontal | default: 32 }}px;"
         >
           {% if section.settings.split_badge_image != blank %}
@@ -315,6 +315,19 @@
             class="m-slide-split__panel-inner m:flex m:flex-col m:w-full md:m:min-h-full {{ split_justify }} {{ split_items }} m:text-{{ section.settings.split_content_alignment | default: 'center' }} m:relative m:z-1"
             style="gap: {{ section.settings.split_text_gap | default: 16 }}px;"
           >
+            {% if section.settings.split_promo_image != blank %}
+              <div class="m-slide-split__promo-image {{ split_btn_self }}" style="max-width: {{ section.settings.split_promo_image_width | default: 220 }}px; border-radius: {{ section.settings.split_promo_image_radius | default: 0 }}px;">
+                {{
+                  section.settings.split_promo_image
+                  | image_url: width: 800
+                  | image_tag:
+                    loading: 'lazy',
+                    class: 'm:w-full m:h-auto m:block',
+                    widths: '200, 360, 480, 600, 800',
+                    alt: section.settings.split_promo_image.alt
+                }}
+              </div>
+            {% endif %}
             {% if section.settings.split_subheading != blank %}
               <p
                 class="m-slide-split__subheading{% if section.settings.split_subheading_uppercase %} m:uppercase{% endif %}"
@@ -418,7 +431,21 @@
       "id": "enable_split_promo",
       "label": "Enable right-side promo panel",
       "default": false,
-      "info": "Shows a customizable column next to the slideshow. Slide overlay text is hidden—use slides for images only, and this panel for headline, copy, and CTA. On screens under 1024px the panel stacks below the slider."
+      "info": "Shows a customizable column next to the slideshow. Slide overlay text is hidden—use slides for images only, and this panel for headline, copy, and CTA. On screens under 1024px the panel stacks below the slider unless you hide it in mobile settings."
+    },
+    {
+      "type": "checkbox",
+      "id": "split_hide_panel_on_mobile",
+      "label": "Hide promo panel on mobile",
+      "default": false,
+      "info": "Below 1024px width, only the slideshow shows. Use when the promo is desktop-only."
+    },
+    {
+      "type": "checkbox",
+      "id": "split_mobile_full_width",
+      "label": "Full width on mobile (no grid side padding)",
+      "default": false,
+      "info": "Only applies when Layout is set to Grid. Makes the slideshow + split row span the full viewport width on screens under 1024px (removes page gutters)."
     },
     {
       "type": "range",
@@ -487,6 +514,36 @@
       "unit": "px",
       "label": "Space between text blocks",
       "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Promo · Featured image"
+    },
+    {
+      "type": "image_picker",
+      "id": "split_promo_image",
+      "label": "Image",
+      "info": "Optional photo or graphic above the promo text (e.g. product shot or illustration)."
+    },
+    {
+      "type": "range",
+      "id": "split_promo_image_width",
+      "min": 80,
+      "max": 420,
+      "step": 4,
+      "unit": "px",
+      "label": "Max image width",
+      "default": 220
+    },
+    {
+      "type": "range",
+      "id": "split_promo_image_radius",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Image corner radius",
+      "default": 0
     },
     {
       "type": "header",

@@ -17,3 +17,9 @@
 .m-slide-split__text p:first-child{margin-top:0;}
 .m-slide-split__text p:last-child{margin-bottom:0;}
 .m-slide-split__badge img{display:block;width:100%;height:auto;opacity:.95;}
+.m-slide-split__promo-image{overflow:hidden;line-height:0;}
+.m-slide-split__promo-image img{display:block;width:100%;height:auto;}
+@media screen and (max-width:1023px){
+.m-slide-split__panel--hide-mobile{display:none !important;}
+.m-slide-split--wrapper-mobile-full.m-page-width{max-width:100% !important;width:100% !important;padding-left:0 !important;padding-right:0 !important;}
+}
