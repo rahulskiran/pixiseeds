@@ -62,7 +62,7 @@
         "sticky_header_type": "always",
         "separator_line": "none",
         "customers": "icon",
-        "show_wishlist": false,
+        "show_wishlist": true,
         "show_compare": false,
         "icon_size": "large",
         "custom_icon": "",
