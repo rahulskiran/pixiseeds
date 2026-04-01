@@ -473,7 +473,7 @@
       "settings": {
         "color_scheme": "background-4",
         "boxed_layout": false,
-        "grid_bordered": true,
+        "grid_bordered": false,
         "boxed_color_scheme": "scheme-98abe1c5-d453-445f-a04d-6584e08129ae",
         "heading": "Community Favorites",
         "heading_size": "h2",
