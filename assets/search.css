@@ -239,7 +239,14 @@ body.template-search .m-main-content{flex-grow:1}
 /* ============================================================
    Single-row search: main fills width; narrow category column
    ============================================================ */
-.m-search-form__main{position:relative;flex:1 1 auto;min-width:0;display:flex;align-items:stretch;background-color:var(--search-bar-placeholder-bg,transparent)}
+.m-search-form__main{
+  position:relative;
+  flex:1 1 auto;
+  min-width:0;
+  display:flex;
+  align-items:stretch;
+  background:transparent;
+}
 .m-search-form__main .search__input{width:100%}
 
 /* Category sizing — use CSS custom props from the {% style %} block */
@@ -291,10 +298,31 @@ body.template-search .m-main-content{flex-grow:1}
 
 /* ============================================================
    SEARCH INPUT — colors, placeholder, appearance
+   Border + fill live on .m-search-form__wrapper only; input is flush inside.
+   (.m-search-modal mobile rules below use higher specificity + !important.)
    ============================================================ */
-.m-search-form .search__input{
+.m-search-form .search__input,
+.m-search-form .search__input.field__input,
+.m-search-form input.search__input.form-field{
   -webkit-appearance:none;appearance:none;
-  color:var(--search-bar-text);caret-color:var(--search-bar-text);
+  border:none !important;
+  border-radius:0 !important;
+  box-shadow:none !important;
+  outline:none !important;
+  background:transparent !important;
+  color:var(--search-bar-text);
+  caret-color:var(--search-bar-text);
+}
+.m-search-form .search__input:focus,
+.m-search-form .search__input:focus-visible,
+.m-search-form .search__input.field__input:focus,
+.m-search-form .search__input.field__input:focus-visible,
+.m-search-form input.search__input.form-field:focus,
+.m-search-form input.search__input.form-field:focus-visible{
+  border:none !important;
+  box-shadow:none !important;
+  outline:none !important;
+  background:transparent !important;
 }
 .m-search-form .search__input::placeholder{
   color:var(--search-bar-text);opacity:0.48;
@@ -348,12 +376,24 @@ body.template-search .m-main-content{flex-grow:1}
   .m-search-modal .m-search-form__has-filter.m-search-form__has-category .search__input{
     padding-left:calc(var(--form-field-horizontal-spacing, 12px));
   }
-  .m-search-modal .search__input{
+  .m-search-modal .m-search-form .search__input,
+  .m-search-modal .m-search-form .search__input.field__input,
+  .m-search-modal .m-search-form input.search__input.form-field{
     padding-left:calc(var(--form-field-horizontal-spacing, 12px));
     border:1px solid rgb(var(--color-border))!important;
     border-radius:var(--inputs-radius,8px)!important;
     background:rgb(var(--color-form-field))!important;
     min-height:48px;
+  }
+  .m-search-modal .m-search-form .search__input:focus,
+  .m-search-modal .m-search-form .search__input:focus-visible,
+  .m-search-modal .m-search-form .search__input.field__input:focus,
+  .m-search-modal .m-search-form .search__input.field__input:focus-visible,
+  .m-search-modal .m-search-form input.search__input.form-field:focus,
+  .m-search-modal .m-search-form input.search__input.form-field:focus-visible{
+    border-color:rgb(var(--color-foreground))!important;
+    box-shadow:0 0 0 1px rgb(var(--color-foreground))!important;
+    background:rgb(var(--color-form-field))!important;
   }
 
   /* Keep buttons aligned with the input box in stacked modal */

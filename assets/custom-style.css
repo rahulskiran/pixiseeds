@@ -24,5 +24,6 @@
 .form-field{border-color:var(--input-border-color,#eee) !important}.form-field:focus{border-color:var(--input-focus-border-color,#222) !important;box-shadow:0 0 0 max(var(--inputs-border-width),1px) var(--input-focus-border-color,#222) !important}
 /* Search: border/focus ring lives on .m-search-form__wrapper (theme search bar settings); inner input must not duplicate */
 .m-search-form .form-field,.m-search-form .form-field:focus,.m-search-form .form-field:focus-visible{border:none !important;box-shadow:none !important;outline:none !important;background-color:transparent !important}
+.m-search-form .search__input,.m-search-form .search__input:focus,.m-search-form .search__input:focus-visible{border:none !important;box-shadow:none !important;outline:none !important;border-radius:0 !important;background:transparent !important}
 /* ===== GLOBAL BORDER OPACITY ===== */
 .m-section--boxed .m-section__wrapper:after,.m-collapsible--button,.m-link-lists--border li+li .m-link{border-color:rgba(var(--color-border),var(--global-border-opacity,1)) !important}
