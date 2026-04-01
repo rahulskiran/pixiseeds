@@ -479,7 +479,7 @@
         "heading_size": "h2",
         "tab_header_style": "1",
         "header_divider": false,
-        "pcard_layout": "1",
+        "pcard_layout": "",
         "pcard_image_ratio": "original",
         "show_vendor": true,
         "show_add_to_cart": true,
