@@ -31,7 +31,6 @@
     assign has_search_product_type = true
   endif
   assign input_id = input_id | default: 'Search-In-Header'
-  assign header_search_segmented_ui = true
 
   assign has_type_filter = false
   if has_search_product_type and product_type_search_enabled and settings.predictive_search_enabled
@@ -107,9 +106,6 @@
   if section.settings.search_button == 'icon' or section.settings.search_button == 'icon-plain'
     assign search_show_icon_submit = true
   endif
-  if header_search_segmented_ui
-    assign search_show_icon_submit = true
-  endif
 -%}
 {%- if show_header_category -%}
   {%- liquid
@@ -160,9 +156,8 @@
     {% endif %}
   {% endif %}
 >
-  <div class="m-search-form__wrapper m-search-form__wrapper--segmented{% if has_type_filter %} m-search-form__has-filter{% endif %}{% if show_header_sort %} m-search-form__has-sort{% endif %}{% if show_header_category %} m-search-form__has-category{% endif %}">
+  <div class="m-search-form__wrapper{% if has_type_filter %} m-search-form__has-filter{% endif %}{% if show_header_sort %} m-search-form__has-sort{% endif %}{% if show_header_category %} m-search-form__has-category{% endif %}">
     {% if has_left_cluster %}
-      <div class="m-search-form__segment m-search-form__segment--leading" data-search-segment="leading">
       <div class="m-search-form__left-cluster">
         {% if has_type_filter %}
           <div class="m-search-form__select">
@@ -291,10 +286,8 @@
           </div>
         {% endif %}
       </div>
-      </div>
     {% endif %}
-    <div class="m-search-form__segment m-search-form__segment--field" data-search-segment="field">
-    <div class="m-search-form__main m-search-form__main--segmented">
+    <div class="m-search-form__main">
       <input
         class="search__input field__input form-field form-field--input m-search__input{% if header_tw_active %} m-search__input--typewriter{% endif %}"
         id="{{ input_id }}"
@@ -339,31 +332,28 @@
         </button>
       </div>
     </div>
-    </div>
-    <div class="m-search-form__segment m-search-form__segment--action" data-search-segment="action">
-      <div class="m-search-form__buttons m-search-form__buttons--segmented-submit">
-        <button class="search__button m-search-form__search--button m-spinner-button search__button--{{ section.settings.search_button }}" aria-label="{{ 'general.search.search' | t }}">
-          {% if search_show_icon_submit %}
-            <svg class="m-svg-icon--large" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-              <path d="M10.5 18C14.6421 18 18 14.6421 18 10.5C18 6.35786 14.6421 3 10.5 3C6.35786 3 3 6.35786 3 10.5C3 14.6421 6.35786 18 10.5 18Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M15.8032 15.8035L20.9998 21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          {% else %}
-            <span>{{ 'general.search.search_button_label' | t }}</span>
-          {% endif %}
-          <span class="m-spinner-icon">
-            <svg
-              class="animate-spin m-svg-icon--medium"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-            >
-              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"></circle>
-              <path fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-            </svg>
-          </span>
-        </button>
-      </div>
+    <div class="m-search-form__buttons">
+      <button class="search__button m-search-form__search--button m-spinner-button search__button--{{ section.settings.search_button }}" aria-label="{{ 'general.search.search' | t }}">
+        {% if search_show_icon_submit %}
+          <svg class="m-svg-icon--large" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+            <path d="M10.5 18C14.6421 18 18 14.6421 18 10.5C18 6.35786 14.6421 3 10.5 3C6.35786 3 3 6.35786 3 10.5C3 14.6421 6.35786 18 10.5 18Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M15.8032 15.8035L20.9998 21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        {% else %}
+          <span>{{ 'general.search.search_button_label' | t }}</span>
+        {% endif %}
+        <span class="m-spinner-icon">
+          <svg
+            class="animate-spin m-svg-icon--medium"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+          >
+            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"></circle>
+            <path fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+        </span>
+      </button>
     </div>
   </div>
   {%- if settings.predictive_search_enabled -%}
