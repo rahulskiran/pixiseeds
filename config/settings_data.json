@@ -90,7 +90,7 @@
     "product_type_search_enabled": false,
     "product_type_search_custom": "Beds With Storage, Garden & Outdoor, Garden & Outdoor, Drawer Dividers, Beds, Ovens, Range Hoods, Display & Storage Cabinets, Other, Bathroom Textiles,  Cookware & Tableware, Gaming Furniture, Baby & Kids, Bathroom, Lighting, Home Decor, Mattress Toppers, Fabrics & Sewing, Bedding, Serveware, Window Treatments, Baby Textiles, Modular Kitchen Cabinets & Mini-kitchens, Cabinets For Built-in Appliances, Chairs, Lighting, Microwaves, Bed Skirts, Cafe Furniture, Kids Furniture",
     "search_bar_radius": 7,
-    "search_bar_bg_color": "#ffe3d7",
+    "search_bar_bg_color": "#f9cfc5",
     "search_bar_placeholder_bg": "#ae5000",
     "search_bar_border_color": "#fef9f0",
     "search_bar_text_color": "#d96c3a",
@@ -251,7 +251,7 @@
       "background-5": {
         "settings": {
           "primary_accent": "#ffffff",
-          "background": "#ffb340",
+          "background": "#d96c3a",
           "background_gradient": "",
           "text": "#ffffff",
           "subtext": "#eeeeee",
