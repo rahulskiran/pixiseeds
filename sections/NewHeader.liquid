@@ -30,6 +30,17 @@
     assign hasMega = true
   endif
 -%}
+{%- if section.settings.header_icons_use_custom_color -%}
+  {% style %}
+    #shopify-section-{{ section.id }} .m-header__top-wrapper .m-header__icons,
+    #shopify-section-{{ section.id }} .m-header__top-wrapper .m-header__icons a,
+    #shopify-section-{{ section.id }} .m-header__top-wrapper .m-header__icons button,
+    #shopify-section-{{ section.id }} .m-header__top-wrapper .m-header__icons .m-header__icon-text-small,
+    #shopify-section-{{ section.id }} .m-header__top-wrapper .m-header__icons .m-icon-text{
+      color:{{ section.settings.header_icons_color }} !important;
+    }
+  {% endstyle %}
+{%- endif -%}
 <{% if section.settings.sticky_header_type != 'none' %}sticky-header data-sticky-type="{{ section.settings.sticky_header_type }}"{% else %}div{% endif %} 
   class="m-header m:block {% if section.settings.separator_line == 'bottom' or section.settings.separator_line == 'middle-bottom' %} m-header--show-separator-line{% endif %}"
   {% if section.settings.mega_menu_heading != blank and section.settings.open_default %}
@@ -457,6 +468,19 @@
           "label": "Large"
         }
       ]
+    },
+    {
+      "type": "checkbox",
+      "id": "header_icons_use_custom_color",
+      "label": "Use custom color for header icons",
+      "default": false,
+      "info": "When enabled, sets the color for the account, wishlist, compare, and cart icons (and their “icon + text” labels) in the top bar."
+    },
+    {
+      "type": "color",
+      "id": "header_icons_color",
+      "label": "Header icons color",
+      "default": "#1a1a1a"
     },
     {
       "type": "html",
