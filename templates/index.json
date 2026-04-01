@@ -224,7 +224,7 @@
       "name": "Shop by condition",
       "settings": {
         "heading": "Shop by Growing Condition",
-        "heading_font": "body",
+        "heading_font": "heading",
         "label_font": "body",
         "heading_font_size_mobile": 26,
         "heading_font_size_desktop": 34,
@@ -236,7 +236,7 @@
         "label_text_transform": "uppercase",
         "label_letter_spacing": 120,
         "heading_spacing": 32,
-        "section_background": "#fff8f5",
+        "section_background": "#f6efe2",
         "heading_color": "#1a1a1a",
         "label_color": "#ffffff",
         "card_border_color": "#eadfcd",
