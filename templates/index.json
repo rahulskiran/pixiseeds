@@ -147,7 +147,7 @@
         "enable_split_promo": true,
         "split_hide_panel_on_mobile": true,
         "split_mobile_full_width": false,
-        "split_panel_width": 34,
+        "split_panel_width": 28,
         "split_panel_bg": "#d96c3b",
         "split_padding_vertical": 40,
         "split_padding_horizontal": 32,
