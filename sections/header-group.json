@@ -30,13 +30,15 @@
         },
         "text_DHHdUT": {
           "type": "text",
+          "disabled": true,
           "settings": {
-            "position": "left",
+            "position": "center",
             "text": "✌🏼 Free Express Shipping All Over India"
           }
         },
         "menu_ebrqpt": {
           "type": "menu",
+          "disabled": true,
           "settings": {
             "position": "right",
             "menu": "customer-account-main-menu"
