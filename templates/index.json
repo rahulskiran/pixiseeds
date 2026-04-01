@@ -482,7 +482,7 @@
         "pcard_layout": "",
         "pcard_image_ratio": "original",
         "show_vendor": true,
-        "atc_bg_color": "#000000",
+        "atc_bg_color": "#d96c3b",
         "atc_text_color": "#ffffff",
         "atc_hover_bg_color": "#333333",
         "atc_hover_text_color": "#ffffff",
