@@ -11,7 +11,6 @@
   "sections": {
     "main": {
       "type": "page-search",
-      "disabled": true,
       "settings": {
         "grid_columns": "3",
         "grid_bordered": false,
