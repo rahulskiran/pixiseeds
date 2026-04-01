@@ -65,6 +65,8 @@
         "show_wishlist": true,
         "show_compare": false,
         "icon_size": "large",
+        "header_icons_use_custom_color": true,
+        "header_icons_color": "#ae5000",
         "custom_icon": "",
         "search_button": "icon-plain",
         "header_search_second_control": "category",
