@@ -35,7 +35,7 @@
         "title": {
           "type": "title",
           "settings": {
-            "heading_size": "h3"
+            "heading_size": "h2"
           }
         },
         "price": {
@@ -76,7 +76,7 @@
             "variant_card_selected_border_width": 2,
             "variant_card_border_color": "#d1d5db",
             "variant_card_selected_border_color": "#ae5000",
-            "variant_card_price_color": "#1f5f3f",
+            "variant_card_price_color": "#ae5000",
             "size_title": "Size"
           }
         },
