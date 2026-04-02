@@ -143,12 +143,39 @@
               </div>
               <div class="m-product-option--content m:inline-flex m:flex-wrap">
                 {%- for value in option.values -%}
+                  {%- liquid
+                    assign swatch_variant = nil
+                    for v in product.variants
+                      assign variant_matches = true
+                      for opt in product.options_with_values
+                        if opt.position <= option.position
+                          assign opi = opt.position | minus: 1
+                          if opt.position < option.position
+                            assign expected = opt.selected_value
+                          else
+                            assign expected = value
+                          endif
+                          if v.options[opi] != expected
+                            assign variant_matches = false
+                          endif
+                        endif
+                      endfor
+                      if variant_matches
+                        assign swatch_variant = v
+                        break
+                      endif
+                    endfor
+                    assign swatch_aspect = product.featured_image.aspect_ratio | default: 1
+                    if swatch_variant.featured_image
+                      assign swatch_aspect = swatch_variant.featured_image.aspect_ratio
+                    endif
+                  -%}
                   <div
                     class="m-product-option--node"
                     data-option-position="{{ option.position }}"
                     data-option-type="{{ picker_type }}"
                     data-value="{{- value | escape -}}"
-                    style="--option-aspect-ratio: {{ product.featured_image.aspect_ratio | default: '1' }}"
+                    style="--option-aspect-ratio: {{ swatch_aspect }}"
                     data-tippy-theme="m-color-{{ color_scheme }}"
                     data-tippy-content="{{- value -}}"
                   >
@@ -158,8 +185,28 @@
                       form="{{ product_form_id }}"
                       {% if option.selected_value == value %}checked{% endif %}
                     >
-                    <label data-option-type="{{ picker_type }}" for="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}" class="m-product-option--node__label option-loading" style="font-size:0;">
-                        {{- value -}}
+                    <label
+                      data-option-type="{{ picker_type }}"
+                      for="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}"
+                      class="m-product-option--node__label option-loading{% if swatch_variant.featured_image %} m-variant-picker__label--has-img{% endif %}"
+                      {% unless swatch_variant.featured_image %}
+                        style="font-size:0;"
+                      {% endunless %}
+                    >
+                      {%- if swatch_variant.featured_image -%}
+                        {{
+                          swatch_variant.featured_image
+                          | image_url: width: 400
+                          | image_tag:
+                            class: 'm-variant-picker__swatch-img',
+                            loading: 'lazy',
+                            alt: value,
+                            widths: '100, 200, 300, 400'
+                        }}
+                        <span class="m:visually-hidden">{{ value }}</span>
+                      {%- else -%}
+                        <span class="m-variant-picker__swatch-fallback">{{ value }}</span>
+                      {%- endif -%}
                     </label>
                   </div>
                 {%- endfor -%}
@@ -181,6 +228,29 @@
               </div>
               <div class="m-product-option--content m:inline-flex m:flex-wrap">
                 {%- for value in option.values -%}
+                  {%- liquid
+                    assign swatch_variant = nil
+                    for v in product.variants
+                      assign variant_matches = true
+                      for opt in product.options_with_values
+                        if opt.position <= option.position
+                          assign opi = opt.position | minus: 1
+                          if opt.position < option.position
+                            assign expected = opt.selected_value
+                          else
+                            assign expected = value
+                          endif
+                          if v.options[opi] != expected
+                            assign variant_matches = false
+                          endif
+                        endif
+                      endfor
+                      if variant_matches
+                        assign swatch_variant = v
+                        break
+                      endif
+                    endfor
+                  -%}
                   <div
                     class="m-product-option--node"
                     data-option-position="{{ option.position }}"
@@ -193,8 +263,25 @@
                         form="{{ product_form_id }}"
                         {% if option.selected_value == value %}checked{% endif %}
                     >
-                    <label for="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}" class="m-product-option--node__label">
-                      {{- value -}}
+                    <label
+                      data-option-type="button"
+                      for="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}"
+                      class="m-product-option--node__label{% if swatch_variant.featured_image %} m-variant-picker__label--btn-with-img option-loading{% endif %}"
+                    >
+                      {%- if swatch_variant.featured_image -%}
+                        <span class="m-variant-picker__btn-img-wrap">
+                          {{
+                            swatch_variant.featured_image
+                            | image_url: width: 240
+                            | image_tag:
+                              class: 'm-variant-picker__swatch-img',
+                              loading: 'lazy',
+                              alt: value,
+                              widths: '80, 120, 160, 200, 240'
+                          }}
+                        </span>
+                      {%- endif -%}
+                      <span class="m-variant-picker__btn-text">{{ value }}</span>
                     </label>
                   </div>
                 {%- endfor -%}
