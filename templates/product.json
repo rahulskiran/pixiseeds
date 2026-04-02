@@ -11,7 +11,6 @@
   "sections": {
     "f49571f8-057f-459a-be31-3baf33dd91e0": {
       "type": "breadcrumb",
-      "disabled": true,
       "settings": {
         "text_alignment": "left",
         "hide_current": false,
@@ -138,7 +137,7 @@
         "enable_video_autoplay": true,
         "show_thumbnails_on_mobile": true,
         "boxed_layout": false,
-        "boxed_color_scheme": "scheme-f08d43fd-4b1f-4a68-b4fd-0103c8af3c3c",
+        "boxed_color_scheme": "background-4",
         "use_sticky_atc": false,
         "use_sticky_atc_on_mobile": false,
         "enable_dynamic_checkout": false,
