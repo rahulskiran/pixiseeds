@@ -87,7 +87,7 @@
             "show_atc_button": true,
             "show_dynamic_checkout": true,
             "show_gift_card_recipient": true,
-            "buy_buttons_use_custom_colors": false,
+            "buy_buttons_use_custom_colors": true,
             "buy_buttons_atc_bg": "#ebebeb",
             "buy_buttons_atc_text": "#121212",
             "buy_buttons_checkout_bg": "#d96c3b",
