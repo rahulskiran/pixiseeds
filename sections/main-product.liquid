@@ -486,6 +486,47 @@
           "label": "Gap between cards"
         },
         {
+          "type": "header",
+          "content": "Desktop & tablet size"
+        },
+        {
+          "type": "paragraph",
+          "content": "These settings mainly affect layout from the tablet breakpoint up (768px+). Lower values make the variant card row more compact on wide screens."
+        },
+        {
+          "type": "range",
+          "id": "variant_card_desktop_max_width",
+          "min": 100,
+          "max": 280,
+          "step": 4,
+          "default": 220,
+          "unit": "px",
+          "label": "Max card width (desktop)",
+          "info": "Caps how wide each card can grow in a row. Lower this to shrink the whole block."
+        },
+        {
+          "type": "range",
+          "id": "variant_card_desktop_media_height",
+          "min": 56,
+          "max": 280,
+          "step": 4,
+          "default": 280,
+          "unit": "px",
+          "label": "Max image height (768px+)",
+          "info": "At the maximum value, height is not limited (same as before). Lower this (e.g. 80–120px) for shorter cards on tablet and desktop."
+        },
+        {
+          "type": "range",
+          "id": "variant_card_inner_padding",
+          "min": 4,
+          "max": 20,
+          "step": 2,
+          "default": 12,
+          "unit": "px",
+          "label": "Padding inside each card",
+          "info": "Reduces outer padding around label and price for a tighter look."
+        },
+        {
           "type": "range",
           "id": "variant_card_radius",
           "min": 0,

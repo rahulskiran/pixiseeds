@@ -68,12 +68,25 @@
         endif
       %}
       {%- if variant_card_layout and block != blank -%}
+        {% liquid
+          assign vcard_pad = block.settings.variant_card_inner_padding | default: 12
+          assign vcard_pad_x = vcard_pad | minus: 2
+          if vcard_pad_x < 4
+            assign vcard_pad_x = 4
+          endif
+          assign vcard_mh = block.settings.variant_card_desktop_media_height | default: 280
+        %}
         <div
           class="m-product-option m-product-option--card m-variant-card-picker{% if block.settings.variant_card_mobile_layout == 'scroll' %} m-variant-card-picker--mobile-scroll{% else %} m-variant-card-picker--mobile-wrap{% endif %}{% if block.settings.variant_card_uppercase_labels %} m-variant-card-picker--uppercase{% endif %}"
           style="
             --m-vcard-radius: {{ block.settings.variant_card_radius }}px;
             --m-vcard-min: {{ block.settings.variant_card_min_width }}px;
             --m-vcard-gap: {{ block.settings.variant_card_gap }}px;
+            --m-vcard-max: {{ block.settings.variant_card_desktop_max_width | default: 220 }}px;
+            --m-vcard-media-max: {% if vcard_mh >= 280 %}none{% else %}{{ vcard_mh }}px{% endif %};
+            --m-vcard-pad-top: {{ vcard_pad }}px;
+            --m-vcard-pad-x: {{ vcard_pad_x }}px;
+            --m-vcard-pad-bottom: {{ vcard_pad | plus: 2 }}px;
             --m-vcard-bd-w: {{ block.settings.variant_card_border_width }}px;
             --m-vcard-bd-sel-w: {{ block.settings.variant_card_selected_border_width }}px;
             --m-vcard-bd: {{ block.settings.variant_card_border_color }};
