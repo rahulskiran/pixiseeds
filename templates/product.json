@@ -24,6 +24,10 @@
     "main": {
       "type": "main-product",
       "blocks": {
+        "rating_w63nBP": {
+          "type": "rating",
+          "settings": {}
+        },
         "569262ef-b84b-475c-8f61-0c14620f8fae": {
           "type": "breadcrumb",
           "settings": {}
@@ -141,6 +145,7 @@
         }
       },
       "block_order": [
+        "rating_w63nBP",
         "569262ef-b84b-475c-8f61-0c14620f8fae",
         "81d0515f-440e-4127-8a79-aa458f08c46c",
         "title",
