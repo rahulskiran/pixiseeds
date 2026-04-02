@@ -400,6 +400,141 @@
       "settings": [
         {
           "type": "header",
+          "content": "Swatch loading effect"
+        },
+        {
+          "type": "checkbox",
+          "id": "variant_picker_loading_shimmer",
+          "default": false,
+          "label": "Show loading shimmer (blink)",
+          "info": "Shimmer animation on color, image, and button swatches (and variant cards) while variant styles load. Off by default."
+        },
+        {
+          "type": "header",
+          "content": "Variant card layout"
+        },
+        {
+          "type": "paragraph",
+          "content": "When enabled, each option value is shown as a card with image (optional), label, and price. Best for size/Capacity style options."
+        },
+        {
+          "type": "checkbox",
+          "id": "variant_card_enable",
+          "default": false,
+          "label": "Enable variant cards"
+        },
+        {
+          "type": "checkbox",
+          "id": "variant_card_show_image",
+          "default": true,
+          "label": "Show image on each card",
+          "info": "Uses the variant image, or the main product image as fallback."
+        },
+        {
+          "type": "checkbox",
+          "id": "variant_card_show_compare_price",
+          "default": true,
+          "label": "Show compare-at price when on sale"
+        },
+        {
+          "type": "checkbox",
+          "id": "variant_card_show_save",
+          "default": true,
+          "label": "Show savings on the selected card",
+          "info": "Displays only when the selected variant has a compare-at price above the sale price."
+        },
+        {
+          "type": "text",
+          "id": "variant_card_save_prefix",
+          "default": "Save",
+          "label": "Savings label prefix"
+        },
+        {
+          "type": "checkbox",
+          "id": "variant_card_uppercase_labels",
+          "default": true,
+          "label": "Uppercase option labels on cards"
+        },
+        {
+          "type": "select",
+          "id": "variant_card_mobile_layout",
+          "label": "Mobile layout",
+          "default": "scroll",
+          "options": [
+            { "value": "scroll", "label": "Horizontal scroll" },
+            { "value": "wrap", "label": "Wrap to multiple rows" }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "variant_card_min_width",
+          "min": 72,
+          "max": 200,
+          "step": 4,
+          "default": 132,
+          "unit": "px",
+          "label": "Minimum card width"
+        },
+        {
+          "type": "range",
+          "id": "variant_card_gap",
+          "min": 4,
+          "max": 28,
+          "step": 2,
+          "default": 12,
+          "unit": "px",
+          "label": "Gap between cards"
+        },
+        {
+          "type": "range",
+          "id": "variant_card_radius",
+          "min": 0,
+          "max": 28,
+          "step": 2,
+          "default": 14,
+          "unit": "px",
+          "label": "Card corner radius"
+        },
+        {
+          "type": "range",
+          "id": "variant_card_border_width",
+          "min": 1,
+          "max": 3,
+          "step": 1,
+          "default": 1,
+          "unit": "px",
+          "label": "Default border thickness"
+        },
+        {
+          "type": "range",
+          "id": "variant_card_selected_border_width",
+          "min": 2,
+          "max": 5,
+          "step": 1,
+          "default": 3,
+          "unit": "px",
+          "label": "Selected card border thickness"
+        },
+        {
+          "type": "color",
+          "id": "variant_card_border_color",
+          "label": "Default border color",
+          "default": "#d1d5db"
+        },
+        {
+          "type": "color",
+          "id": "variant_card_selected_border_color",
+          "label": "Selected border color",
+          "default": "#1f5f3f"
+        },
+        {
+          "type": "color",
+          "id": "variant_card_price_color",
+          "label": "Price color",
+          "default": "#1f5f3f"
+        },
+        {
+          "type": "header",
           "content": "Size guide settings"
         },
         {
