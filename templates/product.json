@@ -11,6 +11,7 @@
   "sections": {
     "f49571f8-057f-459a-be31-3baf33dd91e0": {
       "type": "breadcrumb",
+      "disabled": true,
       "settings": {
         "text_alignment": "left",
         "hide_current": false,
@@ -42,6 +43,15 @@
           "settings": {
             "show_saving": false,
             "sale_badge_type": "percentage"
+          }
+        },
+        "visitors_pf9GQa": {
+          "type": "visitors",
+          "settings": {
+            "live_views_text": "{count_number} people are viewing this right now",
+            "live_views_range": "20-30",
+            "live_view_duration": "10",
+            "live_view_icon_blinks": true
           }
         },
         "f62f65dc-7525-452d-a18c-2109730a02ec": {
@@ -111,6 +121,7 @@
         "81d0515f-440e-4127-8a79-aa458f08c46c",
         "title",
         "price",
+        "visitors_pf9GQa",
         "f62f65dc-7525-452d-a18c-2109730a02ec",
         "variant_picker",
         "buy_buttons",
@@ -137,7 +148,7 @@
         "enable_video_autoplay": true,
         "show_thumbnails_on_mobile": true,
         "boxed_layout": false,
-        "boxed_color_scheme": "background-4",
+        "boxed_color_scheme": "scheme-f08d43fd-4b1f-4a68-b4fd-0103c8af3c3c",
         "use_sticky_atc": false,
         "use_sticky_atc_on_mobile": false,
         "enable_dynamic_checkout": false,
