@@ -24,6 +24,27 @@
     "main": {
       "type": "main-product",
       "blocks": {
+        "metafield_badges_Ap9QPe": {
+          "type": "metafield_badges",
+          "settings": {
+            "metafield_namespace": "custom",
+            "metafield_key": "product_badges",
+            "badge_margin_top": 0,
+            "badge_gap": 8,
+            "badge_padding_x": 10,
+            "badge_padding_y": 5,
+            "badge_radius": 6,
+            "badge_font_size": 13,
+            "badge_font_weight": "500",
+            "badge_font": "body",
+            "badge_font_custom": "sans_serif_n4",
+            "badge_text_transform": "none",
+            "badge_bg_color": "#f3f4f6",
+            "badge_text_color": "#111827",
+            "badge_border_color": "#e5e7eb",
+            "badge_border_width": 0
+          }
+        },
         "rating_w63nBP": {
           "type": "rating",
           "settings": {}
@@ -145,6 +166,7 @@
         }
       },
       "block_order": [
+        "metafield_badges_Ap9QPe",
         "rating_w63nBP",
         "569262ef-b84b-475c-8f61-0c14620f8fae",
         "81d0515f-440e-4127-8a79-aa458f08c46c",
