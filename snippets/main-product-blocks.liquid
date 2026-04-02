@@ -314,7 +314,19 @@
             assign show_dynamic_checkout = false
           endif
         %}
-        <product-form class="m-product-form m-product-form--main" data-product-id="{{ product.id }}">
+        {%- liquid
+          assign buy_custom_colors = false
+          if block.settings.buy_buttons_use_custom_colors
+            assign buy_custom_colors = true
+          endif
+        -%}
+        <product-form
+          class="m-product-form m-product-form--main{% if buy_custom_colors %} m-product-form--custom-buy-colors{% endif %}"
+          data-product-id="{{ product.id }}"
+          {% if buy_custom_colors %}
+            style="--buy-atc-bg: {{ block.settings.buy_buttons_atc_bg }};--buy-atc-text: {{ block.settings.buy_buttons_atc_text }};--buy-now-bg: {{ block.settings.buy_buttons_checkout_bg }};--buy-now-text: {{ block.settings.buy_buttons_checkout_text }};"
+          {% endif %}
+        >
           {%- form 'product',
             product,
             id: product_form_id,
@@ -341,46 +353,50 @@
             {%- endif -%}
 
             <div class="m-product-form--wrapper m:display-flex m:flex-wrap m:items-end">
-              {% if block.settings.show_quantity_selector %}
-                <div class="m-product-form--input">
-                  <label class="m-product-option--label">
-                    {{ 'products.product.quantity' | t }}
-                  </label>
-                  {% render 'product-qty-input', product_form_id: product_form_id, product: product %}
-                </div>
-              {% endif %}
-              {% if block.settings.show_atc_button %}
-                {% liquid
-                  assign btn_class = 'm-button--primary'
-                  if show_dynamic_checkout
-                    assign btn_class = 'm-button--secondary'
-                  endif
-                %}
-                <button
-                  type="submit"
-                  name="add"
-                  class="m-add-to-cart m-spinner-button m-button {{ btn_class }} {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}"
-                  data-atc-text="{{ 'products.product.add_to_cart' | t }}"
-                >
-                  <span class="m-spinner-icon">
-                    <svg
-                      class="animate-spin m-svg-icon"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="none"
+              {% if block.settings.show_quantity_selector or block.settings.show_atc_button %}
+                <div class="m-product-form--qty-atc m:display-flex m:flex-wrap m:items-end m:w-full">
+                  {% if block.settings.show_quantity_selector %}
+                    <div class="m-product-form--input">
+                      <label class="m-product-option--label">
+                        {{ 'products.product.quantity' | t }}
+                      </label>
+                      {% render 'product-qty-input', product_form_id: product_form_id, product: product %}
+                    </div>
+                  {% endif %}
+                  {% if block.settings.show_atc_button %}
+                    {% liquid
+                      assign btn_class = 'm-button--primary'
+                      if show_dynamic_checkout
+                        assign btn_class = 'm-button--secondary'
+                      endif
+                    %}
+                    <button
+                      type="submit"
+                      name="add"
+                      class="m-add-to-cart m-spinner-button m-button {{ btn_class }} {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}"
+                      data-atc-text="{{ 'products.product.add_to_cart' | t }}"
                     >
-                      <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                      <path fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                  </span>
-                  <span class="m-add-to-cart--text">
-                    {% if product.selected_or_first_available_variant.available %}
-                      {{ 'products.product.add_to_cart' | t }}
-                    {% else %}
-                      {{ 'products.product.sold_out' | t }}
-                    {% endif %}
-                  </span>
-                </button>
+                      <span class="m-spinner-icon">
+                        <svg
+                          class="animate-spin m-svg-icon"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                        >
+                          <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                          <path fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                      </span>
+                      <span class="m-add-to-cart--text">
+                        {% if product.selected_or_first_available_variant.available %}
+                          {{ 'products.product.add_to_cart' | t }}
+                        {% else %}
+                          {{ 'products.product.sold_out' | t }}
+                        {% endif %}
+                      </span>
+                    </button>
+                  {% endif %}
+                </div>
               {% endif %}
               {% liquid
                 assign show_terms = false
