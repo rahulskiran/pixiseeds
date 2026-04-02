@@ -142,7 +142,7 @@
         "enable_history_state": true,
         "enable_variant_group_images": true,
         "show_atwl": true,
-        "layout": "grid",
+        "layout": "h-slider",
         "show_featured_media": false,
         "show_zoom_button": true,
         "enable_video_autoplay": true,
