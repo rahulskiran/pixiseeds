@@ -71,7 +71,7 @@
             "variant_card_mobile_layout": "wrap",
             "variant_card_min_width": 72,
             "variant_card_gap": 8,
-            "variant_card_desktop_max_width": 100,
+            "variant_card_desktop_max_width": 164,
             "variant_card_desktop_media_height": 124,
             "variant_card_inner_padding": 12,
             "variant_card_radius": 6,
