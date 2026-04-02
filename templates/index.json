@@ -1190,6 +1190,57 @@
         "padding_top": 52,
         "padding_bottom": 52
       }
+    },
+    "not_sure_RxwPnJ": {
+      "type": "NotSure",
+      "name": "Product finder intro",
+      "settings": {
+        "badge_text": "PERSONALIZED FOR YOU",
+        "heading": "Not sure what to plant? Let's find your match.",
+        "subheading": "Answer three simple questions about your space, and we'll curate the perfect selection for your unique garden.",
+        "label_1": "Where are you planting?",
+        "select_1_placeholder": "Choose an option",
+        "select_1_options": "Backyard Garden Bed\nRaised Beds\nContainers / Pots\nBalcony or patio",
+        "label_2": "How much sun do you get?",
+        "select_2_placeholder": "Choose an option",
+        "select_2_options": "Full Sun (6+ hours)\nPart Sun (3–6 hours)\nShade (under 3 hours)",
+        "button_label": "See My Matches",
+        "button_link": "shopify://collections/all",
+        "append_query_params": false,
+        "query_param_1": "planting",
+        "query_param_2": "sunlight",
+        "background_color": "#FDF5EE",
+        "badge_background": "#F5E6D8",
+        "badge_text_color": "#5C4033",
+        "heading_color": "#2A1810",
+        "subheading_color": "#5C4033",
+        "label_color": "#3D2918",
+        "input_background": "#FFFFFF",
+        "input_text_color": "#3D3D3D",
+        "input_border_color": "#E8DDD4",
+        "button_background": "#D97746",
+        "button_text_color": "#FFFFFF",
+        "heading_font": "heading",
+        "heading_size_mobile": 28,
+        "heading_size_desktop": 40,
+        "subheading_font": "body",
+        "subheading_size_mobile": 16,
+        "subheading_size_desktop": 18,
+        "badge_font_size": 11,
+        "label_font": "body",
+        "label_font_size": 15,
+        "select_font_size": 15,
+        "button_font_size_mobile": 16,
+        "button_font_size_desktop": 17,
+        "content_max_width": 720,
+        "input_corner_style": "pill",
+        "input_border_radius": 16,
+        "field_row_gap": 16,
+        "padding_top_mobile": 40,
+        "padding_bottom_mobile": 40,
+        "padding_top": 56,
+        "padding_bottom": 56
+      }
     }
   },
   "order": [
@@ -1204,6 +1255,7 @@
     "02777377-8dc3-477f-8f06-08ee6c367afe",
     "8d4fab03-a6d0-46ee-ac9f-e0e3f073aa13",
     "banner_grid_QmnCHV",
-    "new_product_sec_M84LcH"
+    "new_product_sec_M84LcH",
+    "not_sure_RxwPnJ"
   ]
 }
