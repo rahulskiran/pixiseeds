@@ -61,6 +61,22 @@
         "variant_picker": {
           "type": "variant_picker",
           "settings": {
+            "variant_picker_loading_shimmer": false,
+            "variant_card_enable": true,
+            "variant_card_show_image": true,
+            "variant_card_show_compare_price": true,
+            "variant_card_show_save": true,
+            "variant_card_save_prefix": "Save",
+            "variant_card_uppercase_labels": true,
+            "variant_card_mobile_layout": "scroll",
+            "variant_card_min_width": 132,
+            "variant_card_gap": 12,
+            "variant_card_radius": 14,
+            "variant_card_border_width": 1,
+            "variant_card_selected_border_width": 3,
+            "variant_card_border_color": "#d1d5db",
+            "variant_card_selected_border_color": "#1f5f3f",
+            "variant_card_price_color": "#1f5f3f",
             "size_title": "Size"
           }
         },
