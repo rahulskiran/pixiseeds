@@ -350,6 +350,173 @@
       ]
     },
     {
+      "type": "metafield_badges",
+      "name": "Product badges (metafield)",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Add a product metafield: use a List of single-line text values (e.g. Organic, Non‑GMO), or a single line text with comma-separated labels. Then enter the namespace and key below (example namespace: custom, key: product_badges)."
+        },
+        {
+          "type": "text",
+          "id": "metafield_namespace",
+          "label": "Metafield namespace",
+          "default": "custom",
+          "info": "As in Settings → Custom data → Products → definition (e.g. custom)."
+        },
+        {
+          "type": "text",
+          "id": "metafield_key",
+          "label": "Metafield key",
+          "default": "product_badges",
+          "info": "The machine name of the metafield (not the display name)."
+        },
+        {
+          "type": "header",
+          "content": "Layout & size"
+        },
+        {
+          "type": "range",
+          "id": "badge_margin_top",
+          "min": 0,
+          "max": 32,
+          "step": 2,
+          "default": 0,
+          "unit": "px",
+          "label": "Extra spacing above row",
+          "info": "Adds to the normal gap from the block above. Leave at 0 to use default product block spacing."
+        },
+        {
+          "type": "range",
+          "id": "badge_gap",
+          "min": 4,
+          "max": 24,
+          "step": 2,
+          "default": 8,
+          "unit": "px",
+          "label": "Gap between badges"
+        },
+        {
+          "type": "range",
+          "id": "badge_padding_x",
+          "min": 4,
+          "max": 28,
+          "step": 2,
+          "default": 10,
+          "unit": "px",
+          "label": "Horizontal padding (each badge)"
+        },
+        {
+          "type": "range",
+          "id": "badge_padding_y",
+          "min": 2,
+          "max": 18,
+          "step": 1,
+          "default": 5,
+          "unit": "px",
+          "label": "Vertical padding (each badge)"
+        },
+        {
+          "type": "range",
+          "id": "badge_radius",
+          "min": 0,
+          "max": 28,
+          "step": 2,
+          "default": 6,
+          "unit": "px",
+          "label": "Corner radius"
+        },
+        {
+          "type": "header",
+          "content": "Typography"
+        },
+        {
+          "type": "range",
+          "id": "badge_font_size",
+          "min": 10,
+          "max": 22,
+          "step": 1,
+          "default": 13,
+          "unit": "px",
+          "label": "Font size"
+        },
+        {
+          "type": "select",
+          "id": "badge_font_weight",
+          "label": "Font weight",
+          "default": "500",
+          "options": [
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semibold" },
+            { "value": "700", "label": "Bold" }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "badge_font",
+          "label": "Font",
+          "default": "body",
+          "options": [
+            { "value": "body", "label": "Theme body" },
+            { "value": "heading", "label": "Theme heading" },
+            { "value": "custom", "label": "Custom" }
+          ]
+        },
+        {
+          "type": "font_picker",
+          "id": "badge_font_custom",
+          "label": "Custom font",
+          "default": "helvetica_n4",
+          "info": "Only applies when Font is set to Custom."
+        },
+        {
+          "type": "select",
+          "id": "badge_text_transform",
+          "label": "Text transform",
+          "default": "none",
+          "options": [
+            { "value": "none", "label": "None" },
+            { "value": "uppercase", "label": "Uppercase" },
+            { "value": "capitalize", "label": "Capitalize" }
+          ]
+        },
+        {
+          "type": "header",
+          "content": "Colors"
+        },
+        {
+          "type": "color",
+          "id": "badge_bg_color",
+          "label": "Background",
+          "default": "#f3f4f6"
+        },
+        {
+          "type": "color",
+          "id": "badge_text_color",
+          "label": "Text",
+          "default": "#111827"
+        },
+        {
+          "type": "color",
+          "id": "badge_border_color",
+          "label": "Border",
+          "default": "#e5e7eb"
+        },
+        {
+          "type": "range",
+          "id": "badge_border_width",
+          "min": 0,
+          "max": 3,
+          "step": 1,
+          "default": 0,
+          "unit": "px",
+          "label": "Border thickness"
+        }
+      ]
+    },
+    {
       "type": "rating",
       "name": "Product rating",
       "limit": 1,

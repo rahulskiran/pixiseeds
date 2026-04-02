@@ -79,6 +79,8 @@
         {% if settings.review_app == 'ali_reviews' %}
           <div product-id="{{ product.id }}" class="alr-display-review-badge"></div>
         {% endif %}
+      {%- when 'metafield_badges' -%}
+        {% render 'product-metafield-badges', product: product, block: block %}
       {%- when 'price' -%}
         <div class="product-block-group--price">
           {% render 'product-prices',

@@ -1,0 +1,66 @@
+{% comment %}
+  Renders pills from a product metafield (list of single-line texts, or one text with comma-separated values).
+
+  @param product {Object}
+  @param block {Object}
+{% endcomment %}
+
+{%- liquid
+  assign ns = block.settings.metafield_namespace | strip
+  assign ky = block.settings.metafield_key | strip
+  assign mf = nil
+  if ns != blank and ky != blank
+    assign mf = product.metafields[ns][ky]
+  endif
+-%}
+
+{%- if mf != blank and mf.value != blank -%}
+  {%- if block.settings.badge_font == 'custom' -%}
+    {%- unless block.settings.badge_font_custom.system? -%}
+      {{- block.settings.badge_font_custom | font_face: font_display: 'swap' -}}
+    {%- endunless -%}
+  {%- endif -%}
+
+  {%- liquid
+    if block.settings.badge_font == 'custom'
+      assign font_stack = block.settings.badge_font_custom.family | append: ', ' | append: block.settings.badge_font_custom.fallback_families
+    elsif block.settings.badge_font == 'heading'
+      assign font_stack = 'var(--font-stack-heading)'
+    else
+      assign font_stack = 'var(--font-stack-body)'
+    endif
+
+    assign text_transform = block.settings.badge_text_transform | default: 'none'
+    if mf.type contains 'list.'
+      assign badge_entries = mf.value
+    else
+      assign badge_entries = mf.value | split: ','
+    endif
+  -%}
+
+  <div
+    class="m-product-metafield-badges"
+    style="
+      --pmeta-badge-gap: {{ block.settings.badge_gap }}px;
+      --pmeta-badge-pad-x: {{ block.settings.badge_padding_x }}px;
+      --pmeta-badge-pad-y: {{ block.settings.badge_padding_y }}px;
+      --pmeta-badge-radius: {{ block.settings.badge_radius }}px;
+      --pmeta-badge-fs: {{ block.settings.badge_font_size }}px;
+      --pmeta-badge-bg: {{ block.settings.badge_bg_color }};
+      --pmeta-badge-fg: {{ block.settings.badge_text_color }};
+      --pmeta-badge-border: {{ block.settings.badge_border_color }};
+      --pmeta-badge-border-w: {{ block.settings.badge_border_width }}px;
+      margin-top: {{ block.settings.badge_margin_top }}px;
+      font-family: {{ font_stack }};
+      font-weight: {{ block.settings.badge_font_weight }};
+      text-transform: {{ text_transform }};
+    "
+  >
+    {%- for entry in badge_entries -%}
+      {%- assign label = entry | strip | strip_html -%}
+      {%- if label != blank -%}
+        <span class="m-product-metafield-badges__pill">{{ label }}</span>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+{%- endif -%}
