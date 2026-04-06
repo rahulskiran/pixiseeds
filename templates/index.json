@@ -508,6 +508,106 @@
         "b0e6fc3f-c467-4492-a155-e29e1c1f0daf",
         "9e460bec-bde8-4147-adfa-a188e4910f87"
       ],
+      "name": "Product Collection",
+      "settings": {
+        "color_scheme": "background-4",
+        "boxed_layout": false,
+        "grid_bordered": false,
+        "boxed_color_scheme": "scheme-98abe1c5-d453-445f-a04d-6584e08129ae",
+        "heading": "Community Favorites",
+        "heading_size": "h2",
+        "tab_header_style": "1",
+        "header_divider": false,
+        "pcard_layout": "",
+        "pcard_image_ratio": "original",
+        "show_vendor": true,
+        "atc_bg_color": "#d96c3b",
+        "atc_text_color": "#ffffff",
+        "atc_hover_bg_color": "#333333",
+        "atc_hover_text_color": "#ffffff",
+        "pt_card_border": "inherit",
+        "pt_use_pcard_scheme": false,
+        "pt_pcard_color_scheme": "",
+        "pt_custom_card_surfaces": false,
+        "pt_media_bg": "#f4f1eb",
+        "pt_content_bg": "#ffffff",
+        "pt_card_radius": 0,
+        "pt_pcard_text_align": "inherit",
+        "pt_tab_custom_colors": false,
+        "pt_tab_bg": "#ffffff",
+        "pt_tab_border": "#e5e5e5",
+        "pt_tab_text": "#1a1a1a",
+        "pt_tab_active_bg": "#2c2c2c",
+        "pt_tab_active_border": "#2c2c2c",
+        "pt_tab_active_text": "#ffffff",
+        "product_to_show": 7,
+        "items_per_row": 5,
+        "column_gap": 30,
+        "row_gap": 30,
+        "enable_slider": true,
+        "show_pagination": true,
+        "show_navigation": true,
+        "navigation_position": "inside",
+        "mobile_layout": "inherit",
+        "column_gap_mobile": 10,
+        "row_gap_mobile": 10,
+        "enable_swipe_mobile": true,
+        "button_label": "",
+        "button_style": "m-button--outline",
+        "padding_top": 60,
+        "padding_bottom": 60,
+        "custom_class": "m-hide-pagination-md",
+        "animations": "inherit"
+      }
+    },
+    "product_tabs_CjyWMr": {
+      "type": "product-tabs",
+      "blocks": {
+        "tab_xjf9ff": {
+          "type": "tab",
+          "settings": {
+            "collection": "homegrown-plants",
+            "heading": "Vegetables",
+            "icon_image_width": 30,
+            "icon_svg": ""
+          }
+        },
+        "tab_pTUmKa": {
+          "type": "tab",
+          "settings": {
+            "collection": "anemometers",
+            "heading": "Flowers",
+            "icon_image_width": 30,
+            "icon_svg": ""
+          }
+        },
+        "tab_VeNwKN": {
+          "type": "tab",
+          "settings": {
+            "collection": "power-hand-tools",
+            "heading": "Herbs",
+            "icon_image_width": 30,
+            "icon_svg": ""
+          }
+        },
+        "tab_JgNbbB": {
+          "type": "tab",
+          "disabled": true,
+          "settings": {
+            "collection": "airflow-air-quality",
+            "heading": "Air Quality Monitors",
+            "icon_image_width": 30,
+            "icon_svg": ""
+          }
+        }
+      },
+      "block_order": [
+        "tab_xjf9ff",
+        "tab_pTUmKa",
+        "tab_VeNwKN",
+        "tab_JgNbbB"
+      ],
+      "name": "Product Collection",
       "settings": {
         "color_scheme": "background-4",
         "boxed_layout": false,
@@ -1152,6 +1252,7 @@
     "new_col_6MtRnX",
     "3d92e37f-b44b-49a7-8000-f53f057128ae",
     "0bb7c3df-f5b4-4745-b7be-7842c5658f4a",
+    "product_tabs_CjyWMr",
     "4c1b5e9a-4007-49bc-ad24-b1ad612a2316",
     "image_banner_afrWdQ",
     "6c4f10ba-2c26-4691-95ce-2e3c9dfb089e",
