@@ -292,6 +292,19 @@
     color: {{ section.settings.atc_hover_text_color }} !important;
     border-color: {{ section.settings.atc_hover_bg_color }} !important;
   }
+  /* Select options (multi-variant): quick-view button or product link, not .m-add-to-cart */
+  #shopify-section-{{ section.id }} .m-product-card__quick-add .m-button.m-button--secondary:not(.m-add-to-cart),
+  #shopify-section-{{ section.id }} .m-product-card__quick-add a.m-button.m-button--secondary {
+    background-color: {{ section.settings.pt_select_options_bg }} !important;
+    color: {{ section.settings.pt_select_options_text }} !important;
+    border-color: {{ section.settings.pt_select_options_border }} !important;
+  }
+  #shopify-section-{{ section.id }} .m-product-card__quick-add .m-button.m-button--secondary:not(.m-add-to-cart):hover,
+  #shopify-section-{{ section.id }} .m-product-card__quick-add a.m-button.m-button--secondary:hover {
+    background-color: {{ section.settings.pt_select_options_hover_bg }} !important;
+    color: {{ section.settings.pt_select_options_hover_text }} !important;
+    border-color: {{ section.settings.pt_select_options_hover_border }} !important;
+  }
   {% if settings.show_cart_button %}
     #shopify-section-{{ section.id }} .m-product-card--style-1 .m-product-card__media .m-product-card__quick-add-icon {
       display: none !important;
@@ -514,6 +527,51 @@
       "id": "atc_hover_text_color",
       "label": "Button hover text color",
       "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Select options button colors"
+    },
+    {
+      "type": "paragraph",
+      "content": "For products with variants (opens quick view, goes to product, or links to the product page depending on Theme settings → Product cards → Select option button action)."
+    },
+    {
+      "type": "color",
+      "id": "pt_select_options_bg",
+      "label": "Background",
+      "default": "#ebebeb"
+    },
+    {
+      "type": "color",
+      "id": "pt_select_options_text",
+      "label": "Text",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "pt_select_options_border",
+      "label": "Border",
+      "default": "#ebebeb",
+      "info": "Usually match background for a solid pill, or choose a contrasting outline."
+    },
+    {
+      "type": "color",
+      "id": "pt_select_options_hover_bg",
+      "label": "Hover background",
+      "default": "#dedede"
+    },
+    {
+      "type": "color",
+      "id": "pt_select_options_hover_text",
+      "label": "Hover text",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "pt_select_options_hover_border",
+      "label": "Hover border",
+      "default": "#dedede"
     },
     {
       "type": "header",
