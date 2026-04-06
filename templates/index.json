@@ -200,7 +200,7 @@
           "type": "card",
           "settings": {
             "image": "shopify://shop_images/Monstera_and_snake_202603312231.jpg",
-            "title": "Full sun",
+            "title": "Tomato Seeds",
             "link": "",
             "open_new_tab": false
           }
@@ -209,7 +209,7 @@
           "type": "card",
           "settings": {
             "image": "shopify://shop_images/Monstera_and_snake_202603312230.jpg",
-            "title": "Shade tolerant",
+            "title": "Lettuce Seeds",
             "link": "",
             "open_new_tab": false
           }
@@ -218,7 +218,7 @@
           "type": "card",
           "settings": {
             "image": "shopify://shop_images/Monstera_and_snake_202603312234.jpg",
-            "title": "Balcony containers",
+            "title": "Zinnnia Seeds",
             "link": "",
             "open_new_tab": false
           }
@@ -227,7 +227,7 @@
           "type": "card",
           "settings": {
             "image": "shopify://shop_images/Monarch_butterfly_landing_202603312237.jpg",
-            "title": "Pollinator friendly",
+            "title": "Marigold Seeds",
             "link": "",
             "open_new_tab": false
           }
@@ -236,7 +236,7 @@
           "type": "card",
           "settings": {
             "image": "shopify://shop_images/Monarch_butterfly_landing_202603312237.jpg",
-            "title": "Deer resistant",
+            "title": "microgreen seeds",
             "link": "",
             "open_new_tab": false
           }
@@ -245,7 +245,7 @@
           "type": "card",
           "settings": {
             "image": "shopify://shop_images/Monstera_and_snake_202603312230.jpg",
-            "title": "Drought hardy",
+            "title": "cucumber seeds",
             "link": "",
             "open_new_tab": false
           }
@@ -1209,17 +1209,17 @@
         "append_query_params": false,
         "query_param_1": "planting",
         "query_param_2": "sunlight",
-        "background_color": "#FDF5EE",
-        "badge_background": "#F5E6D8",
-        "badge_text_color": "#5C4033",
-        "heading_color": "#2A1810",
-        "subheading_color": "#5C4033",
-        "label_color": "#3D2918",
-        "input_background": "#FFFFFF",
-        "input_text_color": "#3D3D3D",
-        "input_border_color": "#E8DDD4",
-        "button_background": "#D97746",
-        "button_text_color": "#FFFFFF",
+        "background_color": "#fdf5ee",
+        "badge_background": "#f5e6d8",
+        "badge_text_color": "#5c4033",
+        "heading_color": "#2a1810",
+        "subheading_color": "#5c4033",
+        "label_color": "#3d2918",
+        "input_background": "#ffffff",
+        "input_text_color": "#3d3d3d",
+        "input_border_color": "#e8ddd4",
+        "button_background": "#d97746",
+        "button_text_color": "#ffffff",
         "heading_font": "heading",
         "heading_size_mobile": 28,
         "heading_size_desktop": 40,
