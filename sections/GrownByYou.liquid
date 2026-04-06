@@ -78,12 +78,8 @@
           <div class="m-grown__cell m-grown__cell--empty" style="grid-area: c{{ i }};" aria-hidden="true">
             <div class="m-grown__cell-inner m-grown__cell-inner--empty">
               {% if request.design_mode %}
-                {% assign ph = i | modulo: 6 %}
-                {% if ph == 0 %}
-                  {% assign ph = 6 %}
-                {% endif %}
                 <div class="m-grown__placeholder">
-                  {{ 'lifestyle-' | append: ph | placeholder_svg_tag: 'm-placeholder-svg' }}
+                  {{ 'image' | placeholder_svg_tag: 'm-placeholder-svg' }}
                 </div>
               {% endif %}
             </div>
@@ -150,12 +146,8 @@
                 }}
               {% endif %}
             {% else %}
-              {% assign ph = i | modulo: 6 %}
-              {% if ph == 0 %}
-                {% assign ph = 6 %}
-              {% endif %}
               <div class="m-grown__placeholder">
-                {{ 'lifestyle-' | append: ph | placeholder_svg_tag: 'm-placeholder-svg' }}
+                {{ 'image' | placeholder_svg_tag: 'm-placeholder-svg' }}
               </div>
             {% endif %}
 
