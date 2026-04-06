@@ -1,0 +1,732 @@
+{%- liquid
+  assign pt = section.settings.padding_top
+  assign pb = section.settings.padding_bottom
+  assign gap_m = section.settings.grid_gap_mobile
+  assign gap_d = section.settings.grid_gap_desktop
+
+  assign title_ff = 'var(--font-stack-header)'
+  if section.settings.title_font == 'body'
+    assign title_ff = 'var(--font-stack-body)'
+  endif
+
+  assign eyebrow_ff = 'var(--font-stack-body)'
+  if section.settings.eyebrow_font == 'heading'
+    assign eyebrow_ff = 'var(--font-stack-header)'
+  endif
+
+  assign label_ff = 'var(--font-stack-header)'
+  if section.settings.card_label_font == 'body'
+    assign label_ff = 'var(--font-stack-body)'
+  endif
+
+  assign overlay_dec = section.settings.overlay_opacity | divided_by: 100.0
+  assign overlay_hex = section.settings.overlay_color | default: '#000000'
+  assign overlay_bottom = overlay_hex | color_modify: 'alpha', overlay_dec
+-%}
+
+{% style %}
+  .m-fyplant--{{ section.id }} {
+    --m-fy-gap: {{ gap_m }}px;
+    --m-fy-radius: {{ section.settings.card_radius }}px;
+    --m-fy-ratio: {{ section.settings.card_aspect_ratio }};
+    --m-fy-eyebrow-ls: {{ section.settings.eyebrow_letter_spacing | times: 0.01 }}em;
+    --m-fy-title-m: {{ section.settings.title_size_mobile }}px;
+    --m-fy-title-d: {{ section.settings.title_size_desktop }}px;
+    --m-fy-eyebrow-m: {{ section.settings.eyebrow_size_mobile }}px;
+    --m-fy-eyebrow-d: {{ section.settings.eyebrow_size }}px;
+    --m-fy-label-m: {{ section.settings.card_label_size_mobile }}px;
+    --m-fy-label-d: {{ section.settings.card_label_size_desktop }}px;
+    --m-fy-header-gap: {{ section.settings.header_spacing }}px;
+    --m-fy-overlay-bottom: {{ overlay_bottom }};
+    --m-fy-overlay-stop: {{ section.settings.overlay_gradient_height }}%;
+    --m-fy-label-pad: {{ section.settings.label_inset }}px;
+    background-color: {{ section.settings.background_color }};
+  }
+  @media screen and (min-width: 990px) {
+    .m-fyplant--{{ section.id }} {
+      --m-fy-gap: {{ gap_d }}px;
+    }
+  }
+  #shopify-section-{{ section.id }} .m-fyplant.m-section--padding {
+    padding-top: {{ section.settings.padding_top_mobile }}px;
+    padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+  }
+  @media screen and (min-width: 750px) {
+    #shopify-section-{{ section.id }} .m-fyplant.m-section--padding {
+      padding-top: {{ pt }}px;
+      padding-bottom: {{ pb }}px;
+    }
+  }
+{% endstyle %}
+
+<section
+  class="m-section m-fyplant m-fyplant--{{ section.id }} m-section--padding{% if section.settings.mobile_carousel %} m-fyplant--carousel{% endif %}{% if section.settings.header_align == 'center' %} m-fyplant--header-center{% endif %}"
+  style="--section-padding-top: {{ pt }}px; --section-padding-bottom: {{ pb }}px;"
+>
+  <div class="m-page-width">
+    <header class="m-fyplant__intro">
+      {% if section.settings.eyebrow != blank %}
+        <p class="m-fyplant__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      {% endif %}
+      {% if section.settings.title != blank %}
+        <h2 class="m-fyplant__title">{{ section.settings.title | escape }}</h2>
+      {% endif %}
+    </header>
+
+    {% if section.settings.mobile_carousel and section.settings.mobile_carousel_hint != blank %}
+      <p class="m-fyplant__carousel-hint">{{ section.settings.mobile_carousel_hint | escape }}</p>
+    {% endif %}
+
+    <div class="m-fyplant__grid{% if section.settings.mobile_carousel %} m-fyplant__grid--carousel-mobile{% endif %}">
+      {% for block in section.blocks %}
+        {% if block.type == 'card' %}
+          <div class="m-fyplant__cell" {{ block.shopify_attributes }}>
+            {% if block.settings.link != blank %}
+              <a
+                href="{{ block.settings.link }}"
+                class="m-fyplant__card"
+                {% if block.settings.open_new_tab %}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                {% endif %}
+              >
+            {% else %}
+              <div class="m-fyplant__card m-fyplant__card--static">
+            {% endif %}
+
+            <div class="m-fyplant__media">
+              {% if block.settings.image != blank %}
+                {%- assign alt = block.settings.image.alt | default: block.settings.title | escape -%}
+                {{
+                  block.settings.image
+                  | image_url: width: 1000
+                  | image_tag:
+                    loading: 'lazy',
+                    class: 'm-fyplant__img',
+                    widths: '300, 450, 600, 800, 1000',
+                    sizes: '(min-width: 1200px) 23vw, (min-width: 750px) 45vw, 88vw',
+                    alt: alt
+                }}
+              {% else %}
+                <div class="m-fyplant__placeholder">
+                  {{ 'collection-1' | placeholder_svg_tag: 'm-placeholder-svg' }}
+                </div>
+              {% endif %}
+            </div>
+
+            {% if block.settings.title != blank %}
+              <p class="m-fyplant__label">{{ block.settings.title | escape }}</p>
+            {% endif %}
+
+            {% if block.settings.link != blank %}
+              </a>
+            {% else %}
+              </div>
+            {% endif %}
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% style %}
+  .m-fyplant--{{ section.id }} .m-fyplant__intro {
+    max-width: 40rem;
+    margin: 0 0 var(--m-fy-header-gap, 36px);
+    text-align: left;
+  }
+  .m-fyplant--{{ section.id }}.m-fyplant--header-center .m-fyplant__intro {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
+  .m-fyplant--{{ section.id }} .m-fyplant__eyebrow {
+    margin: 0 0 10px;
+    font-family: {{ eyebrow_ff }};
+    font-size: var(--m-fy-eyebrow-m, 11px);
+    font-weight: {{ section.settings.eyebrow_weight }};
+    letter-spacing: var(--m-fy-eyebrow-ls, 0.1em);
+    text-transform: uppercase;
+    color: {{ section.settings.eyebrow_color }};
+  }
+  @media screen and (min-width: 1024px) {
+    .m-fyplant--{{ section.id }} .m-fyplant__eyebrow {
+      font-size: var(--m-fy-eyebrow-d, 12px);
+    }
+  }
+  .m-fyplant--{{ section.id }} .m-fyplant__title {
+    margin: 0;
+    font-family: {{ title_ff }};
+    font-size: var(--m-fy-title-m, 1.75rem);
+    font-weight: {{ section.settings.title_weight }};
+    line-height: 1.15;
+    color: {{ section.settings.heading_color }};
+  }
+  @media screen and (min-width: 1024px) {
+    .m-fyplant--{{ section.id }} .m-fyplant__title {
+      font-size: var(--m-fy-title-d, 2.75rem);
+    }
+  }
+  .m-fyplant--{{ section.id }} .m-fyplant__carousel-hint {
+    display: none;
+  }
+  @media screen and (max-width: 749px) {
+    .m-fyplant--{{ section.id }}.m-fyplant--carousel .m-fyplant__carousel-hint {
+      display: block;
+      text-align: center;
+      margin: 0 0 12px;
+      font-family: var(--font-stack-body);
+      font-size: {{ section.settings.mobile_carousel_hint_size }}px;
+      line-height: 1.4;
+      color: {{ section.settings.mobile_carousel_hint_color }};
+    }
+  }
+  .m-fyplant--{{ section.id }} .m-fyplant__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--m-fy-gap, 16px);
+  }
+  @media screen and (min-width: 990px) {
+    .m-fyplant--{{ section.id }} .m-fyplant__grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+  @media screen and (max-width: 749px) {
+    .m-fyplant--{{ section.id }} .m-fyplant__grid--carousel-mobile {
+      display: flex;
+      flex-wrap: nowrap;
+      grid-template-columns: unset;
+      gap: var(--m-fy-gap, 16px);
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+      padding-bottom: 6px;
+      margin-inline: calc(-1 * min({{ section.settings.mobile_carousel_peek }}px, 24px));
+      padding-inline: min({{ section.settings.mobile_carousel_peek }}px, 24px);
+    }
+    .m-fyplant--{{ section.id }} .m-fyplant__grid--carousel-mobile .m-fyplant__cell {
+      flex: 0 0 {{ section.settings.mobile_carousel_slide_width }}vw;
+      max-width: min(320px, calc(100vw - 40px));
+      scroll-snap-align: start;
+    }
+  }
+  .m-fyplant--{{ section.id }} .m-fyplant__card {
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: var(--m-fy-ratio, 3 / 4);
+    border-radius: var(--m-fy-radius, 10px);
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: box-shadow 0.35s ease, transform 0.35s ease;
+  }
+  .m-fyplant--{{ section.id }} a.m-fyplant__card:hover {
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.14);
+    transform: translateY(-3px);
+  }
+  .m-fyplant--{{ section.id }} .m-fyplant__media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: {{ section.settings.media_fallback_bg }};
+  }
+  .m-fyplant--{{ section.id }} .m-fyplant__media::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(
+      to top,
+      var(--m-fy-overlay-bottom) 0%,
+      transparent var(--m-fy-overlay-stop, 55%)
+    );
+  }
+  .m-fyplant--{{ section.id }} .m-fyplant__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .m-fyplant--{{ section.id }} a.m-fyplant__card:hover .m-fyplant__img {
+    transform: scale(1.06);
+  }
+  .m-fyplant--{{ section.id }} .m-fyplant__placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: stretch;
+    opacity: 0.4;
+  }
+  .m-fyplant--{{ section.id }} .m-fyplant__placeholder .m-placeholder-svg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .m-fyplant--{{ section.id }} .m-fyplant__label {
+    position: absolute;
+    z-index: 2;
+    left: var(--m-fy-label-pad, 18px);
+    right: var(--m-fy-label-pad, 18px);
+    bottom: var(--m-fy-label-pad, 18px);
+    margin: 0;
+    max-width: 100%;
+    font-family: {{ label_ff }};
+    font-size: var(--m-fy-label-m, 1.1rem);
+    font-weight: {{ section.settings.card_label_weight }};
+    line-height: 1.2;
+    color: {{ section.settings.card_label_color }};
+    text-align: left;
+    text-shadow: 0 1px 12px rgba(0, 0, 0, 0.35);
+  }
+  @media screen and (min-width: 1024px) {
+    .m-fyplant--{{ section.id }} .m-fyplant__label {
+      font-size: var(--m-fy-label-d, 1.35rem);
+    }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "FY Plant categories",
+  "tag": "section",
+  "class": "m-fyplant-section",
+  "disabled_on": { "groups": ["header", "aside", "footer"] },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "select",
+      "id": "header_align",
+      "label": "Heading alignment",
+      "options": [
+        { "value": "left", "label": "Left (like sample)" },
+        { "value": "center", "label": "Center" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Shop by category"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Find your perfect plant"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "select",
+      "id": "title_font",
+      "label": "Heading font",
+      "options": [
+        { "value": "heading", "label": "Theme heading (serif)" },
+        { "value": "body", "label": "Theme body" }
+      ],
+      "default": "heading"
+    },
+    {
+      "type": "select",
+      "id": "eyebrow_font",
+      "label": "Eyebrow font",
+      "options": [
+        { "value": "body", "label": "Theme body (sans)" },
+        { "value": "heading", "label": "Theme heading" }
+      ],
+      "default": "body"
+    },
+    {
+      "type": "select",
+      "id": "card_label_font",
+      "label": "Category label on image",
+      "options": [
+        { "value": "heading", "label": "Theme heading (serif, like sample)" },
+        { "value": "body", "label": "Theme body" }
+      ],
+      "default": "heading"
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_size_mobile",
+      "min": 9,
+      "max": 14,
+      "step": 1,
+      "unit": "px",
+      "label": "Eyebrow size (mobile)",
+      "default": 11
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_size",
+      "min": 10,
+      "max": 15,
+      "step": 1,
+      "unit": "px",
+      "label": "Eyebrow size (tablet & desktop)",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_weight",
+      "min": 500,
+      "max": 700,
+      "step": 100,
+      "label": "Eyebrow weight",
+      "default": 600
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_letter_spacing",
+      "min": 6,
+      "max": 20,
+      "step": 1,
+      "label": "Eyebrow letter spacing",
+      "default": 14,
+      "info": "Percent of font size."
+    },
+    {
+      "type": "range",
+      "id": "title_size_mobile",
+      "min": 24,
+      "max": 42,
+      "step": 1,
+      "unit": "px",
+      "label": "Heading size (mobile)",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "title_size_desktop",
+      "min": 32,
+      "max": 64,
+      "step": 1,
+      "unit": "px",
+      "label": "Heading size (tablet & desktop)",
+      "default": 44
+    },
+    {
+      "type": "range",
+      "id": "title_weight",
+      "min": 400,
+      "max": 700,
+      "step": 100,
+      "label": "Heading weight",
+      "default": 400
+    },
+    {
+      "type": "range",
+      "id": "card_label_size_mobile",
+      "min": 15,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "label": "Category label size (mobile)",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "card_label_size_desktop",
+      "min": 18,
+      "max": 36,
+      "step": 1,
+      "unit": "px",
+      "label": "Category label size (tablet & desktop)",
+      "default": 22
+    },
+    {
+      "type": "range",
+      "id": "card_label_weight",
+      "min": 400,
+      "max": 700,
+      "step": 100,
+      "label": "Category label weight",
+      "default": 400
+    },
+    {
+      "type": "range",
+      "id": "header_spacing",
+      "min": 20,
+      "max": 56,
+      "step": 2,
+      "unit": "px",
+      "label": "Space below heading",
+      "default": 36
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Section background",
+      "default": "#f7f5f0"
+    },
+    {
+      "type": "color",
+      "id": "eyebrow_color",
+      "label": "Eyebrow (sage / muted)",
+      "default": "#6b8f7e"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "card_label_color",
+      "label": "Category label on cards",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "media_fallback_bg",
+      "label": "Empty image area",
+      "default": "#e8e4dc"
+    },
+    {
+      "type": "header",
+      "content": "Card image overlay"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Gradient color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 85,
+      "step": 5,
+      "unit": "%",
+      "label": "Gradient strength at bottom",
+      "default": 45
+    },
+    {
+      "type": "range",
+      "id": "overlay_gradient_height",
+      "min": 35,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Gradient height",
+      "default": 55
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "card_aspect_ratio",
+      "label": "Card shape",
+      "options": [
+        { "value": "4 / 5", "label": "Tall portrait (4:5)" },
+        { "value": "3 / 4", "label": "Portrait (3:4)" },
+        { "value": "1 / 1", "label": "Square" },
+        { "value": "3 / 2", "label": "Landscape (3:2)" }
+      ],
+      "default": "4 / 5"
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "min": 0,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "label": "Card corner radius",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "label_inset",
+      "min": 12,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Label inset from edges",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "grid_gap_mobile",
+      "min": 8,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Grid gap (mobile / carousel)",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "grid_gap_desktop",
+      "min": 8,
+      "max": 28,
+      "step": 2,
+      "unit": "px",
+      "label": "Grid gap (desktop)",
+      "default": 18
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_carousel",
+      "label": "Mobile carousel (swipe)",
+      "default": true,
+      "info": "Under 750px: horizontal scroll with snap. Two columns below 990px when carousel is off."
+    },
+    {
+      "type": "text",
+      "id": "mobile_carousel_hint",
+      "label": "Mobile carousel hint",
+      "default": "Swipe to see categories",
+      "info": "Shown only on small screens when carousel is on. Leave blank to hide.",
+      "visible_if": "{{ section.settings.mobile_carousel }}"
+    },
+    {
+      "type": "range",
+      "id": "mobile_carousel_hint_size",
+      "min": 12,
+      "max": 15,
+      "step": 1,
+      "unit": "px",
+      "label": "Hint text size",
+      "default": 13,
+      "visible_if": "{{ section.settings.mobile_carousel }}"
+    },
+    {
+      "type": "color",
+      "id": "mobile_carousel_hint_color",
+      "label": "Hint color",
+      "default": "#5c6c64",
+      "visible_if": "{{ section.settings.mobile_carousel }}"
+    },
+    {
+      "type": "range",
+      "id": "mobile_carousel_slide_width",
+      "min": 72,
+      "max": 92,
+      "step": 1,
+      "unit": "%",
+      "label": "Carousel slide width",
+      "default": 82,
+      "visible_if": "{{ section.settings.mobile_carousel }}"
+    },
+    {
+      "type": "range",
+      "id": "mobile_carousel_peek",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Carousel edge inset",
+      "default": 8,
+      "visible_if": "{{ section.settings.mobile_carousel }}"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top (mobile)",
+      "default": 44
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom (mobile)",
+      "default": 44
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top (tablet & desktop)",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom (tablet & desktop)",
+      "default": 64
+    }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Category",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Label",
+          "default": "Category"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "checkbox",
+          "id": "open_new_tab",
+          "label": "Open in new tab",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "FY Plant categories",
+      "blocks": [
+        { "type": "card", "settings": { "title": "New Arrivals" } },
+        { "type": "card", "settings": { "title": "Low-Maintenance" } },
+        { "type": "card", "settings": { "title": "Pet-Friendly" } },
+        { "type": "card", "settings": { "title": "Gifts" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
