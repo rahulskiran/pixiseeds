@@ -1285,7 +1285,7 @@
         "button_font_size_desktop": 17,
         "content_max_width": 720,
         "input_corner_style": "pill",
-        "input_border_radius": 16,
+        "ns_input_border_radius": 16,
         "field_row_gap": 16,
         "padding_top_mobile": 40,
         "padding_bottom_mobile": 40,

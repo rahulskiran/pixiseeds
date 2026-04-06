@@ -26,7 +26,7 @@
 
   assign ns_input_radius = 999
   if section.settings.input_corner_style == 'rounded'
-    assign ns_input_radius = section.settings.input_border_radius | default: 16
+    assign ns_input_radius = section.settings.ns_input_border_radius | default: 16
   endif
 -%}
 
@@ -668,8 +668,8 @@
     },
     {
       "type": "range",
-      "id": "input_border_radius",
-      "min": 8,
+      "id": "ns_input_border_radius",
+      "min": 0,
       "max": 40,
       "step": 1,
       "unit": "px",
