@@ -23,9 +23,16 @@
     --m-cp-eyebrow-ls: {{ section.settings.eyebrow_letter_spacing | times: 0.01 }}em;
     --m-cp-title-size-m: {{ section.settings.title_size_mobile }}px;
     --m-cp-title-size-d: {{ section.settings.title_size_desktop }}px;
-    --m-cp-desc-size: {{ section.settings.description_size }}px;
-    --m-cp-card-title-size: {{ section.settings.card_title_size }}px;
-    --m-cp-card-text-size: {{ section.settings.card_text_size }}px;
+    --m-cp-eyebrow-size-m: {{ section.settings.eyebrow_size_mobile }}px;
+    --m-cp-eyebrow-size-d: {{ section.settings.eyebrow_size }}px;
+    --m-cp-desc-size-m: {{ section.settings.description_size_mobile }}px;
+    --m-cp-desc-size-d: {{ section.settings.description_size }}px;
+    --m-cp-card-title-size-m: {{ section.settings.card_title_size_mobile }}px;
+    --m-cp-card-title-size-d: {{ section.settings.card_title_size }}px;
+    --m-cp-card-text-size-m: {{ section.settings.card_text_size_mobile }}px;
+    --m-cp-card-text-size-d: {{ section.settings.card_text_size }}px;
+    --m-cp-footer-link-m: {{ section.settings.footer_link_size_mobile }}px;
+    --m-cp-footer-link-d: {{ section.settings.footer_link_size }}px;
     --m-cp-header-gap: {{ section.settings.header_spacing }}px;
       background-color: {{ section.settings.background_color }};
   }
@@ -193,21 +200,26 @@
   .m-choose-plant--{{ section.id }} .m-choose-plant__eyebrow {
     margin: 0 0 12px;
     font-family: {{ eyebrow_ff }};
-    font-size: {{ section.settings.eyebrow_size }}px;
+    font-size: var(--m-cp-eyebrow-size-m, 11px);
     font-weight: {{ section.settings.eyebrow_weight }};
     letter-spacing: var(--m-cp-eyebrow-ls, 0.08em);
     text-transform: uppercase;
     color: {{ section.settings.eyebrow_color }};
   }
+  @media screen and (min-width: 1024px) {
+    .m-choose-plant--{{ section.id }} .m-choose-plant__eyebrow {
+      font-size: var(--m-cp-eyebrow-size-d, 12px);
+    }
+  }
   .m-choose-plant--{{ section.id }} .m-choose-plant__title {
     margin: 0 0 16px;
     font-family: {{ title_ff }};
-    font-size: var(--m-cp-title-size-m, 1.75rem);
+    font-size: var(--m-cp-title-size-m, 1.625rem);
     font-weight: {{ section.settings.title_weight }};
     line-height: 1.2;
     color: {{ section.settings.heading_color }};
   }
-  @media screen and (min-width: 990px) {
+  @media screen and (min-width: 1024px) {
     .m-choose-plant--{{ section.id }} .m-choose-plant__title {
       font-size: var(--m-cp-title-size-d, 2.5rem);
     }
@@ -215,9 +227,17 @@
   .m-choose-plant--{{ section.id }} .m-choose-plant__description {
     margin: 0;
     font-family: var(--font-stack-body);
-    font-size: var(--m-cp-desc-size, 1rem);
+    font-size: var(--m-cp-desc-size-m, 15px);
     line-height: 1.55;
     color: {{ section.settings.text_color }};
+  }
+  @media screen and (min-width: 1024px) {
+    .m-choose-plant--{{ section.id }} .m-choose-plant__description {
+      font-size: var(--m-cp-desc-size-d, 16px);
+    }
+  }
+  .m-choose-plant--{{ section.id }} .m-choose-plant__description p {
+    font-size: inherit;
   }
   .m-choose-plant--{{ section.id }} .m-choose-plant__description p:last-child {
     margin-bottom: 0;
@@ -361,17 +381,27 @@
   .m-choose-plant--{{ section.id }} .m-choose-plant__card-title {
     margin: 0 0 4px;
     font-family: var(--font-stack-body);
-    font-size: var(--m-cp-card-title-size, 15px);
+    font-size: var(--m-cp-card-title-size-m, 14px);
     font-weight: 600;
     line-height: 1.3;
     color: {{ section.settings.card_title_color }};
   }
+  @media screen and (min-width: 1024px) {
+    .m-choose-plant--{{ section.id }} .m-choose-plant__card-title {
+      font-size: var(--m-cp-card-title-size-d, 15px);
+    }
+  }
   .m-choose-plant--{{ section.id }} .m-choose-plant__card-text {
     margin: 0;
     font-family: var(--font-stack-body);
-    font-size: var(--m-cp-card-text-size, 13px);
+    font-size: var(--m-cp-card-text-size-m, 12px);
     line-height: 1.4;
     color: {{ section.settings.card_subtext_color }};
+  }
+  @media screen and (min-width: 1024px) {
+    .m-choose-plant--{{ section.id }} .m-choose-plant__card-text {
+      font-size: var(--m-cp-card-text-size-d, 13px);
+    }
   }
   .m-choose-plant--{{ section.id }} .m-choose-plant__arrow {
     flex-shrink: 0;
@@ -388,11 +418,16 @@
     align-items: center;
     gap: 8px;
     font-family: var(--font-stack-body);
-    font-size: {{ section.settings.footer_link_size }}px;
+    font-size: var(--m-cp-footer-link-m, 14px);
     font-weight: 500;
     color: {{ section.settings.footer_link_color }};
     text-decoration: none;
     transition: opacity 0.2s ease;
+  }
+  @media screen and (min-width: 1024px) {
+    .m-choose-plant--{{ section.id }} .m-choose-plant__footer-link {
+      font-size: var(--m-cp-footer-link-d, 15px);
+    }
   }
   .m-choose-plant--{{ section.id }} .m-choose-plant__footer-link:hover {
     opacity: 0.75;
@@ -454,12 +489,23 @@
     },
     {
       "type": "range",
+      "id": "eyebrow_size_mobile",
+      "min": 9,
+      "max": 14,
+      "step": 1,
+      "unit": "px",
+      "label": "Eyebrow size (mobile)",
+      "default": 11,
+      "info": "Screens under 1024px wide, aligned with theme mobile typography."
+    },
+    {
+      "type": "range",
       "id": "eyebrow_size",
       "min": 10,
       "max": 16,
       "step": 1,
       "unit": "px",
-      "label": "Eyebrow size",
+      "label": "Eyebrow size (tablet & desktop)",
       "default": 12
     },
     {
@@ -489,7 +535,8 @@
       "step": 1,
       "unit": "px",
       "label": "Heading size (mobile)",
-      "default": 28
+      "default": 26,
+      "info": "Below 1024px. Default matches similar grid sections (e.g. Shop by condition)."
     },
     {
       "type": "range",
@@ -498,8 +545,9 @@
       "max": 56,
       "step": 1,
       "unit": "px",
-      "label": "Heading size (desktop)",
-      "default": 40
+      "label": "Heading size (tablet & desktop)",
+      "default": 40,
+      "info": "1024px wide and up."
     },
     {
       "type": "range",
@@ -512,13 +560,35 @@
     },
     {
       "type": "range",
+      "id": "description_size_mobile",
+      "min": 13,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Description size (mobile)",
+      "default": 15,
+      "info": "Below 1024px."
+    },
+    {
+      "type": "range",
       "id": "description_size",
       "min": 14,
       "max": 20,
       "step": 1,
       "unit": "px",
-      "label": "Description size",
+      "label": "Description size (tablet & desktop)",
       "default": 16
+    },
+    {
+      "type": "range",
+      "id": "card_title_size_mobile",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Card title size (mobile)",
+      "default": 14,
+      "info": "Below 1024px."
     },
     {
       "type": "range",
@@ -527,8 +597,19 @@
       "max": 20,
       "step": 1,
       "unit": "px",
-      "label": "Card title size",
+      "label": "Card title size (tablet & desktop)",
       "default": 15
+    },
+    {
+      "type": "range",
+      "id": "card_text_size_mobile",
+      "min": 11,
+      "max": 15,
+      "step": 1,
+      "unit": "px",
+      "label": "Card subtitle size (mobile)",
+      "default": 12,
+      "info": "Below 1024px."
     },
     {
       "type": "range",
@@ -537,7 +618,7 @@
       "max": 16,
       "step": 1,
       "unit": "px",
-      "label": "Card subtitle size",
+      "label": "Card subtitle size (tablet & desktop)",
       "default": 13
     },
     {
@@ -649,12 +730,23 @@
     },
     {
       "type": "range",
+      "id": "footer_link_size_mobile",
+      "min": 12,
+      "max": 17,
+      "step": 1,
+      "unit": "px",
+      "label": "Footer link size (mobile)",
+      "default": 14,
+      "info": "Below 1024px."
+    },
+    {
+      "type": "range",
       "id": "footer_link_size",
       "min": 13,
       "max": 18,
       "step": 1,
       "unit": "px",
-      "label": "Footer link size",
+      "label": "Footer link size (tablet & desktop)",
       "default": 15
     },
     {
