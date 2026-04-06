@@ -556,7 +556,7 @@
         "show_pagination": true,
         "show_navigation": true,
         "navigation_position": "inside",
-        "mobile_layout": "col-2",
+        "mobile_layout": "col-1",
         "column_gap_mobile": 10,
         "row_gap_mobile": 10,
         "enable_swipe_mobile": true,
