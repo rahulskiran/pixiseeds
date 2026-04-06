@@ -662,105 +662,9 @@
         "custom_class": ""
       }
     },
-    "b2b4af79-d2e4-4d09-917b-3c92638f5460": {
-      "type": "product-tabs",
-      "blocks": {
-        "tab_kazzUX": {
-          "type": "tab",
-          "settings": {
-            "collection": "homegrown-plants",
-            "heading": "Electric Massagers",
-            "icon_image_width": 30,
-            "icon_svg": ""
-          }
-        },
-        "ab6243c6-3d86-42c6-b36d-874929c69280": {
-          "type": "tab",
-          "settings": {
-            "collection": "mobile-accessories",
-            "heading": "Mobile Accessories",
-            "icon_image_width": 30,
-            "icon_svg": ""
-          }
-        },
-        "template--21255729119505__b2b4af79-d2e4-4d09-917b-3c92638f5460-tab-2": {
-          "type": "tab",
-          "settings": {
-            "collection": "camera-accessories",
-            "heading": "Camera Accessories",
-            "icon_image_width": 30,
-            "icon_svg": ""
-          }
-        },
-        "template--21255729119505__b2b4af79-d2e4-4d09-917b-3c92638f5460-tab-3": {
-          "type": "tab",
-          "settings": {
-            "collection": "adapters",
-            "heading": "Adapters",
-            "icon_image_width": 30,
-            "icon_svg": ""
-          }
-        }
-      },
-      "block_order": [
-        "tab_kazzUX",
-        "ab6243c6-3d86-42c6-b36d-874929c69280",
-        "template--21255729119505__b2b4af79-d2e4-4d09-917b-3c92638f5460-tab-2",
-        "template--21255729119505__b2b4af79-d2e4-4d09-917b-3c92638f5460-tab-3"
-      ],
-      "settings": {
-        "color_scheme": "scheme-f08d43fd-4b1f-4a68-b4fd-0103c8af3c3c",
-        "boxed_layout": false,
-        "grid_bordered": false,
-        "boxed_color_scheme": "background-1",
-        "heading": "Featured Products",
-        "heading_size": "h3",
-        "tab_header_style": "1",
-        "header_divider": false,
-        "pcard_layout": "",
-        "pcard_image_ratio": "",
-        "show_vendor": false,
-        "atc_bg_color": "#000000",
-        "atc_text_color": "#ffffff",
-        "atc_hover_bg_color": "#333333",
-        "atc_hover_text_color": "#ffffff",
-        "pt_card_border": "inherit",
-        "pt_use_pcard_scheme": false,
-        "pt_pcard_color_scheme": "",
-        "pt_custom_card_surfaces": false,
-        "pt_media_bg": "#f4f1eb",
-        "pt_content_bg": "#ffffff",
-        "pt_card_radius": 0,
-        "pt_pcard_text_align": "inherit",
-        "pt_tab_custom_colors": false,
-        "pt_tab_bg": "#ffffff",
-        "pt_tab_border": "#e5e5e5",
-        "pt_tab_text": "#1a1a1a",
-        "pt_tab_active_bg": "#2c2c2c",
-        "pt_tab_active_border": "#2c2c2c",
-        "pt_tab_active_text": "#ffffff",
-        "product_to_show": 18,
-        "items_per_row": 5,
-        "column_gap": 30,
-        "row_gap": 30,
-        "enable_slider": true,
-        "show_pagination": false,
-        "show_navigation": true,
-        "navigation_position": "outside",
-        "mobile_layout": "inherit",
-        "column_gap_mobile": 10,
-        "row_gap_mobile": 10,
-        "enable_swipe_mobile": true,
-        "button_label": "",
-        "button_style": "m-button--primary",
-        "padding_top": 80,
-        "padding_bottom": 100,
-        "custom_class": "m-hide-pagination-md",
-        "animations": "inherit"
-      }
-    },
     "image_banner_afrWdQ": {
       "type": "Image-banner",
+      "disabled": true,
       "settings": {
         "layout": "grid",
         "image_height": "small",
@@ -1249,7 +1153,6 @@
     "3d92e37f-b44b-49a7-8000-f53f057128ae",
     "0bb7c3df-f5b4-4745-b7be-7842c5658f4a",
     "4c1b5e9a-4007-49bc-ad24-b1ad612a2316",
-    "b2b4af79-d2e4-4d09-917b-3c92638f5460",
     "image_banner_afrWdQ",
     "6c4f10ba-2c26-4691-95ce-2e3c9dfb089e",
     "02777377-8dc3-477f-8f06-08ee6c367afe",
