@@ -287,6 +287,7 @@
         "image_overlay_color": "#000000",
         "image_overlay_opacity": 80,
         "image_overlay_gradient_height": 60,
+        "animations": "inherit",
         "padding_top": 52,
         "padding_bottom": 52
       }
@@ -568,92 +569,10 @@
         "animations": "inherit"
       }
     },
-    "banner_grid_QmnCHV": {
-      "type": "banner-grid",
-      "blocks": {
-        "image_biPGaN": {
-          "type": "image",
-          "settings": {
-            "color_scheme": "",
-            "card_link": "",
-            "apply_link_on": "card",
-            "heading": "Heading",
-            "text_size": "h3",
-            "sub_heading": "Subheading",
-            "description": "",
-            "desc_text_color": "body",
-            "content_position": "middle_center",
-            "content_alignment": "center",
-            "is_last_block_bottom": false,
-            "button_label": "Button label",
-            "button_style": "m-button--primary",
-            "content_padding_desktop": 30,
-            "content_padding_mobile": 19
-          }
-        },
-        "image_4MRNMQ": {
-          "type": "image",
-          "settings": {
-            "color_scheme": "",
-            "card_link": "",
-            "apply_link_on": "card",
-            "heading": "Heading",
-            "text_size": "h3",
-            "sub_heading": "Subheading",
-            "description": "",
-            "desc_text_color": "body",
-            "content_position": "middle_center",
-            "content_alignment": "center",
-            "is_last_block_bottom": false,
-            "button_label": "Button label",
-            "button_style": "m-button--primary",
-            "content_padding_desktop": 30,
-            "content_padding_mobile": 19
-          }
-        },
-        "image_nMPefC": {
-          "type": "image",
-          "settings": {
-            "color_scheme": "scheme_1",
-            "card_link": "",
-            "apply_link_on": "card",
-            "heading": "Heading",
-            "text_size": "h2",
-            "sub_heading": "Subheading",
-            "description": "",
-            "desc_text_color": "body",
-            "content_position": "middle_center",
-            "content_alignment": "center",
-            "is_last_block_bottom": false,
-            "button_label": "Button label",
-            "button_style": "m-button--primary",
-            "content_padding_desktop": 30,
-            "content_padding_mobile": 19
-          }
-        }
-      },
-      "block_order": [
-        "image_biPGaN",
-        "image_4MRNMQ",
-        "image_nMPefC"
-      ],
-      "disabled": true,
-      "settings": {
-        "layout": "2",
-        "gap_desktop": 0,
-        "row_gap_desktop": 0,
-        "gap_mobile": 16,
-        "row_gap_mobile": 16,
-        "section_padding_top": 50,
-        "section_padding_bottom": 50,
-        "animations": "inherit",
-        "custom_classes": ""
-      }
-    },
-    "product_tabs_CjyWMr": {
+    "product_tabs_GRzT43": {
       "type": "product-tabs",
       "blocks": {
-        "tab_xjf9ff": {
+        "tab_3fUWnc": {
           "type": "tab",
           "settings": {
             "collection": "homegrown-plants",
@@ -662,7 +581,7 @@
             "icon_svg": ""
           }
         },
-        "tab_pTUmKa": {
+        "tab_yxryNN": {
           "type": "tab",
           "settings": {
             "collection": "anemometers",
@@ -671,7 +590,7 @@
             "icon_svg": ""
           }
         },
-        "tab_VeNwKN": {
+        "tab_kBrdwH": {
           "type": "tab",
           "settings": {
             "collection": "power-hand-tools",
@@ -680,7 +599,7 @@
             "icon_svg": ""
           }
         },
-        "tab_JgNbbB": {
+        "tab_eBTAHr": {
           "type": "tab",
           "disabled": true,
           "settings": {
@@ -692,15 +611,14 @@
         }
       },
       "block_order": [
-        "tab_xjf9ff",
-        "tab_pTUmKa",
-        "tab_VeNwKN",
-        "tab_JgNbbB"
+        "tab_3fUWnc",
+        "tab_yxryNN",
+        "tab_kBrdwH",
+        "tab_eBTAHr"
       ],
-      "disabled": true,
       "name": "Product Collection",
       "settings": {
-        "color_scheme": "background-4",
+        "color_scheme": "scheme-ba41f7c8-a303-44e7-a1d3-a9c14a08a8da",
         "boxed_layout": false,
         "grid_bordered": false,
         "boxed_color_scheme": "scheme-98abe1c5-d453-445f-a04d-6584e08129ae",
@@ -713,14 +631,14 @@
         "show_vendor": true,
         "atc_bg_color": "#d96c3b",
         "atc_text_color": "#ffffff",
-        "atc_hover_bg_color": "#333333",
-        "atc_hover_text_color": "#ffffff",
-        "pt_select_options_bg": "#ebebeb",
-        "pt_select_options_text": "#1a1a1a",
-        "pt_select_options_border": "#ebebeb",
-        "pt_select_options_hover_bg": "#dedede",
-        "pt_select_options_hover_text": "#1a1a1a",
-        "pt_select_options_hover_border": "#dedede",
+        "atc_hover_bg_color": "#ffffff",
+        "atc_hover_text_color": "#d96c3b",
+        "pt_select_options_bg": "#d96c3b",
+        "pt_select_options_text": "#ffffff",
+        "pt_select_options_border": "#000000",
+        "pt_select_options_hover_bg": "#ffffff",
+        "pt_select_options_hover_text": "#d96c3b",
+        "pt_select_options_hover_border": "#d96c3b",
         "pt_card_border": "inherit",
         "pt_use_pcard_scheme": false,
         "pt_pcard_color_scheme": "",
@@ -744,7 +662,7 @@
         "show_pagination": true,
         "show_navigation": true,
         "navigation_position": "inside",
-        "mobile_layout": "inherit",
+        "mobile_layout": "col-1",
         "column_gap_mobile": 10,
         "row_gap_mobile": 10,
         "enable_swipe_mobile": true,
@@ -756,376 +674,76 @@
         "animations": "inherit"
       }
     },
-    "4c1b5e9a-4007-49bc-ad24-b1ad612a2316": {
-      "type": "custom-content",
-      "blocks": {
-        "00039e47-0a90-4766-811a-95dfc94608e8": {
-          "type": "image_card",
-          "settings": {
-            "width": "33%",
-            "color_scheme": "background-1",
-            "card_link": "shopify://collections/pet-supplies",
-            "apply_link_on": "card",
-            "heading": "",
-            "text_size": "h4",
-            "sub_heading": "",
-            "description": "",
-            "desc_text_color": "body",
-            "content_position": "middle_left",
-            "content_alignment": "left",
-            "is_last_block_bottom": true,
-            "button_label": "",
-            "button_style": "m-button--primary",
-            "content_padding_desktop": 30,
-            "content_padding_mobile": 19,
-            "block_custom_class": "",
-            "animations": "inherit"
-          }
-        },
-        "857e3d23-75d2-409d-897c-61830ebe8968": {
-          "type": "image_card",
-          "settings": {
-            "width": "33%",
-            "color_scheme": "background-2",
-            "card_link": "shopify://collections/games-learning",
-            "apply_link_on": "card",
-            "heading": "",
-            "text_size": "h4",
-            "sub_heading": "",
-            "description": "",
-            "desc_text_color": "body",
-            "content_position": "middle_left",
-            "content_alignment": "left",
-            "is_last_block_bottom": true,
-            "button_label": "",
-            "button_style": "m-button--primary",
-            "content_padding_desktop": 30,
-            "content_padding_mobile": 19,
-            "block_custom_class": "",
-            "animations": "inherit"
-          }
-        },
-        "024506f3-168b-4590-a64f-81eb1b582630": {
-          "type": "image_card",
-          "settings": {
-            "width": "33%",
-            "color_scheme": "background-2",
-            "card_link": "shopify://collections/health-beauty-fashion",
-            "apply_link_on": "card",
-            "heading": "",
-            "text_size": "h4",
-            "sub_heading": "",
-            "description": "",
-            "desc_text_color": "body",
-            "content_position": "middle_left",
-            "content_alignment": "left",
-            "is_last_block_bottom": true,
-            "button_label": "",
-            "button_style": "m-button--primary",
-            "content_padding_desktop": 30,
-            "content_padding_mobile": 19,
-            "block_custom_class": "",
-            "animations": "inherit"
-          }
-        }
-      },
-      "block_order": [
-        "00039e47-0a90-4766-811a-95dfc94608e8",
-        "857e3d23-75d2-409d-897c-61830ebe8968",
-        "024506f3-168b-4590-a64f-81eb1b582630"
-      ],
-      "disabled": true,
-      "custom_css": [
-        ".m-image-card {min-height: 200px;}"
-      ],
-      "settings": {
-        "color_scheme": "",
-        "boxed_layout": false,
-        "boxed_color_scheme": "",
-        "header_divider": false,
-        "header_alignment": "center",
-        "header_mobile_alignment": "center",
-        "heading": "",
-        "heading_size": "h2",
-        "subheading": "",
-        "description": "",
-        "text_color": "body",
-        "gap": 30,
-        "row_gap": 40,
-        "gap_mobile": 0,
-        "row_gap_mobile": 20,
-        "padding_top": 100,
-        "padding_bottom": 14,
-        "custom_class": ""
-      }
-    },
-    "image_banner_afrWdQ": {
-      "type": "Image-banner",
-      "disabled": true,
-      "settings": {
-        "layout": "grid",
-        "image_height": "small",
-        "color_scheme": "",
-        "image_link": "",
-        "content_position": "middle_center",
-        "content_alignment": "center",
-        "stack_images_on_mobile": false,
-        "content_alignment_mobile": "left",
-        "animations": "inherit",
-        "enable_bg_zoom_effect": true,
-        "custom_class": ""
-      }
-    },
-    "6c4f10ba-2c26-4691-95ce-2e3c9dfb089e": {
-      "type": "featured-collection",
-      "disabled": true,
-      "custom_css": [
-        ".m-section__header {gap: 20px;}"
-      ],
-      "settings": {
-        "color_scheme": "background-1",
-        "boxed_layout": false,
-        "grid_bordered": false,
-        "boxed_color_scheme": "background-1",
-        "heading": "",
-        "heading_size": "h3",
-        "button_text": "Shop All",
-        "button_link": "shopify://collections/bathroom-accessories-organization",
-        "button_style": "m-button--outline",
-        "header_divider": false,
-        "header_alignment": "left",
-        "show_countdown": false,
-        "ends_time": "2023/12/30",
-        "collection": "bathroom-accessories-organization",
-        "pcard_layout": "",
-        "pcard_image_ratio": "",
-        "show_vendor": false,
-        "product_to_show": 12,
-        "items_per_row": 5,
-        "column_gap": 30,
-        "row_gap": 30,
-        "enable_slider": true,
-        "show_pagination": false,
-        "show_navigation": true,
-        "navigation_position": "outside",
-        "mobile_layout": "inherit",
-        "enable_swipe_mobile": true,
-        "column_gap_mobile": 10,
-        "row_gap_mobile": 10,
-        "padding_top": 94,
-        "padding_bottom": 84,
-        "custom_class": "m-hide-pagination-md",
-        "animations": "inherit"
-      }
-    },
-    "02777377-8dc3-477f-8f06-08ee6c367afe": {
-      "type": "collection-list",
-      "blocks": {
-        "template--21255729119505__02777377-8dc3-477f-8f06-08ee6c367afe-collection_block-1": {
-          "type": "collection_block",
-          "settings": {
-            "collection": "cooling-pads",
-            "title": "Cooling Pads",
-            "card_color_scheme": ""
-          }
-        },
-        "70c28b12-2cb0-4ef4-9b5a-2d1ac8693641": {
-          "type": "collection_block",
-          "settings": {
-            "collection": "bluetooth-speakers",
-            "title": "Speakers",
-            "card_color_scheme": ""
-          }
-        },
-        "102c3b9d-a3c0-4245-8e8f-25cc462ee36f": {
-          "type": "collection_block",
-          "settings": {
-            "collection": "binoculars-telescopes-optics",
-            "title": "Binoculars & Telescopes",
-            "card_color_scheme": ""
-          }
-        },
-        "f44aa2b7-5806-479e-b57a-0dd5d269b79f": {
-          "type": "collection_block",
-          "settings": {
-            "collection": "3d-printers",
-            "title": "Printers",
-            "card_color_scheme": ""
-          }
-        },
-        "5c035f7d-32cc-42dc-90bb-21c1c82c6a47": {
-          "type": "collection_block",
-          "settings": {
-            "collection": "cocktail-shakers",
-            "title": "Cocktail Shakers",
-            "card_color_scheme": ""
-          }
-        },
-        "template--21255729119505__02777377-8dc3-477f-8f06-08ee6c367afe-collection_block-2": {
-          "type": "collection_block",
-          "settings": {
-            "collection": "cleaners",
-            "title": "Cleaning Accessories",
-            "card_color_scheme": ""
-          }
-        },
-        "template--21255729119505__02777377-8dc3-477f-8f06-08ee6c367afe-collection_block-3": {
-          "type": "collection_block",
-          "settings": {
-            "collection": "electric-massagers",
-            "title": "Massagers",
-            "card_color_scheme": ""
-          }
-        },
-        "template--21255729119505__02777377-8dc3-477f-8f06-08ee6c367afe-collection_block-4": {
-          "type": "collection_block",
-          "settings": {
-            "collection": "security-cameras",
-            "title": "safety & Security Cameras",
-            "card_color_scheme": ""
-          }
-        },
-        "collection_block_zYTJyd": {
-          "type": "collection_block",
-          "settings": {
-            "collection": "camping-hiking",
-            "title": "Camping & Hiking",
-            "card_color_scheme": "scheme_1"
-          }
-        },
-        "collection_block_hDKy8Q": {
-          "type": "collection_block",
-          "settings": {
-            "collection": "usb-gadgets",
-            "title": "USB Gadgets",
-            "card_color_scheme": "scheme_1"
-          }
-        }
-      },
-      "block_order": [
-        "template--21255729119505__02777377-8dc3-477f-8f06-08ee6c367afe-collection_block-1",
-        "70c28b12-2cb0-4ef4-9b5a-2d1ac8693641",
-        "102c3b9d-a3c0-4245-8e8f-25cc462ee36f",
-        "f44aa2b7-5806-479e-b57a-0dd5d269b79f",
-        "5c035f7d-32cc-42dc-90bb-21c1c82c6a47",
-        "template--21255729119505__02777377-8dc3-477f-8f06-08ee6c367afe-collection_block-2",
-        "template--21255729119505__02777377-8dc3-477f-8f06-08ee6c367afe-collection_block-3",
-        "template--21255729119505__02777377-8dc3-477f-8f06-08ee6c367afe-collection_block-4",
-        "collection_block_zYTJyd",
-        "collection_block_hDKy8Q"
-      ],
-      "disabled": true,
-      "custom_css": [
-        "@media (max-width: 767px) {.m-collection-card--inline .m-collection-card__info {flex-direction: column; }}"
-      ],
-      "settings": {
-        "color_scheme": "",
-        "boxed_layout": false,
-        "grid_bordered": false,
-        "boxed_color_scheme": "",
-        "heading": "Shop By Category",
-        "heading_size": "h3",
-        "button_text": "",
-        "button_link": "shopify://collections/home-kitchen-outdoor",
-        "button_style": "m-button--outline",
-        "header_divider": false,
-        "header_alignment": "left",
-        "card_layout": "standard",
-        "card_text_alignment": "center",
-        "card_horizontal_align": "center",
-        "card_vertical_align": "center",
-        "card_show_border": false,
-        "card_image_width": "128px",
-        "card_image_rounded": 0,
-        "card_hover_effect": "scaling-up",
-        "card_heading_size": "h6",
-        "card_show_product_count": false,
-        "items_per_row": 5,
-        "column_gap": 25,
-        "row_gap": 40,
-        "enable_slider": false,
-        "show_pagination": false,
-        "show_navigation": false,
-        "navigation_position": "outside",
-        "mobile_layout": "col-2",
-        "enable_swipe_mobile": true,
-        "column_gap_mobile": 16,
-        "row_gap_mobile": 24,
-        "padding_top": 70,
-        "padding_bottom": 20,
-        "animations": "inherit",
-        "custom_class": ""
-      }
-    },
-    "8d4fab03-a6d0-46ee-ac9f-e0e3f073aa13": {
+    "product_tabs_wrHLX8": {
       "type": "product-tabs",
       "blocks": {
-        "3fc9f18d-3c43-4ad8-b38f-7cc5eb378977": {
+        "tab_49Pbrn": {
           "type": "tab",
           "settings": {
-            "collection": "motherboards",
-            "heading": "Motherboards",
+            "collection": "homegrown-plants",
+            "heading": "Vegetables",
             "icon_image_width": 30,
             "icon_svg": ""
           }
         },
-        "efb04f82-7dd5-4114-8871-3e82bd2198c0": {
+        "tab_xXyAnJ": {
           "type": "tab",
           "settings": {
-            "collection": "car-accessories",
-            "heading": "Car Accessories",
+            "collection": "anemometers",
+            "heading": "Flowers",
             "icon_image_width": 30,
             "icon_svg": ""
           }
         },
-        "6f6a2d7f-5e7a-454e-92af-8a6a64d3bd36": {
+        "tab_riwzJc": {
           "type": "tab",
           "settings": {
-            "collection": "video-games",
-            "heading": "Video Games",
+            "collection": "power-hand-tools",
+            "heading": "Herbs",
             "icon_image_width": 30,
             "icon_svg": ""
           }
         },
-        "62bda09e-177a-4775-9869-4f1bbce09cd3": {
+        "tab_XHahbE": {
           "type": "tab",
+          "disabled": true,
           "settings": {
-            "collection": "collars-harnesses-leashes",
-            "heading": "Pet supplies",
+            "collection": "airflow-air-quality",
+            "heading": "Air Quality Monitors",
             "icon_image_width": 30,
             "icon_svg": ""
           }
         }
       },
       "block_order": [
-        "3fc9f18d-3c43-4ad8-b38f-7cc5eb378977",
-        "efb04f82-7dd5-4114-8871-3e82bd2198c0",
-        "6f6a2d7f-5e7a-454e-92af-8a6a64d3bd36",
-        "62bda09e-177a-4775-9869-4f1bbce09cd3"
+        "tab_49Pbrn",
+        "tab_xXyAnJ",
+        "tab_riwzJc",
+        "tab_XHahbE"
       ],
-      "disabled": true,
+      "name": "Product Collection",
       "settings": {
-        "color_scheme": "",
+        "color_scheme": "scheme-ba41f7c8-a303-44e7-a1d3-a9c14a08a8da",
         "boxed_layout": false,
         "grid_bordered": false,
-        "boxed_color_scheme": "",
-        "heading": "Trending Now",
-        "heading_size": "h3",
+        "boxed_color_scheme": "scheme-98abe1c5-d453-445f-a04d-6584e08129ae",
+        "heading": "Community Favorites",
+        "heading_size": "h2",
         "tab_header_style": "1",
         "header_divider": false,
         "pcard_layout": "",
-        "pcard_image_ratio": "",
+        "pcard_image_ratio": "original",
         "show_vendor": true,
-        "atc_bg_color": "#000000",
+        "atc_bg_color": "#d96c3b",
         "atc_text_color": "#ffffff",
-        "atc_hover_bg_color": "#333333",
-        "atc_hover_text_color": "#ffffff",
-        "pt_select_options_bg": "#ebebeb",
-        "pt_select_options_text": "#1a1a1a",
-        "pt_select_options_border": "#ebebeb",
-        "pt_select_options_hover_bg": "#dedede",
-        "pt_select_options_hover_text": "#1a1a1a",
-        "pt_select_options_hover_border": "#dedede",
+        "atc_hover_bg_color": "#ffffff",
+        "atc_hover_text_color": "#d96c3b",
+        "pt_select_options_bg": "#d96c3b",
+        "pt_select_options_text": "#ffffff",
+        "pt_select_options_border": "#000000",
+        "pt_select_options_hover_bg": "#ffffff",
+        "pt_select_options_hover_text": "#d96c3b",
+        "pt_select_options_hover_border": "#d96c3b",
         "pt_card_border": "inherit",
         "pt_use_pcard_scheme": false,
         "pt_pcard_color_scheme": "",
@@ -1141,155 +759,24 @@
         "pt_tab_active_bg": "#2c2c2c",
         "pt_tab_active_border": "#2c2c2c",
         "pt_tab_active_text": "#ffffff",
-        "product_to_show": 18,
+        "product_to_show": 7,
         "items_per_row": 5,
         "column_gap": 30,
         "row_gap": 30,
         "enable_slider": true,
-        "show_pagination": false,
+        "show_pagination": true,
         "show_navigation": true,
-        "navigation_position": "outside",
-        "mobile_layout": "inherit",
+        "navigation_position": "inside",
+        "mobile_layout": "col-1",
         "column_gap_mobile": 10,
         "row_gap_mobile": 10,
         "enable_swipe_mobile": true,
         "button_label": "",
-        "button_style": "m-button--primary",
+        "button_style": "m-button--outline",
         "padding_top": 60,
-        "padding_bottom": 0,
+        "padding_bottom": 60,
         "custom_class": "m-hide-pagination-md",
         "animations": "inherit"
-      }
-    },
-    "new_product_sec_M84LcH": {
-      "type": "NewProductSec",
-      "blocks": {
-        "category_pad7Um": {
-          "type": "category",
-          "settings": {
-            "title": "Vegetables",
-            "collection": "frontpage"
-          }
-        },
-        "category_HkmJN9": {
-          "type": "category",
-          "settings": {
-            "title": "Flowers",
-            "collection": ""
-          }
-        },
-        "category_Axc6Ej": {
-          "type": "category",
-          "settings": {
-            "title": "Herbs",
-            "collection": ""
-          }
-        }
-      },
-      "block_order": [
-        "category_pad7Um",
-        "category_HkmJN9",
-        "category_Axc6Ej"
-      ],
-      "disabled": true,
-      "name": "Community favorites",
-      "settings": {
-        "heading": "Community Favorites",
-        "heading_alignment": "left",
-        "color_scheme": "scheme-f08d43fd-4b1f-4a68-b4fd-0103c8af3c3c",
-        "heading_font": "heading",
-        "heading_size_mobile": 26,
-        "heading_size_desktop": 36,
-        "tab_font": "body",
-        "tab_size_mobile": 14,
-        "tab_size_desktop": 15,
-        "product_title_font": "body",
-        "product_title_size_mobile": 15,
-        "product_title_size_desktop": 16,
-        "price_size_mobile": 17,
-        "price_size_desktop": 18,
-        "button_font_size_mobile": 13,
-        "button_font_size_desktop": 14,
-        "accent_color": "#d97748",
-        "accent_text_color": "#ffffff",
-        "tab_inactive_color": "#8b7355",
-        "star_color": "#d4a017",
-        "show_badge": true,
-        "badge_tag": "bestseller",
-        "badge_text": "BEST SELLER",
-        "badge_bg_color": "#e8c547",
-        "badge_text_color": "#1a1a1a",
-        "products_to_show": 8,
-        "products_per_row": 5,
-        "mobile_columns": "2",
-        "tablet_columns": 3,
-        "grid_gap_mobile": 14,
-        "grid_gap": 24,
-        "card_border_radius": 12,
-        "show_reviews": true,
-        "button_label": "Add to Cart",
-        "empty_state": "Choose a collection for this tab.",
-        "empty_no_collection": "Select a collection for this tab.",
-        "empty_no_products": "This collection has no products yet.",
-        "empty_hint_assign_collection": "In this tab’s block settings, open Collection and choose a collection that contains your products.",
-        "empty_hint_add_products": "In Shopify admin, go to Products, open a product, and under Organization add it to this collection.",
-        "show_editor_preview": true,
-        "preview_badge_text": "SAMPLE",
-        "padding_top_mobile": 36,
-        "padding_bottom_mobile": 36,
-        "padding_top": 52,
-        "padding_bottom": 52
-      }
-    },
-    "not_sure_RxwPnJ": {
-      "type": "NotSure",
-      "disabled": true,
-      "name": "Product finder intro",
-      "settings": {
-        "badge_text": "PERSONALIZED FOR YOU",
-        "heading": "Not sure what to plant? Let's find your match.",
-        "subheading": "Answer three simple questions about your space, and we'll curate the perfect selection for your unique garden.",
-        "label_1": "Where are you planting?",
-        "select_1_placeholder": "Choose an option",
-        "select_1_options": "Backyard Garden Bed\nRaised Beds\nContainers / Pots\nBalcony or patio",
-        "label_2": "How much sun do you get?",
-        "select_2_placeholder": "Choose an option",
-        "select_2_options": "Full Sun (6+ hours)\nPart Sun (3–6 hours)\nShade (under 3 hours)",
-        "button_label": "See My Matches",
-        "button_link": "shopify://collections/all",
-        "append_query_params": false,
-        "query_param_1": "planting",
-        "query_param_2": "sunlight",
-        "background_color": "#fdf5ee",
-        "badge_background": "#f5e6d8",
-        "badge_text_color": "#5c4033",
-        "heading_color": "#2a1810",
-        "subheading_color": "#5c4033",
-        "label_color": "#3d2918",
-        "input_background": "#ffffff",
-        "input_text_color": "#3d3d3d",
-        "input_border_color": "#e8ddd4",
-        "button_background": "#d97746",
-        "button_text_color": "#ffffff",
-        "heading_font": "heading",
-        "heading_size_mobile": 28,
-        "heading_size_desktop": 40,
-        "subheading_font": "body",
-        "subheading_size_mobile": 16,
-        "subheading_size_desktop": 18,
-        "badge_font_size": 11,
-        "label_font": "body",
-        "label_font_size": 15,
-        "select_font_size": 15,
-        "button_font_size_mobile": 16,
-        "button_font_size_desktop": 17,
-        "content_max_width": 720,
-        "input_corner_style": "pill",
-        "field_row_gap": 16,
-        "padding_top_mobile": 40,
-        "padding_bottom_mobile": 40,
-        "padding_top": 56,
-        "padding_bottom": 56
       }
     },
     "choose_plant_9GdbhL": {
@@ -1392,6 +879,7 @@
         "mobile_carousel_hint_color": "#4a5f54",
         "mobile_carousel_slide_width": 84,
         "mobile_carousel_peek": 8,
+        "animations": "inherit",
         "padding_top_mobile": 40,
         "padding_bottom_mobile": 40,
         "padding_top": 64,
@@ -1478,6 +966,7 @@
         "mobile_carousel_hint_color": "#5c6c64",
         "mobile_carousel_slide_width": 82,
         "mobile_carousel_peek": 8,
+        "animations": "inherit",
         "padding_top_mobile": 44,
         "padding_bottom_mobile": 44,
         "padding_top": 64,
@@ -1490,16 +979,9 @@
     "new_col_6MtRnX",
     "3d92e37f-b44b-49a7-8000-f53f057128ae",
     "0bb7c3df-f5b4-4745-b7be-7842c5658f4a",
-    "banner_grid_QmnCHV",
-    "product_tabs_CjyWMr",
-    "4c1b5e9a-4007-49bc-ad24-b1ad612a2316",
-    "image_banner_afrWdQ",
-    "6c4f10ba-2c26-4691-95ce-2e3c9dfb089e",
-    "02777377-8dc3-477f-8f06-08ee6c367afe",
-    "8d4fab03-a6d0-46ee-ac9f-e0e3f073aa13",
-    "new_product_sec_M84LcH",
-    "not_sure_RxwPnJ",
+    "fyplant_6abMrT",
+    "product_tabs_GRzT43",
     "choose_plant_9GdbhL",
-    "fyplant_6abMrT"
+    "product_tabs_wrHLX8"
   ]
 }
