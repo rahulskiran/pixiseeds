@@ -1,0 +1,791 @@
+{%- liquid
+  assign pt = section.settings.padding_top
+  assign pb = section.settings.padding_bottom
+  assign gap_m = section.settings.grid_gap_mobile
+  assign gap_d = section.settings.grid_gap_desktop
+
+  assign title_ff = 'var(--font-stack-header)'
+  if section.settings.title_font == 'body'
+    assign title_ff = 'var(--font-stack-body)'
+  endif
+
+  assign eyebrow_ff = 'var(--font-stack-body)'
+  if section.settings.eyebrow_font == 'heading'
+    assign eyebrow_ff = 'var(--font-stack-header)'
+  endif
+-%}
+
+{% style %}
+  .m-choose-plant--{{ section.id }} {
+    --m-cp-gap: {{ gap_m }}px;
+    --m-cp-card-radius: {{ section.settings.card_radius }}px;
+    --m-cp-image-ratio: {{ section.settings.image_ratio }};
+    --m-cp-eyebrow-ls: {{ section.settings.eyebrow_letter_spacing | times: 0.01 }}em;
+    --m-cp-title-size-m: {{ section.settings.title_size_mobile }}px;
+    --m-cp-title-size-d: {{ section.settings.title_size_desktop }}px;
+    --m-cp-desc-size: {{ section.settings.description_size }}px;
+    --m-cp-card-title-size: {{ section.settings.card_title_size }}px;
+    --m-cp-card-text-size: {{ section.settings.card_text_size }}px;
+    --m-cp-header-gap: {{ section.settings.header_spacing }}px;
+      background-color: {{ section.settings.background_color }};
+  }
+  @media screen and (min-width: 990px) {
+    .m-choose-plant--{{ section.id }} {
+      --m-cp-gap: {{ gap_d }}px;
+    }
+  }
+{% endstyle %}
+
+<section
+  class="m-section m-choose-plant m-choose-plant--{{ section.id }} m-section--padding"
+  style="--section-padding-top: {{ pt }}px; --section-padding-bottom: {{ pb }}px;"
+>
+  <div class="m-page-width">
+    <header class="m-choose-plant__intro">
+      {% if section.settings.eyebrow != blank %}
+        <p class="m-choose-plant__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      {% endif %}
+      {% if section.settings.title != blank %}
+        <h2 class="m-choose-plant__title">{{ section.settings.title | escape }}</h2>
+      {% endif %}
+      {% if section.settings.description != blank %}
+        <div class="m-choose-plant__description rte">{{ section.settings.description }}</div>
+      {% endif %}
+    </header>
+
+    <div class="m-choose-plant__grid">
+      {% for block in section.blocks %}
+        {% if block.type == 'card' %}
+          <div class="m-choose-plant__card-wrap" {{ block.shopify_attributes }}>
+            {% if block.settings.link != blank %}
+              <a
+                href="{{ block.settings.link }}"
+                class="m-choose-plant__card{% if block.settings.image != blank %} m-choose-plant__card--has-image{% endif %}"
+                {% if block.settings.open_new_tab %}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                {% endif %}
+              >
+            {% else %}
+              <div class="m-choose-plant__card{% if block.settings.image != blank %} m-choose-plant__card--has-image{% endif %}">
+            {% endif %}
+
+            <div class="m-choose-plant__media">
+              {% if block.settings.image != blank %}
+                {%- assign img_alt = block.settings.image.alt | default: block.settings.title | escape -%}
+                {{
+                  block.settings.image
+                  | image_url: width: 900
+                  | image_tag:
+                    loading: 'lazy',
+                    class: 'm-choose-plant__img',
+                    widths: '300, 450, 600, 900',
+                    sizes: '(min-width: 1200px) 22vw, (min-width: 750px) 45vw, 92vw',
+                    alt: img_alt
+                }}
+              {% else %}
+                <div class="m-choose-plant__placeholder">
+                  {{ 'collection-1' | placeholder_svg_tag: 'm-placeholder-svg' }}
+                </div>
+              {% endif %}
+            </div>
+
+            <div class="m-choose-plant__body">
+              <div class="m-choose-plant__body-main">
+                {% if block.settings.icon_preset == 'custom' and block.settings.icon_image != blank %}
+                  <span class="m-choose-plant__icon m-choose-plant__icon--img">
+                    {{
+                      block.settings.icon_image
+                      | image_url: width: 96
+                      | image_tag:
+                        loading: 'lazy',
+                        class: 'm-choose-plant__icon-img',
+                        widths: '48, 72, 96',
+                        alt: ''
+                    }}
+                  </span>
+                {% elsif block.settings.icon_preset != 'none' and block.settings.icon_preset != 'custom' %}
+                  <span class="m-choose-plant__icon m-choose-plant__icon--svg" aria-hidden="true">
+                    {% case block.settings.icon_preset %}
+                      {% when 'sun' %}
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 17.25C14.8995 17.25 17.25 14.8995 17.25 12C17.25 9.10051 14.8995 6.75 12 6.75C9.10051 6.75 6.75 9.10051 6.75 12C6.75 14.8995 9.10051 17.25 12 17.25Z" stroke="currentColor" stroke-width="1.5"/><path d="M12 2.25V4.25M12 19.75V21.75M4.25 12H2.25M21.75 12H19.75M6.166 6.166L4.752 4.752M19.248 19.248L17.834 17.834M6.166 17.834L4.752 19.248M19.248 4.752L17.834 6.166" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                      {% when 'paw' %}
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.25 14.25C9.2165 14.25 10 13.4665 10 12.5C10 11.5335 9.2165 10.75 8.25 10.75C7.2835 10.75 6.5 11.5335 6.5 12.5C6.5 13.4665 7.2835 14.25 8.25 14.25Z" stroke="currentColor" stroke-width="1.5"/><path d="M15.75 14.25C16.7165 14.25 17.5 13.4665 17.5 12.5C17.5 11.5335 16.7165 10.75 15.75 10.75C14.7835 10.75 14 11.5335 14 12.5C14 13.4665 14.7835 14.25 15.75 14.25Z" stroke="currentColor" stroke-width="1.5"/><path d="M11.25 9.25C12.2165 9.25 13 8.4665 13 7.5C13 6.5335 12.2165 5.75 11.25 5.75C10.2835 5.75 9.5 6.5335 9.5 7.5C9.5 8.4665 10.2835 9.25 11.25 9.25Z" stroke="currentColor" stroke-width="1.5"/><path d="M15.25 9.25C16.2165 9.25 17 8.4665 17 7.5C17 6.5335 16.2165 5.75 15.25 5.75C14.2835 5.75 13.5 6.5335 13.5 7.5C13.5 8.4665 14.2835 9.25 15.25 9.25Z" stroke="currentColor" stroke-width="1.5"/><path d="M12 21C13.25 21 15 19.5 15 17.25C15 15.5 13.75 14.25 12 14.25C10.25 14.25 9 15.5 9 17.25C9 19.5 10.75 21 12 21Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+                      {% when 'sparkle' %}
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3L13.09 8.26L18 9.27L13.09 10.28L12 15.54L10.91 10.28L6 9.27L10.91 8.26L12 3Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M19 15L19.64 17.64L22.25 18.25L19.64 18.86L19 21.5L18.36 18.86L15.75 18.25L18.36 17.64L19 15Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M5 13L5.82 16.18L9 17L5.82 17.82L5 21L4.18 17.82L1 17L4.18 16.18L5 13Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+                      {% when 'leaf' %}
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 20.25C12 20.25 5.25 16.5 5.25 10.5C5.25 8.42893 6.92893 6.75 9 6.75C10.6575 6.75 12.09 7.71 12.75 9.12C13.41 7.71 14.8425 6.75 16.5 6.75C18.5711 6.75 20.25 8.42893 20.25 10.5C20.25 16.5 13.5 20.25 12 20.25Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                      {% else %}
+                    {% endcase %}
+                  </span>
+                {% endif %}
+
+                <div class="m-choose-plant__text">
+                  {% if block.settings.title != blank %}
+                    <p class="m-choose-plant__card-title">{{ block.settings.title | escape }}</p>
+                  {% endif %}
+                  {% if block.settings.text != blank %}
+                    <p class="m-choose-plant__card-text">{{ block.settings.text | escape }}</p>
+                  {% endif %}
+                </div>
+              </div>
+
+              <span class="m-choose-plant__arrow" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M4.5 2.25L8.25 6L4.5 9.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+            </div>
+
+            {% if block.settings.link != blank %}
+              </a>
+            {% else %}
+              </div>
+            {% endif %}
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    {% if section.settings.footer_link_label != blank and section.settings.footer_link != blank %}
+      <p class="m-choose-plant__footer">
+        <a
+          href="{{ section.settings.footer_link }}"
+          class="m-choose-plant__footer-link"
+          {% if section.settings.footer_link_new_tab %}
+            target="_blank"
+            rel="noopener noreferrer"
+          {% endif %}
+        >
+          <span>{{ section.settings.footer_link_label | escape }}</span>
+          <svg width="14" height="14" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M4.5 2.25L8.25 6L4.5 9.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </p>
+    {% endif %}
+  </div>
+</section>
+
+{% style %}
+  .m-choose-plant--{{ section.id }} .m-choose-plant__intro {
+    text-align: center;
+    max-width: 42rem;
+    margin: 0 auto var(--m-cp-header-gap, 40px);
+    color: {{ section.settings.text_color }};
+  }
+  .m-choose-plant--{{ section.id }} .m-choose-plant__eyebrow {
+    margin: 0 0 12px;
+    font-family: {{ eyebrow_ff }};
+    font-size: {{ section.settings.eyebrow_size }}px;
+    font-weight: {{ section.settings.eyebrow_weight }};
+    letter-spacing: var(--m-cp-eyebrow-ls, 0.08em);
+    text-transform: uppercase;
+    color: {{ section.settings.eyebrow_color }};
+  }
+  .m-choose-plant--{{ section.id }} .m-choose-plant__title {
+    margin: 0 0 16px;
+    font-family: {{ title_ff }};
+    font-size: var(--m-cp-title-size-m, 1.75rem);
+    font-weight: {{ section.settings.title_weight }};
+    line-height: 1.2;
+    color: {{ section.settings.heading_color }};
+  }
+  @media screen and (min-width: 990px) {
+    .m-choose-plant--{{ section.id }} .m-choose-plant__title {
+      font-size: var(--m-cp-title-size-d, 2.5rem);
+    }
+  }
+  .m-choose-plant--{{ section.id }} .m-choose-plant__description {
+    margin: 0;
+    font-family: var(--font-stack-body);
+    font-size: var(--m-cp-desc-size, 1rem);
+    line-height: 1.55;
+    color: {{ section.settings.text_color }};
+  }
+  .m-choose-plant--{{ section.id }} .m-choose-plant__description p:last-child {
+    margin-bottom: 0;
+  }
+  .m-choose-plant--{{ section.id }} .m-choose-plant__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--m-cp-gap, 16px);
+  }
+  @media screen and (min-width: 750px) {
+    .m-choose-plant--{{ section.id }} .m-choose-plant__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media screen and (min-width: 990px) {
+    .m-choose-plant--{{ section.id }} .m-choose-plant__grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+  .m-choose-plant--{{ section.id }} .m-choose-plant__card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    border-radius: var(--m-cp-card-radius, 12px);
+    border: 1px solid {{ section.settings.card_border_color }};
+    background: {{ section.settings.card_body_bg }};
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    text-decoration: none;
+    color: inherit;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+  }
+  .m-choose-plant--{{ section.id }} a.m-choose-plant__card:hover {
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+  }
+  .m-choose-plant--{{ section.id }} .m-choose-plant__media {
+    position: relative;
+    aspect-ratio: var(--m-cp-image-ratio, 4 / 3);
+    overflow: hidden;
+    background: {{ section.settings.media_fallback_bg }};
+  }
+  .m-choose-plant--{{ section.id }} .m-choose-plant__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .m-choose-plant--{{ section.id }} a.m-choose-plant__card:hover .m-choose-plant__img {
+    transform: scale(1.05);
+  }
+  .m-choose-plant--{{ section.id }} .m-choose-plant__placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.04);
+  }
+  .m-choose-plant--{{ section.id }} .m-choose-plant__placeholder .m-placeholder-svg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.35;
+  }
+  .m-choose-plant--{{ section.id }} .m-choose-plant__body {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px 18px;
+    flex: 1 1 auto;
+    color: {{ section.settings.card_text_color }};
+  }
+  .m-choose-plant--{{ section.id }} .m-choose-plant__body-main {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    min-width: 0;
+    flex: 1;
+  }
+  .m-choose-plant--{{ section.id }} .m-choose-plant__icon {
+    flex-shrink: 0;
+    color: {{ section.settings.card_icon_color }};
+    margin-top: 2px;
+  }
+  .m-choose-plant--{{ section.id }} .m-choose-plant__icon--img {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .m-choose-plant--{{ section.id }} .m-choose-plant__icon-img {
+    max-width: 28px;
+    max-height: 28px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+  }
+  .m-choose-plant--{{ section.id }} .m-choose-plant__text {
+    min-width: 0;
+    text-align: left;
+  }
+  .m-choose-plant--{{ section.id }} .m-choose-plant__card-title {
+    margin: 0 0 4px;
+    font-family: var(--font-stack-body);
+    font-size: var(--m-cp-card-title-size, 15px);
+    font-weight: 600;
+    line-height: 1.3;
+    color: {{ section.settings.card_title_color }};
+  }
+  .m-choose-plant--{{ section.id }} .m-choose-plant__card-text {
+    margin: 0;
+    font-family: var(--font-stack-body);
+    font-size: var(--m-cp-card-text-size, 13px);
+    line-height: 1.4;
+    color: {{ section.settings.card_subtext_color }};
+  }
+  .m-choose-plant--{{ section.id }} .m-choose-plant__arrow {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    color: {{ section.settings.card_arrow_color }};
+  }
+  .m-choose-plant--{{ section.id }} .m-choose-plant__footer {
+    margin: {{ section.settings.footer_margin_top }}px 0 0;
+    text-align: center;
+  }
+  .m-choose-plant--{{ section.id }} .m-choose-plant__footer-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-stack-body);
+    font-size: {{ section.settings.footer_link_size }}px;
+    font-weight: 500;
+    color: {{ section.settings.footer_link_color }};
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+  }
+  .m-choose-plant--{{ section.id }} .m-choose-plant__footer-link:hover {
+    opacity: 0.75;
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Choose your plant",
+  "tag": "section",
+  "class": "m-choose-plant-section",
+  "disabled_on": { "groups": ["header", "aside", "footer"] },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Intro"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Find your perfect plant"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "What kind of plant parent are you?"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Tell us about your space and we'll match you with plants that will thrive.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "select",
+      "id": "title_font",
+      "label": "Heading font",
+      "options": [
+        { "value": "heading", "label": "Theme heading" },
+        { "value": "body", "label": "Theme body" }
+      ],
+      "default": "heading"
+    },
+    {
+      "type": "select",
+      "id": "eyebrow_font",
+      "label": "Eyebrow font",
+      "options": [
+        { "value": "body", "label": "Theme body" },
+        { "value": "heading", "label": "Theme heading" }
+      ],
+      "default": "body"
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_size",
+      "min": 10,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "label": "Eyebrow size",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_weight",
+      "min": 400,
+      "max": 700,
+      "step": 100,
+      "label": "Eyebrow weight",
+      "default": 600
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_letter_spacing",
+      "min": 4,
+      "max": 20,
+      "step": 1,
+      "label": "Eyebrow letter spacing",
+      "default": 12,
+      "info": "Percent of font size (≈ caps spacing)."
+    },
+    {
+      "type": "range",
+      "id": "title_size_mobile",
+      "min": 22,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "label": "Heading size (mobile)",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "title_size_desktop",
+      "min": 28,
+      "max": 56,
+      "step": 1,
+      "unit": "px",
+      "label": "Heading size (desktop)",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "title_weight",
+      "min": 400,
+      "max": 700,
+      "step": 100,
+      "label": "Heading weight",
+      "default": 400
+    },
+    {
+      "type": "range",
+      "id": "description_size",
+      "min": 14,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Description size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "card_title_size",
+      "min": 13,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Card title size",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "card_text_size",
+      "min": 11,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "label": "Card subtitle size",
+      "default": 13
+    },
+    {
+      "type": "range",
+      "id": "header_spacing",
+      "min": 24,
+      "max": 64,
+      "step": 2,
+      "unit": "px",
+      "label": "Space below intro",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Section background",
+      "default": "#f7f4ee"
+    },
+    {
+      "type": "color",
+      "id": "eyebrow_color",
+      "label": "Eyebrow",
+      "default": "#2d4a3e"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading",
+      "default": "#2d4a3e"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Body / description",
+      "default": "#2d4a3e"
+    },
+    {
+      "type": "color",
+      "id": "card_border_color",
+      "label": "Card border",
+      "default": "#e5e0d8"
+    },
+    {
+      "type": "color",
+      "id": "card_body_bg",
+      "label": "Card footer (text area)",
+      "default": "#faf8f5"
+    },
+    {
+      "type": "color",
+      "id": "media_fallback_bg",
+      "label": "Image area fallback",
+      "default": "#ebe6de"
+    },
+    {
+      "type": "color",
+      "id": "card_title_color",
+      "label": "Card title",
+      "default": "#2d4a3e"
+    },
+    {
+      "type": "color",
+      "id": "card_subtext_color",
+      "label": "Card subtitle",
+      "default": "#4a5f54"
+    },
+    {
+      "type": "color",
+      "id": "card_icon_color",
+      "label": "Card icons",
+      "default": "#2d4a3e"
+    },
+    {
+      "type": "color",
+      "id": "card_text_color",
+      "label": "Card footer default text",
+      "default": "#2d4a3e"
+    },
+    {
+      "type": "color",
+      "id": "card_arrow_color",
+      "label": "Card arrow",
+      "default": "#5a7268"
+    },
+    {
+      "type": "header",
+      "content": "Footer link"
+    },
+    {
+      "type": "text",
+      "id": "footer_link_label",
+      "label": "Link label",
+      "default": "Or browse all plants"
+    },
+    {
+      "type": "url",
+      "id": "footer_link",
+      "label": "Link"
+    },
+    {
+      "type": "checkbox",
+      "id": "footer_link_new_tab",
+      "label": "Open in new tab",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "footer_link_size",
+      "min": 13,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Footer link size",
+      "default": 15
+    },
+    {
+      "type": "color",
+      "id": "footer_link_color",
+      "label": "Footer link color",
+      "default": "#2d4a3e"
+    },
+    {
+      "type": "range",
+      "id": "footer_margin_top",
+      "min": 24,
+      "max": 64,
+      "step": 2,
+      "unit": "px",
+      "label": "Space above footer link",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Card image ratio",
+      "options": [
+        { "value": "4 / 3", "label": "4:3" },
+        { "value": "3 / 2", "label": "3:2" },
+        { "value": "1 / 1", "label": "Square" },
+        { "value": "4 / 5", "label": "Portrait 4:5" }
+      ],
+      "default": "4 / 3"
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "min": 0,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "label": "Card corner radius",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "grid_gap_mobile",
+      "min": 8,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Grid gap (mobile)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "grid_gap_desktop",
+      "min": 8,
+      "max": 28,
+      "step": 2,
+      "unit": "px",
+      "label": "Grid gap (desktop)",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 64
+    }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "select",
+          "id": "icon_preset",
+          "label": "Icon",
+          "options": [
+            { "value": "none", "label": "None" },
+            { "value": "sun", "label": "Sun" },
+            { "value": "paw", "label": "Paw" },
+            { "value": "sparkle", "label": "Sparkles" },
+            { "value": "leaf", "label": "Leaf" },
+            { "value": "custom", "label": "Custom image" }
+          ],
+          "default": "sun"
+        },
+        {
+          "type": "image_picker",
+          "id": "icon_image",
+          "label": "Custom icon"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Card title"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Subtitle",
+          "default": "Short supporting line"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "checkbox",
+          "id": "open_new_tab",
+          "label": "Open in new tab",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Choose your plant",
+      "blocks": [
+        {
+          "type": "card",
+          "settings": {
+            "icon_preset": "sun",
+            "title": "Low light",
+            "text": "Thrives in shady spots"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "icon_preset": "paw",
+            "title": "Pet-friendly",
+            "text": "Safe for furry friends"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "icon_preset": "sparkle",
+            "title": "Statement plants",
+            "text": "Bold and dramatic"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "icon_preset": "leaf",
+            "title": "Easy care",
+            "text": "Hard to kill"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
