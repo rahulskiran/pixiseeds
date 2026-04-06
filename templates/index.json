@@ -199,7 +199,7 @@
         "card_jAwxAB": {
           "type": "card",
           "settings": {
-            "image": "shopify://shop_images/Monstera_and_snake_202603312231.jpg",
+            "image": "shopify://shop_images/Cherry_tomatoes_growing_202604061452.webp",
             "title": "Tomato Seeds",
             "link": "",
             "open_new_tab": false
@@ -208,7 +208,7 @@
         "card_dnCLLD": {
           "type": "card",
           "settings": {
-            "image": "shopify://shop_images/Monstera_and_snake_202603312230.jpg",
+            "image": "shopify://shop_images/Lettuce_plants_in_202604061452.webp",
             "title": "Lettuce Seeds",
             "link": "",
             "open_new_tab": false
@@ -217,7 +217,7 @@
         "card_VG6rxP": {
           "type": "card",
           "settings": {
-            "image": "shopify://shop_images/Monstera_and_snake_202603312234.jpg",
+            "image": "shopify://shop_images/Zinnia_flower_with_202604061452.webp",
             "title": "Zinnnia Seeds",
             "link": "",
             "open_new_tab": false
@@ -226,7 +226,7 @@
         "card_kiMJ6N": {
           "type": "card",
           "settings": {
-            "image": "shopify://shop_images/Monarch_butterfly_landing_202603312237.jpg",
+            "image": "shopify://shop_images/French_Marigolds_growing_202604061453.webp",
             "title": "Marigold Seeds",
             "link": "",
             "open_new_tab": false
@@ -235,7 +235,7 @@
         "card_X4mzP6": {
           "type": "card",
           "settings": {
-            "image": "shopify://shop_images/Monarch_butterfly_landing_202603312237.jpg",
+            "image": "shopify://shop_images/Purple_green_micro-sprouts_202604061501.webp",
             "title": "microgreen seeds",
             "link": "",
             "open_new_tab": false
@@ -244,7 +244,7 @@
         "card_HcM3KQ": {
           "type": "card",
           "settings": {
-            "image": "shopify://shop_images/Monstera_and_snake_202603312230.jpg",
+            "image": "shopify://shop_images/Cucumber_fruit_and_202604061504.webp",
             "title": "cucumber seeds",
             "link": "",
             "open_new_tab": false
@@ -266,7 +266,7 @@
         "label_font": "body",
         "heading_font_size_mobile": 26,
         "heading_font_size_desktop": 34,
-        "heading_font_weight": 400,
+        "heading_font_weight": 500,
         "heading_letter_spacing": 0,
         "label_font_size_mobile": 14,
         "label_font_size_desktop": 16,
@@ -275,7 +275,7 @@
         "label_letter_spacing": 120,
         "heading_spacing": 32,
         "section_background": "#f6efe2",
-        "heading_color": "#1a1a1a",
+        "heading_color": "#d96c3b",
         "label_color": "#ffffff",
         "card_border_color": "#eadfcd",
         "mobile_columns": "2",
