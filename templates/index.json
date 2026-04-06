@@ -631,6 +631,7 @@
         "image_4MRNMQ",
         "image_nMPefC"
       ],
+      "disabled": true,
       "settings": {
         "layout": "2",
         "gap_desktop": 0,
@@ -690,6 +691,7 @@
         "tab_VeNwKN",
         "tab_JgNbbB"
       ],
+      "disabled": true,
       "name": "Product Collection",
       "settings": {
         "color_scheme": "background-4",
@@ -1223,6 +1225,7 @@
     },
     "not_sure_RxwPnJ": {
       "type": "NotSure",
+      "disabled": true,
       "name": "Product finder intro",
       "settings": {
         "badge_text": "PERSONALIZED FOR YOU",

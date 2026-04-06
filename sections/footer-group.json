@@ -69,6 +69,7 @@
         "sections--21255729283345__a76f4314-395f-4e7d-bdc8-4260fd09fffe-promotion-3",
         "sections--21255729283345__a76f4314-395f-4e7d-bdc8-4260fd09fffe-promotion-4"
       ],
+      "disabled": true,
       "custom_css": [
         ".m-section--boxed .m-section__wrapper:after {border-right-width: 0; border-left-width: 0;}",
         ".m-promotion-card,.m-promotion-card__content-heading {--font-weight-body: 500; font-family: var(--font-stack-body); font-weight: var(--font-weight-body);}",
