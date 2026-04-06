@@ -11,6 +11,9 @@
   if animation_effect != 'none'
     assign animated = true
   endif
+  if request.design_mode
+    assign animated = false
+  endif
 
   assign image_aspect_ratio = section.settings.image_aspect_ratio
   if section.settings.image != blank and image_aspect_ratio == 'original'
@@ -60,50 +63,58 @@
       {% endif %}
     </header>
 
-    <div
-      class="m-stealgarden__stage{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}"
-      {% if animated %}
-        data-cascade
-      {% endif %}
-    >
-      {% if section.settings.image != blank %}
-        {%- liquid
-          assign sg_img = section.settings.image
-          assign image_height = sg_img.width | divided_by: sg_img.aspect_ratio
-          assign sg_alt = sg_img.alt | default: section.settings.heading | default: shop.name | escape
-        -%}
-        <div class="m-stealgarden__media m-image m-image--rounded" style="--aspect-ratio: {{ image_aspect_ratio }};">
-          {{
-            sg_img
-            | image_url: width: 3840
-            | image_tag:
-              loading: 'lazy',
-              class: 'm-stealgarden__img',
-              width: sg_img.width,
-              height: image_height,
-              sizes: '(min-width: 1200px) min(1200px, 90vw), 100vw',
-              widths: '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840',
-              alt: sg_alt
-          }}
-        </div>
-      {% else %}
-        <div class="m-stealgarden__media m-stealgarden__media--placeholder m-image m-image--rounded m-image--placeholder" style="--aspect-ratio: {{ image_aspect_ratio }};">
-          {{ 'lifestyle-1' | placeholder_svg_tag: 'm-placeholder-svg m:w-full m:h-full' }}
-        </div>
-      {% endif %}
+    <div class="m-stealgarden__stage">
+      <div
+        class="m-stealgarden__canvas{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}"
+      >
+        {% if section.settings.image != blank %}
+          {%- liquid
+            assign sg_img = section.settings.image
+            assign image_height = sg_img.width | divided_by: sg_img.aspect_ratio
+            assign sg_alt = sg_img.alt | default: section.settings.heading | default: shop.name | escape
+          -%}
+          <div class="m-stealgarden__media m-image m-image--rounded" style="--aspect-ratio: {{ image_aspect_ratio }};">
+            {{
+              sg_img
+              | image_url: width: 3840
+              | image_tag:
+                loading: 'lazy',
+                class: 'm-stealgarden__img',
+                width: sg_img.width,
+                height: image_height,
+                sizes: '(min-width: 1200px) min(1200px, 90vw), 100vw',
+                widths: '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840',
+                alt: sg_alt
+            }}
+          </div>
+        {% else %}
+          <div class="m-stealgarden__media m-stealgarden__media--placeholder m-image m-image--rounded m-image--placeholder" style="--aspect-ratio: {{ image_aspect_ratio }};">
+            {{ 'lifestyle-1' | placeholder_svg_tag: 'm-placeholder-svg m:w-full m:h-full' }}
+          </div>
+        {% endif %}
 
-      {% for block in section.blocks %}
-        {% if block.type == 'hotspot' and block.settings.product != blank %}
-          {% assign prod = all_products[block.settings.product] %}
+        {% for block in section.blocks %}
+          {% if block.type != 'hotspot' %}
+            {% continue %}
+          {% endif %}
+          {% assign prod = blank %}
+          {% if block.settings.product != blank %}
+            {% assign prod = all_products[block.settings.product] %}
+          {% endif %}
+          {% unless request.design_mode %}
+            {% if prod == blank %}
+              {% continue %}
+            {% endif %}
+          {% endunless %}
+          {% liquid
+            assign top = block.settings.offset_top | default: 50
+            assign left = block.settings.offset_left | default: 50
+            assign y_pos = 'm-stealgarden__pop--top'
+            if top > 50
+              assign y_pos = 'm-stealgarden__pop--bottom'
+            endif
+          %}
           {% if prod != blank %}
-            {% liquid
-              assign top = block.settings.offset_top
-              assign left = block.settings.offset_left
-              assign y_pos = 'm-stealgarden__pop--top'
-              if top > 50
-                assign y_pos = 'm-stealgarden__pop--bottom'
-              endif
-            %}
             <a
               href="{{ prod.url }}"
               class="m-stealgarden__pin m-stealgarden__pin--{{ section.settings.hotspot_style }}"
@@ -111,33 +122,49 @@
               aria-label="{{ prod.title | escape }}"
               {{ block.shopify_attributes }}
             >
-              <span class="m-stealgarden__pin-ring" aria-hidden="true"></span>
-              <span class="m-stealgarden__pin-core" aria-hidden="true"></span>
-              {% if section.settings.show_preview %}
-                <span class="m-stealgarden__pop {{ y_pos }}" aria-hidden="true">
-                  <span class="m-stealgarden__pop-inner">
-                    {% if prod.featured_image != blank %}
-                      <span class="m-stealgarden__pop-img">
-                        {{
-                          prod.featured_image
-                          | image_url: width: 200
-                          | image_tag:
-                            loading: 'lazy',
-                            widths: '100, 200',
-                            sizes: '100px',
-                            alt: prod.featured_image.alt | default: prod.title | escape
-                        }}
-                      </span>
-                    {% endif %}
-                    <span class="m-stealgarden__pop-title">{{ prod.title | escape }}</span>
-                    <span class="m-stealgarden__pop-price">{{ prod.price | money }}</span>
-                  </span>
-                </span>
-              {% endif %}
-            </a>
+          {% else %}
+            <div
+              class="m-stealgarden__pin m-stealgarden__pin--no-product m-stealgarden__pin--{{ section.settings.hotspot_style }}"
+              style="top: {{ top }}%; left: {{ left }}%;"
+              role="img"
+              aria-label="Product dot — choose a product in the sidebar"
+              {{ block.shopify_attributes }}
+            >
           {% endif %}
-        {% endif %}
-      {% endfor %}
+          <span class="m-stealgarden__pin-ring" aria-hidden="true"></span>
+          <span class="m-stealgarden__pin-core" aria-hidden="true"></span>
+          {% if section.settings.show_preview and prod != blank %}
+            <span class="m-stealgarden__pop {{ y_pos }}" aria-hidden="true">
+              <span class="m-stealgarden__pop-inner">
+                {% if prod.featured_image != blank %}
+                  <span class="m-stealgarden__pop-img">
+                    {{
+                      prod.featured_image
+                      | image_url: width: 200
+                      | image_tag:
+                        loading: 'lazy',
+                        widths: '100, 200',
+                        sizes: '100px',
+                        alt: prod.featured_image.alt | default: prod.title | escape
+                    }}
+                  </span>
+                {% endif %}
+                <span class="m-stealgarden__pop-title">{{ prod.title | escape }}</span>
+                <span class="m-stealgarden__pop-price">{{ prod.price | money }}</span>
+              </span>
+            </span>
+          {% elsif prod == blank and request.design_mode %}
+            <span class="m-stealgarden__pop m-stealgarden__pop--hint {{ y_pos }}" aria-hidden="true">
+              <span class="m-stealgarden__pop-inner m-stealgarden__pop-inner--hint"> Select a product · use Vertical &amp; Horizontal sliders to move this dot </span>
+            </span>
+          {% endif %}
+          {% if prod != blank %}
+            </a>
+          {% else %}
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
     </div>
   </div>
 </section>
@@ -170,7 +197,11 @@
     color: rgba(var(--color-foreground), 0.75);
   }
   .m-stealgarden__stage {
+    width: 100%;
+  }
+  .m-stealgarden__canvas {
     position: relative;
+    width: 100%;
     border-radius: var(--m-sg-radius);
     overflow: hidden;
   }
@@ -207,6 +238,31 @@
     outline: 2px solid rgb(var(--color-foreground));
     outline-offset: 4px;
     border-radius: 50%;
+  }
+  .m-stealgarden__pin--no-product {
+    cursor: default;
+  }
+  .m-stealgarden__pin--no-product .m-stealgarden__pin-core {
+    opacity: 0.85;
+    box-shadow: 0 0 0 2px rgba(255, 180, 80, 0.95), 0 2px 12px rgba(0, 0, 0, 0.2);
+  }
+  .m-stealgarden__pop-inner--hint {
+    font-size: 12px;
+    line-height: 1.35;
+    font-weight: 500;
+    color: rgba(var(--text-black), 0.85);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .m-stealgarden__pin--no-product:hover .m-stealgarden__pop--hint {
+      opacity: 1;
+      visibility: visible;
+    }
+    .m-stealgarden__pin--no-product:hover .m-stealgarden__pop--hint.m-stealgarden__pop--top {
+      transform: translate(-50%, 0);
+    }
+    .m-stealgarden__pin--no-product:hover .m-stealgarden__pop--hint.m-stealgarden__pop--bottom {
+      transform: translate(-50%, 0);
+    }
   }
   .m-stealgarden__pin-ring {
     position: absolute;
@@ -552,7 +608,7 @@
         },
         {
           "type": "paragraph",
-          "content": "Position is percent of the image: 0 = top/left edge, 100 = bottom/right. Adjust while previewing the scene."
+          "content": "Dots use percent of the scene (0 = top/left, 100 = bottom/right). Move each one with the Vertical and Horizontal sliders. In the theme editor, draft dots (orange ring) show until you pick a product."
         },
         {
           "type": "range",
