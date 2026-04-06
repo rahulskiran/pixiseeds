@@ -28,6 +28,16 @@
   if section.settings.input_corner_style == 'rounded'
     assign ns_input_radius = section.settings.ns_input_border_radius | default: 16
   endif
+
+  assign section_animation = section.settings.animations | default: 'inherit'
+  assign animation_effect = settings.animations
+  if section_animation != 'inherit'
+    assign animation_effect = section_animation
+  endif
+  assign animated = false
+  if animation_effect != 'none'
+    assign animated = true
+  endif
 -%}
 
 {% style %}
@@ -76,18 +86,18 @@
   <div class="m-page-width">
     <div class="m-notsure__inner">
       {% if section.settings.badge_text != blank %}
-        <p class="m-notsure__badge">{{ section.settings.badge_text | escape }}</p>
+        <p class="m-notsure__badge{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}">{{ section.settings.badge_text | escape }}</p>
       {% endif %}
 
       {% if heading_display != blank %}
-        <h2 class="m-notsure__heading">{{ heading_display | escape }}</h2>
+        <h2 class="m-notsure__heading{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}">{{ heading_display | escape }}</h2>
       {% endif %}
 
       {% if section.settings.subheading != blank %}
-        <p class="m-notsure__sub">{{ section.settings.subheading | escape }}</p>
+        <p class="m-notsure__sub{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}">{{ section.settings.subheading | escape }}</p>
       {% endif %}
 
-      <div class="m-notsure__fields">
+      <div class="m-notsure__fields{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}">
         <div class="m-notsure__field">
           {% if section.settings.label_1 != blank %}
             <label class="m-notsure__label" for="notsure-s1-{{ section.id }}">{{ section.settings.label_1 | escape }}</label>
@@ -150,7 +160,7 @@
       </div>
 
       {% if section.settings.button_label != blank and section.settings.button_link != blank %}
-        <div class="m-notsure__cta-wrap">
+        <div class="m-notsure__cta-wrap{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}">
           <a
             href="{{ section.settings.button_link }}"
             class="m-notsure__cta"
@@ -687,6 +697,25 @@
       "unit": "px",
       "label": "Space between stacked fields (mobile)",
       "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Animation"
+    },
+    {
+      "type": "select",
+      "id": "animations",
+      "label": "Scroll reveal",
+      "default": "inherit",
+      "info": "Uses Theme settings → Animations when Inherit. Reveals badge, text, fields, and button as they enter the viewport.",
+      "options": [
+        { "value": "inherit", "label": "Inherit global setting" },
+        { "value": "none", "label": "None" },
+        { "value": "fade-in", "label": "Fade in" },
+        { "value": "fade-in-up", "label": "Fade in up" },
+        { "value": "fade-in-left", "label": "Fade in left" },
+        { "value": "fade-in-right", "label": "Fade in right" }
+      ]
     },
     {
       "type": "header",

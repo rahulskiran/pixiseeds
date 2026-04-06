@@ -22,6 +22,16 @@
   assign overlay_dec = section.settings.overlay_opacity | divided_by: 100.0
   assign overlay_hex = section.settings.overlay_color | default: '#000000'
   assign overlay_bottom = overlay_hex | color_modify: 'alpha', overlay_dec
+
+  assign section_animation = section.settings.animations | default: 'inherit'
+  assign animation_effect = settings.animations
+  if section_animation != 'inherit'
+    assign animation_effect = section_animation
+  endif
+  assign animated = false
+  if animation_effect != 'none'
+    assign animated = true
+  endif
 -%}
 
 {% style %}
@@ -64,7 +74,7 @@
   style="--section-padding-top: {{ pt }}px; --section-padding-bottom: {{ pb }}px;"
 >
   <div class="m-page-width">
-    <header class="m-fyplant__intro">
+    <header class="m-fyplant__intro{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}">
       {% if section.settings.eyebrow != blank %}
         <p class="m-fyplant__eyebrow">{{ section.settings.eyebrow | escape }}</p>
       {% endif %}
@@ -74,13 +84,13 @@
     </header>
 
     {% if section.settings.mobile_carousel and section.settings.mobile_carousel_hint != blank %}
-      <p class="m-fyplant__carousel-hint">{{ section.settings.mobile_carousel_hint | escape }}</p>
+      <p class="m-fyplant__carousel-hint{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}">{{ section.settings.mobile_carousel_hint | escape }}</p>
     {% endif %}
 
     <div class="m-fyplant__grid{% if section.settings.mobile_carousel %} m-fyplant__grid--carousel-mobile{% endif %}">
       {% for block in section.blocks %}
         {% if block.type == 'card' %}
-          <div class="m-fyplant__cell" {{ block.shopify_attributes }}>
+          <div class="m-fyplant__cell{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}" {{ block.shopify_attributes }}>
             {% if block.settings.link != blank %}
               <a
                 href="{{ block.settings.link }}"
@@ -640,6 +650,25 @@
       "label": "Carousel edge inset",
       "default": 8,
       "visible_if": "{{ section.settings.mobile_carousel }}"
+    },
+    {
+      "type": "header",
+      "content": "Animation"
+    },
+    {
+      "type": "select",
+      "id": "animations",
+      "label": "Scroll reveal",
+      "default": "inherit",
+      "info": "Uses Theme settings → Animations when Inherit. Reveals heading, hint, and each category card on scroll.",
+      "options": [
+        { "value": "inherit", "label": "Inherit global setting" },
+        { "value": "none", "label": "None" },
+        { "value": "fade-in", "label": "Fade in" },
+        { "value": "fade-in-up", "label": "Fade in up" },
+        { "value": "fade-in-left", "label": "Fade in left" },
+        { "value": "fade-in-right", "label": "Fade in right" }
+      ]
     },
     {
       "type": "header",

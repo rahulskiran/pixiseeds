@@ -25,6 +25,16 @@
   assign image_overlay_opacity_decimal = section.settings.image_overlay_opacity | divided_by: 100.0
   assign image_overlay_hex = section.settings.image_overlay_color | default: '#000000'
   assign image_overlay_bottom = image_overlay_hex | color_modify: 'alpha', image_overlay_opacity_decimal
+
+  assign section_animation = section.settings.animations | default: 'inherit'
+  assign animation_effect = settings.animations
+  if section_animation != 'inherit'
+    assign animation_effect = section_animation
+  endif
+  assign animated = false
+  if animation_effect != 'none'
+    assign animated = true
+  endif
 -%}
 
 {% style %}
@@ -65,13 +75,13 @@
 >
   <div class="m-page-width">
     {% if section.settings.heading != blank %}
-      <h2 class="m-newcol__heading">{{ section.settings.heading | escape }}</h2>
+      <h2 class="m-newcol__heading{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}">{{ section.settings.heading | escape }}</h2>
     {% endif %}
 
     <div class="m-newcol__grid">
       {% for block in section.blocks %}
         <div
-          class="m-newcol__card{% if block.settings.link != blank %} m-newcol__card--link{% endif %}"
+          class="m-newcol__card{% if block.settings.link != blank %} m-newcol__card--link{% endif %}{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}"
           {{ block.shopify_attributes }}
         >
           {% if block.settings.link != blank %}
@@ -513,6 +523,25 @@
       "label": "Gradient height",
       "default": 60,
       "info": "How far up the photo the fade reaches. 100% covers the full image."
+    },
+    {
+      "type": "header",
+      "content": "Animation"
+    },
+    {
+      "type": "select",
+      "id": "animations",
+      "label": "Scroll reveal",
+      "default": "inherit",
+      "info": "Uses Theme settings → Animations when set to Inherit. Fades/slides content in as it enters the viewport.",
+      "options": [
+        { "value": "inherit", "label": "Inherit global setting" },
+        { "value": "none", "label": "None" },
+        { "value": "fade-in", "label": "Fade in" },
+        { "value": "fade-in-up", "label": "Fade in up" },
+        { "value": "fade-in-left", "label": "Fade in left" },
+        { "value": "fade-in-right", "label": "Fade in right" }
+      ]
     },
     {
       "type": "header",

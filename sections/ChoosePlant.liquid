@@ -13,6 +13,16 @@
   if section.settings.eyebrow_font == 'heading'
     assign eyebrow_ff = 'var(--font-stack-header)'
   endif
+
+  assign section_animation = section.settings.animations | default: 'inherit'
+  assign animation_effect = settings.animations
+  if section_animation != 'inherit'
+    assign animation_effect = section_animation
+  endif
+  assign animated = false
+  if animation_effect != 'none'
+    assign animated = true
+  endif
 -%}
 
 {% style %}
@@ -58,7 +68,7 @@
   style="--section-padding-top: {{ pt }}px; --section-padding-bottom: {{ pb }}px;"
 >
   <div class="m-page-width">
-    <header class="m-choose-plant__intro">
+    <header class="m-choose-plant__intro{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}">
       {% if section.settings.eyebrow != blank %}
         <p class="m-choose-plant__eyebrow">{{ section.settings.eyebrow | escape }}</p>
       {% endif %}
@@ -71,7 +81,7 @@
     </header>
 
     {% if section.settings.mobile_carousel and section.settings.mobile_carousel_hint != blank %}
-      <p class="m-choose-plant__carousel-hint">{{ section.settings.mobile_carousel_hint | escape }}</p>
+      <p class="m-choose-plant__carousel-hint{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}">{{ section.settings.mobile_carousel_hint | escape }}</p>
     {% endif %}
 
     <div
@@ -79,7 +89,7 @@
     >
       {% for block in section.blocks %}
         {% if block.type == 'card' %}
-          <div class="m-choose-plant__card-wrap" {{ block.shopify_attributes }}>
+          <div class="m-choose-plant__card-wrap{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}" {{ block.shopify_attributes }}>
             {% if block.settings.link != blank %}
               <a
                 href="{{ block.settings.link }}"
@@ -171,7 +181,7 @@
     </div>
 
     {% if section.settings.footer_link_label != blank and section.settings.footer_link != blank %}
-      <p class="m-choose-plant__footer">
+      <p class="m-choose-plant__footer{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}">
         <a
           href="{{ section.settings.footer_link }}"
           class="m-choose-plant__footer-link"
@@ -867,6 +877,25 @@
       "default": 8,
       "info": "Extra side padding for the strip (helps align with page width).",
       "visible_if": "{{ section.settings.mobile_carousel }}"
+    },
+    {
+      "type": "header",
+      "content": "Animation"
+    },
+    {
+      "type": "select",
+      "id": "animations",
+      "label": "Scroll reveal",
+      "default": "inherit",
+      "info": "Uses Theme settings → Animations when Inherit. Reveals heading, hint, and each card on scroll.",
+      "options": [
+        { "value": "inherit", "label": "Inherit global setting" },
+        { "value": "none", "label": "None" },
+        { "value": "fade-in", "label": "Fade in" },
+        { "value": "fade-in-up", "label": "Fade in up" },
+        { "value": "fade-in-left", "label": "Fade in left" },
+        { "value": "fade-in-right", "label": "Fade in right" }
+      ]
     },
     {
       "type": "header",
