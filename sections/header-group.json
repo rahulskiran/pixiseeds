@@ -67,7 +67,7 @@
         "show_compare": false,
         "icon_size": "large",
         "header_icons_use_custom_color": true,
-        "header_icons_color": "#d96c3b",
+        "header_icons_color": "#222222",
         "header_icon_badges_use_custom_color": false,
         "header_icon_badge_background": "#1a1a1a",
         "header_icon_badge_text": "#ffffff",

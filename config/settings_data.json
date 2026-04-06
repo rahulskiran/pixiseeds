@@ -228,7 +228,7 @@
       },
       "background-4": {
         "settings": {
-          "primary_accent": "#ae5000",
+          "primary_accent": "#222222",
           "background": "#fff8f5",
           "background_gradient": "",
           "text": "#ae5000",
