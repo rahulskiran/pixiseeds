@@ -979,7 +979,7 @@
         "hotspot_gdVQ3i": {
           "type": "hotspot",
           "settings": {
-            "product": "",
+            "product": "brinjal-seeds",
             "offset_top": 42,
             "offset_left": 18
           }
@@ -1018,6 +1018,7 @@
       "name": "Steal the garden",
       "settings": {
         "color_scheme": "background-4",
+        "image": "shopify://shop_images/Sunflower.jpg",
         "image_aspect_ratio": "16/9",
         "image_radius": 16,
         "heading": "Steal This Garden",
