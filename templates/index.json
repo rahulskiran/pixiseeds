@@ -1112,7 +1112,7 @@
       ],
       "name": "Grown by you",
       "settings": {
-        "color_scheme": "",
+        "color_scheme": "background-4",
         "background_color": "#f7f3ea",
         "heading": "Grown By You",
         "heading_tag": "h2",
