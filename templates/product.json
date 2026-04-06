@@ -282,7 +282,7 @@
         "column_gap_mobile": 16,
         "row_gap_mobile": 24,
         "padding_top": 100,
-        "padding_bottom": 0,
+        "padding_bottom": 100,
         "custom_class": "m-hide-pagination-md",
         "animations": "inherit"
       }
