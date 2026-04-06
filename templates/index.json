@@ -1037,6 +1037,105 @@
         "padding_top": 52,
         "padding_bottom": 52
       }
+    },
+    "grown_by_you_pUNg8P": {
+      "type": "GrownByYou",
+      "blocks": {
+        "photo_RhyYnk": {
+          "type": "photo",
+          "settings": {
+            "image_link": "",
+            "enable_hotspot": false,
+            "product": "",
+            "offset_top": 50,
+            "offset_left": 50
+          }
+        },
+        "photo_kxLF98": {
+          "type": "photo",
+          "settings": {
+            "image_link": "",
+            "enable_hotspot": false,
+            "product": "",
+            "offset_top": 50,
+            "offset_left": 50
+          }
+        },
+        "photo_fXD8tN": {
+          "type": "photo",
+          "settings": {
+            "image_link": "",
+            "enable_hotspot": false,
+            "product": "",
+            "offset_top": 50,
+            "offset_left": 50
+          }
+        },
+        "photo_HTzVLP": {
+          "type": "photo",
+          "settings": {
+            "image_link": "",
+            "enable_hotspot": false,
+            "product": "",
+            "offset_top": 50,
+            "offset_left": 50
+          }
+        },
+        "photo_cCzddn": {
+          "type": "photo",
+          "settings": {
+            "image_link": "",
+            "enable_hotspot": false,
+            "product": "",
+            "offset_top": 50,
+            "offset_left": 50
+          }
+        },
+        "photo_KpqWjy": {
+          "type": "photo",
+          "settings": {
+            "image_link": "",
+            "enable_hotspot": false,
+            "product": "",
+            "offset_top": 50,
+            "offset_left": 50
+          }
+        }
+      },
+      "block_order": [
+        "photo_RhyYnk",
+        "photo_kxLF98",
+        "photo_fXD8tN",
+        "photo_HTzVLP",
+        "photo_cCzddn",
+        "photo_KpqWjy"
+      ],
+      "name": "Grown by you",
+      "settings": {
+        "color_scheme": "",
+        "background_color": "#f7f3ea",
+        "heading": "Grown By You",
+        "heading_tag": "h2",
+        "subheading": "Real gardens, real gardeners. Tag #BloomfieldSeeds to be featured.",
+        "title_size_mobile": 28,
+        "title_size_desktop": 38,
+        "subtitle_size": 14,
+        "header_gap": 18,
+        "gap_mobile": 8,
+        "gap_tablet": 10,
+        "gap_desktop": 14,
+        "row_min_height": 72,
+        "mobile_layout": "compact",
+        "image_radius": 12,
+        "hotspot_style": "light",
+        "hotspot_size": 40,
+        "show_preview": true,
+        "animations": "inherit",
+        "padding_top_mobile": 32,
+        "padding_bottom_mobile": 32,
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
     }
   },
   "order": [
@@ -1048,6 +1147,7 @@
     "product_tabs_GRzT43",
     "choose_plant_9GdbhL",
     "product_tabs_wrHLX8",
-    "steal_garden_trQLtU"
+    "steal_garden_trQLtU",
+    "grown_by_you_pUNg8P"
   ]
 }
