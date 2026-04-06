@@ -1,0 +1,791 @@
+{%- liquid
+  assign pt = section.settings.padding_top
+  assign pb = section.settings.padding_bottom
+
+  assign section_animation = section.settings.animations | default: 'inherit'
+  assign animation_effect = settings.animations
+  if section_animation != 'inherit'
+    assign animation_effect = section_animation
+  endif
+  assign animated = false
+  if animation_effect != 'none'
+    assign animated = true
+  endif
+  if request.design_mode
+    assign animated = false
+  endif
+
+  assign heading_tag = section.settings.heading_tag | default: 'h2'
+  assign mobile_layout = section.settings.mobile_layout | default: 'stack'
+-%}
+
+{% style %}
+  .m-grown--{{ section.id }} {
+    --grown-gap: {{ section.settings.gap_mobile }}px;
+    --grown-radius: {{ section.settings.image_radius }}px;
+    --grown-bg: {{ section.settings.background_color }};
+    --grown-header-gap: {{ section.settings.header_gap }}px;
+    --grown-title-m: {{ section.settings.title_size_mobile }}px;
+    --grown-title-d: {{ section.settings.title_size_desktop }}px;
+    --grown-sub: {{ section.settings.subtitle_size }}px;
+    --grown-pin: {{ section.settings.hotspot_size }}px;
+    --grown-row: {{ section.settings.row_min_height }}px;
+  }
+  @media screen and (min-width: 750px) {
+    .m-grown--{{ section.id }} {
+      --grown-gap: {{ section.settings.gap_tablet }}px;
+    }
+  }
+  @media screen and (min-width: 990px) {
+    .m-grown--{{ section.id }} {
+      --grown-gap: {{ section.settings.gap_desktop }}px;
+    }
+  }
+  #shopify-section-{{ section.id }} .m-grown.m-section--padding {
+    padding-top: {{ section.settings.padding_top_mobile }}px;
+    padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+  }
+  @media screen and (min-width: 750px) {
+    #shopify-section-{{ section.id }} .m-grown.m-section--padding {
+      padding-top: {{ pt }}px;
+      padding-bottom: {{ pb }}px;
+    }
+  }
+{% endstyle %}
+
+<section
+  class="m-section m-grown m-grown--{{ section.id }} m-section--padding m-color-{{ section.settings.color_scheme }} m-gradient"
+  data-section-type="grown-by-you"
+  data-section-id="{{ section.id }}"
+  style="--section-padding-top: {{ pt }}px; --section-padding-bottom: {{ pb }}px;"
+>
+  <div class="m-page-width">
+    <header class="m-grown__header m:text-center{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}">
+      {% if section.settings.heading != blank %}
+        <{{ heading_tag }} class="m-grown__title">{{ section.settings.heading | escape }}</{{ heading_tag }}>
+      {% endif %}
+      {% if section.settings.subheading != blank %}
+        <p class="m-grown__sub">{{ section.settings.subheading | escape }}</p>
+      {% endif %}
+    </header>
+
+    <div
+      class="m-grown__grid m-grown__grid--{{ section.id }} m-grown__grid--mobile-{{ mobile_layout }}{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}"
+    >
+      {% for i in (1..6) %}
+        {% assign idx = i | minus: 1 %}
+        {% if idx >= section.blocks.size %}
+          <div class="m-grown__cell m-grown__cell--empty" style="grid-area: c{{ i }};" aria-hidden="true">
+            <div class="m-grown__cell-inner m-grown__cell-inner--empty">
+              {% if request.design_mode %}
+                {% assign ph = i | modulo: 6 %}
+                {% if ph == 0 %}
+                  {% assign ph = 6 %}
+                {% endif %}
+                <div class="m-grown__placeholder">
+                  {{ 'lifestyle-' | append: ph | placeholder_svg_tag: 'm-placeholder-svg' }}
+                </div>
+              {% endif %}
+            </div>
+          </div>
+          {% continue %}
+        {% endif %}
+        {% assign block = section.blocks[idx] %}
+        {% if block.type != 'photo' %}
+          <div class="m-grown__cell m-grown__cell--empty" style="grid-area: c{{ i }};" {{ block.shopify_attributes }}>
+            <div class="m-grown__cell-inner m-grown__cell-inner--empty"></div>
+          </div>
+          {% continue %}
+        {% endif %}
+
+        {% liquid
+          assign slot_area = 'c' | append: i
+          assign prod = blank
+          if block.settings.product != blank
+            assign prod = all_products[block.settings.product]
+          endif
+          assign top = block.settings.offset_top | default: 50
+          assign left = block.settings.offset_left | default: 50
+          assign y_pop = 'm-grown__pop--top'
+          if top > 50
+            assign y_pop = 'm-grown__pop--bottom'
+          endif
+          assign show_hotspot = false
+          if block.settings.enable_hotspot and prod != blank
+            assign show_hotspot = true
+          endif
+        %}
+
+        <div
+          class="m-grown__cell"
+          style="grid-area: {{ slot_area }};"
+          {{ block.shopify_attributes }}
+        >
+          <div class="m-grown__cell-inner">
+            {% if block.settings.image != blank %}
+              {% assign cell_alt = block.settings.image.alt | default: section.settings.heading | escape %}
+              {% if block.settings.image_link != blank and prod == blank %}
+                <a href="{{ block.settings.image_link }}" class="m-grown__media-link">
+                  {{
+                    block.settings.image
+                    | image_url: width: 1200
+                    | image_tag:
+                      loading: 'lazy',
+                      class: 'm-grown__img',
+                      widths: '200, 400, 600, 800, 1100, 1200',
+                      sizes: '(min-width: 990px) 28vw, (min-width: 750px) 45vw, 100vw',
+                      alt: cell_alt
+                  }}
+                </a>
+              {% else %}
+                {{
+                  block.settings.image
+                  | image_url: width: 1200
+                  | image_tag:
+                    loading: 'lazy',
+                    class: 'm-grown__img',
+                    widths: '200, 400, 600, 800, 1100, 1200',
+                    sizes: '(min-width: 990px) 28vw, (min-width: 750px) 45vw, 100vw',
+                    alt: cell_alt
+                }}
+              {% endif %}
+            {% else %}
+              {% assign ph = i | modulo: 6 %}
+              {% if ph == 0 %}
+                {% assign ph = 6 %}
+              {% endif %}
+              <div class="m-grown__placeholder">
+                {{ 'lifestyle-' | append: ph | placeholder_svg_tag: 'm-placeholder-svg' }}
+              </div>
+            {% endif %}
+
+            {% if show_hotspot %}
+              <a
+                href="{{ prod.url }}"
+                class="m-grown__pin m-grown__pin--{{ section.settings.hotspot_style }}"
+                style="top: {{ top }}%; left: {{ left }}%;"
+                aria-label="{{ prod.title | escape }}"
+              >
+                <span class="m-grown__pin-ring" aria-hidden="true"></span>
+                <span class="m-grown__pin-core" aria-hidden="true"></span>
+                {% if section.settings.show_preview %}
+                  <span class="m-grown__pop {{ y_pop }}" aria-hidden="true">
+                    <span class="m-grown__pop-inner">
+                      {% if prod.featured_image != blank %}
+                        <span class="m-grown__pop-img">
+                          {{
+                            prod.featured_image
+                            | image_url: width: 180
+                            | image_tag:
+                              loading: 'lazy',
+                              widths: '90, 180',
+                              sizes: '90px',
+                              alt: prod.featured_image.alt | default: prod.title | escape
+                          }}
+                        </span>
+                      {% endif %}
+                      <span class="m-grown__pop-title">{{ prod.title | escape }}</span>
+                      <span class="m-grown__pop-price">{{ prod.price | money }}</span>
+                    </span>
+                  </span>
+                {% endif %}
+              </a>
+            {% elsif request.design_mode and block.settings.enable_hotspot and prod == blank %}
+              <div
+                class="m-grown__pin m-grown__pin--draft m-grown__pin--{{ section.settings.hotspot_style }}"
+                style="top: {{ top }}%; left: {{ left }}%;"
+                role="presentation"
+              >
+                <span class="m-grown__pin-ring" aria-hidden="true"></span>
+                <span class="m-grown__pin-core" aria-hidden="true"></span>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% style %}
+  .m-grown__header {
+    margin-bottom: var(--grown-header-gap);
+    max-width: 40rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .m-grown__title {
+    font-family: var(--font-stack-header);
+    font-size: var(--grown-title-m);
+    line-height: 1.2;
+    font-weight: var(--font-weight-header);
+    margin: 0;
+    color: rgb(var(--color-foreground));
+  }
+  @media screen and (min-width: 750px) {
+    .m-grown__title {
+      font-size: var(--grown-title-d);
+    }
+  }
+  .m-grown__sub {
+    font-family: var(--font-stack-body);
+    font-size: var(--grown-sub);
+    line-height: 1.5;
+    margin: 0.65rem 0 0;
+    color: rgba(var(--color-foreground), 0.72);
+  }
+  .m-grown--{{ section.id }} {
+    background-color: var(--grown-bg);
+  }
+  .m-grown__grid--{{ section.id }} {
+    display: grid;
+    gap: var(--grown-gap);
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(5, minmax(var(--grown-row), auto));
+    grid-template-areas:
+      "c2 c2"
+      "c1 c3"
+      "c4 c6"
+      "c4 c6"
+      "c5 c5";
+  }
+  @media screen and (max-width: 989px) {
+    .m-grown__grid--{{ section.id }}.m-grown__grid--mobile-stack {
+      grid-template-columns: 1fr;
+      grid-template-rows: none;
+      grid-template-areas:
+        "c2"
+        "c1"
+        "c3"
+        "c4"
+        "c6"
+        "c5";
+    }
+  }
+  @media screen and (min-width: 990px) {
+    .m-grown__grid--{{ section.id }} {
+      grid-template-columns: 1fr 1.12fr 1fr;
+      grid-template-rows: repeat(4, minmax(var(--grown-row), 1fr));
+      grid-template-areas:
+        "c1 c2 c3"
+        "c4 c2 c6"
+        "c4 c2 c6"
+        "c4 c5 c6";
+    }
+  }
+  .m-grown__cell {
+    min-width: 0;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .m-grown__cell-inner {
+    position: relative;
+    flex: 1 1 auto;
+    width: 100%;
+    min-height: clamp(100px, 22vw, 220px);
+    border-radius: var(--grown-radius);
+    overflow: hidden;
+    background: rgba(var(--color-foreground), 0.04);
+  }
+  @media screen and (min-width: 990px) {
+    .m-grown__cell-inner {
+      min-height: 0;
+      height: 100%;
+    }
+  }
+  .m-grown__media-link {
+    display: block;
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+  .m-grown__media-link .m-grown__img {
+    height: 100%;
+  }
+  .m-grown__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    vertical-align: middle;
+  }
+  .m-grown__placeholder {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .m-grown__placeholder .m-placeholder-svg {
+    width: 100%;
+    height: 100%;
+    opacity: 0.35;
+  }
+  .m-grown__cell-inner--empty {
+    background: rgba(var(--color-foreground), 0.03);
+  }
+  .m-grown__pin {
+    position: absolute;
+    z-index: 2;
+    width: var(--grown-pin);
+    height: var(--grown-pin);
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    transform: translate(-50%, -50%);
+    text-decoration: none;
+    color: inherit;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+  .m-grown__pin--draft .m-grown__pin-core {
+    box-shadow: 0 0 0 2px rgba(255, 150, 60, 0.95), 0 2px 10px rgba(0, 0, 0, 0.2);
+  }
+  .m-grown__pin-ring {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    opacity: 0.4;
+    animation: m-grown-pulse 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+  .m-grown__pin--light .m-grown__pin-ring {
+    background: rgba(255, 255, 255, 0.55);
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
+  }
+  .m-grown__pin--dark .m-grown__pin-ring {
+    background: rgba(0, 0, 0, 0.35);
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.2);
+  }
+  .m-grown__pin-core {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 36%;
+    height: 36%;
+    min-width: 10px;
+    min-height: 10px;
+    max-width: 16px;
+    max-height: 16px;
+    border-radius: 50%;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3), 0 2px 10px rgba(0, 0, 0, 0.2);
+  }
+  .m-grown__pin--light .m-grown__pin-core {
+    background: #fff;
+  }
+  .m-grown__pin--dark .m-grown__pin-core {
+    background: #1a1a1a;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.15), 0 2px 10px rgba(0, 0, 0, 0.35);
+  }
+  @keyframes m-grown-pulse {
+    0%,
+    100% {
+      transform: scale(1);
+      opacity: 0.4;
+    }
+    50% {
+      transform: scale(1.1);
+      opacity: 0.2;
+    }
+  }
+  .m-grown__pop {
+    position: absolute;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 0.22s ease,
+      visibility 0.22s ease,
+      transform 0.22s ease;
+    z-index: 5;
+    width: min(188px, 65vw);
+  }
+  .m-grown__pop-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 8px 10px;
+    background: rgba(var(--bg-white), 1);
+    border-radius: var(--corner-radius, 6px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+    text-align: left;
+    color: rgba(var(--text-black), 1);
+  }
+  .m-grown__pop-img {
+    display: block;
+    border-radius: calc(var(--corner-radius, 6px) - 2px);
+    overflow: hidden;
+    margin-bottom: 2px;
+  }
+  .m-grown__pop-img img {
+    width: 100%;
+    height: auto;
+    display: block;
+    vertical-align: middle;
+  }
+  .m-grown__pop-title {
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.35;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .m-grown__pop-price {
+    font-size: 11px;
+    opacity: 0.85;
+  }
+  .m-grown__pop--top {
+    bottom: calc(50% + (var(--grown-pin) * 0.32));
+    left: 50%;
+    transform: translate(-50%, 6px);
+  }
+  .m-grown__pop--bottom {
+    top: calc(50% + (var(--grown-pin) * 0.32));
+    left: 50%;
+    transform: translate(-50%, -6px);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .m-grown__pin:hover .m-grown__pop,
+    .m-grown__pin:focus-visible .m-grown__pop {
+      opacity: 1;
+      visibility: visible;
+    }
+    .m-grown__pin:hover .m-grown__pop--top,
+    .m-grown__pin:focus-visible .m-grown__pop--top {
+      transform: translate(-50%, 0);
+    }
+    .m-grown__pin:hover .m-grown__pop--bottom,
+    .m-grown__pin:focus-visible .m-grown__pop--bottom {
+      transform: translate(-50%, 0);
+    }
+    .m-grown__pin:hover,
+    .m-grown__pin:focus-visible {
+      z-index: 6;
+    }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Grown by you",
+  "tag": "section",
+  "class": "m-section-grown-by-you",
+  "disabled_on": {
+    "groups": ["header", "footer", "aside"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme_1"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Section background",
+      "default": "#f7f3ea"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Grown By You"
+    },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "label": "Heading level",
+      "default": "h2",
+      "options": [
+        { "value": "h1", "label": "H1" },
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" }
+      ]
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Real gardens, real gardeners. Tag #BloomfieldSeeds to be featured."
+    },
+    {
+      "type": "range",
+      "id": "title_size_mobile",
+      "label": "Heading size (mobile)",
+      "min": 22,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "title_size_desktop",
+      "label": "Heading size (desktop)",
+      "min": 26,
+      "max": 52,
+      "step": 1,
+      "unit": "px",
+      "default": 38
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size",
+      "label": "Subheading size",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "header_gap",
+      "label": "Space below header",
+      "min": 8,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "header",
+      "content": "Grid layout"
+    },
+    {
+      "type": "paragraph",
+      "content": "Six tiles in order: (1) top-left small, (2) center hero, (3) top-right, (4) left tall, (5) center bottom, (6) right tall. Desktop uses a 3-column mosaic; mobile uses a compact grid or a single column."
+    },
+    {
+      "type": "range",
+      "id": "gap_mobile",
+      "label": "Gap (mobile)",
+      "min": 4,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "gap_tablet",
+      "label": "Gap (tablet)",
+      "min": 6,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "gap_desktop",
+      "label": "Gap (desktop)",
+      "min": 8,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "row_min_height",
+      "label": "Minimum row height (compact)",
+      "min": 48,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 72
+    },
+    {
+      "type": "select",
+      "id": "mobile_layout",
+      "label": "Mobile layout",
+      "default": "compact",
+      "options": [
+        { "value": "compact", "label": "Compact 2-column (hero full width)" },
+        { "value": "stack", "label": "Single column stack" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "image_radius",
+      "label": "Image corner radius",
+      "min": 0,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Hotspots"
+    },
+    {
+      "type": "select",
+      "id": "hotspot_style",
+      "label": "Dot style",
+      "default": "light",
+      "options": [
+        { "value": "light", "label": "Light" },
+        { "value": "dark", "label": "Dark" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "hotspot_size",
+      "label": "Dot size (tap target)",
+      "min": 32,
+      "max": 52,
+      "step": 2,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "checkbox",
+      "id": "show_preview",
+      "label": "Show product preview on hover",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Scroll reveal"
+    },
+    {
+      "type": "select",
+      "id": "animations",
+      "label": "Animation",
+      "default": "inherit",
+      "info": "Uses Theme settings → Animations when Inherit.",
+      "options": [
+        { "value": "inherit", "label": "Inherit global setting" },
+        { "value": "none", "label": "None" },
+        { "value": "fade-in", "label": "Fade in" },
+        { "value": "fade-in-up", "label": "Fade in up" },
+        { "value": "fade-in-left", "label": "Fade in left" },
+        { "value": "fade-in-right", "label": "Fade in right" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Padding top (mobile)",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Padding bottom (mobile)",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top (desktop)",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom (desktop)",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 48
+    }
+  ],
+  "max_blocks": 6,
+  "blocks": [
+    {
+      "type": "photo",
+      "name": "Photo",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "url",
+          "id": "image_link",
+          "label": "Image link",
+          "info": "Optional. Not used if a product hotspot is enabled (use the product link instead)."
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_hotspot",
+          "label": "Enable product dot",
+          "default": false
+        },
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        },
+        {
+          "type": "range",
+          "id": "offset_top",
+          "label": "Dot vertical (%)",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "default": 50
+        },
+        {
+          "type": "range",
+          "id": "offset_left",
+          "label": "Dot horizontal (%)",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "default": 50
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Grown by you",
+      "blocks": [
+        { "type": "photo" },
+        { "type": "photo" },
+        { "type": "photo" },
+        { "type": "photo" },
+        { "type": "photo" },
+        { "type": "photo" }
+      ]
+    }
+  ]
+}
+{% endschema %}
