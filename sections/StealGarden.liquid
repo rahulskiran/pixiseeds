@@ -1,0 +1,617 @@
+{%- liquid
+  assign pt = section.settings.padding_top
+  assign pb = section.settings.padding_bottom
+
+  assign section_animation = section.settings.animations | default: 'inherit'
+  assign animation_effect = settings.animations
+  if section_animation != 'inherit'
+    assign animation_effect = section_animation
+  endif
+  assign animated = false
+  if animation_effect != 'none'
+    assign animated = true
+  endif
+
+  assign image_aspect_ratio = section.settings.image_aspect_ratio
+  if section.settings.image != blank and image_aspect_ratio == 'original'
+    assign image_aspect_ratio = section.settings.image.aspect_ratio
+  endif
+  if section.settings.image == blank and image_aspect_ratio == 'original'
+    assign image_aspect_ratio = '16/9'
+  endif
+
+  assign heading_tag = section.settings.heading_tag | default: 'h2'
+-%}
+
+{% style %}
+  .m-stealgarden--{{ section.id }} {
+    --m-sg-radius: {{ section.settings.image_radius }}px;
+    --m-sg-header-gap: {{ section.settings.header_gap }}px;
+    --m-sg-title-size-m: {{ section.settings.title_size_mobile }}px;
+    --m-sg-title-size-d: {{ section.settings.title_size_desktop }}px;
+    --m-sg-sub-size: {{ section.settings.subtitle_size }}px;
+    --m-sg-pin-size: {{ section.settings.hotspot_size }}px;
+  }
+  #shopify-section-{{ section.id }} .m-stealgarden.m-section--padding {
+    padding-top: {{ section.settings.padding_top_mobile }}px;
+    padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+  }
+  @media screen and (min-width: 750px) {
+    #shopify-section-{{ section.id }} .m-stealgarden.m-section--padding {
+      padding-top: {{ pt }}px;
+      padding-bottom: {{ pb }}px;
+    }
+  }
+{% endstyle %}
+
+<section
+  class="m-section m-stealgarden m-stealgarden--{{ section.id }} m-section--padding m-color-{{ section.settings.color_scheme }} m-gradient"
+  data-section-type="steal-garden"
+  data-section-id="{{ section.id }}"
+  style="--section-padding-top: {{ pt }}px; --section-padding-bottom: {{ pb }}px;"
+>
+  <div class="m-page-width">
+    <header class="m-stealgarden__header m:text-center{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}">
+      {% if section.settings.heading != blank %}
+        <{{ heading_tag }} class="m-stealgarden__title">{{ section.settings.heading | escape }}</{{ heading_tag }}>
+      {% endif %}
+      {% if section.settings.subtitle != blank %}
+        <p class="m-stealgarden__subtitle">{{ section.settings.subtitle | escape }}</p>
+      {% endif %}
+    </header>
+
+    <div
+      class="m-stealgarden__stage{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}"
+      {% if animated %}
+        data-cascade
+      {% endif %}
+    >
+      {% if section.settings.image != blank %}
+        {%- liquid
+          assign sg_img = section.settings.image
+          assign image_height = sg_img.width | divided_by: sg_img.aspect_ratio
+          assign sg_alt = sg_img.alt | default: section.settings.heading | default: shop.name | escape
+        -%}
+        <div class="m-stealgarden__media m-image m-image--rounded" style="--aspect-ratio: {{ image_aspect_ratio }};">
+          {{
+            sg_img
+            | image_url: width: 3840
+            | image_tag:
+              loading: 'lazy',
+              class: 'm-stealgarden__img',
+              width: sg_img.width,
+              height: image_height,
+              sizes: '(min-width: 1200px) min(1200px, 90vw), 100vw',
+              widths: '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840',
+              alt: sg_alt
+          }}
+        </div>
+      {% else %}
+        <div class="m-stealgarden__media m-stealgarden__media--placeholder m-image m-image--rounded m-image--placeholder" style="--aspect-ratio: {{ image_aspect_ratio }};">
+          {{ 'lifestyle-1' | placeholder_svg_tag: 'm-placeholder-svg m:w-full m:h-full' }}
+        </div>
+      {% endif %}
+
+      {% for block in section.blocks %}
+        {% if block.type == 'hotspot' and block.settings.product != blank %}
+          {% assign prod = all_products[block.settings.product] %}
+          {% if prod != blank %}
+            {% liquid
+              assign top = block.settings.offset_top
+              assign left = block.settings.offset_left
+              assign y_pos = 'm-stealgarden__pop--top'
+              if top > 50
+                assign y_pos = 'm-stealgarden__pop--bottom'
+              endif
+            %}
+            <a
+              href="{{ prod.url }}"
+              class="m-stealgarden__pin m-stealgarden__pin--{{ section.settings.hotspot_style }}"
+              style="top: {{ top }}%; left: {{ left }}%;"
+              aria-label="{{ prod.title | escape }}"
+              {{ block.shopify_attributes }}
+            >
+              <span class="m-stealgarden__pin-ring" aria-hidden="true"></span>
+              <span class="m-stealgarden__pin-core" aria-hidden="true"></span>
+              {% if section.settings.show_preview %}
+                <span class="m-stealgarden__pop {{ y_pos }}" aria-hidden="true">
+                  <span class="m-stealgarden__pop-inner">
+                    {% if prod.featured_image != blank %}
+                      <span class="m-stealgarden__pop-img">
+                        {{
+                          prod.featured_image
+                          | image_url: width: 200
+                          | image_tag:
+                            loading: 'lazy',
+                            widths: '100, 200',
+                            sizes: '100px',
+                            alt: prod.featured_image.alt | default: prod.title | escape
+                        }}
+                      </span>
+                    {% endif %}
+                    <span class="m-stealgarden__pop-title">{{ prod.title | escape }}</span>
+                    <span class="m-stealgarden__pop-price">{{ prod.price | money }}</span>
+                  </span>
+                </span>
+              {% endif %}
+            </a>
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% style %}
+  .m-stealgarden__header {
+    margin-bottom: var(--m-sg-header-gap);
+    max-width: 48rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .m-stealgarden__title {
+    font-family: var(--font-stack-header);
+    font-size: var(--m-sg-title-size-m);
+    line-height: 1.2;
+    font-weight: var(--font-weight-header);
+    margin: 0;
+    color: rgb(var(--color-foreground));
+  }
+  @media screen and (min-width: 750px) {
+    .m-stealgarden__title {
+      font-size: var(--m-sg-title-size-d);
+    }
+  }
+  .m-stealgarden__subtitle {
+    font-family: var(--font-stack-body);
+    font-size: var(--m-sg-sub-size);
+    line-height: 1.5;
+    margin: 0.75rem 0 0;
+    color: rgba(var(--color-foreground), 0.75);
+  }
+  .m-stealgarden__stage {
+    position: relative;
+    border-radius: var(--m-sg-radius);
+    overflow: hidden;
+  }
+  .m-stealgarden__media {
+    border-radius: var(--m-sg-radius);
+  }
+  .m-stealgarden__media.m-image--rounded {
+    --image-corner-radius: var(--m-sg-radius);
+  }
+  .m-stealgarden__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    vertical-align: middle;
+    display: block;
+  }
+  .m-stealgarden__pin {
+    position: absolute;
+    z-index: 2;
+    width: var(--m-sg-pin-size);
+    height: var(--m-sg-pin-size);
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    transform: translate(-50%, -50%);
+    text-decoration: none;
+    color: inherit;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+  .m-stealgarden__pin:focus-visible {
+    outline: 2px solid rgb(var(--color-foreground));
+    outline-offset: 4px;
+    border-radius: 50%;
+  }
+  .m-stealgarden__pin-ring {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    opacity: 0.45;
+    animation: m-stealgarden-pulse 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+  .m-stealgarden__pin--light .m-stealgarden__pin-ring {
+    background: rgba(255, 255, 255, 0.55);
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.35);
+  }
+  .m-stealgarden__pin--dark .m-stealgarden__pin-ring {
+    background: rgba(0, 0, 0, 0.35);
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.2);
+  }
+  .m-stealgarden__pin-core {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 38%;
+    height: 38%;
+    min-width: 10px;
+    min-height: 10px;
+    max-width: 18px;
+    max-height: 18px;
+    border-radius: 50%;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.35), 0 2px 12px rgba(0, 0, 0, 0.25);
+  }
+  .m-stealgarden__pin--light .m-stealgarden__pin-core {
+    background: #fff;
+  }
+  .m-stealgarden__pin--dark .m-stealgarden__pin-core {
+    background: #1a1a1a;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2), 0 2px 12px rgba(0, 0, 0, 0.4);
+  }
+  @keyframes m-stealgarden-pulse {
+    0%,
+    100% {
+      transform: scale(1);
+      opacity: 0.45;
+    }
+    50% {
+      transform: scale(1.12);
+      opacity: 0.25;
+    }
+  }
+  .m-stealgarden__pop {
+    position: absolute;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 0.25s ease,
+      visibility 0.25s ease,
+      transform 0.25s ease;
+    z-index: 5;
+    width: min(200px, 70vw);
+  }
+  .m-stealgarden__pop-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 10px 12px;
+    background: rgba(var(--bg-white), 1);
+    color: rgba(var(--text-black), 1);
+    border-radius: var(--corner-radius, 6px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    text-align: left;
+  }
+  .m-stealgarden__pop-img {
+    display: block;
+    border-radius: calc(var(--corner-radius, 6px) - 2px);
+    overflow: hidden;
+    margin-bottom: 4px;
+  }
+  .m-stealgarden__pop-img img {
+    width: 100%;
+    height: auto;
+    vertical-align: middle;
+    display: block;
+  }
+  .m-stealgarden__pop-title {
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.35;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .m-stealgarden__pop-price {
+    font-size: 12px;
+    opacity: 0.85;
+  }
+  .m-stealgarden__pop--top {
+    bottom: calc(50% + (var(--m-sg-pin-size) * 0.35));
+    left: 50%;
+    transform: translate(-50%, 6px);
+  }
+  .m-stealgarden__pop--bottom {
+    top: calc(50% + (var(--m-sg-pin-size) * 0.35));
+    left: 50%;
+    transform: translate(-50%, -6px);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .m-stealgarden__pin:hover .m-stealgarden__pop,
+    .m-stealgarden__pin:focus-visible .m-stealgarden__pop {
+      opacity: 1;
+      visibility: visible;
+    }
+    .m-stealgarden__pin:hover .m-stealgarden__pop--top,
+    .m-stealgarden__pin:focus-visible .m-stealgarden__pop--top {
+      transform: translate(-50%, 0);
+    }
+    .m-stealgarden__pin:hover .m-stealgarden__pop--bottom,
+    .m-stealgarden__pin:focus-visible .m-stealgarden__pop--bottom {
+      transform: translate(-50%, 0);
+    }
+  }
+  .m-stealgarden__pin:hover,
+  .m-stealgarden__pin:focus {
+    z-index: 8;
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Steal the garden",
+  "tag": "section",
+  "class": "m-section-steal-garden",
+  "disabled_on": {
+    "groups": ["header", "footer", "aside"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme_1"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Scene image"
+    },
+    {
+      "type": "select",
+      "id": "image_aspect_ratio",
+      "label": "Image shape",
+      "default": "16/9",
+      "options": [
+        { "value": "original", "label": "Use image (when image is set)" },
+        { "value": "16/9", "label": "Wide (16:9)" },
+        { "value": "4/3", "label": "4:3" },
+        { "value": "3/4", "label": "3:4 portrait" },
+        { "value": "1/1", "label": "Square" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "image_radius",
+      "label": "Image corner radius",
+      "min": 0,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Steal This Garden"
+    },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "label": "Heading level",
+      "default": "h2",
+      "options": [
+        { "value": "h1", "label": "H1" },
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" }
+      ]
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Click the dots to shop every plant in this scene"
+    },
+    {
+      "type": "range",
+      "id": "title_size_mobile",
+      "label": "Heading size (mobile)",
+      "min": 20,
+      "max": 44,
+      "step": 1,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "title_size_desktop",
+      "label": "Heading size (desktop)",
+      "min": 24,
+      "max": 56,
+      "step": 1,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size",
+      "label": "Subtitle size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "header_gap",
+      "label": "Space below header",
+      "min": 8,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Hotspots"
+    },
+    {
+      "type": "select",
+      "id": "hotspot_style",
+      "label": "Dot style",
+      "default": "light",
+      "options": [
+        { "value": "light", "label": "Light (white dot)" },
+        { "value": "dark", "label": "Dark" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "hotspot_size",
+      "label": "Dot tap target",
+      "min": 36,
+      "max": 56,
+      "step": 2,
+      "unit": "px",
+      "default": 44
+    },
+    {
+      "type": "checkbox",
+      "id": "show_preview",
+      "label": "Show product preview on hover (desktop)",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Scroll reveal"
+    },
+    {
+      "type": "select",
+      "id": "animations",
+      "label": "Animation",
+      "default": "inherit",
+      "info": "Uses Theme settings → Animations when Inherit.",
+      "options": [
+        { "value": "inherit", "label": "Inherit global setting" },
+        { "value": "none", "label": "None" },
+        { "value": "fade-in", "label": "Fade in" },
+        { "value": "fade-in-up", "label": "Fade in up" },
+        { "value": "fade-in-left", "label": "Fade in left" },
+        { "value": "fade-in-right", "label": "Fade in right" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Padding top (mobile)",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Padding bottom (mobile)",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top (desktop)",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 52
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom (desktop)",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 52
+    }
+  ],
+  "blocks": [
+    {
+      "type": "hotspot",
+      "name": "Product dot",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        },
+        {
+          "type": "paragraph",
+          "content": "Position is percent of the image: 0 = top/left edge, 100 = bottom/right. Adjust while previewing the scene."
+        },
+        {
+          "type": "range",
+          "id": "offset_top",
+          "label": "Vertical position",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "default": 50
+        },
+        {
+          "type": "range",
+          "id": "offset_left",
+          "label": "Horizontal position",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "default": 50
+        }
+      ]
+    }
+  ],
+  "max_blocks": 20,
+  "presets": [
+    {
+      "name": "Steal the garden",
+      "blocks": [
+        {
+          "type": "hotspot",
+          "settings": {
+            "offset_top": 42,
+            "offset_left": 18
+          }
+        },
+        {
+          "type": "hotspot",
+          "settings": {
+            "offset_top": 38,
+            "offset_left": 45
+          }
+        },
+        {
+          "type": "hotspot",
+          "settings": {
+            "offset_top": 55,
+            "offset_left": 72
+          }
+        },
+        {
+          "type": "hotspot",
+          "settings": {
+            "offset_top": 48,
+            "offset_left": 88
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
