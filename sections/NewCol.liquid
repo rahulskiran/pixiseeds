@@ -21,6 +21,10 @@
   if mobile_grid_cols > 2
     assign mobile_grid_cols = 2
   endif
+
+  assign image_overlay_opacity_decimal = section.settings.image_overlay_opacity | divided_by: 100.0
+  assign image_overlay_hex = section.settings.image_overlay_color | default: '#000000'
+  assign image_overlay_bottom = image_overlay_hex | color_modify: 'alpha', image_overlay_opacity_decimal
 -%}
 
 {% style %}
@@ -42,7 +46,8 @@
     --m-newcol-card-radius: {{ section.settings.card_border_radius }}px;
     --m-newcol-card-border: {{ section.settings.card_border_color }};
     --m-newcol-aspect-ratio: {{ section.settings.card_aspect_ratio }};
-    --m-newcol-overlay: {{ section.settings.image_overlay_opacity | divided_by: 100.0 }};
+    --m-newcol-overlay-bottom: {{ image_overlay_bottom }};
+    --m-newcol-overlay-fade-stop: {{ section.settings.image_overlay_gradient_height }}%;
     --m-newcol-heading-color: {{ section.settings.heading_color }};
     --m-newcol-label-color: {{ section.settings.label_color }};
     background-color: {{ section.settings.section_background }};
@@ -185,7 +190,11 @@
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(to top, rgba(0,0,0,var(--m-newcol-overlay)) 0%, rgba(0,0,0,0) 60%);
+    background: linear-gradient(
+      to top,
+      var(--m-newcol-overlay-bottom) 0%,
+      transparent var(--m-newcol-overlay-fade-stop, 60%)
+    );
     pointer-events: none;
   }
   .m-newcol--{{ section.id }} .m-newcol__image-img {
@@ -473,15 +482,37 @@
       "info": "0 for square corners."
     },
     {
+      "type": "header",
+      "content": "Card image gradient"
+    },
+    {
+      "type": "color",
+      "id": "image_overlay_color",
+      "label": "Gradient color",
+      "default": "#000000",
+      "info": "Tint at the bottom of the card photo (often black or dark brown) so the label reads clearly."
+    },
+    {
       "type": "range",
       "id": "image_overlay_opacity",
       "min": 0,
       "max": 100,
       "step": 5,
       "unit": "%",
-      "label": "Image overlay opacity",
+      "label": "Gradient strength at bottom",
       "default": 30,
-      "info": "Adds a dark gradient to the bottom of the image so white text stays readable."
+      "info": "0 removes the overlay. Higher values make the bottom of the image darker."
+    },
+    {
+      "type": "range",
+      "id": "image_overlay_gradient_height",
+      "min": 25,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Gradient height",
+      "default": 60,
+      "info": "How far up the photo the fade reaches. 100% covers the full image."
     },
     {
       "type": "header",

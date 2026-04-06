@@ -41,6 +41,17 @@
     }
   {% endstyle %}
 {%- endif -%}
+{%- if section.settings.header_icon_badges_use_custom_color -%}
+  {% style %}
+    #shopify-section-{{ section.id }} .m-header__top-wrapper .m-header__icons .m-cart-count,
+    #shopify-section-{{ section.id }} .m-header__top-wrapper .m-header__icons .m-wishlist-count,
+    #shopify-section-{{ section.id }} .m-header__top-wrapper .m-header__icons .m-compare-count {
+      background-color: {{ section.settings.header_icon_badge_background }} !important;
+      color: {{ section.settings.header_icon_badge_text }} !important;
+      -webkit-text-fill-color: {{ section.settings.header_icon_badge_text }} !important;
+    }
+  {% endstyle %}
+{%- endif -%}
 <{% if section.settings.sticky_header_type != 'none' %}sticky-header data-sticky-type="{{ section.settings.sticky_header_type }}"{% else %}div{% endif %} 
   class="m-header m:block {% if section.settings.separator_line == 'bottom' or section.settings.separator_line == 'middle-bottom' %} m-header--show-separator-line{% endif %}"
   {% if section.settings.mega_menu_heading != blank and section.settings.open_default %}
@@ -481,6 +492,27 @@
       "id": "header_icons_color",
       "label": "Header icons color",
       "default": "#1a1a1a"
+    },
+    {
+      "type": "checkbox",
+      "id": "header_icon_badges_use_custom_color",
+      "label": "Use custom colors for quantity badges",
+      "default": false,
+      "info": "Applies to the small count circles on the cart, wishlist, and compare icons in the header."
+    },
+    {
+      "type": "color",
+      "id": "header_icon_badge_background",
+      "label": "Badge background",
+      "default": "#1a1a1a",
+      "visible_if": "{{ section.settings.header_icon_badges_use_custom_color }}"
+    },
+    {
+      "type": "color",
+      "id": "header_icon_badge_text",
+      "label": "Badge number color",
+      "default": "#ffffff",
+      "visible_if": "{{ section.settings.header_icon_badges_use_custom_color }}"
     },
     {
       "type": "html",
