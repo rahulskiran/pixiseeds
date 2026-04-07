@@ -1136,6 +1136,79 @@
         "padding_top": 48,
         "padding_bottom": 48
       }
+    },
+    "premium_faq_BWjHfa": {
+      "type": "PremiumFaq",
+      "blocks": {
+        "item_pAcJqB": {
+          "type": "item",
+          "settings": {
+            "question": "How do I choose the right seeds for my climate?",
+            "answer": "<p>Every product page lists ideal growing zones and seasons. When in doubt, start with varieties labeled for your region or contact us for a quick recommendation.</p>",
+            "default_open": false
+          }
+        },
+        "item_YkB4DL": {
+          "type": "item",
+          "settings": {
+            "question": "Do you ship internationally?",
+            "answer": "<p>We currently ship within the regions listed at checkout. If your country is not available, join our list—we expand routes regularly.</p>",
+            "default_open": false
+          }
+        },
+        "item_c6FeLd": {
+          "type": "item",
+          "settings": {
+            "question": "What is your return policy?",
+            "answer": "<p>Unopened items in original packaging may be returned within 30 days. Seed packets are final sale once opened for quality assurance.</p>",
+            "default_open": false
+          }
+        },
+        "item_xFrTrF": {
+          "type": "item",
+          "settings": {
+            "question": "How should I store seeds?",
+            "answer": "<p>Keep them cool, dry, and away from light. A sealed jar in the refrigerator extends viability for many seasons.</p>",
+            "default_open": false
+          }
+        }
+      },
+      "block_order": [
+        "item_pAcJqB",
+        "item_YkB4DL",
+        "item_c6FeLd",
+        "item_xFrTrF"
+      ],
+      "name": "Premium FAQ",
+      "settings": {
+        "color_scheme": "",
+        "background_color": "#ffffff",
+        "enable_gradient": false,
+        "gradient_color_1": "#faf8f4",
+        "gradient_color_2": "#ebe6dc",
+        "eyebrow": "Answers",
+        "heading": "Questions we hear often",
+        "heading_tag": "h2",
+        "intro": "",
+        "cta_label": "",
+        "cta_link": "",
+        "show_numbers": true,
+        "title_size_mobile": 32,
+        "title_size_desktop": 42,
+        "intro_size": 16,
+        "question_size": 17,
+        "answer_size": 15,
+        "card_radius": 14,
+        "card_padding_x": 22,
+        "card_padding_y": 18,
+        "item_gap": 12,
+        "content_max_width": 640,
+        "animations": "inherit",
+        "padding_top_mobile": 40,
+        "padding_bottom_mobile": 40,
+        "padding_top": 64,
+        "padding_bottom": 64
+      }
     }
   },
   "order": [
@@ -1148,6 +1221,7 @@
     "choose_plant_9GdbhL",
     "product_tabs_wrHLX8",
     "steal_garden_trQLtU",
-    "grown_by_you_pUNg8P"
+    "grown_by_you_pUNg8P",
+    "premium_faq_BWjHfa"
   ]
 }
