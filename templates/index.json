@@ -1186,7 +1186,7 @@
         "enable_gradient": false,
         "gradient_color_1": "#faf8f4",
         "gradient_color_2": "#ebe6dc",
-        "tab_background": "#eeeeee",
+        "tab_background": "#ffffff",
         "tab_border_color": "#d96c3b",
         "tab_border_hover_color": "#d4cfc4",
         "tab_hover_background": "#faf9f7",
