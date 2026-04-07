@@ -9,7 +9,6 @@
 {% style %}
   #shopify-section-{{ section.id }} .m-growtips {
     --grow-bg: {{ section.settings.soil_background }};
-    --grow-torn: {{ section.settings.torn_paper_color }};
     --grow-accent: {{ section.settings.accent_script_color }};
     --grow-title: {{ section.settings.main_title_color }};
     --grow-tab-active-bg: {{ section.settings.tab_active_background }};
@@ -64,23 +63,6 @@
   data-section-id="{{ section.id }}"
   data-section-type="growing-tips-guides"
 >
-  <div class="m-growtips__torn m-growtips__torn--top" aria-hidden="true">
-    <svg
-      class="m-growtips__torn-svg"
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 1440 56"
-      preserveAspectRatio="none"
-      focusable="false"
-    >
-      <path
-        fill="{{ section.settings.torn_paper_color }}"
-        d="M0 0h1440v8c-32 3-58 12-96 10s-72-14-120-12-104 18-160 16-112-16-176-14-136 20-200 18-128-18-192-16-120 16-176 14S388 36 288 32 152 10 72 18C40 21 16 26 0 24V0z"
-      />
-    </svg>
-  </div>
-
-  <div class="m-growtips__texture" aria-hidden="true"></div>
-
   <div class="m-page-width m-growtips__inner">
     <header class="m-growtips__head">
       {% if section.settings.eyebrow != blank %}
@@ -219,23 +201,6 @@
       {% endif %}
     {%- endif -%}
   </div>
-
-  <div class="m-growtips__torn m-growtips__torn--bottom" aria-hidden="true">
-    <svg
-      class="m-growtips__torn-svg"
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 1440 56"
-      preserveAspectRatio="none"
-      focusable="false"
-    >
-      <g transform="translate(0,56) scale(1,-1)">
-        <path
-          fill="{{ section.settings.torn_paper_color }}"
-          d="M0 0h1440v8c-32 3-58 12-96 10s-72-14-120-12-104 18-160 16-112-16-176-14-136 20-200 18-128-18-192-16-120 16-176 14S388 36 288 32 152 10 72 18C40 21 16 26 0 24V0z"
-        />
-      </g>
-    </svg>
-  </div>
 </section>
 
 {% style %}
@@ -243,53 +208,6 @@
     position: relative;
     background: var(--grow-bg);
     color: var(--grow-title);
-    overflow: visible;
-  }
-  .m-growtips__texture {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background-image: radial-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px);
-    background-size: 5px 5px;
-    opacity: 0.9;
-  }
-  .m-growtips__torn {
-    position: relative;
-    z-index: 2;
-    width: 100%;
-    line-height: 0;
-    background-color: var(--grow-torn);
-    isolation: isolate;
-  }
-  .m-growtips__torn::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: 1;
-    opacity: 0.42;
-    background-image: radial-gradient(rgba(88, 72, 58, 0.2) 0.65px, transparent 1.15px),
-      radial-gradient(rgba(255, 255, 255, 0.35) 0.35px, transparent 1px);
-    background-size: 4px 4px, 2.5px 2.5px;
-    background-position: 0 0, 1.5px 2px;
-    mix-blend-mode: multiply;
-  }
-  .m-growtips__torn--top {
-    margin-top: -28px;
-    padding-top: 28px;
-    margin-bottom: -1px;
-  }
-  .m-growtips__torn--bottom {
-    margin-top: -1px;
-    margin-bottom: -28px;
-    padding-bottom: 28px;
-  }
-  .m-growtips__torn-svg {
-    display: block;
-    width: 100%;
-    height: clamp(36px, 5vw, 56px);
-    position: relative;
-    z-index: 2;
   }
   .m-growtips__inner {
     position: relative;
@@ -297,13 +215,13 @@
   }
   .m-growtips__head {
     text-align: center;
-    padding: 0 1rem 1.75rem;
+    padding: 0 1rem 1rem;
     max-width: 52rem;
     margin: 0 auto;
   }
   @media screen and (min-width: 750px) {
     .m-growtips__head {
-      padding-bottom: 2.25rem;
+      padding-bottom: 1.25rem;
     }
   }
   .m-growtips__eyebrow {
@@ -566,13 +484,6 @@
     },
     {
       "type": "color",
-      "id": "torn_paper_color",
-      "label": "Paper-cut edge color (top & bottom)",
-      "default": "#fdfaf1",
-      "info": "Deckle transitions to sections above and below. Uses a light paper texture on the edge."
-    },
-    {
-      "type": "color",
       "id": "accent_script_color",
       "label": "Eyebrow / script accent",
       "default": "#e5c05b"
@@ -742,7 +653,7 @@
       "max": 120,
       "step": 4,
       "unit": "px",
-      "default": 36
+      "default": 20
     },
     {
       "type": "range",
@@ -752,7 +663,7 @@
       "max": 120,
       "step": 4,
       "unit": "px",
-      "default": 48
+      "default": 28
     },
     {
       "type": "range",
@@ -762,7 +673,7 @@
       "max": 120,
       "step": 4,
       "unit": "px",
-      "default": 48
+      "default": 28
     },
     {
       "type": "range",
@@ -772,7 +683,7 @@
       "max": 120,
       "step": 4,
       "unit": "px",
-      "default": 64
+      "default": 36
     }
   ],
   "blocks": [
