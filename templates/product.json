@@ -206,7 +206,7 @@
         "sticky_atc_wishtlist": false,
         "sticky_atc_compare": false,
         "padding_top": 16,
-        "padding_bottom": 0
+        "padding_bottom": 82
       }
     },
     "product-details-tabs": {
@@ -231,6 +231,7 @@
         "description",
         "tab"
       ],
+      "disabled": true,
       "custom_css": [],
       "settings": {
         "color_scheme": "",
@@ -253,70 +254,6 @@
         "padding_top": 0,
         "padding_bottom": 0,
         "custom_class": ""
-      }
-    },
-    "product-recommendations": {
-      "type": "product-recommendations",
-      "settings": {
-        "color_scheme": "",
-        "boxed_layout": false,
-        "grid_bordered": false,
-        "boxed_color_scheme": "",
-        "heading": "Recommended for you",
-        "heading_size": "h3",
-        "header_divider": true,
-        "header_alignment": "left",
-        "pcard_layout": "",
-        "pcard_image_ratio": "",
-        "show_vendor": true,
-        "product_to_show": 8,
-        "items_per_row": 5,
-        "column_gap": 30,
-        "row_gap": 30,
-        "enable_slider": true,
-        "show_pagination": true,
-        "show_navigation": true,
-        "navigation_position": "outside",
-        "mobile_layout": "inherit",
-        "enable_swipe_mobile": true,
-        "column_gap_mobile": 16,
-        "row_gap_mobile": 24,
-        "padding_top": 100,
-        "padding_bottom": 100,
-        "custom_class": "m-hide-pagination-md",
-        "animations": "inherit"
-      }
-    },
-    "recent-viewed-products": {
-      "type": "recent-viewed-products",
-      "settings": {
-        "color_scheme": "",
-        "boxed_layout": false,
-        "grid_bordered": false,
-        "boxed_color_scheme": "",
-        "heading": "Recently viewed",
-        "heading_size": "h3",
-        "header_divider": true,
-        "header_alignment": "left",
-        "pcard_layout": "",
-        "pcard_image_ratio": "",
-        "show_vendor": true,
-        "product_to_show": 6,
-        "items_per_row": 5,
-        "column_gap": 30,
-        "row_gap": 30,
-        "enable_slider": true,
-        "show_pagination": true,
-        "show_navigation": true,
-        "navigation_position": "outside",
-        "mobile_layout": "inherit",
-        "enable_swipe_mobile": true,
-        "column_gap_mobile": 10,
-        "row_gap_mobile": 10,
-        "padding_top": 100,
-        "padding_bottom": 0,
-        "custom_class": "m-hide-pagination-md",
-        "animations": "inherit"
       }
     },
     "growin_tips_dLehaM": {
@@ -393,11 +330,10 @@
       ],
       "name": "Growing tips & guides",
       "settings": {
-        "soil_background": "#3b3631",
-        "torn_paper_color": "#fdfaf1",
-        "accent_script_color": "#e5c05b",
+        "soil_background": "#382219",
+        "accent_script_color": "#d96c3b",
         "main_title_color": "#ffffff",
-        "tab_active_background": "#2d4a2d",
+        "tab_active_background": "#d96c3b",
         "tab_active_text": "#ffffff",
         "tab_inactive_desktop": "#3d3d3d",
         "tab_inactive_mobile": "#ffffff",
@@ -421,6 +357,70 @@
         "padding_top": 48,
         "padding_bottom": 64
       }
+    },
+    "product-recommendations": {
+      "type": "product-recommendations",
+      "settings": {
+        "color_scheme": "scheme-ba41f7c8-a303-44e7-a1d3-a9c14a08a8da",
+        "boxed_layout": false,
+        "grid_bordered": false,
+        "boxed_color_scheme": "scheme-ba41f7c8-a303-44e7-a1d3-a9c14a08a8da",
+        "heading": "Recommended for you",
+        "heading_size": "h3",
+        "header_divider": true,
+        "header_alignment": "left",
+        "pcard_layout": "",
+        "pcard_image_ratio": "",
+        "show_vendor": true,
+        "product_to_show": 8,
+        "items_per_row": 5,
+        "column_gap": 30,
+        "row_gap": 30,
+        "enable_slider": true,
+        "show_pagination": true,
+        "show_navigation": true,
+        "navigation_position": "outside",
+        "mobile_layout": "inherit",
+        "enable_swipe_mobile": true,
+        "column_gap_mobile": 16,
+        "row_gap_mobile": 24,
+        "padding_top": 70,
+        "padding_bottom": 78,
+        "custom_class": "m-hide-pagination-md",
+        "animations": "inherit"
+      }
+    },
+    "recent-viewed-products": {
+      "type": "recent-viewed-products",
+      "settings": {
+        "color_scheme": "",
+        "boxed_layout": false,
+        "grid_bordered": false,
+        "boxed_color_scheme": "",
+        "heading": "Recently viewed",
+        "heading_size": "h3",
+        "header_divider": true,
+        "header_alignment": "left",
+        "pcard_layout": "",
+        "pcard_image_ratio": "",
+        "show_vendor": true,
+        "product_to_show": 6,
+        "items_per_row": 5,
+        "column_gap": 30,
+        "row_gap": 30,
+        "enable_slider": true,
+        "show_pagination": true,
+        "show_navigation": true,
+        "navigation_position": "outside",
+        "mobile_layout": "inherit",
+        "enable_swipe_mobile": true,
+        "column_gap_mobile": 10,
+        "row_gap_mobile": 10,
+        "padding_top": 100,
+        "padding_bottom": 0,
+        "custom_class": "m-hide-pagination-md",
+        "animations": "inherit"
+      }
     }
   },
   "order": [
@@ -428,8 +428,8 @@
     "main",
     "product-details-tabs",
     "1715169300e2d60786",
+    "growin_tips_dLehaM",
     "product-recommendations",
-    "recent-viewed-products",
-    "growin_tips_dLehaM"
+    "recent-viewed-products"
   ]
 }
