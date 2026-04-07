@@ -767,6 +767,7 @@
         "card_Aqg4qN": {
           "type": "card",
           "settings": {
+            "image": "shopify://shop_images/Snake_Plants_in_202604071336.webp",
             "icon_preset": "sun",
             "title": "Low light",
             "text": "Thrives in shady spots",
@@ -777,6 +778,7 @@
         "card_triUzh": {
           "type": "card",
           "settings": {
+            "image": "shopify://shop_images/Plant_and_cat_202604071336.webp",
             "icon_preset": "paw",
             "title": "Pet-friendly",
             "text": "Safe for furry friends",
@@ -787,6 +789,7 @@
         "card_mtdXtn": {
           "type": "card",
           "settings": {
+            "image": "shopify://shop_images/Monstera_leaf_with_202604071336.webp",
             "icon_preset": "sparkle",
             "title": "Statement plants",
             "text": "Bold and dramatic",
@@ -797,6 +800,7 @@
         "card_zPcikh": {
           "type": "card",
           "settings": {
+            "image": "shopify://shop_images/Succulents_in_concrete_202604071336.webp",
             "icon_preset": "leaf",
             "title": "Easy care",
             "text": "Hard to kill",
