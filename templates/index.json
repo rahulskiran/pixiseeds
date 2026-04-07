@@ -1217,7 +1217,7 @@
         "card_padding_x": 22,
         "card_padding_y": 18,
         "item_gap": 12,
-        "animations": "inherit",
+        "animations": "fade-in",
         "padding_top_mobile": 40,
         "padding_bottom_mobile": 40,
         "padding_top": 64,
