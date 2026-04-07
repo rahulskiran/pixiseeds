@@ -1,0 +1,519 @@
+{%- liquid
+  assign pt = section.settings.padding_top
+  assign pb = section.settings.padding_bottom
+  assign heading_tag = section.settings.heading_tag | default: 'h2'
+  assign step_blocks = section.blocks | where: 'type', 'step'
+  assign step_count = step_blocks.size
+  if step_count < 1
+    assign step_count = 1
+  endif
+-%}
+
+{% style %}
+  #shopify-section-{{ section.id }} .m-plantsteps {
+    --pcs-bg: {{ section.settings.background_color }};
+    --pcs-card: {{ section.settings.card_background }};
+    --pcs-border: {{ section.settings.card_border_color }};
+    --pcs-radius: {{ section.settings.card_radius }}px;
+    --pcs-accent: {{ section.settings.accent_color }};
+    --pcs-accent-text: {{ section.settings.accent_text_color }};
+    --pcs-title: {{ section.settings.heading_color }};
+    --pcs-body: {{ section.settings.text_color }};
+    --pcs-sub: {{ section.settings.subheading_color }};
+    --pcs-gap: {{ section.settings.grid_gap }}px;
+    --pcs-img-radius: {{ section.settings.image_radius }}px;
+  }
+  #shopify-section-{{ section.id }} .m-plantsteps.m-plantsteps--pad {
+    padding-top: {{ section.settings.padding_top_mobile }}px;
+    padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+  }
+  @media screen and (min-width: 750px) {
+    #shopify-section-{{ section.id }} .m-plantsteps.m-plantsteps--pad {
+      padding-top: {{ pt }}px;
+      padding-bottom: {{ pb }}px;
+    }
+  }
+{% endstyle %}
+
+<section
+  class="m-section m-plantsteps m-plantsteps--pad m-plantsteps--layout-{{ section.settings.layout }} m-plantsteps--count-{{ step_count }}"
+  data-section-id="{{ section.id }}"
+  data-section-type="plant-care-steps"
+>
+  <div class="m-page-width">
+    <header class="m-plantsteps__header m:text-{{ section.settings.header_alignment }}">
+      {% if section.settings.eyebrow != blank %}
+        <p class="m-plantsteps__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      {% endif %}
+      {% if section.settings.title != blank %}
+        <{{ heading_tag }} class="m-plantsteps__title">{{ section.settings.title | escape }}</{{ heading_tag }}>
+      {% endif %}
+      {% if section.settings.intro != blank %}
+        <div class="m-plantsteps__intro rte">{{ section.settings.intro }}</div>
+      {% endif %}
+    </header>
+
+    {% if step_blocks.size > 0 %}
+      <ol class="m-plantsteps__steps">
+        {% for block in step_blocks %}
+          <li class="m-plantsteps__step" {{ block.shopify_attributes }}>
+            <div class="m-plantsteps__card">
+              <div class="m-plantsteps__step-head">
+                <span class="m-plantsteps__num" aria-hidden="true">{{ forloop.index }}</span>
+                {% if block.settings.title != blank %}
+                  <h3 class="m-plantsteps__step-title">{{ block.settings.title | escape }}</h3>
+                {% endif %}
+              </div>
+              {% if block.settings.image != blank %}
+                <div class="m-plantsteps__media">
+                  {{
+                    block.settings.image
+                    | image_url: width: 900
+                    | image_tag:
+                      loading: 'lazy',
+                      class: 'm-plantsteps__img',
+                      widths: '375, 550, 720, 900',
+                      sizes: '(min-width: 990px) 30vw, 100vw',
+                      alt: block.settings.image.alt | default: block.settings.title | escape
+                  }}
+                </div>
+              {% elsif request.design_mode %}
+                <div class="m-plantsteps__media m-plantsteps__media--empty">
+                  {{ 'image' | placeholder_svg_tag: 'm-placeholder-svg' }}
+                </div>
+              {% endif %}
+              {% if block.settings.text != blank %}
+                <div class="m-plantsteps__text rte">{{ block.settings.text }}</div>
+              {% endif %}
+            </div>
+          </li>
+        {% endfor %}
+      </ol>
+    {% elsif request.design_mode %}
+      <p class="m-plantsteps__empty">Add Step blocks (e.g. prepare soil, sow seeds, water gently).</p>
+    {% endif %}
+  </div>
+</section>
+
+{% style %}
+  .m-plantsteps {
+    background: var(--pcs-bg);
+    color: var(--pcs-body);
+  }
+  .m-plantsteps__header {
+    max-width: 42rem;
+    margin: 0 0 clamp(1.75rem, 4vw, 2.75rem);
+  }
+  .m-plantsteps__header.m\:text-center {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .m-plantsteps__eyebrow {
+    font-family: var(--font-stack-body);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--pcs-sub);
+    margin: 0 0 0.5rem;
+  }
+  .m-plantsteps__title {
+    font-family: var(--font-stack-header);
+    font-size: clamp(1.65rem, 3.5vw, 2.35rem);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--pcs-title);
+    margin: 0 0 0.75rem;
+  }
+  .m-plantsteps__intro {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--pcs-body);
+    opacity: 0.9;
+    margin: 0;
+  }
+  .m-plantsteps__intro p:last-child {
+    margin-bottom: 0;
+  }
+  .m-plantsteps__steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--pcs-gap);
+    grid-template-columns: 1fr;
+  }
+  @media screen and (min-width: 750px) {
+    .m-plantsteps--layout-columns .m-plantsteps__steps {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media screen and (min-width: 990px) {
+    .m-plantsteps--layout-columns .m-plantsteps__steps {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .m-plantsteps--layout-columns.m-plantsteps--count-2 .m-plantsteps__steps {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      max-width: 900px;
+      margin: 0 auto;
+    }
+  }
+  .m-plantsteps__step {
+    margin: 0;
+    padding: 0;
+    position: relative;
+  }
+  @media screen and (min-width: 990px) {
+    .m-plantsteps--layout-columns .m-plantsteps__step:nth-child(3n + 1):not(:only-child)::after,
+    .m-plantsteps--layout-columns .m-plantsteps__step:nth-child(3n + 2):not(:last-child)::after {
+      content: "";
+      position: absolute;
+      top: 2.25rem;
+      right: calc(var(--pcs-gap) / -2);
+      width: var(--pcs-gap);
+      height: 2px;
+      background: linear-gradient(90deg, var(--pcs-border), transparent);
+      pointer-events: none;
+      opacity: 0.65;
+    }
+    .m-plantsteps--layout-columns.m-plantsteps--count-2 .m-plantsteps__step:first-child:not(:last-child)::after {
+      display: block;
+    }
+    .m-plantsteps--layout-columns.m-plantsteps--count-2 .m-plantsteps__step:nth-child(2)::after {
+      display: none;
+    }
+  }
+  .m-plantsteps__card {
+    height: 100%;
+    background: var(--pcs-card);
+    border: 1px solid var(--pcs-border);
+    border-radius: var(--pcs-radius);
+    padding: clamp(1.1rem, 2.5vw, 1.35rem);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.05);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  .m-plantsteps__card:hover {
+    border-color: var(--pcs-accent);
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.07);
+  }
+  .m-plantsteps__step-head {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.85rem;
+  }
+  .m-plantsteps__num {
+    flex: 0 0 auto;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9375rem;
+    font-weight: 700;
+    font-family: var(--font-stack-body);
+    background: var(--pcs-accent);
+    color: var(--pcs-accent-text);
+    line-height: 1;
+  }
+  .m-plantsteps__step-title {
+    flex: 1;
+    min-width: 0;
+    font-family: var(--font-stack-header);
+    font-size: clamp(1.05rem, 2vw, 1.2rem);
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--pcs-title);
+    margin: 0.15rem 0 0;
+  }
+  .m-plantsteps__media {
+    border-radius: var(--pcs-img-radius);
+    overflow: hidden;
+    margin: 0;
+    background: rgba(0, 0, 0, 0.03);
+  }
+  .m-plantsteps__media--empty {
+    aspect-ratio: 4 / 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+  .m-plantsteps__img {
+    width: 100%;
+    height: auto;
+    vertical-align: middle;
+    object-fit: cover;
+  }
+  .m-plantsteps__text {
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    color: var(--pcs-body);
+    margin-top: auto;
+  }
+  .m-plantsteps__text p:last-child {
+    margin-bottom: 0;
+  }
+  .m-plantsteps__empty {
+    text-align: center;
+    padding: 2rem;
+    opacity: 0.75;
+  }
+  .m-plantsteps--layout-stacked .m-plantsteps__step::after {
+    display: none !important;
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Plant care steps",
+  "tag": "section",
+  "class": "m-section-plant-care-steps",
+  "disabled_on": {
+    "groups": ["header", "footer", "aside"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Intro"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Plant care"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "How to plant your seeds"
+    },
+    {
+      "type": "richtext",
+      "id": "intro",
+      "label": "Introduction",
+      "default": "<p>Follow these simple steps to give your seeds the best start.</p>"
+    },
+    {
+      "type": "select",
+      "id": "header_alignment",
+      "label": "Header alignment",
+      "default": "center",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "label": "Heading level",
+      "default": "h2",
+      "options": [
+        { "value": "h1", "label": "H1" },
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Step layout",
+      "default": "columns",
+      "options": [
+        { "value": "columns", "label": "Columns (3 on desktop)" },
+        { "value": "stacked", "label": "Stacked (full width)" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "label": "Space between steps",
+      "min": 12,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Section background",
+      "default": "#f4f1ea"
+    },
+    {
+      "type": "color",
+      "id": "card_background",
+      "label": "Card background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "card_border_color",
+      "label": "Card border",
+      "default": "#e5e0d8"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Step number circle",
+      "default": "#2d4a2d"
+    },
+    {
+      "type": "color",
+      "id": "accent_text_color",
+      "label": "Number text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading & step titles",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "subheading_color",
+      "label": "Eyebrow",
+      "default": "#5c655c"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Body text",
+      "default": "#3d3d3d"
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "label": "Card corner radius",
+      "min": 0,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "image_radius",
+      "label": "Image corner radius",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Padding top (mobile)",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Padding bottom (mobile)",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top (desktop)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom (desktop)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 72
+    }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Step",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Step title",
+          "default": "Prepare your soil"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Step description",
+          "default": "<p>Use a fine seed compost or coconut coir. Moisten lightly—don’t soak.</p>"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Plant care steps",
+      "blocks": [
+        {
+          "type": "step",
+          "settings": {
+            "title": "Prepare your soil & tray",
+            "text": "<p>Fill trays or small pots with seed-starting mix. Press gently to settle—no need to pack tight.</p>"
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "title": "Sow seeds at the right depth",
+            "text": "<p>Plant roughly 2–3× the seed’s width deep. Tiny seeds can be pressed lightly into the surface.</p>"
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "title": "Water & keep warm",
+            "text": "<p>Mist or bottom-water. Cover until sprouting if the packet suggests it. Keep in a bright, warm spot.</p>"
+          }
+        }
+      ]
+    }
+  ],
+  "max_blocks": 9
+}
+{% endschema %}
