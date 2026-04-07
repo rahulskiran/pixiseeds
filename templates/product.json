@@ -508,6 +508,61 @@
         "custom_class": "m-hide-pagination-md",
         "animations": "inherit"
       }
+    },
+    "plant_care_steps_GFGj8g": {
+      "type": "plant-care-steps",
+      "blocks": {
+        "step_jEJJyB": {
+          "type": "step",
+          "settings": {
+            "title": "Prepare your soil & tray",
+            "text": "<p>Fill trays or small pots with seed-starting mix. Press gently to settle—no need to pack tight.</p>"
+          }
+        },
+        "step_iYLp7h": {
+          "type": "step",
+          "settings": {
+            "title": "Sow seeds at the right depth",
+            "text": "<p>Plant roughly 2–3× the seed’s width deep. Tiny seeds can be pressed lightly into the surface.</p>"
+          }
+        },
+        "step_pDX9kz": {
+          "type": "step",
+          "settings": {
+            "title": "Water & keep warm",
+            "text": "<p>Mist or bottom-water. Cover until sprouting if the packet suggests it. Keep in a bright, warm spot.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "step_jEJJyB",
+        "step_iYLp7h",
+        "step_pDX9kz"
+      ],
+      "name": "Plant care steps",
+      "settings": {
+        "eyebrow": "Plant care",
+        "title": "How to plant your seeds",
+        "intro": "<p>Follow these simple steps to give your seeds the best start.</p>",
+        "header_alignment": "center",
+        "heading_tag": "h2",
+        "layout": "columns",
+        "grid_gap": 24,
+        "background_color": "#f4f1ea",
+        "card_background": "#ffffff",
+        "card_border_color": "#e5e0d8",
+        "accent_color": "#d96c3b",
+        "accent_text_color": "#ffffff",
+        "heading_color": "#d96c3b",
+        "subheading_color": "#5c655c",
+        "text_color": "#3d3d3d",
+        "card_radius": 12,
+        "image_radius": 8,
+        "padding_top_mobile": 40,
+        "padding_bottom_mobile": 48,
+        "padding_top": 56,
+        "padding_bottom": 72
+      }
     }
   },
   "order": [
@@ -518,6 +573,7 @@
     "growin_tips_dLehaM",
     "premium_faq_cLMm37",
     "recent-viewed-products",
-    "product-recommendations"
+    "product-recommendations",
+    "plant_care_steps_GFGj8g"
   ]
 }
