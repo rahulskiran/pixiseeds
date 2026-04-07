@@ -89,7 +89,7 @@
         {% endif %}
       </div>
 
-      <div class="m-faq__list">
+      <div class="m-faq__list{% if section.settings.show_numbers %} m-faq__list--numbered{% endif %}">
         {% assign faq_num = 0 %}
         {% for block in section.blocks %}
           {% if block.type != 'item' %}
@@ -280,22 +280,42 @@
   }
   .m-faq__item .m-faq__answer {
     font-size: var(--faq-a);
-    line-height: 1.65;
+    line-height: 1.72;
     font-weight: var(--faq-a-weight);
     color: var(--faq-a-color);
-    padding: 0 var(--faq-pad-x) var(--faq-pad-y);
+    padding-top: calc(var(--faq-pad-y) * 0.95);
+    padding-bottom: calc(var(--faq-pad-y) * 1.2);
+    padding-left: var(--faq-pad-x);
+    padding-right: calc(var(--faq-pad-x) + 2.25rem + 0.75rem);
     margin: 0;
     background: var(--faq-answer-bg);
     border-top: 1px solid var(--faq-tab-border);
+  }
+  .m-faq__list--numbered .m-faq__item .m-faq__answer {
+    padding-left: calc(var(--faq-pad-x) + 2.625rem);
   }
   .m-faq__item .m-collapsible--content__inner {
     padding: 0;
   }
   .m-faq__item .m-faq__answer > *:first-child {
-    margin-top: calc(var(--faq-pad-y) * 0.85);
+    margin-top: 0;
   }
   .m-faq__item .m-faq__answer > *:last-child {
     margin-bottom: 0;
+  }
+  .m-faq__item .m-faq__answer p {
+    margin: 0 0 0.9em;
+  }
+  .m-faq__item .m-faq__answer p:last-child {
+    margin-bottom: 0;
+  }
+  .m-faq__item .m-faq__answer ul,
+  .m-faq__item .m-faq__answer ol {
+    margin: 0.35em 0 0.9em;
+    padding-left: 1.25em;
+  }
+  .m-faq__item .m-faq__answer li + li {
+    margin-top: 0.35em;
   }
   @media screen and (max-width: 749px) {
     .m-faq__item .m-faq__trigger {
@@ -304,9 +324,13 @@
       gap: 0.5rem;
     }
     .m-faq__item .m-faq__answer {
+      padding-top: calc(var(--faq-pad-y) * 0.9);
+      padding-bottom: calc(var(--faq-pad-y) * 1.1);
       padding-left: calc(var(--faq-pad-x) * 0.8);
-      padding-right: calc(var(--faq-pad-x) * 0.8);
-      padding-bottom: calc(var(--faq-pad-y) * 0.85);
+      padding-right: calc(var(--faq-pad-x) * 0.8 + 2rem + 0.65rem);
+    }
+    .m-faq__list--numbered .m-faq__item .m-faq__answer {
+      padding-left: calc(var(--faq-pad-x) * 0.8 + 2.375rem);
     }
     .m-faq__chevron {
       width: 2rem;
