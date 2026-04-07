@@ -421,6 +421,93 @@
         "custom_class": "m-hide-pagination-md",
         "animations": "inherit"
       }
+    },
+    "premium_faq_cLMm37": {
+      "type": "PremiumFaq",
+      "blocks": {
+        "item_xcXCdH": {
+          "type": "item",
+          "settings": {
+            "question": "How do I choose the right seeds for my climate?",
+            "answer": "<p>Every product page lists ideal growing zones and seasons. Contact us if you need a recommendation.</p>",
+            "default_open": false
+          }
+        },
+        "item_JyYMey": {
+          "type": "item",
+          "settings": {
+            "question": "Do you ship internationally?",
+            "answer": "<p>We ship to the regions shown at checkout. Join our list if yours is not listed yet.</p>",
+            "default_open": false
+          }
+        },
+        "item_R47BVB": {
+          "type": "item",
+          "settings": {
+            "question": "What is your return policy?",
+            "answer": "<p>Unopened items may be returned within 30 days. Open seed packets are final sale.</p>",
+            "default_open": false
+          }
+        },
+        "item_AbNU78": {
+          "type": "item",
+          "settings": {
+            "question": "How should I store seeds?",
+            "answer": "<p>Keep them cool, dry, and away from light. A sealed jar in the refrigerator works well.</p>",
+            "default_open": false
+          }
+        }
+      },
+      "block_order": [
+        "item_xcXCdH",
+        "item_JyYMey",
+        "item_R47BVB",
+        "item_AbNU78"
+      ],
+      "name": "FAQ",
+      "settings": {
+        "color_scheme": "",
+        "background_color": "#f7f5f0",
+        "enable_gradient": false,
+        "gradient_color_1": "#faf8f4",
+        "gradient_color_2": "#ebe6dc",
+        "tab_background": "#ffffff",
+        "tab_border_color": "#e8e4dc",
+        "tab_border_hover_color": "#d4cfc4",
+        "tab_hover_background": "#faf9f7",
+        "tab_open_background": "#ffffff",
+        "tab_question_color": "#1a1a1a",
+        "tab_answer_color": "#4a4a4a",
+        "answer_panel_background": "#f7f5f0",
+        "number_color": "#6b7c6b",
+        "icon_background": "#f0ede6",
+        "icon_color": "#1a1a1a",
+        "eyebrow": "Help",
+        "heading": "Frequently asked questions",
+        "heading_tag": "h2",
+        "intro": "",
+        "cta_label": "",
+        "cta_link": "",
+        "show_numbers": false,
+        "title_size_mobile": 28,
+        "title_size_desktop": 36,
+        "intro_size": 15,
+        "question_size": 16,
+        "answer_size": 15,
+        "question_font_weight": "600",
+        "answer_font_weight": "400",
+        "header_max_width": 640,
+        "content_max_width": 1000,
+        "card_radius": 10,
+        "card_padding_x": 18,
+        "card_padding_y": 16,
+        "item_gap": 10,
+        "animations": "inherit",
+        "padding_top_mobile": 36,
+        "padding_bottom_mobile": 36,
+        "padding_top": 56,
+        "padding_bottom": 56
+      }
     }
   },
   "order": [
@@ -430,6 +517,7 @@
     "1715169300e2d60786",
     "growin_tips_dLehaM",
     "product-recommendations",
+    "premium_faq_cLMm37",
     "recent-viewed-products"
   ]
 }
