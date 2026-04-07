@@ -35,6 +35,8 @@
     --faq-sub: {{ section.settings.intro_size }}px;
     --faq-q: {{ section.settings.question_size }}px;
     --faq-a: {{ section.settings.answer_size }}px;
+    --faq-q-weight: {{ section.settings.question_font_weight }};
+    --faq-a-weight: {{ section.settings.answer_font_weight }};
     --faq-header-max: {{ section.settings.header_max_width }}px;
     --faq-tabs-max: {{ section.settings.content_max_width }}px;
     --faq-tab-bg: {{ section.settings.tab_background }};
@@ -228,7 +230,7 @@
     text-align: left;
     font-size: var(--faq-q);
     line-height: 1.4;
-    font-weight: 600;
+    font-weight: var(--faq-q-weight);
     color: var(--faq-q-color);
     background: transparent;
   }
@@ -279,6 +281,7 @@
   .m-faq__item .m-faq__answer {
     font-size: var(--faq-a);
     line-height: 1.65;
+    font-weight: var(--faq-a-weight);
     color: var(--faq-a-color);
     padding: 0 var(--faq-pad-x) var(--faq-pad-y);
     margin: 0;
@@ -535,6 +538,28 @@
       "step": 1,
       "unit": "px",
       "default": 15
+    },
+    {
+      "type": "select",
+      "id": "question_font_weight",
+      "label": "Question font weight",
+      "default": "600",
+      "options": [
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semibold" },
+        { "value": "700", "label": "Bold" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "answer_font_weight",
+      "label": "Answer font weight",
+      "default": "400",
+      "options": [
+        { "value": "400", "label": "Regular" },
+        { "value": "500", "label": "Medium" },
+        { "value": "700", "label": "Bold" }
+      ]
     },
     {
       "type": "header",
