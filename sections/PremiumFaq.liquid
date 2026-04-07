@@ -35,9 +35,11 @@
     --faq-sub: {{ section.settings.intro_size }}px;
     --faq-q: {{ section.settings.question_size }}px;
     --faq-a: {{ section.settings.answer_size }}px;
-    --faq-max: {{ section.settings.content_max_width }}px;
+    --faq-header-max: {{ section.settings.header_max_width }}px;
+    --faq-tabs-max: {{ section.settings.content_max_width }}px;
     --faq-tab-bg: {{ section.settings.tab_background }};
     --faq-tab-border: {{ section.settings.tab_border_color }};
+    --faq-tab-border-hover: {{ section.settings.tab_border_hover_color }};
     --faq-tab-hover: {{ section.settings.tab_hover_background }};
     --faq-tab-open: {{ section.settings.tab_open_background }};
     --faq-q-color: {{ section.settings.tab_question_color }};
@@ -132,15 +134,13 @@
 {% style %}
   .m-faq__wrap {
     width: 100%;
-    max-width: var(--faq-max);
     margin-left: auto;
     margin-right: auto;
-    padding-left: clamp(0px, 2vw, 12px);
-    padding-right: clamp(0px, 2vw, 12px);
   }
   .m-faq__header {
     margin-bottom: clamp(1.5rem, 4vw, 2.5rem);
-    max-width: 42rem;
+    max-width: var(--faq-header-max);
+    width: 100%;
     margin-left: auto;
     margin-right: auto;
   }
@@ -192,6 +192,9 @@
   }
   .m-faq__list {
     width: 100%;
+    max-width: var(--faq-tabs-max);
+    margin-left: auto;
+    margin-right: auto;
     display: flex;
     flex-direction: column;
     gap: var(--faq-gap);
@@ -209,10 +212,11 @@
   }
   .m-faq__item:hover {
     background: var(--faq-tab-hover);
-    border-color: var(--faq-tab-border);
+    border-color: var(--faq-tab-border-hover);
   }
   .m-faq__item.m-collapsible[open='true'] {
     background: var(--faq-tab-open);
+    border-color: var(--faq-tab-border-hover);
     box-shadow: 0 4px 24px rgba(var(--color-foreground), 0.06);
   }
   .m-faq__item .m-faq__trigger {
@@ -291,10 +295,6 @@
     margin-bottom: 0;
   }
   @media screen and (max-width: 749px) {
-    .m-faq__wrap {
-      padding-left: 0;
-      padding-right: 0;
-    }
     .m-faq__item .m-faq__trigger {
       padding: calc(var(--faq-pad-y) * 0.85) calc(var(--faq-pad-x) * 0.8);
       font-size: calc(var(--faq-q) * 0.96);
@@ -366,34 +366,40 @@
     },
     {
       "type": "header",
-      "content": "FAQ tabs (accordion)"
+      "content": "FAQ tab colors"
     },
     {
       "type": "paragraph",
-      "content": "These colors apply to each question row. Answers use the answer panel color below."
+      "content": "Customize each accordion row: background, borders, text, answer panel, and icon."
     },
     {
       "type": "color",
       "id": "tab_background",
-      "label": "Tab background",
+      "label": "Background",
       "default": "#ffffff"
     },
     {
       "type": "color",
       "id": "tab_border_color",
-      "label": "Tab border",
+      "label": "Border",
       "default": "#e8e4dc"
     },
     {
       "type": "color",
+      "id": "tab_border_hover_color",
+      "label": "Border (hover & open)",
+      "default": "#d4cfc4"
+    },
+    {
+      "type": "color",
       "id": "tab_hover_background",
-      "label": "Tab background (hover)",
+      "label": "Background (hover)",
       "default": "#faf9f7"
     },
     {
       "type": "color",
       "id": "tab_open_background",
-      "label": "Tab background (open)",
+      "label": "Background (open)",
       "default": "#ffffff"
     },
     {
@@ -411,25 +417,25 @@
     {
       "type": "color",
       "id": "answer_panel_background",
-      "label": "Answer area background",
+      "label": "Answer panel background",
       "default": "#fbfaf8"
     },
     {
       "type": "color",
       "id": "number_color",
-      "label": "Numbers (if shown)",
+      "label": "Index numbers",
       "default": "#6b7c6b"
     },
     {
       "type": "color",
       "id": "icon_background",
-      "label": "Icon circle background",
+      "label": "Chevron circle background",
       "default": "#f0ede6"
     },
     {
       "type": "color",
       "id": "icon_color",
-      "label": "Icon color",
+      "label": "Chevron icon",
       "default": "#1a1a1a"
     },
     {
@@ -536,6 +542,27 @@
     },
     {
       "type": "range",
+      "id": "header_max_width",
+      "label": "Heading & intro width",
+      "min": 320,
+      "max": 900,
+      "step": 20,
+      "unit": "px",
+      "default": 640
+    },
+    {
+      "type": "range",
+      "id": "content_max_width",
+      "label": "FAQ tabs width",
+      "min": 400,
+      "max": 1400,
+      "step": 20,
+      "unit": "px",
+      "default": 1000,
+      "info": "Tabs can be wider than the heading. Use your theme page width as a guide."
+    },
+    {
+      "type": "range",
       "id": "card_radius",
       "label": "Corner radius",
       "min": 0,
@@ -573,16 +600,6 @@
       "step": 2,
       "unit": "px",
       "default": 10
-    },
-    {
-      "type": "range",
-      "id": "content_max_width",
-      "label": "Content width (centered)",
-      "min": 320,
-      "max": 920,
-      "step": 20,
-      "unit": "px",
-      "default": 720
     },
     {
       "type": "header",
