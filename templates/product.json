@@ -308,16 +308,6 @@
             "scientific_name": "Daucus carota var. sativus",
             "content": "<p>Add growing instructions, culture notes, harvesting tips, or FAQs.</p>"
           }
-        },
-        "tab_3mqR6r": {
-          "type": "tab",
-          "settings": {
-            "tab_title": "FAQs",
-            "show_image": true,
-            "panel_heading": "",
-            "scientific_name": "Daucus carota var. sativus",
-            "content": "<p>Add growing instructions, culture notes, harvesting tips, or FAQs.</p>"
-          }
         }
       },
       "block_order": [
@@ -325,8 +315,7 @@
         "tab_pbCU37",
         "tab_BXpwMT",
         "tab_UcyAhV",
-        "tab_gFfecr",
-        "tab_3mqR6r"
+        "tab_gFfecr"
       ],
       "name": "Growing tips & guides",
       "settings": {
