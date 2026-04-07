@@ -64,7 +64,7 @@
 {% endstyle %}
 
 <section
-  class="m-section m-choose-plant m-choose-plant--{{ section.id }} m-section--padding{% if section.settings.mobile_carousel %} m-choose-plant--carousel{% endif %}"
+  class="m-section m-choose-plant m-choose-plant--{{ section.id }} m-section--padding{% if section.settings.mobile_carousel %} m-choose-plant--carousel{% endif %}{% if section.settings.image_ratio == 'auto' %} m-choose-plant--image-natural{% endif %}"
   style="--section-padding-top: {{ pt }}px; --section-padding-bottom: {{ pb }}px;"
 >
   <div class="m-page-width">
@@ -114,6 +114,8 @@
                     class: 'm-choose-plant__img',
                     widths: '300, 450, 600, 900',
                     sizes: '(min-width: 1200px) 22vw, (min-width: 750px) 45vw, 92vw',
+                    width: block.settings.image.width,
+                    height: block.settings.image.height,
                     alt: img_alt
                 }}
               {% else %}
@@ -331,6 +333,10 @@
     object-fit: cover;
     display: block;
     transition: transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .m-choose-plant--{{ section.id }}.m-choose-plant--image-natural .m-choose-plant__img {
+    height: auto;
+    object-fit: unset;
   }
   .m-choose-plant--{{ section.id }} a.m-choose-plant__card:hover .m-choose-plant__img {
     transform: scale(1.05);
@@ -786,10 +792,15 @@
       "options": [
         { "value": "4 / 3", "label": "4:3" },
         { "value": "3 / 2", "label": "3:2" },
-        { "value": "1 / 1", "label": "Square" },
-        { "value": "4 / 5", "label": "Portrait 4:5" }
+        { "value": "16 / 9", "label": "16:9" },
+        { "value": "1 / 1", "label": "Square (1:1)" },
+        { "value": "4 / 5", "label": "Portrait 4:5" },
+        { "value": "3 / 4", "label": "Portrait 3:4" },
+        { "value": "2 / 3", "label": "Portrait 2:3" },
+        { "value": "auto", "label": "Natural (use image proportions)" }
       ],
-      "default": "4 / 3"
+      "default": "4 / 3",
+      "info": "Fixed ratios crop with cover. Natural keeps each photo’s aspect ratio."
     },
     {
       "type": "range",
