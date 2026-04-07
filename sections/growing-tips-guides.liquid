@@ -28,14 +28,22 @@
     --grow-mobile-content: {{ section.settings.mobile_answer_text }};
     --grow-mobile-sub: {{ section.settings.mobile_answer_muted }};
   }
+  /* Top padding on inner only: padding on the section showed a dark strip above the torn edge. */
   #shopify-section-{{ section.id }} .m-growtips.m-growtips--padding {
-    padding-top: {{ section.settings.padding_top_mobile }}px;
+    padding-top: 0;
     padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
   }
   @media screen and (min-width: 750px) {
     #shopify-section-{{ section.id }} .m-growtips.m-growtips--padding {
-      padding-top: {{ pt }}px;
       padding-bottom: {{ pb }}px;
+    }
+  }
+  #shopify-section-{{ section.id }} .m-growtips__inner {
+    padding-top: {{ section.settings.padding_top_mobile }}px;
+  }
+  @media screen and (min-width: 750px) {
+    #shopify-section-{{ section.id }} .m-growtips__inner {
+      padding-top: {{ pt }}px;
     }
   }
   #shopify-section-{{ section.id }} .m-growtips__panel {
