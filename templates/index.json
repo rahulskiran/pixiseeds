@@ -575,6 +575,7 @@
         "card_xRmTyL": {
           "type": "card",
           "settings": {
+            "image": "shopify://shop_images/Variegated_Monstera_leaf_202604071354.webp",
             "title": "New Arrivals",
             "link": "",
             "open_new_tab": false
@@ -583,6 +584,7 @@
         "card_y7xRAd": {
           "type": "card",
           "settings": {
+            "image": "shopify://shop_images/Plant_gift_with_202604071354.webp",
             "title": "Low-Maintenance",
             "link": "",
             "open_new_tab": false
@@ -591,6 +593,7 @@
         "card_dkqtRE": {
           "type": "card",
           "settings": {
+            "image": "shopify://shop_images/Plants_on_metal_202604071354.webp",
             "title": "Pet-Friendly",
             "link": "",
             "open_new_tab": false
@@ -599,6 +602,7 @@
         "card_GWR8VB": {
           "type": "card",
           "settings": {
+            "image": "shopify://shop_images/Boston_Fern_in_202604071354.webp",
             "title": "Gifts",
             "link": "",
             "open_new_tab": false
@@ -841,7 +845,7 @@
         "heading_color": "#d96c3b",
         "text_color": "#2d4a3e",
         "card_border_color": "#e5e0d8",
-        "card_body_bg": "#faf8f5",
+        "card_body_bg": "#ffe9df",
         "media_fallback_bg": "#ebe6de",
         "card_title_color": "#2d4a3e",
         "card_subtext_color": "#4a5f54",
