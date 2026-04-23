@@ -4,6 +4,46 @@
   assign heading_tag = section.settings.heading_tag | default: 'h2'
   assign tab_blocks = section.blocks | where: 'type', 'tab'
   assign tab_count = tab_blocks.size
+  assign tab_list = tab_blocks
+  assign content_mode = section.settings.content_source | default: 'tab_blocks'
+  assign use_from_description = false
+  assign single_desc_fallback = false
+  assign valid_count = 0
+  assign product_html = blank
+
+  if content_mode == 'from_product_description' and product
+    assign use_from_description = true
+    assign product_html = product.description
+    if product_html == blank
+      assign product_html = product.content
+    endif
+  endif
+
+  if use_from_description and product_html == blank
+    assign use_from_description = false
+  endif
+
+  if use_from_description
+    if product_html contains '<p><strong>'
+      assign desc_chunks = product_html | split: '<p><strong>'
+      for part in desc_chunks
+        if part != blank and part contains '</strong>'
+          assign valid_count = valid_count | plus: 1
+        endif
+      endfor
+    endif
+    if valid_count < 1 and product_html != blank
+      assign single_desc_fallback = true
+      assign valid_count = 1
+    elsif valid_count < 1
+      assign use_from_description = false
+    endif
+  endif
+
+  assign vcap = valid_count
+  if use_from_description and vcap > 12
+    assign vcap = 12
+  endif
 -%}
 
 {% style %}
@@ -44,6 +84,21 @@
   #shopify-section-{{ section.id }} .m-growtips__panel {
     display: none;
   }
+  {% if use_from_description and valid_count > 0 %}
+    {% for i in (0..15) %}
+      {% if i < vcap %}
+  #shopify-section-{{ section.id }} #growtab-{{ section.id }}-desc-{{ i }}:checked ~ .m-growtabs__shell .m-growtabs__panels .m-growtabs__panel:nth-child({{ i | plus: 1 }}) {
+    display: grid;
+  }
+  #shopify-section-{{ section.id }} #growtab-{{ section.id }}-desc-{{ i }}:checked ~ .m-growtabs__shell .m-growtabs__nav label[for="growtab-{{ section.id }}-desc-{{ i }}"] {
+    background: var(--grow-tab-active-bg);
+    color: var(--grow-tab-active-text);
+    border-radius: 999px;
+    padding: 0.5rem 1.1rem;
+  }
+      {% endif %}
+    {% endfor %}
+  {% else %}
   {% for block in tab_blocks %}
   #shopify-section-{{ section.id }} #growtab-{{ section.id }}-{{ block.id }}:checked ~ .m-growtabs__shell .m-growtabs__panels .m-growtabs__panel:nth-child({{ forloop.index }}) {
     display: grid;
@@ -55,6 +110,7 @@
     padding: 0.5rem 1.1rem;
   }
   {% endfor %}
+  {% endif %}
 {% endstyle %}
 
 <section
@@ -73,7 +129,241 @@
       {% endif %}
     </header>
 
-    {%- if tab_count > 0 -%}
+    {%- if use_from_description and valid_count > 0 -%}
+      {%- comment -%} Product description: <p><strong>Section title</strong></p> then lists/paragraphs. Optional Tab blocks in order = images. {%- endcomment -%}
+      <div class="m-growtabs m-growtabs--desktop">
+        {%- if single_desc_fallback -%}
+          <input
+            type="radio"
+            name="growtabs-{{ section.id }}"
+            id="growtab-{{ section.id }}-desc-0"
+            class="m-growtabs__state visually-hidden"
+            tabindex="-1"
+            checked
+          >
+        {%- else -%}
+          {%- assign di = 0 -%}
+          {%- for part in desc_chunks -%}
+            {%- if di < vcap and part != blank and part contains '</strong>' -%}
+              <input
+                type="radio"
+                name="growtabs-{{ section.id }}"
+                id="growtab-{{ section.id }}-desc-{{ di }}"
+                class="m-growtabs__state visually-hidden"
+                tabindex="-1"
+                {% if di == 0 %}
+                  checked
+                {% endif %}
+              >
+              {%- assign di = di | plus: 1 -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+
+        <div class="m-growtabs__shell m-growtips__card">
+          <div class="m-growtabs__nav" role="tablist">
+            {%- if single_desc_fallback -%}
+              {%- assign _fb = section.settings.fallback_tab_label | default: 'Details' -%}
+              <label class="m-growtabs__navlabel" for="growtab-{{ section.id }}-desc-0" role="tab">
+                {{- _fb | escape -}}
+              </label>
+            {%- else -%}
+              {%- assign di = 0 -%}
+              {%- for part in desc_chunks -%}
+                {%- if di < vcap and part != blank and part contains '</strong>' -%}
+                  {%- assign segs = part | split: '</strong>' -%}
+                  {%- assign p_title = segs[0] | strip_html | strip -%}
+                  <label
+                    class="m-growtabs__navlabel"
+                    for="growtab-{{ section.id }}-desc-{{ di }}"
+                    role="tab"
+                  >
+                    {{- p_title | escape -}}
+                  </label>
+                  {%- assign di = di | plus: 1 -%}
+                {%- endif -%}
+              {%- endfor -%}
+            {%- endif -%}
+          </div>
+
+          <div class="m-growtabs__panels">
+            {%- if single_desc_fallback -%}
+              {%- assign img0 = tab_list | slice: 0, 1 | first -%}
+              <div class="m-growtabs__panel m-growtips__panel" role="tabpanel" {% if img0 %}{{ img0.shopify_attributes }}{% endif %}>
+                <div class="m-growtips__panel-grid">
+                  {%- if img0 and img0.settings.image != blank and img0.settings.show_image -%}
+                    <div class="m-growtips__panel-media">
+                      {{
+                        img0.settings.image
+                        | image_url: width: 900
+                        | image_tag:
+                          loading: 'lazy',
+                          class: 'm-growtips__panel-img',
+                          widths: '375, 550, 720, 900',
+                          sizes: '(min-width: 990px) 42vw, 100vw'
+                      }}
+                    </div>
+                  {%- endif -%}
+                  <div class="m-growtips__panel-copy{% unless img0 and img0.settings.image != blank and img0.settings.show_image %} m-growtips__panel-copy--solo{% endunless %}">
+                    {%- assign _bar = section.settings.fallback_tab_label | default: 'Details' -%}
+                    <div class="m-growtips__panel-bar">
+                      <span class="m-growtips__panel-bar-text">{{ _bar | escape }}</span>
+                    </div>
+                    <div class="m-growtips__rte rte">{{ product_html | raw }}</div>
+                  </div>
+                </div>
+              </div>
+            {%- else -%}
+              {%- assign di = 0 -%}
+              {%- for part in desc_chunks -%}
+                {%- if di < vcap and part != blank and part contains '</strong>' -%}
+                  {%- assign segs = part | split: '</strong>' -%}
+                  {%- assign p_title = segs[0] | strip_html | strip -%}
+                  {%- assign body_html = '' -%}
+                  {%- if segs.size > 1 -%}
+                    {%- assign body_html = segs[1] -%}
+                  {%- endif -%}
+                  {%- assign img_b = tab_list | slice: di, 1 | first -%}
+                  <div
+                    class="m-growtabs__panel m-growtips__panel"
+                    role="tabpanel"
+                    {% if img_b %}{{ img_b.shopify_attributes }}{% endif %}
+                  >
+                    <div class="m-growtips__panel-grid">
+                      {%- if img_b and img_b.settings.image != blank and img_b.settings.show_image -%}
+                        <div class="m-growtips__panel-media">
+                          {{
+                            img_b.settings.image
+                            | image_url: width: 900
+                            | image_tag:
+                              loading: 'lazy',
+                              class: 'm-growtips__panel-img',
+                              widths: '375, 550, 720, 900',
+                              sizes: '(min-width: 990px) 42vw, 100vw'
+                          }}
+                        </div>
+                      {%- endif -%}
+                      <div class="m-growtips__panel-copy{% unless img_b and img_b.settings.image != blank and img_b.settings.show_image %} m-growtips__panel-copy--solo{% endunless %}">
+                        {%- if p_title != blank -%}
+                          <div class="m-growtips__panel-bar">
+                            <span class="m-growtips__panel-bar-text">{{ p_title | escape }}</span>
+                          </div>
+                        {%- endif -%}
+                        {%- if body_html != blank -%}
+                          <div class="m-growtips__rte rte">{{ body_html | raw }}</div>
+                        {%- endif -%}
+                      </div>
+                    </div>
+                  </div>
+                  {%- assign di = di | plus: 1 -%}
+                {%- endif -%}
+              {%- endfor -%}
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+
+      <div class="m-growtips__mobile-acc">
+        {%- if single_desc_fallback -%}
+          {%- assign img0 = tab_list | slice: 0, 1 | first -%}
+          <collapsible-tab
+            class="m-collapsible m-growtips__acc-item no-js-hidden"
+            data-block-id="grow-collapsible-desc-0"
+            {% if section.settings.open_first_mobile %}
+              open="true"
+            {% endif %}
+            {% if img0 %}{{ img0.shopify_attributes }}{% endif %}
+          >
+            {%- assign _fbm = section.settings.fallback_tab_label | default: 'Details' -%}
+            <h3 class="m-collapsible--button m-growtips__acc-trigger" data-trigger>
+              <span class="m-growtips__acc-icon" aria-hidden="true">+</span>
+              <span class="m-growtips__acc-title">{{ _fbm | escape }}</span>
+            </h3>
+            <div class="m-collapsible--content" data-content hidden>
+              <div class="m-collapsible--content__inner m-growtips__acc-inner">
+                <div class="m-growtips__panel-grid m-growtips__panel-grid--stack">
+                  {%- if img0 and img0.settings.image != blank and img0.settings.show_image -%}
+                    <div class="m-growtips__panel-media">
+                      {{
+                        img0.settings.image
+                        | image_url: width: 800
+                        | image_tag:
+                          loading: 'lazy',
+                          class: 'm-growtips__panel-img',
+                          widths: '375, 550, 800',
+                          sizes: '100vw'
+                      }}
+                    </div>
+                  {%- endif -%}
+                  <div class="m-growtips__panel-copy{% unless img0 and img0.settings.image != blank and img0.settings.show_image %} m-growtips__panel-copy--solo{% endunless %}">
+                    <div class="m-growtips__panel-bar m-growtips__panel-bar--mobile">
+                      <span class="m-growtips__panel-bar-text">{{ _fbm | escape }}</span>
+                    </div>
+                    <div class="m-growtips__rte rte">{{ product_html | raw }}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </collapsible-tab>
+        {%- else -%}
+          {%- assign di = 0 -%}
+          {%- for part in desc_chunks -%}
+            {%- if di < vcap and part != blank and part contains '</strong>' -%}
+              {%- assign segs = part | split: '</strong>' -%}
+              {%- assign p_title = segs[0] | strip_html | strip -%}
+              {%- assign body_html = '' -%}
+              {%- if segs.size > 1 -%}
+                {%- assign body_html = segs[1] -%}
+              {%- endif -%}
+              {%- assign img_b = tab_list | slice: di, 1 | first -%}
+              <collapsible-tab
+                class="m-collapsible m-growtips__acc-item no-js-hidden"
+                data-block-id="grow-collapsible-desc-{{ di }}"
+                {% if di == 0 and section.settings.open_first_mobile %}
+                  open="true"
+                {% endif %}
+                {% if img_b %}{{ img_b.shopify_attributes }}{% endif %}
+              >
+                <h3 class="m-collapsible--button m-growtips__acc-trigger" data-trigger>
+                  <span class="m-growtips__acc-icon" aria-hidden="true">+</span>
+                  <span class="m-growtips__acc-title">{{ p_title | escape }}</span>
+                </h3>
+                <div class="m-collapsible--content" data-content hidden>
+                  <div class="m-collapsible--content__inner m-growtips__acc-inner">
+                    <div class="m-growtips__panel-grid m-growtips__panel-grid--stack">
+                      {%- if img_b and img_b.settings.image != blank and img_b.settings.show_image -%}
+                        <div class="m-growtips__panel-media">
+                          {{
+                            img_b.settings.image
+                            | image_url: width: 800
+                            | image_tag:
+                              loading: 'lazy',
+                              class: 'm-growtips__panel-img',
+                              widths: '375, 550, 800',
+                              sizes: '100vw'
+                          }}
+                        </div>
+                      {%- endif -%}
+                      <div class="m-growtips__panel-copy{% unless img_b and img_b.settings.image != blank and img_b.settings.show_image %} m-growtips__panel-copy--solo{% endunless %}">
+                        {%- if p_title != blank -%}
+                          <div class="m-growtips__panel-bar m-growtips__panel-bar--mobile">
+                            <span class="m-growtips__panel-bar-text">{{ p_title | escape }}</span>
+                          </div>
+                        {%- endif -%}
+                        {%- if body_html != blank -%}
+                          <div class="m-growtips__rte rte">{{ body_html | raw }}</div>
+                        {%- endif -%}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </collapsible-tab>
+              {%- assign di = di | plus: 1 -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+    {%- elsif tab_count > 0 -%}
       <div class="m-growtabs m-growtabs--desktop">
         {% for block in tab_blocks %}
           <input
@@ -196,7 +486,14 @@
     {%- else -%}
       {% if request.design_mode %}
         <div class="m-growtips__card m-growtips__empty">
-          <p>Add Tab blocks to build this section.</p>
+          <p>
+            {%- if content_mode == 'from_product_description' -%}
+              Add a product or switch content source to “Manual”. On products, the description must use
+              <code>&lt;p&gt;&lt;strong&gt;…&lt;/strong&gt;&lt;/p&gt;</code> for each section.
+            {%- else -%}
+              Add Tab blocks to build this section.
+            {%- endif -%}
+          </p>
         </div>
       {% endif %}
     {%- endif -%}
@@ -497,6 +794,23 @@
     {
       "type": "header",
       "content": "Tabs"
+    },
+    {
+      "type": "select",
+      "id": "content_source",
+      "label": "Content source",
+      "default": "tab_blocks",
+      "options": [
+        { "value": "tab_blocks", "label": "Manual (tab blocks)" },
+        { "value": "from_product_description", "label": "From product description" }
+      ],
+      "info": "Description mode: format the product description as repeating blocks — each block starts with a paragraph that only contains the bold line (tab title), then lists or paragraphs. Example: <p><strong>Soil and spacing</strong></p> followed by <ul><li>…</li></ul>. Optional Tab blocks (same order) add an image to each block."
+    },
+    {
+      "type": "text",
+      "id": "fallback_tab_label",
+      "label": "Single tab label (no bold sections in description)",
+      "default": "Details"
     },
     {
       "type": "color",
