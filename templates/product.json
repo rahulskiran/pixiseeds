@@ -322,6 +322,8 @@
         "soil_background": "#382219",
         "accent_script_color": "#d96c3b",
         "main_title_color": "#ffffff",
+        "content_source": "from_product_description",
+        "fallback_tab_label": "Details",
         "tab_active_background": "#d96c3b",
         "tab_active_text": "#ffffff",
         "tab_inactive_desktop": "#3d3d3d",
