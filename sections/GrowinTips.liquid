@@ -5,7 +5,7 @@
   assign tab_blocks = section.blocks | where: 'type', 'tab'
   assign tab_count = tab_blocks.size
   assign tab_list = tab_blocks
-  assign content_mode = section.settings.content_source | default: 'tab_blocks'
+  assign content_mode = section.settings.content_source | default: 'from_product_description'
   assign use_from_description = false
   assign single_desc_fallback = false
   assign valid_count = 0
@@ -23,19 +23,61 @@
     assign use_from_description = false
   endif
 
+  assign desc_parse_mode = 'none'
   if use_from_description
-    if product_html contains '<p><strong>'
+    assign pnorm = product_html | replace: '<H1', '<h1' | replace: '</H1', '</h1' | replace: '<H2', '<h2' | replace: '</H2', '</h2' | replace: '<H3', '<h3' | replace: '</H3', '</h3'
+    if pnorm contains '<h2'
+      assign desc_chunks = pnorm | split: '<h2'
+      assign valid_count = 0
+      for part in desc_chunks
+        if forloop.index0 > 0 and part != blank and part contains '</h2>'
+          assign valid_count = valid_count | plus: 1
+        endif
+      endfor
+      if valid_count > 0
+        assign desc_parse_mode = 'h2'
+      endif
+    endif
+    if desc_parse_mode == 'none' and pnorm contains '<h1'
+      assign desc_chunks = pnorm | split: '<h1'
+      assign valid_count = 0
+      for part in desc_chunks
+        if forloop.index0 > 0 and part != blank and part contains '</h1>'
+          assign valid_count = valid_count | plus: 1
+        endif
+      endfor
+      if valid_count > 0
+        assign desc_parse_mode = 'h1'
+      endif
+    endif
+    if desc_parse_mode == 'none' and pnorm contains '<h3'
+      assign desc_chunks = pnorm | split: '<h3'
+      assign valid_count = 0
+      for part in desc_chunks
+        if forloop.index0 > 0 and part != blank and part contains '</h3>'
+          assign valid_count = valid_count | plus: 1
+        endif
+      endfor
+      if valid_count > 0
+        assign desc_parse_mode = 'h3'
+      endif
+    endif
+    if desc_parse_mode == 'none' and product_html contains '<p><strong>'
       assign desc_chunks = product_html | split: '<p><strong>'
+      assign valid_count = 0
       for part in desc_chunks
         if part != blank and part contains '</strong>'
           assign valid_count = valid_count | plus: 1
         endif
       endfor
+      if valid_count > 0
+        assign desc_parse_mode = 'strong_p'
+      endif
     endif
-    if valid_count < 1 and product_html != blank
+    if use_from_description and desc_parse_mode == 'none' and product_html != blank
       assign single_desc_fallback = true
       assign valid_count = 1
-    elsif valid_count < 1
+    elsif use_from_description and desc_parse_mode == 'none' and product_html == blank
       assign use_from_description = false
     endif
   endif
@@ -130,7 +172,7 @@
     </header>
 
     {%- if use_from_description and valid_count > 0 -%}
-      {%- comment -%} Product description: <p><strong>Section title</strong></p> then lists/paragraphs. Optional Tab blocks in order = images. {%- endcomment -%}
+      {%- comment -%} Product description: <p><strong>…</strong></p>, or <h2>/<h3> headings, then body. Tab blocks = images in order. {%- endcomment -%}
       <div class="m-growtabs m-growtabs--desktop">
         {%- if single_desc_fallback -%}
           <input
@@ -144,7 +186,18 @@
         {%- else -%}
           {%- assign di = 0 -%}
           {%- for part in desc_chunks -%}
-            {%- if di < vcap and part != blank and part contains '</strong>' -%}
+            {%- assign row_ok = false -%}
+            {%- case desc_parse_mode -%}
+              {%- when 'strong_p' -%}
+                {%- if part != blank and part contains '</strong>' -%}{%- assign row_ok = true -%}{%- endif -%}
+              {%- when 'h1' -%}
+                {%- if forloop.index0 > 0 and part != blank and part contains '</h1>' -%}{%- assign row_ok = true -%}{%- endif -%}
+              {%- when 'h2' -%}
+                {%- if forloop.index0 > 0 and part != blank and part contains '</h2>' -%}{%- assign row_ok = true -%}{%- endif -%}
+              {%- when 'h3' -%}
+                {%- if forloop.index0 > 0 and part != blank and part contains '</h3>' -%}{%- assign row_ok = true -%}{%- endif -%}
+            {%- endcase -%}
+            {%- if di < vcap and row_ok -%}
               <input
                 type="radio"
                 name="growtabs-{{ section.id }}"
@@ -170,9 +223,35 @@
             {%- else -%}
               {%- assign di = 0 -%}
               {%- for part in desc_chunks -%}
-                {%- if di < vcap and part != blank and part contains '</strong>' -%}
-                  {%- assign segs = part | split: '</strong>' -%}
-                  {%- assign p_title = segs[0] | strip_html | strip -%}
+                {%- assign row_ok = false -%}
+                {%- case desc_parse_mode -%}
+                  {%- when 'strong_p' -%}
+                    {%- if part != blank and part contains '</strong>' -%}{%- assign row_ok = true -%}{%- endif -%}
+                  {%- when 'h1' -%}
+                    {%- if forloop.index0 > 0 and part != blank and part contains '</h1>' -%}{%- assign row_ok = true -%}{%- endif -%}
+                  {%- when 'h2' -%}
+                    {%- if forloop.index0 > 0 and part != blank and part contains '</h2>' -%}{%- assign row_ok = true -%}{%- endif -%}
+                  {%- when 'h3' -%}
+                    {%- if forloop.index0 > 0 and part != blank and part contains '</h3>' -%}{%- assign row_ok = true -%}{%- endif -%}
+                {%- endcase -%}
+                {%- if di < vcap and row_ok -%}
+                  {%- case desc_parse_mode -%}
+                    {%- when 'strong_p' -%}
+                      {%- assign segs = part | split: '</strong>' -%}
+                      {%- assign p_title = segs[0] | strip_html | strip -%}
+                    {%- when 'h1' -%}
+                      {%- assign segs = part | split: '</h1>' -%}
+                      {%- assign thead = segs[0] | split: '>' | last -%}
+                      {%- assign p_title = thead | strip_html | strip -%}
+                    {%- when 'h2' -%}
+                      {%- assign segs = part | split: '</h2>' -%}
+                      {%- assign thead = segs[0] | split: '>' | last -%}
+                      {%- assign p_title = thead | strip_html | strip -%}
+                    {%- when 'h3' -%}
+                      {%- assign segs = part | split: '</h3>' -%}
+                      {%- assign thead = segs[0] | split: '>' | last -%}
+                      {%- assign p_title = thead | strip_html | strip -%}
+                  {%- endcase -%}
                   <label
                     class="m-growtabs__navlabel"
                     for="growtab-{{ section.id }}-desc-{{ di }}"
@@ -216,13 +295,41 @@
             {%- else -%}
               {%- assign di = 0 -%}
               {%- for part in desc_chunks -%}
-                {%- if di < vcap and part != blank and part contains '</strong>' -%}
-                  {%- assign segs = part | split: '</strong>' -%}
-                  {%- assign p_title = segs[0] | strip_html | strip -%}
+                {%- assign row_ok = false -%}
+                {%- case desc_parse_mode -%}
+                  {%- when 'strong_p' -%}
+                    {%- if part != blank and part contains '</strong>' -%}{%- assign row_ok = true -%}{%- endif -%}
+                  {%- when 'h1' -%}
+                    {%- if forloop.index0 > 0 and part != blank and part contains '</h1>' -%}{%- assign row_ok = true -%}{%- endif -%}
+                  {%- when 'h2' -%}
+                    {%- if forloop.index0 > 0 and part != blank and part contains '</h2>' -%}{%- assign row_ok = true -%}{%- endif -%}
+                  {%- when 'h3' -%}
+                    {%- if forloop.index0 > 0 and part != blank and part contains '</h3>' -%}{%- assign row_ok = true -%}{%- endif -%}
+                {%- endcase -%}
+                {%- if di < vcap and row_ok -%}
+                  {%- assign p_title = '' -%}
                   {%- assign body_html = '' -%}
-                  {%- if segs.size > 1 -%}
-                    {%- assign body_html = segs[1] -%}
-                  {%- endif -%}
+                  {%- case desc_parse_mode -%}
+                    {%- when 'strong_p' -%}
+                      {%- assign segs = part | split: '</strong>' -%}
+                      {%- assign p_title = segs[0] | strip_html | strip -%}
+                      {%- if segs.size > 1 -%}{%- assign body_html = segs[1] -%}{%- endif -%}
+                    {%- when 'h1' -%}
+                      {%- assign segs = part | split: '</h1>' -%}
+                      {%- assign thead = segs[0] | split: '>' | last -%}
+                      {%- assign p_title = thead | strip_html | strip -%}
+                      {%- if segs.size > 1 -%}{%- assign body_html = segs[1] -%}{%- endif -%}
+                    {%- when 'h2' -%}
+                      {%- assign segs = part | split: '</h2>' -%}
+                      {%- assign thead = segs[0] | split: '>' | last -%}
+                      {%- assign p_title = thead | strip_html | strip -%}
+                      {%- if segs.size > 1 -%}{%- assign body_html = segs[1] -%}{%- endif -%}
+                    {%- when 'h3' -%}
+                      {%- assign segs = part | split: '</h3>' -%}
+                      {%- assign thead = segs[0] | split: '>' | last -%}
+                      {%- assign p_title = thead | strip_html | strip -%}
+                      {%- if segs.size > 1 -%}{%- assign body_html = segs[1] -%}{%- endif -%}
+                  {%- endcase -%}
                   {%- assign img_b = tab_list | slice: di, 1 | first -%}
                   <div
                     class="m-growtabs__panel m-growtips__panel"
@@ -308,13 +415,41 @@
         {%- else -%}
           {%- assign di = 0 -%}
           {%- for part in desc_chunks -%}
-            {%- if di < vcap and part != blank and part contains '</strong>' -%}
-              {%- assign segs = part | split: '</strong>' -%}
-              {%- assign p_title = segs[0] | strip_html | strip -%}
+            {%- assign row_ok = false -%}
+            {%- case desc_parse_mode -%}
+              {%- when 'strong_p' -%}
+                {%- if part != blank and part contains '</strong>' -%}{%- assign row_ok = true -%}{%- endif -%}
+              {%- when 'h1' -%}
+                {%- if forloop.index0 > 0 and part != blank and part contains '</h1>' -%}{%- assign row_ok = true -%}{%- endif -%}
+              {%- when 'h2' -%}
+                {%- if forloop.index0 > 0 and part != blank and part contains '</h2>' -%}{%- assign row_ok = true -%}{%- endif -%}
+              {%- when 'h3' -%}
+                {%- if forloop.index0 > 0 and part != blank and part contains '</h3>' -%}{%- assign row_ok = true -%}{%- endif -%}
+            {%- endcase -%}
+            {%- if di < vcap and row_ok -%}
+              {%- assign p_title = '' -%}
               {%- assign body_html = '' -%}
-              {%- if segs.size > 1 -%}
-                {%- assign body_html = segs[1] -%}
-              {%- endif -%}
+              {%- case desc_parse_mode -%}
+                {%- when 'strong_p' -%}
+                  {%- assign segs = part | split: '</strong>' -%}
+                  {%- assign p_title = segs[0] | strip_html | strip -%}
+                  {%- if segs.size > 1 -%}{%- assign body_html = segs[1] -%}{%- endif -%}
+                {%- when 'h1' -%}
+                  {%- assign segs = part | split: '</h1>' -%}
+                  {%- assign thead = segs[0] | split: '>' | last -%}
+                  {%- assign p_title = thead | strip_html | strip -%}
+                  {%- if segs.size > 1 -%}{%- assign body_html = segs[1] -%}{%- endif -%}
+                {%- when 'h2' -%}
+                  {%- assign segs = part | split: '</h2>' -%}
+                  {%- assign thead = segs[0] | split: '>' | last -%}
+                  {%- assign p_title = thead | strip_html | strip -%}
+                  {%- if segs.size > 1 -%}{%- assign body_html = segs[1] -%}{%- endif -%}
+                {%- when 'h3' -%}
+                  {%- assign segs = part | split: '</h3>' -%}
+                  {%- assign thead = segs[0] | split: '>' | last -%}
+                  {%- assign p_title = thead | strip_html | strip -%}
+                  {%- if segs.size > 1 -%}{%- assign body_html = segs[1] -%}{%- endif -%}
+              {%- endcase -%}
               {%- assign img_b = tab_list | slice: di, 1 | first -%}
               <collapsible-tab
                 class="m-collapsible m-growtips__acc-item no-js-hidden"
@@ -488,8 +623,7 @@
         <div class="m-growtips__card m-growtips__empty">
           <p>
             {%- if content_mode == 'from_product_description' -%}
-              Add a product or switch content source to “Manual”. On products, the description must use
-              <code>&lt;p&gt;&lt;strong&gt;…&lt;/strong&gt;&lt;/p&gt;</code> for each section.
+              Add a product or switch to Manual. On products, use <code>&lt;h2&gt;</code> / <code>&lt;h3&gt;</code> section titles, or <code>&lt;p&gt;&lt;strong&gt;…&lt;/strong&gt;&lt;/p&gt;</code> for each tab.
             {%- else -%}
               Add Tab blocks to build this section.
             {%- endif -%}
@@ -799,12 +933,12 @@
       "type": "select",
       "id": "content_source",
       "label": "Content source",
-      "default": "tab_blocks",
+      "default": "from_product_description",
       "options": [
         { "value": "tab_blocks", "label": "Manual (tab blocks)" },
         { "value": "from_product_description", "label": "From product description" }
       ],
-      "info": "Description mode: format the product description as repeating blocks — each block starts with a paragraph that only contains the bold line (tab title), then lists or paragraphs. Example: <p><strong>Soil and spacing</strong></p> followed by <ul><li>…</li></ul>. Optional Tab blocks (same order) add an image to each block."
+      "info": "Parsers, in order: <h2>…</h2> sections, else <h1>…</h1>, else <h3>…</h3>, else <p><strong>Title</strong></p> plus body. Each section becomes a tab. Optional Tab blocks in order add an image per section."
     },
     {
       "type": "text",
