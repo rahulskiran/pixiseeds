@@ -470,7 +470,7 @@
         "48dec5f3-b589-4fbe-a810-0f92c0b33f16": {
           "type": "tab",
           "settings": {
-            "collection": "homegrown-plants",
+            "collection": "all-year-round-seeds-collection",
             "heading": "Vegetables",
             "icon_image_width": 30,
             "icon_svg": ""
@@ -882,7 +882,7 @@
         "tab_49Pbrn": {
           "type": "tab",
           "settings": {
-            "collection": "homegrown-plants",
+            "collection": "autumn-fall-seeds-collection",
             "heading": "Vegetables",
             "icon_image_width": 30,
             "icon_svg": ""
