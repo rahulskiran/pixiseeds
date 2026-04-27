@@ -230,7 +230,7 @@
       "background-4": {
         "settings": {
           "primary_accent": "#222222",
-          "background": "#fff8f5",
+          "background": "#ffffff",
           "background_gradient": "",
           "text": "#ae5000",
           "subtext": "#222222",
@@ -251,7 +251,7 @@
       "background-5": {
         "settings": {
           "primary_accent": "#ffffff",
-          "background": "#de8700",
+          "background": "#d96c3b",
           "background_gradient": "",
           "text": "#ffffff",
           "subtext": "#eeeeee",
