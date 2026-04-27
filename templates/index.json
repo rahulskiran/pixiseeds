@@ -675,7 +675,7 @@
         "tab_yxryNN": {
           "type": "tab",
           "settings": {
-            "collection": "anemometers",
+            "collection": "flower-seeds",
             "heading": "Flowers",
             "icon_image_width": 30,
             "icon_svg": ""
@@ -684,7 +684,7 @@
         "tab_kBrdwH": {
           "type": "tab",
           "settings": {
-            "collection": "power-hand-tools",
+            "collection": "herb-seeds",
             "heading": "Herbs",
             "icon_image_width": 30,
             "icon_svg": ""
