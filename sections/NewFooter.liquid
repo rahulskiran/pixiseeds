@@ -1,0 +1,1174 @@
+{%- liquid
+  assign s_id = section.id
+  assign year = 'now' | date: '%Y'
+  assign bf_menu_count = 0
+  assign bf_has_newsletter = false
+  for block in section.blocks
+    if block.type == 'menu_column'
+      assign bf_menu_count = bf_menu_count | plus: 1
+    elsif block.type == 'newsletter'
+      assign bf_has_newsletter = true
+    endif
+  endfor
+-%}
+
+<footer class="bf" id="bf-{{ s_id }}" style="
+  --bf-bg: {{ section.settings.bg_color }};
+  --bf-text: {{ section.settings.text_color }};
+  --bf-heading: {{ section.settings.heading_color }};
+  --bf-link: {{ section.settings.link_color }};
+  --bf-link-hover: {{ section.settings.link_hover_color }};
+  --bf-icon: {{ section.settings.icon_color }};
+  --bf-icon-hover: {{ section.settings.icon_hover_color }};
+  --bf-accent: {{ section.settings.accent_color }};
+  --bf-bar-bg: {{ section.settings.bar_bg_color }};
+  --bf-bar-text: {{ section.settings.bar_text_color }};
+  --bf-btn-border: {{ section.settings.btn_border_color }};
+  --bf-btn-text: {{ section.settings.btn_text_color }};
+  --bf-pad-top: {{ section.settings.padding_top }}px;
+  --bf-pad-bottom: {{ section.settings.padding_bottom }}px;
+">
+  {%- if section.settings.bg_image != blank -%}
+    <div class="bf__deco" aria-hidden="true">
+      {{ section.settings.bg_image | image_url: width: 480 | image_tag: loading: 'lazy', class: 'bf__deco-img', alt: '', widths: '240,360,480' }}
+    </div>
+  {%- endif -%}
+
+  <div class="bf__inner">
+    <div class="bf__grid{% if section.settings.show_company_info_card %} bf__grid--with-info{% endif %}{% if bf_has_newsletter %} bf__grid--has-newsletter{% endif %}">
+
+      <!-- Brand Column -->
+      <div class="bf__brand">
+        {%- if section.settings.logo_image != blank -%}
+          <div class="bf__logo">
+            {{ section.settings.logo_image | image_url: width: 400 | image_tag: loading: 'lazy', class: 'bf__logo-img', alt: shop.name }}
+          </div>
+        {%- elsif section.settings.logo_text != blank -%}
+          <div class="bf__logo">
+            <span class="bf__logo-text">{{ section.settings.logo_text }}</span>
+            {%- if section.settings.logo_highlight != blank -%}
+              <span class="bf__logo-hl">{{ section.settings.logo_highlight }}</span>
+            {%- endif -%}
+          </div>
+        {%- else -%}
+          <div class="bf__logo">
+            <span class="bf__logo-text">{{ shop.name }}</span>
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.description != blank -%}
+          <p class="bf__desc">{{ section.settings.description }}</p>
+        {%- endif -%}
+
+        <!-- Social Icons -->
+        <div class="bf__socials">
+          {%- if section.settings.twitter_url != blank -%}
+            <a href="{{ section.settings.twitter_url }}" class="bf__social" aria-label="X / Twitter" target="_blank" rel="noopener">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.89l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a>
+          {%- endif -%}
+          {%- if section.settings.linkedin_url != blank -%}
+            <a href="{{ section.settings.linkedin_url }}" class="bf__social" aria-label="LinkedIn" target="_blank" rel="noopener">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            </a>
+          {%- endif -%}
+          {%- if section.settings.instagram_url != blank -%}
+            <a href="{{ section.settings.instagram_url }}" class="bf__social" aria-label="Instagram" target="_blank" rel="noopener">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+            </a>
+          {%- endif -%}
+          {%- if section.settings.facebook_url != blank -%}
+            <a href="{{ section.settings.facebook_url }}" class="bf__social" aria-label="Facebook" target="_blank" rel="noopener">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            </a>
+          {%- endif -%}
+          {%- if section.settings.youtube_url != blank -%}
+            <a href="{{ section.settings.youtube_url }}" class="bf__social" aria-label="YouTube" target="_blank" rel="noopener">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            </a>
+          {%- endif -%}
+          {%- if section.settings.tiktok_url != blank -%}
+            <a href="{{ section.settings.tiktok_url }}" class="bf__social" aria-label="TikTok" target="_blank" rel="noopener">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+            </a>
+          {%- endif -%}
+        </div>
+
+        {%- if section.settings.show_back_to_top -%}
+          <button type="button" class="bf__btt" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
+            <span>{{ section.settings.back_to_top_text | default: 'BACK TO TOP' }}</span>
+          </button>
+        {%- endif -%}
+      </div>
+
+      <!-- Link Columns (blocks) -->
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'menu_column' -%}
+          <div class="bf__col" {{ block.shopify_attributes }}>
+            {%- if block.settings.heading != blank -%}
+              <h3 class="bf__col-heading">{{ block.settings.heading }}</h3>
+            {%- endif -%}
+            {%- if block.settings.menu != blank -%}
+              <ul class="bf__links">
+                {%- for link in linklists[block.settings.menu].links -%}
+                  <li><a href="{{ link.url }}" class="bf__link">{{ link.title }}</a></li>
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
+          </div>
+        {%- elsif block.type == 'newsletter' -%}
+          <div class="bf__newsletter" {{ block.shopify_attributes }}>
+            {%- if block.settings.heading != blank -%}
+              <h3 class="bf__newsletter-heading">{{ block.settings.heading }}</h3>
+            {%- endif -%}
+            {%- if block.settings.subtext != blank -%}
+              <p class="bf__newsletter-text">{{ block.settings.subtext }}</p>
+            {%- endif -%}
+            {%- form 'customer', class: 'bf__newsletter-form' -%}
+              <input type="hidden" name="contact[tags]" value="newsletter">
+              <div class="bf__newsletter-field">
+                <label class="visually-hidden" for="BF-NL-{{ block.id }}">{{ block.settings.placeholder }}</label>
+                <input
+                  id="BF-NL-{{ block.id }}"
+                  type="email"
+                  name="contact[email]"
+                  class="bf__newsletter-input"
+                  value="{{ form.email }}"
+                  autocorrect="off"
+                  autocapitalize="off"
+                  autocomplete="email"
+                  placeholder="{{ block.settings.placeholder }}"
+                  required
+                  {%- if form.errors -%}
+                    aria-invalid="true"
+                    aria-describedby="BF-NL-err-{{ block.id }}"
+                  {%- elsif form.posted_successfully? -%}
+                    aria-describedby="BF-NL-ok-{{ block.id }}"
+                  {%- endif -%}
+                >
+                <button type="submit" class="bf__newsletter-btn" name="commit">
+                  {{ block.settings.button_label }}
+                </button>
+              </div>
+              {%- if form.errors -%}
+                <p class="bf__newsletter-msg bf__newsletter-msg--error" id="BF-NL-err-{{ block.id }}" role="alert">
+                  {{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}
+                </p>
+              {%- endif -%}
+              {%- if form.posted_successfully? -%}
+                <p class="bf__newsletter-msg bf__newsletter-msg--ok" id="BF-NL-ok-{{ block.id }}" tabindex="-1">
+                  {{ 'newsletter.success' | t }}
+                </p>
+              {%- endif -%}
+            {%- endform -%}
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+
+      {%- comment -%} Company column, then Contact column (rightmost) — same row as Policies {%- endcomment -%}
+      {%- if section.settings.show_company_info_card -%}
+      {%- liquid
+        assign reg_name = section.settings.info_registered_name | default: section.settings.company_legal_name
+        assign reg_addr = section.settings.info_registered_address | default: section.settings.company_address
+      -%}
+      <div class="bf__col bf__info-col">
+        <div class="bf__info-card">
+          {%- if section.settings.info_company_section_heading != blank -%}
+            <h3 class="bf__info-block-title">{{ section.settings.info_company_section_heading }}</h3>
+          {%- endif -%}
+          <div class="bf__info-list">
+            {%- if section.settings.info_official_name != blank -%}
+              <div class="bf__info-item bf__info-item--inline">
+                <span class="bf__info-term">{{ section.settings.info_label_official }}</span>
+                <span class="bf__info-value">{{ section.settings.info_official_name }}</span>
+              </div>
+            {%- endif -%}
+            {%- if reg_name != blank -%}
+              <div class="bf__info-item bf__info-item--inline">
+                <span class="bf__info-term">{{ section.settings.info_label_registered }}</span>
+                <span class="bf__info-value">{{ reg_name }}</span>
+              </div>
+            {%- endif -%}
+            {%- if section.settings.info_gst_number != blank -%}
+              <div class="bf__info-item bf__info-item--inline">
+                <span class="bf__info-term">{{ section.settings.info_label_gst }}</span>
+                <span class="bf__info-value">{{ section.settings.info_gst_number }}</span>
+              </div>
+            {%- endif -%}
+            {%- if reg_addr != blank -%}
+              <div class="bf__info-item bf__info-item--stack">
+                <span class="bf__info-term">{{ section.settings.info_label_address }}</span>
+                <div class="bf__info-value"><address class="bf__info-address">{{ reg_addr | newline_to_br }}</address></div>
+              </div>
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+
+      <div class="bf__col bf__contact-col">
+        <div class="bf__info-card">
+          {%- if section.settings.info_contact_section_heading != blank -%}
+            <h3 class="bf__info-block-title">{{ section.settings.info_contact_section_heading }}</h3>
+          {%- endif -%}
+          <div class="bf__info-list">
+            {%- if section.settings.info_phone != blank -%}
+              <div class="bf__info-item bf__info-item--inline">
+                <span class="bf__info-term">{{ section.settings.info_label_phone }}</span>
+                <span class="bf__info-value"><a href="tel:{{ section.settings.info_phone | strip | replace: ' ', '' }}">{{ section.settings.info_phone }}</a></span>
+              </div>
+            {%- endif -%}
+            {%- if section.settings.info_email != blank -%}
+              <div class="bf__info-item bf__info-item--inline">
+                <span class="bf__info-term">{{ section.settings.info_label_email }}</span>
+                <span class="bf__info-value"><a href="mailto:{{ section.settings.info_email }}">{{ section.settings.info_email }}</a></span>
+              </div>
+            {%- endif -%}
+            {%- if section.settings.info_hours != blank -%}
+              <div class="bf__info-item bf__info-item--inline">
+                <span class="bf__info-term">{{ section.settings.info_label_hours }}</span>
+                <span class="bf__info-value">{{ section.settings.info_hours }}</span>
+              </div>
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+      {%- endif -%}
+
+    </div>
+  </div>
+
+    <div class="bf__legal">
+      <div class="bf__legal-inner">
+        {%- if section.settings.disclaimer_body != blank -%}
+          <div class="bf__disclaimer bf__disclaimer--card" role="note" aria-label="{{ section.settings.disclaimer_label | escape }}">
+            <p class="bf__disclaimer-label">{{ section.settings.disclaimer_label }}</p>
+            <p class="bf__disclaimer-body">{{ section.settings.disclaimer_body }}</p>
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.show_payment_icons -%}
+          <div class="bf__payment-icons" style="--payment-gap: {{ section.settings.payment_icons_gap }}px; --payment-align: {{ section.settings.payment_icons_alignment }};">
+            <span class="visually-hidden">{{ 'general.payment.options' | t }}</span>
+            <ul class="bf__payment-list" role="list">
+              {%- for type in shop.enabled_payment_types -%}
+                <li class="bf__payment-item">
+                  {{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+
+  <!-- Bottom Bar -->
+  <div class="bf__bar">
+    <div class="bf__bar-inner">
+      <p class="bf__copyright">{{ section.settings.copyright_text | replace: '[year]', year }}</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  #bf-{{ s_id }} {
+    position: relative;
+    overflow: hidden;
+    background: var(--bf-bg);
+    color: var(--bf-text);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  .bf__deco {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 50%;
+    pointer-events: none;
+    opacity: {{ section.settings.bg_image_opacity | divided_by: 100.0 }};
+  }
+
+  .bf__deco-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: right center;
+    display: block;
+  }
+
+  .bf__inner {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--bf-pad-top) 40px var(--bf-pad-bottom);
+  }
+
+  .bf__grid {
+    display: grid;
+    align-items: flex-start;
+    grid-template-columns: 1.4fr repeat({{ bf_menu_count }}, minmax(0, 1fr));
+    gap: 60px;
+  }
+
+  .bf__grid--with-info:not(.bf__grid--has-newsletter) {
+    grid-template-columns: 1.4fr repeat({{ bf_menu_count }}, minmax(0, 1fr)) minmax(11rem, 1fr) minmax(11rem, 1.15fr);
+  }
+
+  .bf__grid--has-newsletter:not(.bf__grid--with-info) {
+    grid-template-columns: 1.4fr repeat({{ bf_menu_count }}, minmax(0, 1fr)) minmax(11rem, 1.2fr);
+  }
+
+  .bf__grid--with-info.bf__grid--has-newsletter {
+    grid-template-columns: 1.4fr repeat({{ bf_menu_count }}, minmax(0, 1fr)) minmax(11rem, 1.2fr) minmax(11rem, 1fr) minmax(11rem, 1.15fr);
+  }
+
+  .bf__newsletter {
+    min-width: 0;
+  }
+
+  .bf__newsletter-heading {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--bf-heading);
+    margin: 0 0 12px;
+    letter-spacing: 0.02em;
+    line-height: 1.3;
+  }
+
+  .bf__newsletter-text {
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--bf-text);
+    margin: 0 0 16px;
+    max-width: 22rem;
+  }
+
+  .bf__newsletter-field {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .bf__newsletter-input {
+    flex: 1 1 10rem;
+    flex-grow: 1;
+    min-width: 0;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 8px 12px;
+    min-height: 0;
+    height: auto;
+    font-size: 14px;
+    line-height: 1.25;
+    font-family: inherit;
+    color: #1a1a1a;
+    background: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 6px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    -webkit-appearance: none;
+    appearance: none;
+    vertical-align: middle;
+  }
+
+  .bf__newsletter-input::placeholder {
+    color: #6b7280;
+  }
+
+  .bf__newsletter-input:focus {
+    border-color: var(--bf-accent);
+    box-shadow: 0 0 0 2px rgba(229, 166, 25, 0.35);
+  }
+
+  .bf__newsletter-btn {
+    flex: 0 0 auto;
+    padding: 11px 18px;
+    min-height: 44px;
+    font-size: 13px;
+    line-height: 1.35;
+    font-weight: 700;
+    font-family: inherit;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--bf-bar-text);
+    background: var(--bf-accent);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: filter 0.2s, transform 0.15s;
+    white-space: nowrap;
+    box-sizing: border-box;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .bf__newsletter-btn:hover {
+    filter: brightness(1.08);
+  }
+
+  .bf__newsletter-btn:active {
+    transform: scale(0.98);
+  }
+
+  .bf__newsletter-msg {
+    margin: 10px 0 0;
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
+  .bf__newsletter-msg--error {
+    color: #fecaca;
+  }
+
+  .bf__newsletter-msg--ok {
+    color: #86efac;
+  }
+
+  /* Brand */
+  .bf__brand {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .bf__logo {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .bf__logo-img {
+    max-height: {{ section.settings.logo_height | default: 40 }}px;
+    width: auto;
+    display: block;
+  }
+
+  .bf__logo-text {
+    font-size: {{ section.settings.logo_font_size | default: 24 }}px;
+    font-weight: 800;
+    color: var(--bf-heading);
+    letter-spacing: -0.02em;
+  }
+
+  .bf__logo-hl {
+    font-size: {{ section.settings.logo_font_size | default: 24 }}px;
+    font-weight: 800;
+    color: var(--bf-accent);
+    letter-spacing: -0.02em;
+  }
+
+  .bf__desc {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--bf-text);
+    max-width: 320px;
+    margin: 0;
+  }
+
+  /* Socials */
+  .bf__socials {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+  }
+
+  .bf__social {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+    color: var(--bf-icon);
+    transition: background 0.2s, color 0.2s, transform 0.2s;
+    text-decoration: none;
+  }
+
+  .bf__social:hover {
+    background: rgba(255,255,255,0.15);
+    color: var(--bf-icon-hover);
+    transform: translateY(-2px);
+  }
+
+  /* Back to top */
+  .bf__btt {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border: 1.5px solid var(--bf-btn-border);
+    border-radius: 8px;
+    background: transparent;
+    color: var(--bf-btn-text);
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+    width: fit-content;
+    margin-top: 4px;
+  }
+
+  .bf__btt:hover {
+    background: rgba(255,255,255,0.06);
+    transform: translateY(-1px);
+  }
+
+  /* Menu Columns */
+  .bf__col {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .bf__col-heading {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--bf-heading);
+    margin: 0 0 20px;
+    letter-spacing: 0.02em;
+  }
+
+  .bf__links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .bf__link {
+    font-size: 14px;
+    color: var(--bf-link);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .bf__link:hover {
+    color: var(--bf-link-hover);
+  }
+
+  /* Company + Contact columns (right of Policies) */
+  .bf__info-col,
+  .bf__contact-col {
+    min-width: 0;
+  }
+
+  .bf__info-card {
+    max-width: 100%;
+    text-align: left;
+  }
+
+  /* Match .bf__col-heading / .bf__link typography (Menu & Policies columns) */
+  .bf__info-block-title {
+    margin: 0 0 20px;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--bf-heading);
+    letter-spacing: 0.02em;
+    line-height: 1.3;
+    text-transform: none;
+  }
+
+  .bf__info-list {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .bf__info-item--inline {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 6px 10px;
+    font-size: 14px;
+    line-height: 1.45;
+  }
+
+  .bf__info-item--stack {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .bf__info-item--inline .bf__info-term {
+    margin: 0;
+    flex: 0 0 auto;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--bf-heading);
+    letter-spacing: 0.02em;
+  }
+
+  .bf__info-item--inline .bf__info-value {
+    margin: 0;
+    flex: 1 1 auto;
+    min-width: 7rem;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--bf-link);
+  }
+
+  .bf__info-item--stack .bf__info-term {
+    display: block;
+    margin: 0 0 4px;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--bf-heading);
+    letter-spacing: 0.02em;
+  }
+
+  .bf__info-item--stack .bf__info-value {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--bf-link);
+  }
+
+  .bf__info-value a {
+    color: var(--bf-link);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color 0.2s;
+  }
+
+  .bf__info-value a:hover {
+    color: var(--bf-link-hover);
+  }
+
+  .bf__info-address {
+    font-style: normal;
+    margin: 0;
+  }
+
+  /* Disclaimer strip (dark green band + card + gold bar) */
+  .bf__legal {
+    position: relative;
+    z-index: 1;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 32px 40px 24px;
+  }
+
+  .bf__legal-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+  }
+
+  .bf__disclaimer--card {
+    width: 100%;
+    max-width: 46rem;
+    margin: 0 auto;
+    padding: 18px 22px 20px 20px;
+    box-sizing: border-box;
+    border-radius: 8px;
+    border-left: 4px solid var(--bf-accent);
+    background: rgba(0, 0, 0, 0.34);
+    text-align: left;
+  }
+
+  .bf__disclaimer-label {
+    margin: 0 0 10px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #ffffff;
+  }
+
+  .bf__disclaimer-body {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.65;
+    color: rgba(255, 255, 255, 0.74);
+  }
+
+  /* Bottom Bar — thick gold strip under disclaimer */
+  .bf__bar {
+    background: var(--bf-bar-bg);
+    position: relative;
+    z-index: 1;
+    min-height: 56px;
+    display: flex;
+    align-items: center;
+  }
+
+  .bf__bar-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 18px 40px;
+    text-align: center;
+    width: 100%;
+  }
+
+  .bf__copyright {
+    font-size: 13px;
+    color: var(--bf-bar-text);
+    margin: 0;
+  }
+
+  .bf__payment-icons {
+  }
+
+  .bf__payment-list {
+    display: flex;
+    align-items: center;
+    justify-content: var(--payment-align);
+    flex-wrap: wrap;
+    gap: var(--payment-gap);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .bf__payment-item {
+    display: flex;
+    align-items: center;
+  }
+
+  .bf__payment-item svg {
+    height: 24px;
+    width: auto;
+  }
+
+  /* Tablet & mobile: single column so brand → policies → newsletter stack */
+  @media screen and (max-width: 991px) {
+    #bf-{{ s_id }} .bf__grid,
+    #bf-{{ s_id }} .bf__grid.bf__grid--with-info,
+    #bf-{{ s_id }} .bf__grid.bf__grid--has-newsletter,
+    #bf-{{ s_id }} .bf__grid.bf__grid--with-info.bf__grid--has-newsletter {
+      grid-template-columns: 1fr;
+      gap: 36px;
+    }
+
+    #bf-{{ s_id }} .bf__brand,
+    #bf-{{ s_id }} .bf__col,
+    #bf-{{ s_id }} .bf__newsletter,
+    #bf-{{ s_id }} .bf__info-col,
+    #bf-{{ s_id }} .bf__contact-col {
+      grid-column: 1 / -1;
+      max-width: none;
+    }
+
+    .bf__deco { width: 40%; opacity: 0.15; }
+  }
+
+  /* Mobile refinements */
+  @media screen and (max-width: 599px) {
+    .bf__inner {
+      padding: 40px 20px 32px;
+    }
+
+    #bf-{{ s_id }} .bf__grid,
+    #bf-{{ s_id }} .bf__grid.bf__grid--with-info,
+    #bf-{{ s_id }} .bf__grid.bf__grid--has-newsletter,
+    #bf-{{ s_id }} .bf__grid.bf__grid--with-info.bf__grid--has-newsletter {
+      gap: 28px;
+    }
+
+    .bf__deco { display: none; }
+    .bf__desc { max-width: 100%; }
+
+    .bf__col-heading { margin-bottom: 14px; }
+    .bf__links { gap: 12px; }
+
+    .bf__bar-inner { padding: 14px 20px; }
+    .bf__copyright { font-size: 12px; }
+
+    .bf__legal { padding: 28px 20px 20px; }
+    .bf__bar { min-height: 48px; }
+    .bf__bar-inner { padding: 16px 20px; }
+
+    .bf__newsletter-field {
+      flex-direction: column;
+      align-items: stretch;
+      align-content: flex-start;
+    }
+
+    /* Column flex + flex-grow on input = huge vertical stretch; lock height */
+    #bf-{{ s_id }} .bf__newsletter-input {
+      flex: 0 0 auto;
+      flex-grow: 0;
+      flex-shrink: 0;
+      width: 100%;
+      padding: 8px 12px;
+      line-height: 1.25;
+      min-height: 0;
+      height: auto;
+      max-height: 3rem;
+    }
+
+    #bf-{{ s_id }} .bf__newsletter-btn {
+      flex: 0 0 auto;
+    }
+
+    .bf__newsletter-btn {
+      width: 100%;
+      white-space: normal;
+    }
+
+    .bf__newsletter-text {
+      max-width: none;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Bold Footer",
+  "tag": "section",
+  "class": "bold-footer-section",
+  "settings": [
+    { "type": "header", "content": "Logo" },
+    {
+      "type": "image_picker",
+      "id": "logo_image",
+      "label": "Logo image",
+      "info": "Overrides text logo when set."
+    },
+    {
+      "type": "range",
+      "id": "logo_height",
+      "label": "Logo height (px)",
+      "min": 20, "max": 80, "step": 2, "default": 40
+    },
+    {
+      "type": "text",
+      "id": "logo_text",
+      "label": "Logo text",
+      "default": "Herbi"
+    },
+    {
+      "type": "text",
+      "id": "logo_highlight",
+      "label": "Logo highlight text",
+      "info": "Shown in accent color after the main text.",
+      "default": "Solutions"
+    },
+    {
+      "type": "range",
+      "id": "logo_font_size",
+      "label": "Logo font size (px)",
+      "min": 16, "max": 40, "step": 1, "default": 24
+    },
+
+    { "type": "header", "content": "Brand info" },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Professional-grade crop protection designed to maximize agricultural yield across Europe."
+    },
+
+    { "type": "header", "content": "Social links" },
+    { "type": "url", "id": "twitter_url", "label": "X / Twitter URL" },
+    { "type": "url", "id": "linkedin_url", "label": "LinkedIn URL" },
+    { "type": "url", "id": "instagram_url", "label": "Instagram URL" },
+    { "type": "url", "id": "facebook_url", "label": "Facebook URL" },
+    { "type": "url", "id": "youtube_url", "label": "YouTube URL" },
+    { "type": "url", "id": "tiktok_url", "label": "TikTok URL" },
+
+    { "type": "header", "content": "Back to top" },
+    {
+      "type": "checkbox",
+      "id": "show_back_to_top",
+      "label": "Show Back to Top button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "back_to_top_text",
+      "label": "Button text",
+      "default": "BACK TO TOP"
+    },
+
+    { "type": "header", "content": "Company & contact (2 columns)" },
+    {
+      "type": "checkbox",
+      "id": "show_company_info_card",
+      "label": "Show company & contact columns",
+      "default": true
+    },
+    {
+      "type": "paragraph",
+      "content": "Trading name is omitted here when using the logo column, to avoid repetition."
+    },
+    {
+      "type": "text",
+      "id": "info_company_section_heading",
+      "label": "Company section heading",
+      "default": "Company"
+    },
+    {
+      "type": "text",
+      "id": "info_label_official",
+      "label": "Label: official name",
+      "default": "Official name"
+    },
+    {
+      "type": "text",
+      "id": "info_official_name",
+      "label": "Official name value",
+      "default": "Herbi Solutions"
+    },
+    {
+      "type": "text",
+      "id": "info_label_registered",
+      "label": "Label: registered business name",
+      "default": "Business name"
+    },
+    {
+      "type": "text",
+      "id": "info_registered_name",
+      "label": "Registered business name",
+      "default": "CREATIVE FARMER LTD"
+    },
+    {
+      "type": "text",
+      "id": "info_label_gst",
+      "label": "Label: GST number",
+      "default": "GST-Nummer"
+    },
+    {
+      "type": "text",
+      "id": "info_gst_number",
+      "label": "GST number",
+      "default": "36AAFCJ4504J1ZL"
+    },
+    {
+      "type": "text",
+      "id": "info_label_address",
+      "label": "Label: address",
+      "default": "Address"
+    },
+    {
+      "type": "textarea",
+      "id": "info_registered_address",
+      "label": "Registered address",
+      "default": "128 City Road, London, United Kingdom, EC1V 2NX"
+    },
+    {
+      "type": "text",
+      "id": "info_contact_section_heading",
+      "label": "Contact section heading",
+      "default": "Contact"
+    },
+    {
+      "type": "text",
+      "id": "info_label_phone",
+      "label": "Label: telephone",
+      "default": "Telephone"
+    },
+    {
+      "type": "text",
+      "id": "info_phone",
+      "label": "Telephone number",
+      "default": "+44 1157186048"
+    },
+    {
+      "type": "text",
+      "id": "info_label_email",
+      "label": "Label: email",
+      "default": "Email"
+    },
+    {
+      "type": "text",
+      "id": "info_email",
+      "label": "Email address",
+      "default": "support@suresoil.com"
+    },
+    {
+      "type": "text",
+      "id": "info_label_hours",
+      "label": "Label: office hours",
+      "default": "Office hours"
+    },
+    {
+      "type": "textarea",
+      "id": "info_hours",
+      "label": "Office hours text",
+      "default": "Monday to Friday, 09:30 – 17:00 (United Kingdom – GMT)"
+    },
+
+    { "type": "header", "content": "Disclaimer" },
+    {
+      "type": "text",
+      "id": "disclaimer_label",
+      "label": "Disclaimer label",
+      "default": "DISCLAIMER:"
+    },
+    {
+      "type": "textarea",
+      "id": "disclaimer_body",
+      "label": "Disclaimer text",
+      "default": "Use biocidal products with care. Always read the label and product information before use."
+    },
+    {
+      "type": "paragraph",
+      "content": "Fallback fields below apply only if registered name or address above are empty."
+    },
+    {
+      "type": "text",
+      "id": "company_legal_name",
+      "label": "Fallback legal name",
+      "default": "CREATIVE FARMER LTD"
+    },
+    {
+      "type": "textarea",
+      "id": "company_address",
+      "label": "Fallback address",
+      "default": "128 City Road, London, United Kingdom, EC1V 2NX"
+    },
+
+    { "type": "header", "content": "Bottom bar" },
+    {
+      "type": "text",
+      "id": "copyright_text",
+      "label": "Copyright text",
+      "info": "Use [year] for the current year.",
+      "default": "Copyright © [year], Herbi Solutions. All Rights Reserved."
+    },
+    { "type": "header", "content": "Payment icons" },
+    {
+      "type": "checkbox",
+      "id": "show_payment_icons",
+      "label": "Show payment icons",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "payment_icons_alignment",
+      "label": "Alignment",
+      "options": [
+        { "value": "flex-start", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "flex-end", "label": "Right" },
+        { "value": "space-between", "label": "Space between" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "payment_icons_gap",
+      "label": "Gap between icons",
+      "min": 0, "max": 50, "step": 1, "unit": "px", "default": 10
+    },
+
+    { "type": "header", "content": "Background" },
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Decorative background image",
+      "info": "Shown on the right. Use a subtle pattern or artwork."
+    },
+    {
+      "type": "range",
+      "id": "bg_image_opacity",
+      "label": "Background image opacity (%)",
+      "min": 5, "max": 100, "step": 5, "default": 30
+    },
+
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "bg_color", "label": "Footer background", "default": "#163b2b" },
+    { "type": "color", "id": "text_color", "label": "Body text", "default": "#b0c4b1" },
+    { "type": "color", "id": "heading_color", "label": "Headings", "default": "#ffffff" },
+    { "type": "color", "id": "link_color", "label": "Links", "default": "#c8d6c9" },
+    { "type": "color", "id": "link_hover_color", "label": "Links hover", "default": "#ffffff" },
+    { "type": "color", "id": "accent_color", "label": "Accent (logo highlight)", "default": "#e5a619" },
+    { "type": "color", "id": "icon_color", "label": "Social icons", "default": "#ffffff" },
+    { "type": "color", "id": "icon_hover_color", "label": "Social icons hover", "default": "#e5a619" },
+    { "type": "color", "id": "btn_border_color", "label": "Back to top border", "default": "#ffffff" },
+    { "type": "color", "id": "btn_text_color", "label": "Back to top text", "default": "#ffffff" },
+    { "type": "color", "id": "bar_bg_color", "label": "Bottom bar background", "default": "#e5a619" },
+    { "type": "color", "id": "bar_text_color", "label": "Bottom bar text", "default": "#1a3c2b" },
+
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 20, "max": 120, "step": 4, "default": 60, "unit": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 20, "max": 120, "step": 4, "default": 48, "unit": "px" }
+  ],
+  "blocks": [
+    {
+      "type": "menu_column",
+      "name": "Menu column",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Site map"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu"
+        }
+      ]
+    },
+    {
+      "type": "newsletter",
+      "name": "Newsletter",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Newsletter"
+        },
+        {
+          "type": "textarea",
+          "id": "subtext",
+          "label": "Text",
+          "default": "Subscribe for offers and seasonal tips."
+        },
+        {
+          "type": "text",
+          "id": "placeholder",
+          "label": "Email placeholder",
+          "default": "Email address"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "default": "Subscribe"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Footer New",
+      "blocks": [
+        { "type": "menu_column", "settings": { "heading": "Policies" } },
+        {
+          "type": "newsletter",
+          "settings": {
+            "heading": "Newsletter",
+            "subtext": "Subscribe for offers and seasonal tips.",
+            "placeholder": "Email address",
+            "button_label": "Subscribe"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
