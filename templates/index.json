@@ -144,7 +144,7 @@
       ],
       "settings": {
         "layout": "full-width",
-        "enable_split_promo": true,
+        "enable_split_promo": false,
         "split_hide_panel_on_mobile": true,
         "split_mobile_full_width": false,
         "split_panel_width": 28,
