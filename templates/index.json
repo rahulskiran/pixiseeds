@@ -984,18 +984,26 @@
     "steal_garden_trQLtU": {
       "type": "StealGarden",
       "blocks": {
+        "hotspot_tBTjpb": {
+          "type": "hotspot",
+          "settings": {
+            "product": "slender-dutchmans-pipe-aristolochia-debilis-deep-purple-flower-herb-vine-seeds",
+            "offset_top": 30,
+            "offset_left": 64
+          }
+        },
         "hotspot_gdVQ3i": {
           "type": "hotspot",
           "settings": {
-            "product": "brinjal-seeds",
-            "offset_top": 43,
-            "offset_left": 20
+            "product": "erigeron-karvinskianus-mexican-daisy-flower-seeds-for-garden-borders-and-ground-cover",
+            "offset_top": 46,
+            "offset_left": 14
           }
         },
         "hotspot_DARyKQ": {
           "type": "hotspot",
           "settings": {
-            "product": "",
+            "product": "oregon-geranium-geranium-oreganum-cranesbill-purple-native-flower-herb-seeds",
             "offset_top": 38,
             "offset_left": 45
           }
@@ -1003,21 +1011,22 @@
         "hotspot_bbyM4E": {
           "type": "hotspot",
           "settings": {
-            "product": "",
-            "offset_top": 55,
+            "product": "creeping-winter-savory-satureja-montana-herb-pink-flower-seeds",
+            "offset_top": 84,
             "offset_left": 72
           }
         },
         "hotspot_fMwUEm": {
           "type": "hotspot",
           "settings": {
-            "product": "",
-            "offset_top": 48,
-            "offset_left": 88
+            "product": "yellow-tansy-double-golden-buttons-tanacetum-vulgare-fern-leaf-flower-seeds",
+            "offset_top": 38,
+            "offset_left": 82
           }
         }
       },
       "block_order": [
+        "hotspot_tBTjpb",
         "hotspot_gdVQ3i",
         "hotspot_DARyKQ",
         "hotspot_bbyM4E",
@@ -1026,7 +1035,7 @@
       "name": "Steal the garden",
       "settings": {
         "color_scheme": "background-4",
-        "image": "shopify://shop_images/Sunflower.jpg",
+        "image": "shopify://shop_images/Flower_garden_captured_on_iPhone_202604291205.webp",
         "image_aspect_ratio": "16/9",
         "image_radius": 16,
         "heading": "Steal This Garden",
