@@ -11,6 +11,88 @@
   "type": "footer",
   "name": "Footer",
   "sections": {
+    "new_footer_CMxiAM": {
+      "type": "NewFooter",
+      "blocks": {
+        "menu_column_HRdRw6": {
+          "type": "menu_column",
+          "settings": {
+            "heading": "Policies",
+            "menu": ""
+          }
+        },
+        "newsletter_pK8Ra9": {
+          "type": "newsletter",
+          "settings": {
+            "heading": "Newsletter",
+            "subtext": "Subscribe for offers and seasonal tips.",
+            "placeholder": "Email address",
+            "button_label": "Subscribe"
+          }
+        }
+      },
+      "block_order": [
+        "menu_column_HRdRw6",
+        "newsletter_pK8Ra9"
+      ],
+      "name": "Footer New",
+      "settings": {
+        "logo_image": "shopify://shop_images/Asset_1_2.png",
+        "logo_height": 40,
+        "logo_text": "Herbi",
+        "logo_highlight": "Solutions",
+        "logo_font_size": 24,
+        "description": "Professional-grade crop protection designed to maximize agricultural yield across Europe.",
+        "twitter_url": "",
+        "linkedin_url": "",
+        "instagram_url": "",
+        "facebook_url": "",
+        "youtube_url": "",
+        "tiktok_url": "",
+        "show_back_to_top": true,
+        "back_to_top_text": "BACK TO TOP",
+        "show_company_info_card": true,
+        "info_company_section_heading": "Company",
+        "info_label_official": "Official name",
+        "info_official_name": "Herbi Solutions",
+        "info_label_registered": "Business name",
+        "info_registered_name": "CREATIVE FARMER LTD",
+        "info_label_gst": "GST-Nummer",
+        "info_gst_number": "36AAFCJ4504J1ZL",
+        "info_label_address": "Address",
+        "info_registered_address": "128 City Road, London, United Kingdom, EC1V 2NX",
+        "info_contact_section_heading": "Contact",
+        "info_label_phone": "Telephone",
+        "info_phone": "+44 1157186048",
+        "info_label_email": "Email",
+        "info_email": "support@suresoil.com",
+        "info_label_hours": "Office hours",
+        "info_hours": "Monday to Friday, 09:30 – 17:00 (United Kingdom – GMT)",
+        "disclaimer_label": "DISCLAIMER:",
+        "disclaimer_body": "Use biocidal products with care. Always read the label and product information before use.",
+        "company_legal_name": "CREATIVE FARMER LTD",
+        "company_address": "128 City Road, London, United Kingdom, EC1V 2NX",
+        "copyright_text": "Copyright © [year], Herbi Solutions. All Rights Reserved.",
+        "show_payment_icons": true,
+        "payment_icons_alignment": "center",
+        "payment_icons_gap": 10,
+        "bg_image_opacity": 30,
+        "bg_color": "#ae5000",
+        "text_color": "#ffffff",
+        "heading_color": "#ffffff",
+        "link_color": "#c8d6c9",
+        "link_hover_color": "#ffffff",
+        "accent_color": "#ffffff",
+        "icon_color": "#ffffff",
+        "icon_hover_color": "#e5a619",
+        "btn_border_color": "#ffffff",
+        "btn_text_color": "#ffffff",
+        "bar_bg_color": "#ffffff",
+        "bar_text_color": "#d96c3b",
+        "padding_top": 60,
+        "padding_bottom": 48
+      }
+    },
     "a76f4314-395f-4e7d-bdc8-4260fd09fffe": {
       "type": "featured-promotion",
       "blocks": {
@@ -163,6 +245,7 @@
         "newsletter_mEbYBr",
         "our_store_aHAKtR"
       ],
+      "disabled": true,
       "custom_css": [
         ".m-footer .m-footer-widget__title {font-family: var(--font-stack-body);}",
         ".m-footer-widget__wrapper {font-weight: 400;}",
@@ -236,6 +319,7 @@
     }
   },
   "order": [
+    "new_footer_CMxiAM",
     "a76f4314-395f-4e7d-bdc8-4260fd09fffe",
     "footer",
     "mobile-sticky-bar",
