@@ -24,6 +24,42 @@
   endif
 
   assign heading_tag = section.settings.heading_tag | default: 'h2'
+
+  assign hs = section.settings.hotspot_style
+  if hs == 'dark'
+    assign sg_def_core = '#1a1a1a'
+    assign sg_def_core_border = 'rgba(255, 255, 255, 0.2)'
+    assign sg_def_ring = 'rgba(255, 226, 3, 1)'
+    assign sg_def_ring_outline = 'rgba(0, 0, 0, 0.2)'
+    assign sg_def_arrow = '#ffffff'
+  else
+    assign sg_def_core = '#ffffff'
+    assign sg_def_core_border = 'rgba(255, 255, 255, 0.5)'
+    assign sg_def_ring = 'rgba(255, 255, 255, 0.5)'
+    assign sg_def_ring_outline = 'rgba(255, 255, 255, 0.4)'
+    assign sg_def_arrow = '#ffffff'
+  endif
+
+  assign sg_core = sg_def_core
+  if section.settings.hotspot_fill_color != blank
+    assign sg_core = section.settings.hotspot_fill_color
+  endif
+  assign sg_core_border = sg_def_core_border
+  if section.settings.hotspot_border_color != blank
+    assign sg_core_border = section.settings.hotspot_border_color
+  endif
+  assign sg_ring = sg_def_ring
+  if section.settings.hotspot_pulse_color != blank
+    assign sg_ring = section.settings.hotspot_pulse_color
+  endif
+  assign sg_ring_outline = sg_def_ring_outline
+  if section.settings.hotspot_pulse_border_color != blank
+    assign sg_ring_outline = section.settings.hotspot_pulse_border_color
+  endif
+  assign sg_arrow = sg_def_arrow
+  if section.settings.hotspot_arrow_color != blank
+    assign sg_arrow = section.settings.hotspot_arrow_color
+  endif
 -%}
 
 {% style %}
@@ -34,6 +70,11 @@
     --m-sg-title-size-d: {{ section.settings.title_size_desktop }}px;
     --m-sg-sub-size: {{ section.settings.subtitle_size }}px;
     --m-sg-pin-size: {{ section.settings.hotspot_size }}px;
+    --m-sg-hotspot-core: {{ sg_core }};
+    --m-sg-hotspot-core-border: {{ sg_core_border }};
+    --m-sg-hotspot-ring: {{ sg_ring }};
+    --m-sg-hotspot-ring-outline: {{ sg_ring_outline }};
+    --m-sg-hotspot-arrow: {{ sg_arrow }};
   }
   #shopify-section-{{ section.id }} .m-stealgarden.m-section--padding {
     padding-top: {{ section.settings.padding_top_mobile }}px;
@@ -97,6 +138,7 @@
           {% if block.type != 'hotspot' %}
             {% continue %}
           {% endif %}
+          {% assign sg_pin_i = forloop.index0 %}
           {% assign prod = blank %}
           {% if block.settings.product != blank %}
             {% assign prod = all_products[block.settings.product] %}
@@ -117,19 +159,26 @@
           {% if prod != blank %}
             <a
               href="{{ prod.url }}"
-              class="m-stealgarden__pin m-stealgarden__pin--{{ section.settings.hotspot_style }}"
-              style="top: {{ top }}%; left: {{ left }}%;"
+              class="m-stealgarden__pin m-stealgarden__pin--{{ section.settings.hotspot_style }} m-stealgarden__pin--anim-{{ section.settings.hotspot_dot_animation }}"
+              style="top: {{ top }}%; left: {{ left }}%; --m-sg-pin-stagger: {{ sg_pin_i | times: 120 }}ms;"
               aria-label="{{ prod.title | escape }}"
               {{ block.shopify_attributes }}
             >
           {% else %}
             <div
-              class="m-stealgarden__pin m-stealgarden__pin--no-product m-stealgarden__pin--{{ section.settings.hotspot_style }}"
-              style="top: {{ top }}%; left: {{ left }}%;"
+              class="m-stealgarden__pin m-stealgarden__pin--no-product m-stealgarden__pin--{{ section.settings.hotspot_style }} m-stealgarden__pin--anim-{{ section.settings.hotspot_dot_animation }}"
+              style="top: {{ top }}%; left: {{ left }}%; --m-sg-pin-stagger: {{ sg_pin_i | times: 120 }}ms;"
               role="img"
               aria-label="Product dot — choose a product in the sidebar"
               {{ block.shopify_attributes }}
             >
+          {% endif %}
+          {% if section.settings.show_hotspot_arrow %}
+            <span class="m-stealgarden__pin-arrow" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" focusable="false">
+                <path d="M7 1v10M7 11l3.5-3.5M7 11L3.5 7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
           {% endif %}
           <span class="m-stealgarden__pin-ring" aria-hidden="true"></span>
           <span class="m-stealgarden__pin-core" aria-hidden="true"></span>
@@ -243,8 +292,9 @@
     cursor: default;
   }
   .m-stealgarden__pin--no-product .m-stealgarden__pin-core {
-    opacity: 0.85;
-    box-shadow: 0 0 0 2px rgba(255, 180, 80, 0.95), 0 2px 12px rgba(0, 0, 0, 0.2);
+    opacity: 0.9;
+    background: rgba(255, 180, 80, 0.95);
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.45), 0 2px 12px rgba(0, 0, 0, 0.25);
   }
   .m-stealgarden__pop-inner--hint {
     font-size: 12px;
@@ -271,16 +321,26 @@
     width: 100%;
     height: 100%;
     border-radius: 50%;
-    opacity: 0.45;
+    background: var(--m-sg-hotspot-ring);
+    box-shadow: 0 0 0 2px var(--m-sg-hotspot-ring-outline);
+    opacity: 0.5;
+    animation-delay: var(--m-sg-pin-stagger, 0ms);
+  }
+  .m-stealgarden__pin--anim-pulse .m-stealgarden__pin-ring {
     animation: m-stealgarden-pulse 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+    animation-delay: var(--m-sg-pin-stagger, 0ms);
   }
-  .m-stealgarden__pin--light .m-stealgarden__pin-ring {
-    background: rgba(255, 255, 255, 0.55);
-    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.35);
+  .m-stealgarden__pin--anim-bounce .m-stealgarden__pin-ring {
+    animation: m-stealgarden-bounce 1.6s cubic-bezier(0.45, 0, 0.2, 1) infinite;
+    animation-delay: var(--m-sg-pin-stagger, 0ms);
   }
-  .m-stealgarden__pin--dark .m-stealgarden__pin-ring {
-    background: rgba(255, 226, 3, 1);
-    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.2);
+  .m-stealgarden__pin--anim-breathe .m-stealgarden__pin-ring {
+    animation: m-stealgarden-breathe 2.4s ease-in-out infinite;
+    animation-delay: var(--m-sg-pin-stagger, 0ms);
+  }
+  .m-stealgarden__pin--anim-none .m-stealgarden__pin-ring {
+    animation: none;
+    opacity: 0.4;
   }
   .m-stealgarden__pin-core {
     position: absolute;
@@ -293,24 +353,116 @@
     max-width: 18px;
     max-height: 18px;
     border-radius: 50%;
-    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.35), 0 2px 12px rgba(0, 0, 0, 0.25);
+    background: var(--m-sg-hotspot-core);
+    box-shadow: 0 0 0 3px var(--m-sg-hotspot-core-border), 0 2px 12px rgba(0, 0, 0, 0.28);
+    animation-delay: var(--m-sg-pin-stagger, 0ms);
   }
-  .m-stealgarden__pin--light .m-stealgarden__pin-core {
-    background: #fff;
+  .m-stealgarden__pin--anim-bounce .m-stealgarden__pin-core {
+    animation: m-stealgarden-core-bounce 1.6s cubic-bezier(0.45, 0, 0.2, 1) infinite;
+    animation-delay: var(--m-sg-pin-stagger, 0ms);
   }
-  .m-stealgarden__pin--dark .m-stealgarden__pin-core {
-    background: #1a1a1a;
-    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2), 0 2px 12px rgba(0, 0, 0, 0.4);
+  .m-stealgarden__pin--anim-breathe .m-stealgarden__pin-core {
+    animation: m-stealgarden-core-breathe 2.4s ease-in-out infinite;
+    animation-delay: var(--m-sg-pin-stagger, 0ms);
+  }
+  .m-stealgarden__pin-arrow {
+    position: absolute;
+    left: 50%;
+    bottom: calc(50% + (var(--m-sg-pin-size) * 0.4));
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    color: var(--m-sg-hotspot-arrow);
+    pointer-events: none;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4));
+    animation: m-stealgarden-arrow-nudge 1.85s ease-in-out infinite;
+    animation-delay: var(--m-sg-pin-stagger, 0ms);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .m-stealgarden__pin-ring,
+    .m-stealgarden__pin-core,
+    .m-stealgarden__pin-arrow {
+      animation: none !important;
+    }
+    .m-stealgarden__pin--anim-none .m-stealgarden__pin-ring {
+      opacity: 0.4;
+    }
+  }
+  .m-stealgarden__pin-arrow svg {
+    display: block;
+    width: 14px;
+    height: 14px;
   }
   @keyframes m-stealgarden-pulse {
     0%,
     100% {
       transform: scale(1);
-      opacity: 0.45;
+      opacity: 0.5;
     }
     50% {
-      transform: scale(1.12);
-      opacity: 0.25;
+      transform: scale(1.14);
+      opacity: 0.22;
+    }
+  }
+  @keyframes m-stealgarden-bounce {
+    0%,
+    100% {
+      transform: scale(1);
+      opacity: 0.48;
+    }
+    40% {
+      transform: scale(1.08);
+      opacity: 0.35;
+    }
+    55% {
+      transform: scale(1.2);
+      opacity: 0.18;
+    }
+  }
+  @keyframes m-stealgarden-breathe {
+    0%,
+    100% {
+      transform: scale(1);
+      opacity: 0.42;
+    }
+    50% {
+      transform: scale(1.1);
+      opacity: 0.55;
+    }
+  }
+  @keyframes m-stealgarden-core-bounce {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    45% {
+      transform: scale(1.06);
+    }
+    70% {
+      transform: scale(0.96);
+    }
+  }
+  @keyframes m-stealgarden-core-breathe {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.08);
+    }
+  }
+  @keyframes m-stealgarden-arrow-nudge {
+    0%,
+    100% {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+    50% {
+      transform: translateX(-50%) translateY(5px);
+      opacity: 0.82;
     }
   }
   .m-stealgarden__pop {
@@ -509,11 +661,60 @@
     {
       "type": "select",
       "id": "hotspot_style",
-      "label": "Dot style",
+      "label": "Dot style (preset)",
       "default": "light",
+      "info": "Base look when custom colors below are not set.",
       "options": [
         { "value": "light", "label": "Light (white dot)" },
         { "value": "dark", "label": "Dark" }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "hotspot_fill_color",
+      "label": "Dot fill color",
+      "info": "Optional. Overrides preset center color."
+    },
+    {
+      "type": "color",
+      "id": "hotspot_border_color",
+      "label": "Dot border color",
+      "info": "Ring around the center dot (outline)."
+    },
+    {
+      "type": "color",
+      "id": "hotspot_pulse_color",
+      "label": "Pulse ring fill",
+      "info": "Outer animated halo."
+    },
+    {
+      "type": "color",
+      "id": "hotspot_pulse_border_color",
+      "label": "Pulse ring border",
+      "info": "Thin outline on the pulse halo."
+    },
+    {
+      "type": "color",
+      "id": "hotspot_arrow_color",
+      "label": "“Click here” arrow color",
+      "info": "Leave blank to use white on dark scenes / preset."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_hotspot_arrow",
+      "label": "Show “click here” arrow",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "hotspot_dot_animation",
+      "label": "Dot animation",
+      "default": "pulse",
+      "options": [
+        { "value": "pulse", "label": "Pulse (expand)" },
+        { "value": "bounce", "label": "Bounce" },
+        { "value": "breathe", "label": "Breathe (soft)" },
+        { "value": "none", "label": "None" }
       ]
     },
     {
