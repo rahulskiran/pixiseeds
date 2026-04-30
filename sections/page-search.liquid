@@ -26,7 +26,7 @@
 {% paginate search.results by section.settings.results_per_page %}
   <section
     id="psrch-{{ psrch_sid }}"
-    class="psrch m-section m-section--padding{% if boxed_layout %} m-section--boxed{% if section.settings.grid_bordered %} m-section--grid-bordered{% endif %}{% endif %} facest-filters-section m-search-template m-search m-main-collection"
+    class="psrch m-section m-section--padding{% if boxed_layout %} m-section--boxed{% if section.settings.grid_bordered %} m-section--grid-bordered{% endif %}{% endif %}{% if section.settings.psrch_chip_outline %} psrch--chip-outline{% endif %} facest-filters-section m-search-template m-search m-main-collection"
     data-section-type="page-search"
     data-enable-filters="{{ section.settings.show_filter }}"
     data-enable-sorting="{{ section.settings.show_sorting }}"
@@ -38,7 +38,7 @@
     "
   >
     <div class="m-page-width">
-      <div class="psrch__hero m-search-template__header m:flex m:flex-col m:items-center">
+      <div class="psrch__hero m-search-template__header m:flex m:flex-col{% if section.settings.psrch_title_align == 'left' %} m:items-start psrch__hero--left{% else %} m:items-center{% endif %}">
         {% if search.performed %}
           <h1 class="psrch__title m-search-template__title h3">
             {{ 'templates.search.results_with_count_and_term' | t: terms: search.terms, count: search.results_count }}
@@ -51,10 +51,10 @@
         {%- endif -%}
         <main-search class="psrch__search-wrap m:display-flex m:justify-center m:w-full">
           <form action="{{ routes.search_url }}" method="get" role="search" class="psrch__form m-search-form">
-            <div class="m-search-form__wrapper">
+            <div class="m-search-form__wrapper{% if search.terms != blank %} psrch--filled{% endif %}">
               <input
                 class="search__input field__input form-field form-field--input m-search__input"
-                id="Search-In-Template"
+                id="Search-In-Template-{{ section.id }}"
                 type="search"
                 name="q"
                 value="{{ search.terms | escape }}"
@@ -226,6 +226,36 @@
       MinimogTheme.Collection.init();
     });
   }
+  (function () {
+    function initPsrchSearchToggle(root) {
+      if (!root) return;
+      var wrap = root.querySelector('.psrch__form .m-search-form__wrapper');
+      var input = root.querySelector('.psrch__form input[type="search"]');
+      var form = root.querySelector('.psrch__form');
+      if (!wrap || !input) return;
+      function sync() {
+        var has = (input.value || '').length > 0;
+        wrap.classList.toggle('psrch--filled', has);
+      }
+      input.addEventListener('input', sync);
+      input.addEventListener('change', sync);
+      if (form) {
+        form.addEventListener('reset', function () {
+          setTimeout(sync, 0);
+        });
+      }
+      sync();
+    }
+    var psrchRoot = document.getElementById('psrch-{{ psrch_sid }}');
+    initPsrchSearchToggle(psrchRoot);
+    if (Shopify && Shopify.designMode) {
+      document.addEventListener('shopify:section:load', function (ev) {
+        if (ev.detail && ev.detail.sectionId === '{{ section.id }}') {
+          initPsrchSearchToggle(document.getElementById('psrch-{{ psrch_sid }}'));
+        }
+      });
+    }
+  })();
 </script>
 {% style %}
   #psrch-{{ psrch_sid }} {
@@ -266,6 +296,26 @@
     --psrch-pb-m: {{ section.settings.padding_bottom_mobile }}px;
     --psrch-pt-d: {{ section.settings.padding_top }}px;
     --psrch-pb-d: {{ section.settings.padding_bottom }}px;
+    --psrch-content-max: {{ section.settings.psrch_content_max_width }}px;
+    --psrch-hero-pad-b: {{ section.settings.psrch_hero_padding_bottom }}px;
+    --psrch-search-mt: {{ section.settings.psrch_search_margin_top }}px;
+    --psrch-search-border-w: {{ section.settings.psrch_search_border_width }}px;
+    --psrch-search-min-h: {{ section.settings.psrch_search_min_height }}px;
+    --psrch-search-fs: {{ section.settings.psrch_search_font_size }}px;
+    --psrch-search-ph: {{ section.settings.psrch_search_placeholder_color }};
+    --psrch-search-pad-r: {{ section.settings.psrch_search_padding_right }}px;
+    --psrch-title-fw: {{ section.settings.psrch_title_font_weight }};
+    --psrch-title-align: {{ section.settings.psrch_title_align }};
+    --psrch-title-max: {{ section.settings.psrch_title_max_width }}rem;
+    --psrch-bar-py: {{ section.settings.psrch_toolbar_padding_y }}px;
+    --psrch-bar-mb: {{ section.settings.psrch_toolbar_margin_bottom }}px;
+    --psrch-bar-border-w: {{ section.settings.psrch_toolbar_border_width }}px;
+    --psrch-pg-mt: {{ section.settings.psrch_pagination_margin_top }}px;
+    --psrch-pg-pt: {{ section.settings.psrch_pagination_padding_top }}px;
+    --psrch-pg-radius: {{ section.settings.psrch_pagination_item_radius }}px;
+    --psrch-empty-fs: {{ section.settings.psrch_empty_font_size }}px;
+    --psrch-page-card-pad: {{ section.settings.psrch_page_card_padding }}px;
+    --psrch-icon-size: {{ section.settings.psrch_search_icon_size }}px;
     background: var(--psrch-bg);
     color: var(--psrch-title);
     font-feature-settings: 'ss01', 'cv01';
@@ -285,10 +335,14 @@
 
   #psrch-{{ psrch_sid }} .m-page-width {
     width: 100%;
-    max-width: 1440px;
+    max-width: var(--psrch-content-max);
     margin-inline: auto;
     padding-inline: clamp(16px, 4vw, 40px);
     box-sizing: border-box;
+  }
+
+  #psrch-{{ psrch_sid }} .m-search-form__wrapper.psrch--filled .m-search-form__search--button {
+    display: none !important;
   }
 
   #psrch-{{ psrch_sid }} .psrch__title {
@@ -297,9 +351,10 @@
     font-size: var(--psrch-title-m);
     line-height: 1.2;
     letter-spacing: -0.02em;
-    font-weight: 600;
-    text-align: center;
-    max-width: 52rem;
+    font-weight: var(--psrch-title-fw);
+    text-align: var(--psrch-title-align);
+    max-width: var(--psrch-title-max);
+    margin-inline: auto;
   }
 
   @media screen and (min-width: 750px) {
@@ -309,18 +364,29 @@
   }
 
   #psrch-{{ psrch_sid }} .psrch__hero {
-    padding-bottom: 8px;
+    padding-bottom: var(--psrch-hero-pad-b);
+  }
+
+  #psrch-{{ psrch_sid }} .psrch__hero--left .psrch__title {
+    margin-inline: 0;
+  }
+
+  #psrch-{{ psrch_sid }} .psrch__hero--left .psrch__search-wrap,
+  #psrch-{{ psrch_sid }} .psrch__hero--left predictive-search {
+    justify-content: flex-start;
+    width: 100%;
   }
 
   #psrch-{{ psrch_sid }} .psrch__form {
     width: min(var(--psrch-search-max), 100%);
-    margin-top: 1.5rem;
+    margin-top: var(--psrch-search-mt);
   }
 
   #psrch-{{ psrch_sid }} .psrch__form .m-search-form__wrapper {
     border-radius: var(--psrch-search-radius);
-    border: 1px solid var(--psrch-search-border);
+    border: var(--psrch-search-border-w) solid var(--psrch-search-border);
     background: var(--psrch-search-bg);
+    min-height: var(--psrch-search-min-h);
     overflow: hidden;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
   }
@@ -336,10 +402,13 @@
     color: var(--psrch-search-fg) !important;
     border: 0 !important;
     border-radius: 0 !important;
+    font-size: var(--psrch-search-fs) !important;
+    min-height: var(--psrch-search-min-h);
+    padding-right: var(--psrch-search-pad-r) !important;
   }
 
   #psrch-{{ psrch_sid }} .psrch__form .search__input::placeholder {
-    color: color-mix(in srgb, var(--psrch-search-fg) 45%, transparent);
+    color: var(--psrch-search-ph);
   }
 
   #psrch-{{ psrch_sid }} .psrch__form .m-search-form__search--button,
@@ -347,18 +416,29 @@
     color: var(--psrch-search-icon);
   }
 
+  #psrch-{{ psrch_sid }} .psrch__form .m-search-form__search--button svg,
+  #psrch-{{ psrch_sid }} .psrch__form .m-search-form__reset--button svg {
+    width: var(--psrch-icon-size);
+    height: var(--psrch-icon-size);
+  }
+
   #psrch-{{ psrch_sid }} .m-collection-toolbar {
     background: var(--psrch-bar-bg);
-    border-top: 1px solid var(--psrch-bar-border);
-    border-bottom: 1px solid var(--psrch-bar-border);
+    border-top: var(--psrch-bar-border-w) solid var(--psrch-bar-border);
+    border-bottom: var(--psrch-bar-border-w) solid var(--psrch-bar-border);
     border-radius: 0;
-    padding: 14px 0;
-    margin-bottom: 1.5rem;
+    padding: var(--psrch-bar-py) 0;
+    margin-bottom: var(--psrch-bar-mb);
   }
 
   #psrch-{{ psrch_sid }} .m-collection-toolbar__total {
     color: var(--psrch-tb-muted);
     font-size: 0.8125rem;
+  }
+
+  #psrch-{{ psrch_sid }} .m-collection-toolbar__total strong {
+    color: var(--psrch-tb-count);
+    font-weight: 600;
   }
 
   #psrch-{{ psrch_sid }} .m-filter-button {
@@ -424,6 +504,17 @@
     opacity: 0.88;
   }
 
+  #psrch-{{ psrch_sid }}.psrch--chip-outline .m-active-facets__item a {
+    background: transparent;
+    color: var(--psrch-sort-fg);
+    border: 1px solid var(--psrch-sort-border);
+  }
+
+  #psrch-{{ psrch_sid }}.psrch--chip-outline .m-active-facets__item a:hover {
+    background: color-mix(in srgb, var(--psrch-sort-fg) 6%, transparent);
+    opacity: 1;
+  }
+
   #psrch-{{ psrch_sid }} .m-sidebar__content.m-gradient {
     background: var(--psrch-sidebar-bg) !important;
     border-radius: var(--psrch-card-radius);
@@ -439,12 +530,12 @@
   }
 
   #psrch-{{ psrch_sid }} .psrch__grid {
-    row-gap: calc(var(--row-gap-mobile) * 1.15);
+    row-gap: calc(var(--row-gap-mobile) * {{ section.settings.psrch_grid_row_gap_percent }} / 100);
   }
 
   @media screen and (min-width: 750px) {
     #psrch-{{ psrch_sid }} .psrch__grid {
-      row-gap: calc(var(--row-gap) * 1.15);
+      row-gap: calc(var(--row-gap) * {{ section.settings.psrch_grid_row_gap_percent }} / 100);
     }
   }
 
@@ -483,7 +574,7 @@
     background: var(--psrch-card-bg);
     border: 1px solid var(--psrch-card-border);
     border-radius: var(--psrch-card-radius);
-    padding: 1.25rem 1.35rem;
+    padding: var(--psrch-page-card-pad);
     text-decoration: none;
     color: var(--psrch-title);
     transition: border-color 0.24s ease, box-shadow 0.24s ease;
@@ -515,7 +606,7 @@
 
   #psrch-{{ psrch_sid }} .psrch__empty {
     color: var(--psrch-muted);
-    font-size: 1rem;
+    font-size: var(--psrch-empty-fs);
     padding: 3rem 1rem;
   }
 
@@ -530,9 +621,9 @@
     justify-content: center;
     flex-wrap: wrap;
     gap: 0.5rem;
-    padding-top: 2.25rem;
-    margin-top: 2rem;
-    border-top: 1px solid var(--psrch-bar-border);
+    padding-top: var(--psrch-pg-pt);
+    margin-top: var(--psrch-pg-mt);
+    border-top: var(--psrch-bar-border-w) solid var(--psrch-bar-border);
   }
 
   #psrch-{{ psrch_sid }} .m-pagination a,
@@ -541,7 +632,7 @@
     color: var(--psrch-pg-fg);
     text-decoration: none;
     padding: 8px 12px;
-    border-radius: 6px;
+    border-radius: var(--psrch-pg-radius);
   }
 
   #psrch-{{ psrch_sid }} .m-pagination .current,
@@ -651,6 +742,128 @@
       "default": "#0F1B12"
     },
     {
+      "type": "range",
+      "id": "psrch_search_icon_size",
+      "label": "Search / clear icon size",
+      "min": 16,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "default": 22
+    },
+    {
+      "type": "range",
+      "id": "psrch_search_padding_right",
+      "label": "Search input right padding (room for icons)",
+      "min": 40,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 56,
+      "info": "Increase if text overlaps the icons; decrease for a tighter field."
+    },
+    {
+      "type": "range",
+      "id": "psrch_search_border_width",
+      "label": "Search field border thickness",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "unit": "px",
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "psrch_search_min_height",
+      "label": "Search field minimum height",
+      "min": 44,
+      "max": 64,
+      "step": 2,
+      "unit": "px",
+      "default": 52
+    },
+    {
+      "type": "range",
+      "id": "psrch_search_font_size",
+      "label": "Search input text size",
+      "min": 14,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "psrch_search_placeholder_color",
+      "label": "Placeholder text colour",
+      "default": "#7A8473"
+    },
+    {
+      "type": "range",
+      "id": "psrch_search_margin_top",
+      "label": "Space above search field",
+      "min": 0,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Layout width & heading"
+    },
+    {
+      "type": "range",
+      "id": "psrch_content_max_width",
+      "label": "Page content max width",
+      "min": 1000,
+      "max": 1920,
+      "step": 20,
+      "unit": "px",
+      "default": 1440
+    },
+    {
+      "type": "range",
+      "id": "psrch_hero_padding_bottom",
+      "label": "Space below heading / search hero",
+      "min": 0,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "select",
+      "id": "psrch_title_align",
+      "label": "Heading alignment",
+      "options": [
+        { "value": "center", "label": "Center" },
+        { "value": "left", "label": "Left" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "psrch_title_font_weight",
+      "label": "Heading font weight",
+      "options": [
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semibold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "600"
+    },
+    {
+      "type": "range",
+      "id": "psrch_title_max_width",
+      "label": "Heading max width",
+      "min": 28,
+      "max": 72,
+      "step": 2,
+      "unit": "rem",
+      "default": 52
+    },
+    {
       "type": "header",
       "content": "Toolbar & filters bar"
     },
@@ -713,6 +926,58 @@
       "default": "#0F1B12"
     },
     {
+      "type": "range",
+      "id": "psrch_toolbar_padding_y",
+      "label": "Toolbar vertical padding",
+      "min": 8,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "psrch_toolbar_margin_bottom",
+      "label": "Space below toolbar",
+      "min": 0,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "psrch_toolbar_border_width",
+      "label": "Toolbar border thickness",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "unit": "px",
+      "default": 1
+    },
+    {
+      "type": "checkbox",
+      "id": "psrch_chip_outline",
+      "label": "Outline style for active filter chips",
+      "default": false,
+      "info": "Off: filled chips (default). On: outlined chips."
+    },
+    {
+      "type": "header",
+      "content": "Result grid"
+    },
+    {
+      "type": "range",
+      "id": "psrch_grid_row_gap_percent",
+      "label": "Row gap vs theme setting (%)",
+      "min": 100,
+      "max": 150,
+      "step": 5,
+      "unit": "%",
+      "default": 115,
+      "info": "100% = use the section row gap as-is; higher = more space between rows."
+    },
+    {
       "type": "header",
       "content": "Result cards"
     },
@@ -769,6 +1034,16 @@
       "default": "#FFFFFF"
     },
     {
+      "type": "range",
+      "id": "psrch_page_card_padding",
+      "label": "Page result card padding",
+      "min": 12,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 20
+    },
+    {
       "type": "header",
       "content": "Pagination & empty state"
     },
@@ -801,6 +1076,46 @@
       "id": "psrch_empty_link_color",
       "label": "Link colour (if theme outputs links in empty state)",
       "default": "#0F1B12"
+    },
+    {
+      "type": "range",
+      "id": "psrch_empty_font_size",
+      "label": "Empty state text size",
+      "min": 14,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "psrch_pagination_margin_top",
+      "label": "Pagination margin above",
+      "min": 16,
+      "max": 64,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "psrch_pagination_padding_top",
+      "label": "Pagination padding top (above page numbers)",
+      "min": 16,
+      "max": 56,
+      "step": 2,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "psrch_pagination_item_radius",
+      "label": "Pagination item corner radius",
+      "min": 0,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "default": 6
     },
     {
       "type": "header",
