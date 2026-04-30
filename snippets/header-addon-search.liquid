@@ -156,7 +156,7 @@
     {% endif %}
   {% endif %}
 >
-  <div class="m-search-form__wrapper{% if has_type_filter %} m-search-form__has-filter{% endif %}{% if show_header_sort %} m-search-form__has-sort{% endif %}{% if show_header_category %} m-search-form__has-category{% endif %}">
+  <div class="m-search-form__wrapper{% if search.terms != blank %} m-search-form--has-value{% endif %}{% if has_type_filter %} m-search-form__has-filter{% endif %}{% if show_header_sort %} m-search-form__has-sort{% endif %}{% if show_header_category %} m-search-form__has-category{% endif %}">
     {% if has_left_cluster %}
       <div class="m-search-form__left-cluster">
         {% if has_type_filter %}

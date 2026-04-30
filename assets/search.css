@@ -70,6 +70,9 @@
 .m-search-form__reset--button{color:var(--search-bar-icon-color)}
 .m-search-form__reset--button svg{width:18px}
 
+/* While the query has text, show only clear (X) — avoids overlap with submit (header, drawer, search page) */
+.m-search-form__wrapper.m-search-form--has-value .m-search-form__search--button{display:none!important}
+
 /* ============================================================
    LEFT-CLUSTER  (filter / sort / category — positioned left)
    ============================================================ */

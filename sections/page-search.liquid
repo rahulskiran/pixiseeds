@@ -1,6 +1,7 @@
 {{ 'component-product-card.css' | asset_url | stylesheet_tag }}
 {{ 'component-article-card.css' | asset_url | stylesheet_tag }}
 {{ 'collection.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'search-form.js' | asset_url }}" defer="defer"></script>
 <script src="{{ 'collection.js' | asset_url }}" defer="defer"></script>
 <script src="{{ 'main-search.js' | asset_url }}" defer="defer"></script>
 {% liquid
@@ -51,7 +52,7 @@
         {%- endif -%}
         <main-search class="psrch__search-wrap m:display-flex m:justify-center m:w-full">
           <form action="{{ routes.search_url }}" method="get" role="search" class="psrch__form m-search-form">
-            <div class="m-search-form__wrapper{% if search.terms != blank %} psrch--filled{% endif %}">
+            <div class="m-search-form__wrapper{% if search.terms != blank %} m-search-form--has-value{% endif %}">
               <input
                 class="search__input field__input form-field form-field--input m-search__input"
                 id="Search-In-Template-{{ section.id }}"
@@ -226,36 +227,6 @@
       MinimogTheme.Collection.init();
     });
   }
-  (function () {
-    function initPsrchSearchToggle(root) {
-      if (!root) return;
-      var wrap = root.querySelector('.psrch__form .m-search-form__wrapper');
-      var input = root.querySelector('.psrch__form input[type="search"]');
-      var form = root.querySelector('.psrch__form');
-      if (!wrap || !input) return;
-      function sync() {
-        var has = (input.value || '').length > 0;
-        wrap.classList.toggle('psrch--filled', has);
-      }
-      input.addEventListener('input', sync);
-      input.addEventListener('change', sync);
-      if (form) {
-        form.addEventListener('reset', function () {
-          setTimeout(sync, 0);
-        });
-      }
-      sync();
-    }
-    var psrchRoot = document.getElementById('psrch-{{ psrch_sid }}');
-    initPsrchSearchToggle(psrchRoot);
-    if (Shopify && Shopify.designMode) {
-      document.addEventListener('shopify:section:load', function (ev) {
-        if (ev.detail && ev.detail.sectionId === '{{ section.id }}') {
-          initPsrchSearchToggle(document.getElementById('psrch-{{ psrch_sid }}'));
-        }
-      });
-    }
-  })();
 </script>
 {% style %}
   #psrch-{{ psrch_sid }} {
@@ -339,10 +310,6 @@
     margin-inline: auto;
     padding-inline: clamp(16px, 4vw, 40px);
     box-sizing: border-box;
-  }
-
-  #psrch-{{ psrch_sid }} .m-search-form__wrapper.psrch--filled .m-search-form__search--button {
-    display: none !important;
   }
 
   #psrch-{{ psrch_sid }} .psrch__title {
