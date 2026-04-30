@@ -75,7 +75,12 @@
         "search_button": "icon-plain",
         "header_search_second_control": "category",
         "header_search_collections": [
-          "frontpage"
+          "flower-seeds-collection",
+          "vegetable-seeds-collection",
+          "herb-seeds-collection",
+          "rare-exotic-collection",
+          "medicinal-wellness-collection",
+          "indoor-plants-collection"
         ],
         "header_search_category_bg": "#d96c3a",
         "header_search_category_text_color": "#d96c3a",
