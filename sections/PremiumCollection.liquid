@@ -142,6 +142,12 @@
     --pcol-drawer-clear-fg: {{ section.settings.drawer_clear_fg }};
     --pcol-view-active-bg: {{ section.settings.view_toggle_active_bg }};
     --pcol-view-active-fg: {{ section.settings.view_toggle_active_fg }};
+
+    --pcol-inner-max: {% if section.settings.content_width == 'full' %}none{% else %}{{ section.settings.inner_max_width }}px{% endif %};
+    --pcol-pl: {{ section.settings.padding_left }}px;
+    --pcol-pr: {{ section.settings.padding_right }}px;
+    --pcol-pl-m: {{ section.settings.padding_left_mobile }}px;
+    --pcol-pr-m: {{ section.settings.padding_right_mobile }}px;
   "
 >
   {%- if section.settings.show_shipping_bar and section.settings.free_shipping_threshold > 0 -%}
@@ -153,7 +159,7 @@
     </div>
   {%- endif -%}
 
-  <div class="pcol__inner page-width">
+  <div class="pcol__inner">
     {%- if section.settings.show_toolbar -%}
       {%- assign active_count = 0 -%}
       {%- for filter in collection.filters -%}
@@ -712,10 +718,18 @@
 
   #pcol-{{ sid }} .pcol__inner {
     width: 100%;
-    max-width: 1440px;
+    max-width: var(--pcol-inner-max);
     margin-inline: auto;
-    padding-inline: clamp(16px, 4vw, 40px);
+    padding-left: var(--pcol-pl-m);
+    padding-right: var(--pcol-pr-m);
     box-sizing: border-box;
+  }
+
+  @media screen and (min-width: 750px) {
+    #pcol-{{ sid }} .pcol__inner {
+      padding-left: var(--pcol-pl);
+      padding-right: var(--pcol-pr);
+    }
   }
 
   #pcol-{{ sid }} .pcol__ship-bar {
@@ -1870,6 +1884,68 @@
       "step": 2,
       "unit": "px",
       "default": 20
+    },
+    {
+      "type": "select",
+      "id": "content_width",
+      "label": "Section width",
+      "default": "contained",
+      "options": [
+        { "value": "contained", "label": "Contained (max inner width)" },
+        { "value": "full", "label": "Full width (grid uses full viewport)" }
+      ],
+      "info": "Full width removes the inner max-width so content can span edge to edge. Use horizontal padding to keep gutters."
+    },
+    {
+      "type": "range",
+      "id": "inner_max_width",
+      "label": "Inner max width",
+      "min": 1000,
+      "max": 1920,
+      "step": 20,
+      "unit": "px",
+      "default": 1440,
+      "info": "Only used when Section width is Contained."
+    },
+    {
+      "type": "range",
+      "id": "padding_left",
+      "label": "Horizontal padding — left (desktop)",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_right",
+      "label": "Horizontal padding — right (desktop)",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_left_mobile",
+      "label": "Horizontal padding — left (mobile)",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "padding_right_mobile",
+      "label": "Horizontal padding — right (mobile)",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 16
     },
     {
       "type": "header",
