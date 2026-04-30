@@ -1,0 +1,281 @@
+          {%- liquid
+            assign first_image = product.featured_image
+            assign second_image = nil
+            for img in product.images limit: 2
+              if forloop.index == 2
+                assign second_image = img
+              endif
+            endfor
+
+            assign has_sale = false
+            assign save_pct = 0
+            assign save_amount_cents = 0
+            if product.compare_at_price > product.price
+              assign has_sale = true
+              assign save_amount_cents = product.compare_at_price | minus: product.price
+              assign save_pct = save_amount_cents | times: 100 | divided_by: product.compare_at_price
+            endif
+
+            assign is_new = false
+            if section.settings.show_new_badge
+              for tag in product.tags
+                assign tag_lower = tag | downcase
+                if tag_lower == 'new'
+                  assign is_new = true
+                  break
+                endif
+              endfor
+            endif
+
+            assign is_bestseller = false
+            for tag in product.tags
+              assign tag_lower = tag | downcase
+              if tag_lower == 'bestseller' or tag_lower == 'best-seller' or tag_lower == 'best seller'
+                assign is_bestseller = true
+                break
+              endif
+            endfor
+
+            assign size_option_index = -1
+            for opt in product.options_with_values
+              assign opt_name_lower = opt.name | downcase
+              for key in size_keys
+                assign key_clean = key | strip
+                if opt_name_lower == key_clean
+                  assign size_option_index = forloop.parentloop.index0
+                  break
+                endif
+              endfor
+              if size_option_index >= 0
+                break
+              endif
+            endfor
+
+            assign rating_value = product.metafields.reviews.rating.value
+            assign rating_count = product.metafields.reviews.rating_count.value
+            assign rating_score = nil
+            if rating_value
+              assign rating_score = rating_value.rating | default: rating_value
+            endif
+
+            assign current_variant = product.selected_or_first_available_variant
+            assign inv_qty = current_variant.inventory_quantity
+            assign show_low_stock = false
+            if section.settings.show_low_stock and current_variant.inventory_management != blank and inv_qty > 0 and inv_qty <= section.settings.low_stock_threshold
+              assign show_low_stock = true
+            endif
+
+            assign qualifies_free_ship = false
+            if section.settings.free_shipping_threshold > 0 and product.price >= threshold_amount_cents
+              assign qualifies_free_ship = true
+            endif
+          -%}
+
+          <li
+            class="pcol__item"
+            data-product-id="{{ product.id }}"
+            data-product-handle="{{ product.handle }}"
+          >
+            <article class="pcol__card">
+              <a class="pcol__media" href="{{ product.url }}" aria-label="{{ product.title | escape }}">
+                {%- if first_image != blank -%}
+                  <img
+                    class="pcol__img pcol__img--primary"
+                    src="{{ first_image | image_url: width: 800 }}"
+                    srcset="{{ first_image | image_url: width: 400 }} 400w, {{ first_image | image_url: width: 600 }} 600w, {{ first_image | image_url: width: 800 }} 800w, {{ first_image | image_url: width: 1100 }} 1100w"
+                    sizes="(min-width: 1100px) 25vw, (min-width: 750px) 33vw, 50vw"
+                    alt="{{ first_image.alt | default: product.title | escape }}"
+                    loading="lazy"
+                    width="800"
+                    height="800"
+                  >
+                {%- else -%}
+                  <span class="pcol__img pcol__img--ph" aria-hidden="true">
+                    {{- 'product-1' | placeholder_svg_tag -}}
+                  </span>
+                {%- endif -%}
+
+                {%- if section.settings.image_hover_swap and second_image != blank -%}
+                  <img
+                    class="pcol__img pcol__img--hover"
+                    src="{{ second_image | image_url: width: 800 }}"
+                    alt=""
+                    loading="lazy"
+                    width="800"
+                    height="800"
+                    aria-hidden="true"
+                  >
+                {%- endif -%}
+
+                <div class="pcol__badges" aria-hidden="true">
+                  {%- if has_sale and section.settings.show_sale_badge -%}
+                    <span class="pcol__badge pcol__badge--sale">−{{ save_pct }}%</span>
+                  {%- endif -%}
+                  {%- if is_bestseller and section.settings.show_bestseller_badge -%}
+                    <span class="pcol__badge pcol__badge--best">Bestseller</span>
+                  {%- endif -%}
+                  {%- if is_new -%}
+                    <span class="pcol__badge pcol__badge--new">New</span>
+                  {%- endif -%}
+                  {%- unless product.available -%}
+                    <span class="pcol__badge pcol__badge--out">Sold out</span>
+                  {%- endunless -%}
+                </div>
+
+                {%- if section.settings.show_wishlist -%}
+                  <button
+                    class="pcol__wish"
+                    type="button"
+                    aria-label="Save to wishlist"
+                    data-pcol-wish="{{ product.id }}"
+                  >
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                    </svg>
+                  </button>
+                {%- endif -%}
+
+                {%- if section.settings.show_quick_view -%}
+                  <button class="pcol__quick" type="button" data-pcol-quick="{{ product.handle }}">
+                    Quick view
+                  </button>
+                {%- endif -%}
+              </a>
+
+              <div class="pcol__body">
+                {%- if section.settings.show_vendor and product.vendor != blank -%}
+                  <p class="pcol__vendor">{{ product.vendor }}</p>
+                {%- endif -%}
+
+                <h3 class="pcol__title">
+                  <a href="{{ product.url }}">{{ product.title }}</a>
+                </h3>
+
+                {%- if section.settings.show_rating -%}
+                  {%- if rating_score -%}
+                    {%- assign rs = rating_score | times: 1.0 -%}
+                    {%- assign full = rs | floor -%}
+                    {%- assign frac = rs | minus: full -%}
+                    {%- assign half_index = full | plus: 1 -%}
+                    {%- assign has_half = false -%}
+                    {%- if frac >= 0.5 -%}
+                      {%- assign has_half = true -%}
+                    {%- endif -%}
+                    <div class="pcol__rating" aria-label="Rated {{ rating_score }} out of 5">
+                      <span class="pcol__stars" aria-hidden="true">
+                        {%- for i in (1..5) -%}
+                          {%- if i <= full -%}
+                            <span class="pcol__star pcol__star--full">★</span>
+                          {%- elsif has_half and i == half_index -%}
+                            <span class="pcol__star pcol__star--full">★</span>
+                          {%- else -%}
+                            <span class="pcol__star">★</span>
+                          {%- endif -%}
+                        {%- endfor -%}
+                      </span>
+                      {%- if rating_count -%}
+                        <span class="pcol__rcount">({{ rating_count }})</span>
+                      {%- endif -%}
+                    </div>
+                  {%- elsif section.settings.show_rating_placeholder -%}
+                    <div class="pcol__rating pcol__rating--ph" aria-hidden="true">
+                      <span class="pcol__stars">★★★★★</span>
+                      <span class="pcol__rcount">(0)</span>
+                    </div>
+                  {%- endif -%}
+                {%- endif -%}
+
+                <div class="pcol__price">
+                  <span class="pcol__price-now{% if has_sale %} is-sale{% endif %}">{{ product.price | money }}</span>
+                  {%- if has_sale -%}
+                    <s class="pcol__price-was">{{ product.compare_at_price | money }}</s>
+                    {%- if section.settings.show_savings_amount -%}
+                      <span class="pcol__price-save">Save {{ save_amount_cents | money }}</span>
+                    {%- endif -%}
+                  {%- endif -%}
+                </div>
+
+                {%- if section.settings.show_sizes and size_option_index >= 0 -%}
+                  {%- assign size_option = product.options_with_values[size_option_index] -%}
+                  {%- assign visible_sizes = section.settings.max_sizes_visible -%}
+                  <ul class="pcol__sizes" role="list" aria-label="Available {{ size_option.name }}">
+                    {%- for v in size_option.values limit: visible_sizes -%}
+                      {%- assign variant_for_size = nil -%}
+                      {%- for variant in product.variants -%}
+                        {%- if variant.options[size_option_index] == v -%}
+                          {%- assign variant_for_size = variant -%}
+                          {%- break -%}
+                        {%- endif -%}
+                      {%- endfor -%}
+                      <li class="pcol__size{% if variant_for_size and variant_for_size.available == false %} is-out{% endif %}">
+                        <span>{{ v }}</span>
+                      </li>
+                    {%- endfor -%}
+                    {%- if size_option.values.size > visible_sizes -%}
+                      {%- assign extra = size_option.values.size | minus: visible_sizes -%}
+                      <li class="pcol__size pcol__size--more">+{{ extra }}</li>
+                    {%- endif -%}
+                  </ul>
+                {%- endif -%}
+
+                {%- if section.settings.show_swatches and product.has_only_default_variant == false -%}
+                  {%- assign color_index = -1 -%}
+                  {%- for opt in product.options_with_values -%}
+                    {%- assign on = opt.name | downcase -%}
+                    {%- if on == 'color' or on == 'colour' -%}
+                      {%- assign color_index = forloop.index0 -%}
+                      {%- break -%}
+                    {%- endif -%}
+                  {%- endfor -%}
+                  {%- if color_index >= 0 -%}
+                    {%- assign color_option = product.options_with_values[color_index] -%}
+                    <ul class="pcol__swatches" role="list" aria-label="Available colours">
+                      {%- for v in color_option.values limit: 5 -%}
+                        <li class="pcol__swatch" style="background: {{ v | handle }};" title="{{ v }}"></li>
+                      {%- endfor -%}
+                      {%- if color_option.values.size > 5 -%}
+                        <li class="pcol__swatch pcol__swatch--more">+{{ color_option.values.size | minus: 5 }}</li>
+                      {%- endif -%}
+                    </ul>
+                  {%- endif -%}
+                {%- endif -%}
+
+                {%- if show_low_stock -%}
+                  <div class="pcol__urgency" role="status">
+                    <span class="pcol__urgency-dot" aria-hidden="true"></span>
+                    <span>Only {{ inv_qty }} left in stock</span>
+                  </div>
+                {%- endif -%}
+
+                {%- if section.settings.show_free_ship_chip and qualifies_free_ship -%}
+                  <p class="pcol__chip pcol__chip--ship">
+                    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h11v8H3zM14 10h4l3 3v2h-7zM6 19a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM18 19a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/></svg>
+                    Ships free
+                  </p>
+                {%- endif -%}
+
+                {%- if section.settings.show_atc -%}
+                  {%- if product.available -%}
+                    {%- if product.has_only_default_variant -%}
+                      <button
+                        class="pcol__atc"
+                        type="button"
+                        data-pcol-atc
+                        data-variant-id="{{ current_variant.id }}"
+                      >
+                        <span class="pcol__atc-label">{{ section.settings.atc_label }}</span>
+                        <svg class="pcol__atc-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                      </button>
+                    {%- else -%}
+                      <a class="pcol__atc pcol__atc--link" href="{{ product.url }}">
+                        <span class="pcol__atc-label">{{ section.settings.atc_label_options }}</span>
+                        <svg class="pcol__atc-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                      </a>
+                    {%- endif -%}
+                  {%- else -%}
+                    <button class="pcol__atc pcol__atc--out" type="button" disabled>Sold out</button>
+                  {%- endif -%}
+                {%- endif -%}
+              </div>
+            </article>
+          </li>

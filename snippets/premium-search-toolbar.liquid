@@ -1,0 +1,231 @@
+{%- liquid
+  assign current_sort = search.sort_by | default: search.default_sort_by
+  assign search_q_enc = search.terms | url_encode
+  assign search_reset_url = routes.search_url | append: '?q=' | append: search_q_enc | append: '&options%5Bprefix%5D=last'
+-%}
+{%- if section.settings.show_toolbar -%}
+  {%- assign active_count = 0 -%}
+  {%- for filter in search.filters -%}
+    {%- if filter.type == 'price_range' -%}
+      {%- if filter.min_value.value or filter.max_value.value -%}
+        {%- assign active_count = active_count | plus: 1 -%}
+      {%- endif -%}
+    {%- else -%}
+      {%- assign active_count = active_count | plus: filter.active_values.size -%}
+    {%- endif -%}
+  {%- endfor -%}
+
+  <div class="pcol__bar" id="pcolBar-{{ sid }}">
+    <div class="pcol__bar-left">
+      {%- if section.settings.show_filter_btn -%}
+        <button
+          class="pcol__bar-btn pcol__bar-btn--filter{% if active_count > 0 %} is-active{% endif %}"
+          type="button"
+          id="pcolFilterBtn-{{ sid }}"
+          aria-controls="pcolDrawer-{{ sid }}"
+          aria-expanded="false"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+            <line x1="4" y1="6" x2="20" y2="6"/><line x1="7" y1="12" x2="17" y2="12"/><line x1="10" y1="18" x2="14" y2="18"/>
+          </svg>
+          <span>{{ section.settings.filter_btn_label }}</span>
+          {%- if active_count > 0 -%}
+            <span class="pcol__bar-badge" aria-label="{{ active_count }} active filters">{{ active_count }}</span>
+          {%- endif -%}
+        </button>
+      {%- endif -%}
+
+      {%- if active_count > 0 -%}
+        <ul class="pcol__chips" role="list" aria-label="Active filters">
+          {%- for filter in search.filters -%}
+            {%- if filter.type == 'price_range' -%}
+              {%- if filter.min_value.value or filter.max_value.value -%}
+                <li class="pcol__chip">
+                  <span>
+                    {%- if filter.min_value.value -%}{{ filter.min_value.value | money_without_trailing_zeros }}{%- else -%}0{%- endif -%}
+                    &thinsp;–&thinsp;
+                    {%- if filter.max_value.value -%}{{ filter.max_value.value | money_without_trailing_zeros }}{%- else -%}Max{%- endif -%}
+                  </span>
+                  <a class="pcol__chip-remove" href="{{ filter.url_to_remove }}" aria-label="Remove price filter">
+                    <svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="2" y1="2" x2="10" y2="10"/><line x1="10" y1="2" x2="2" y2="10"/></svg>
+                  </a>
+                </li>
+              {%- endif -%}
+            {%- else -%}
+              {%- for value in filter.active_values -%}
+                <li class="pcol__chip">
+                  <span>{{ value.label }}</span>
+                  <a class="pcol__chip-remove" href="{{ value.url_to_remove }}" aria-label="Remove {{ value.label | escape }}">
+                    <svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="2" y1="2" x2="10" y2="10"/><line x1="10" y1="2" x2="2" y2="10"/></svg>
+                  </a>
+                </li>
+              {%- endfor -%}
+            {%- endif -%}
+          {%- endfor -%}
+          <li>
+            <a class="pcol__chips-clear" href="{{ search_reset_url }}">{{ section.settings.clear_all_label }}</a>
+          </li>
+        </ul>
+      {%- endif -%}
+    </div>
+
+    <div class="pcol__bar-right">
+      {%- if section.settings.show_product_count -%}
+        <p class="pcol__count" aria-live="polite">
+          <strong>{{ search.results_count }}</strong> <span>{{ section.settings.count_suffix }}</span>
+        </p>
+      {%- endif -%}
+
+      {%- if section.settings.show_sort -%}
+        <div class="pcol__sort-wrap">
+          <form method="get" class="pcol__sort-form" id="pcolSortForm-{{ sid }}" action="{{ routes.search_url }}">
+            <input type="hidden" name="q" value="{{ search.terms | escape }}">
+            <input type="hidden" name="options[prefix]" value="last">
+            {%- for filter in search.filters -%}
+              {%- if filter.type == 'price_range' -%}
+                {%- if filter.min_value.value -%}
+                  <input type="hidden" name="{{ filter.min_value.param_name }}" value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}">
+                {%- endif -%}
+                {%- if filter.max_value.value -%}
+                  <input type="hidden" name="{{ filter.max_value.param_name }}" value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}">
+                {%- endif -%}
+              {%- else -%}
+                {%- for value in filter.active_values -%}
+                  <input type="hidden" name="{{ value.param_name }}" value="{{ value.value }}">
+                {%- endfor -%}
+              {%- endif -%}
+            {%- endfor -%}
+            <label for="pcol-sort-{{ sid }}" class="pcol__sort-lbl">{{ section.settings.sort_label }}</label>
+            <div class="pcol__sort-frame">
+              <select id="pcol-sort-{{ sid }}" class="pcol__sort" name="sort_by" onchange="this.form.submit()">
+                {%- for option in search.sort_options -%}
+                  <option value="{{ option.value }}" {% if option.value == current_sort %}selected{% endif %}>{{ option.name }}</option>
+                {%- endfor -%}
+              </select>
+              <svg class="pcol__sort-caret" width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><polyline points="2,4 6,8 10,4"/></svg>
+            </div>
+          </form>
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.show_view_toggle -%}
+        <div class="pcol__view" role="group" aria-label="Grid layout">
+          <button class="pcol__view-btn pcol__view-btn--2" type="button" data-pcol-view="1" aria-pressed="false" aria-label="1 column">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor" aria-hidden="true"><rect x="1" y="1" width="12" height="12" rx="1.5"/></svg>
+          </button>
+          <button class="pcol__view-btn pcol__view-btn--4 is-active" type="button" data-pcol-view="2" aria-pressed="true" aria-label="2 columns">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor" aria-hidden="true"><rect x="1" y="1" width="5.5" height="12" rx="1"/><rect x="7.5" y="1" width="5.5" height="12" rx="1"/></svg>
+          </button>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+
+  {%- if section.settings.show_filter_btn and search.filters.size > 0 -%}
+    <div class="pcol__backdrop" id="pcolBackdrop-{{ sid }}" aria-hidden="true"></div>
+    <aside
+      class="pcol__drawer"
+      id="pcolDrawer-{{ sid }}"
+      aria-label="Filters"
+      aria-hidden="true"
+      tabindex="-1"
+    >
+      <div class="pcol__drawer-header">
+        <span class="pcol__drawer-title">{{ section.settings.drawer_title }}</span>
+        <button class="pcol__drawer-close" type="button" id="pcolDrawerClose-{{ sid }}" aria-label="Close filters">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="2" y1="2" x2="16" y2="16"/><line x1="16" y1="2" x2="2" y2="16"/></svg>
+        </button>
+      </div>
+
+      <form class="pcol__drawer-body" id="pcolFilterForm-{{ sid }}" method="get" action="{{ routes.search_url }}">
+        <input type="hidden" name="q" value="{{ search.terms | escape }}">
+        <input type="hidden" name="options[prefix]" value="last">
+        <input type="hidden" name="sort_by" value="{{ current_sort }}">
+
+        {%- for filter in search.filters -%}
+          <div class="pcol__filter-group">
+            <button class="pcol__filter-hd" type="button" data-pcol-fhd aria-expanded="true">
+              <span>{{ filter.label }}</span>
+              <svg class="pcol__filter-arrow" width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><polyline points="2,4 6,8 10,4"/></svg>
+            </button>
+            <div class="pcol__filter-body">
+              {%- case filter.type -%}
+                {%- when 'list' -%}
+                  <ul class="pcol__filter-list" role="list">
+                    {%- for value in filter.values -%}
+                      <li>
+                        <label class="pcol__filter-check{% if value.count == 0 and value.active == false %} is-disabled{% endif %}">
+                          <input
+                            type="checkbox"
+                            name="{{ value.param_name }}"
+                            value="{{ value.value }}"
+                            {% if value.active %}checked{% endif %}
+                            {% if value.count == 0 and value.active == false %}disabled{% endif %}
+                          >
+                          <span class="pcol__filter-checkmark"></span>
+                          <span class="pcol__filter-check-label">{{ value.label }}</span>
+                          {%- if section.settings.show_filter_counts -%}
+                            <span class="pcol__filter-count">({{ value.count }})</span>
+                          {%- endif -%}
+                        </label>
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+
+                {%- when 'boolean' -%}
+                  <ul class="pcol__filter-list" role="list">
+                    {%- for value in filter.values -%}
+                      <li>
+                        <label class="pcol__filter-check">
+                          <input
+                            type="checkbox"
+                            name="{{ value.param_name }}"
+                            value="{{ value.value }}"
+                            {% if value.active %}checked{% endif %}
+                          >
+                          <span class="pcol__filter-checkmark"></span>
+                          <span class="pcol__filter-check-label">{{ value.label }}</span>
+                        </label>
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+
+                {%- when 'price_range' -%}
+                  <div class="pcol__price-range">
+                    <label class="pcol__price-field">
+                      <span class="pcol__price-sym">{{ cart.currency.symbol }}</span>
+                      <input
+                        class="pcol__price-inp"
+                        type="number"
+                        name="{{ filter.min_value.param_name }}"
+                        value="{% if filter.min_value.value %}{{ filter.min_value.value | money_without_currency | replace: ',', '' }}{% endif %}"
+                        placeholder="0"
+                        min="0"
+                      >
+                    </label>
+                    <span class="pcol__price-sep" aria-hidden="true">—</span>
+                    <label class="pcol__price-field">
+                      <span class="pcol__price-sym">{{ cart.currency.symbol }}</span>
+                      <input
+                        class="pcol__price-inp"
+                        type="number"
+                        name="{{ filter.max_value.param_name }}"
+                        value="{% if filter.max_value.value %}{{ filter.max_value.value | money_without_currency | replace: ',', '' }}{% endif %}"
+                        placeholder="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                        min="0"
+                      >
+                    </label>
+                  </div>
+              {%- endcase -%}
+            </div>
+          </div>
+        {%- endfor -%}
+      </form>
+
+      <div class="pcol__drawer-footer">
+        <a class="pcol__drawer-clear" href="{{ search_reset_url }}">{{ section.settings.clear_all_label }}</a>
+        <button class="pcol__drawer-apply" type="submit" form="pcolFilterForm-{{ sid }}">{{ section.settings.apply_label }}</button>
+      </div>
+    </aside>
+  {%- endif -%}
+{%- endif -%}
