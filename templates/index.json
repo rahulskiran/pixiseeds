@@ -228,7 +228,7 @@
           "settings": {
             "image": "shopify://shop_images/French_Marigolds_growing_202604061453.webp",
             "title": "Marigold Seeds",
-            "link": "",
+            "link": "shopify://collections/marigold-seeds",
             "open_new_tab": false
           }
         },
