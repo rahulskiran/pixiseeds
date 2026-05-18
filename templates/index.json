@@ -210,7 +210,7 @@
           "settings": {
             "image": "shopify://shop_images/Lettuce_plants_in_202604061452.webp",
             "title": "Lettuce Seeds",
-            "link": "",
+            "link": "shopify://collections/lettuce-seeds",
             "open_new_tab": false
           }
         },
