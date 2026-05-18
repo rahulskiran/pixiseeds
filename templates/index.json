@@ -237,7 +237,7 @@
           "settings": {
             "image": "shopify://shop_images/Purple_green_micro-sprouts_202604061501.webp",
             "title": "microgreen seeds",
-            "link": "",
+            "link": "shopify://collections/microgreen-seeds",
             "open_new_tab": false
           }
         },
