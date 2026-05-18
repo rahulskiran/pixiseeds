@@ -577,7 +577,7 @@
           "settings": {
             "image": "shopify://shop_images/Variegated_Monstera_leaf_202604071354.webp",
             "title": "New Arrivals",
-            "link": "",
+            "link": "shopify://collections/all-year-round-seeds-collection",
             "open_new_tab": false
           }
         },
@@ -586,7 +586,7 @@
           "settings": {
             "image": "shopify://shop_images/Plant_gift_with_202604071354.webp",
             "title": "Low-Maintenance",
-            "link": "",
+            "link": "shopify://collections/low-maintenance-collection",
             "open_new_tab": false
           }
         },
@@ -595,7 +595,7 @@
           "settings": {
             "image": "shopify://shop_images/Plants_on_metal_202604071354.webp",
             "title": "Pet-Friendly",
-            "link": "",
+            "link": "shopify://collections/pet-friendly-collection",
             "open_new_tab": false
           }
         },
@@ -604,7 +604,7 @@
           "settings": {
             "image": "shopify://shop_images/Boston_Fern_in_202604071354.webp",
             "title": "Gifts",
-            "link": "",
+            "link": "shopify://collections/best-sellers-collection",
             "open_new_tab": false
           }
         }
