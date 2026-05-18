@@ -219,7 +219,7 @@
           "settings": {
             "image": "shopify://shop_images/Zinnia_flower_with_202604061452.webp",
             "title": "Zinnnia Seeds",
-            "link": "",
+            "link": "shopify://collections/zinnia-seeds",
             "open_new_tab": false
           }
         },
