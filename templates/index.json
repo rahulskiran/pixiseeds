@@ -479,7 +479,7 @@
         "c355a43c-fe28-4eb9-ab35-18bd3b51e6c0": {
           "type": "tab",
           "settings": {
-            "collection": "anemometers",
+            "collection": "flower-seeds-collection",
             "heading": "Flowers",
             "icon_image_width": 30,
             "icon_svg": ""
@@ -488,7 +488,7 @@
         "b0e6fc3f-c467-4492-a155-e29e1c1f0daf": {
           "type": "tab",
           "settings": {
-            "collection": "power-hand-tools",
+            "collection": "herb-seeds-collection",
             "heading": "Herbs",
             "icon_image_width": 30,
             "icon_svg": ""
