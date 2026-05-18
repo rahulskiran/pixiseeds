@@ -775,7 +775,7 @@
             "icon_preset": "sun",
             "title": "Low light",
             "text": "Thrives in shady spots",
-            "link": "",
+            "link": "shopify://collections/indoor-plants-collection",
             "open_new_tab": false
           }
         },
@@ -786,7 +786,7 @@
             "icon_preset": "paw",
             "title": "Pet-friendly",
             "text": "Safe for furry friends",
-            "link": "",
+            "link": "shopify://collections/pet-friendly-collection",
             "open_new_tab": false
           }
         },
@@ -797,7 +797,7 @@
             "icon_preset": "sparkle",
             "title": "Statement plants",
             "text": "Bold and dramatic",
-            "link": "",
+            "link": "shopify://collections/boutique-balcony",
             "open_new_tab": false
           }
         },
@@ -807,8 +807,8 @@
             "image": "shopify://shop_images/Succulents_in_concrete_202604071336.webp",
             "icon_preset": "leaf",
             "title": "Easy care",
-            "text": "Hard to kill",
-            "link": "",
+            "text": "No Stress Taken",
+            "link": "shopify://collections/low-maintenance-collection",
             "open_new_tab": false
           }
         }
