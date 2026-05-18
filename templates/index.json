@@ -666,8 +666,8 @@
         "tab_3fUWnc": {
           "type": "tab",
           "settings": {
-            "collection": "boutique-balcony",
-            "heading": "Vegetables",
+            "collection": "tomato-seeds",
+            "heading": "Tomato",
             "icon_image_width": 30,
             "icon_svg": ""
           }
@@ -675,8 +675,8 @@
         "tab_yxryNN": {
           "type": "tab",
           "settings": {
-            "collection": "flower-seeds",
-            "heading": "Flowers",
+            "collection": "cucumber-seeds",
+            "heading": "Cucumber Seeds",
             "icon_image_width": 30,
             "icon_svg": ""
           }
@@ -684,8 +684,8 @@
         "tab_kBrdwH": {
           "type": "tab",
           "settings": {
-            "collection": "herb-seeds",
-            "heading": "Herbs",
+            "collection": "summer-seeds-collection",
+            "heading": "Summer Seeds",
             "icon_image_width": 30,
             "icon_svg": ""
           }
@@ -713,7 +713,7 @@
         "boxed_layout": false,
         "grid_bordered": false,
         "boxed_color_scheme": "scheme-98abe1c5-d453-445f-a04d-6584e08129ae",
-        "heading": "Community Favorites",
+        "heading": "Best Sellers",
         "heading_size": "h2",
         "tab_header_style": "1",
         "header_divider": false,
@@ -882,8 +882,8 @@
         "tab_49Pbrn": {
           "type": "tab",
           "settings": {
-            "collection": "autumn-fall-seeds-collection",
-            "heading": "Vegetables",
+            "collection": "red-pink-flowers-collection",
+            "heading": "Red & Pink Flowers",
             "icon_image_width": 30,
             "icon_svg": ""
           }
@@ -891,8 +891,8 @@
         "tab_xXyAnJ": {
           "type": "tab",
           "settings": {
-            "collection": "anemometers",
-            "heading": "Flowers",
+            "collection": "exotic-rarities",
+            "heading": "Exotic",
             "icon_image_width": 30,
             "icon_svg": ""
           }
@@ -900,8 +900,8 @@
         "tab_riwzJc": {
           "type": "tab",
           "settings": {
-            "collection": "power-hand-tools",
-            "heading": "Herbs",
+            "collection": "green-foliage-plants-collection",
+            "heading": "Green Foilage Plants",
             "icon_image_width": 30,
             "icon_svg": ""
           }
@@ -929,7 +929,7 @@
         "boxed_layout": false,
         "grid_bordered": false,
         "boxed_color_scheme": "scheme-98abe1c5-d453-445f-a04d-6584e08129ae",
-        "heading": "Community Favorites",
+        "heading": "Must have Varieties",
         "heading_size": "h2",
         "tab_header_style": "1",
         "header_divider": false,
