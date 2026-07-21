@@ -376,7 +376,7 @@
       },
       "scheme-ba41f7c8-a303-44e7-a1d3-a9c14a08a8da": {
         "settings": {
-          "primary_accent": "#ae5000",
+          "primary_accent": "#456981",
           "background": "#FCFCF9",
           "background_gradient": "",
           "text": "#213845",
@@ -385,9 +385,9 @@
           "button_label": "#ffffff",
           "secondary_button": "#f2f2f2",
           "secondary_button_label": "#000000",
-          "outline_button_label": "#ae5000",
+          "outline_button_label": "#456981",
           "border": "#DDE5E8",
-          "price_sale": "#ae5000",
+          "price_sale": "#456981",
           "price_regular": "#666666",
           "form_field": "#f2f2f2",
           "form_field_label": "#000000",
