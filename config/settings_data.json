@@ -9,8 +9,8 @@
  */
 {
   "current": {
-    "logo": "shopify://shop_images/logo.jpg",
-    "logo_width": 160,
+    "logo": "shopify://shop_images/logo_2.png",
+    "logo_width": 120,
     "favicon": "shopify://shop_images/icon_1.png",
     "use_ajax_atc": true,
     "show_scroll_top_button": true,
@@ -377,16 +377,16 @@
       "scheme-ba41f7c8-a303-44e7-a1d3-a9c14a08a8da": {
         "settings": {
           "primary_accent": "#456981",
-          "background": "#FCFCF9",
+          "background": "#fcfcf9",
           "background_gradient": "",
           "text": "#213845",
-          "subtext": "#5D6D75",
-          "button": "#C7D7DE",
+          "subtext": "#5d6d75",
+          "button": "#c7d7de",
           "button_label": "#ffffff",
           "secondary_button": "#f2f2f2",
           "secondary_button_label": "#000000",
           "outline_button_label": "#456981",
-          "border": "#DDE5E8",
+          "border": "#dde5e8",
           "price_sale": "#456981",
           "price_regular": "#666666",
           "form_field": "#f2f2f2",
