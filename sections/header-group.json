@@ -63,7 +63,7 @@
         "sticky_header_type": "always",
         "separator_line": "none",
         "customers": "icon",
-        "show_wishlist": true,
+        "show_wishlist": false,
         "show_compare": false,
         "icon_size": "large",
         "header_icons_use_custom_color": true,
@@ -103,7 +103,7 @@
         "foxkit_menu_element": "",
         "toggle_button_position": "menu",
         "open_default": false,
-        "megamenu_color": "background-4",
+        "megamenu_color": "scheme-ba41f7c8-a303-44e7-a1d3-a9c14a08a8da",
         "padding_top": 24,
         "padding_bottom": 0
       }
