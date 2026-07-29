@@ -327,14 +327,19 @@
 {
   "@context": "http://schema.org",
   "@type": "Article",
-  "articleBody": {{ article.content | strip_html | json }},
+  {%- assign _abody_src = article.content | strip_html -%}
+  {%- capture _abody -%}{% render 'scrub-lormur', text: _abody_src %}{%- endcapture -%}
+  "articleBody": {{ _abody | strip | json }},
   "mainEntityOfPage": {
     "@type": "WebPage",
     "@id": {{ shop.url | append: page.url | json }}
   },
-  "headline": {{ article.title | json }},
+  {%- capture _headline -%}{% render 'scrub-lormur', text: article.title %}{%- endcapture -%}
+  "headline": {{ _headline | strip | json }},
   {% if article.excerpt != blank %}
-    "description": {{ article.excerpt | strip_html | json }},
+    {%- assign _aex_src = article.excerpt | strip_html -%}
+    {%- capture _aex -%}{% render 'scrub-lormur', text: _aex_src %}{%- endcapture -%}
+    "description": {{ _aex | strip | json }},
   {% endif %}
   {% if article.image %}
 {% assign image_size = article.image.width %}
@@ -359,7 +364,8 @@
         "width": {{ page_image.width | json }}
       },
     {% endif %}
-    "name": {{ shop.name | json }}
+    {%- capture brand_name -%}{% render 'brand-name' %}{%- endcapture -%}
+    "name": {{ brand_name | strip | json }}
   }
 }
 </script>

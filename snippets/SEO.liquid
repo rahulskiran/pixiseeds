@@ -2,11 +2,14 @@
   <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
 {%- endif -%}
 
+{%- capture brand_name -%}{% render 'brand-name' %}{%- endcapture -%}
+{%- assign brand_name = brand_name | strip -%}
+
 {%- capture seo_title -%}
   {%- if request.page_type == 'search' and search.performed == true -%}
     {{ 'templates.search.results_with_count_and_term' | t: terms: search.terms, count: search.results_count }}
   {%- elsif request.page_type == 'password' -%}
-    {{ shop.name }} &ndash; {{ 'general.password_page.opening_soon' | t }}
+    {{ brand_name }} &ndash; {{ 'general.password_page.opening_soon' | t }}
   {%- else -%}
     {{ page_title }}
   {%- endif -%}
@@ -16,9 +19,10 @@
   {%- if current_page != 1 -%}
   &ndash; {{ 'general.meta.page' | t: page: current_page }}
   {%- endif -%}
-
 {%- endcapture -%}
+{%- capture seo_title -%}{% render 'scrub-lormur', text: seo_title %}{%- endcapture -%}
 <title class="{{ request.page_type }}">{{ seo_title | strip }}</title>
 {%- if page_description -%}
-<meta name="description" content="{{ page_description | escape }}">
+  {%- capture seo_description -%}{% render 'scrub-lormur', text: page_description %}{%- endcapture -%}
+  <meta name="description" content="{{ seo_description | strip | escape }}">
 {%- endif -%}

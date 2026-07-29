@@ -117,7 +117,8 @@
           {% if block.settings.show_vendor and product.vendor != blank %}
             <li>
               <span class="m-product-meta--label">{{ 'products.product.vendor' | t }}:</span>
-              <div class="m-product-meta--value">{{ product.vendor | link_to_vendor }}</div>
+              {%- capture _vendor -%}{% render 'scrub-lormur', text: product.vendor, fallback: true %}{%- endcapture -%}
+              <div class="m-product-meta--value">{{ _vendor | strip }}</div>
             </li>
           {% endif %}
           {% if block.settings.show_type and product.type != blank %}

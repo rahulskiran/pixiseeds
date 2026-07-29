@@ -112,8 +112,10 @@
           {%- liquid
             assign sg_img = section.settings.image
             assign image_height = sg_img.width | divided_by: sg_img.aspect_ratio
-            assign sg_alt = sg_img.alt | default: section.settings.heading | default: shop.name | escape
+            assign sg_alt_src = sg_img.alt | default: section.settings.heading | default: 'The Isle of Seeds'
           -%}
+          {%- capture sg_alt -%}{% render 'scrub-lormur', text: sg_alt_src, fallback: true %}{%- endcapture -%}
+          {%- assign sg_alt = sg_alt | strip | escape -%}
           <div class="m-stealgarden__media m-image m-image--rounded" style="--aspect-ratio: {{ image_aspect_ratio }};">
             {{
               sg_img

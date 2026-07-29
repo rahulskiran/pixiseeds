@@ -110,7 +110,7 @@ style="--section-padding-top: {{ padding_top }}px; --section-padding-bottom: {{ 
                             {{ brand_image | image_url }} {{ brand_image.width }}w
                           "
                           src="{{ brand_image | image_url: width: 1500 }}"
-                          alt="{{ brand_image.alt | default: shop.name | escape }}"
+                          alt="{% capture _alt %}{% render 'scrub-lormur', text: brand_image.alt, fallback: true %}{% endcapture %}{{ _alt | strip | escape }}"
                           height="{{ brand_image.height }}"
                           width="{{ brand_image.width }}"
                           loading="lazy"

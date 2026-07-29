@@ -144,7 +144,8 @@
 
               <div class="pcol__body">
                 {%- if section.settings.show_vendor and product.vendor != blank -%}
-                  <p class="pcol__vendor">{{ product.vendor }}</p>
+                  {%- capture _vendor -%}{% render 'scrub-lormur', text: product.vendor, fallback: true %}{%- endcapture -%}
+                  <p class="pcol__vendor">{{ _vendor | strip }}</p>
                 {%- endif -%}
 
                 <h3 class="pcol__title">

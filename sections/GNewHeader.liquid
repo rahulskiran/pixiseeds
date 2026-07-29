@@ -155,7 +155,8 @@
   {
     "@context": "http://schema.org",
     "@type": "Organization",
-    "name": {{ shop.name | json }},
+    {%- capture brand_name -%}{% render 'brand-name' %}{%- endcapture -%}
+    "name": {{ brand_name | strip | json }},
     {% if settings.logo %}
       "logo": {{ settings.logo | image_url: width: 500 | prepend: "https:" | json }},
     {% endif %}

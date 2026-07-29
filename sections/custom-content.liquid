@@ -302,7 +302,8 @@
                         >
                           {% if block.settings.show_vendor %}
                             <div class="main-product__block main-product__block-vendor">
-                              <span>{{ product.vendor }}</span>
+                              {%- capture _vendor -%}{% render 'scrub-lormur', text: product.vendor, fallback: true %}{%- endcapture -%}
+                              <span>{{ _vendor | strip }}</span>
                             </div>
                           {% endif %}
                           <div class="main-product__block main-product__block-title">

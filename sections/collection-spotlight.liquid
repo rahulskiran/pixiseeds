@@ -224,7 +224,8 @@
                 {%- endif -%}
                 {%- if section.settings.featured_show_vendor -%}
                   <p class="m-product-featured__vendor m:text-small m:text-color-subtext">
-                    {{ featured_product.vendor }}
+                    {%- capture _vendor -%}{% render 'scrub-lormur', text: featured_product.vendor, fallback: true %}{%- endcapture -%}
+                    {{ _vendor | strip }}
                   </p>
                 {%- endif -%}
                 <h2 class="m-product-featured__title h4">

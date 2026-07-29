@@ -112,7 +112,8 @@
                 {{ 'products.product.brand' | t }}
               </div>
               <div class="m-product-attribute__col-right m:text-right">
-                {{ product.vendor }}
+                {%- capture _vendor -%}{% render 'scrub-lormur', text: product.vendor, fallback: true %}{%- endcapture -%}
+                {{ _vendor | strip }}
               </div>
             </div>
           {% endif %}

@@ -48,7 +48,8 @@
       <div class="bf__brand">
         {%- if section.settings.logo_image != blank -%}
           <div class="bf__logo">
-            {{ section.settings.logo_image | image_url: width: 400 | image_tag: loading: 'lazy', class: 'bf__logo-img', alt: shop.name }}
+            {%- capture brand_name -%}{% render 'brand-name' %}{%- endcapture -%}
+            {{ section.settings.logo_image | image_url: width: 400 | image_tag: loading: 'lazy', class: 'bf__logo-img', alt: brand_name | strip }}
           </div>
         {%- elsif section.settings.logo_text != blank -%}
           <div class="bf__logo">
@@ -59,7 +60,7 @@
           </div>
         {%- else -%}
           <div class="bf__logo">
-            <span class="bf__logo-text">{{ shop.name }}</span>
+            <span class="bf__logo-text">{% render 'brand-name' %}</span>
           </div>
         {%- endif -%}
 

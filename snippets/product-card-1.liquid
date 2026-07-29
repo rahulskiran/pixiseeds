@@ -300,7 +300,11 @@
       <a class="m-product-card__hidden-link m:hidden" href="{{ product.url }}" aria-label="{{ product.title }}"></a>
       <div class="m-product-card__info">
         {%- if show_vendor -%}
-          <span class="m-product-card__vendor">{{ vendor_text | default: product.vendor }}</span>
+          {%- liquid
+            assign _vendor_src = vendor_text | default: product.vendor
+          -%}
+          {%- capture _vendor -%}{% render 'scrub-lormur', text: _vendor_src, fallback: true %}{%- endcapture -%}
+          <span class="m-product-card__vendor">{{ _vendor | strip }}</span>
         {%- endif -%}
 
         <h3 class="m-product-card__title h6">

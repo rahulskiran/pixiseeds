@@ -162,6 +162,10 @@
                       {%- liquid
                         assign image_height = image_desktop.width | divided_by: image_desktop.aspect_ratio | round
                         assign atl = image_desktop.alt | default: alt_default
+                      -%}
+                      {%- capture atl -%}{% render 'scrub-lormur', text: atl %}{%- endcapture -%}
+                      {%- liquid
+                        assign atl = atl | strip
                         assign fetchpriority = 'low'
                         if forloop.index == 1 and section.index < 2
                           assign loading = 'eager'
@@ -193,6 +197,10 @@
                       {%- liquid
                         assign image_height = image_mobile.width | divided_by: image_mobile.aspect_ratio | round
                         assign atl = image_mobile.alt | default: alt_default
+                      -%}
+                      {%- capture atl -%}{% render 'scrub-lormur', text: atl %}{%- endcapture -%}
+                      {%- liquid
+                        assign atl = atl | strip
                         if forloop.index == 1 and section.index < 2
                           assign loading = 'eager'
                           assign fetchpriority = 'high'

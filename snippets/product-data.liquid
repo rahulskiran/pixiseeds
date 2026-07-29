@@ -43,20 +43,24 @@
   {
     "@context": "http://schema.org/",
     "@type": "Product",
-    "name": {{ product.title | json }},
+    {%- capture _pname -%}{% render 'scrub-lormur', text: product.title %}{%- endcapture -%}
+    "name": {{ _pname | strip | json }},
     "url": {{ request.origin | append: product.url | json }},
     {%- if seo_media -%}
       "image": [
         {{ seo_media | image_url: width: seo_media.preview_image.width | prepend: "https:" | json }}
       ],
     {%- endif -%}
-    "description": {{ product.description | strip_html | json }},
+    {%- assign _desc_src = product.description | strip_html -%}
+    {%- capture _desc -%}{% render 'scrub-lormur', text: _desc_src %}{%- endcapture -%}
+    "description": {{ _desc | strip | json }},
     {% if product.selected_or_first_available_variant.sku != blank -%}
       "sku": {{ product.selected_or_first_available_variant.sku | json }},
     {%- endif %}
     "brand": {
       "@type": "Brand",
-      "name": {{ product.vendor | json }}
+      {%- capture brand_name -%}{% render 'brand-name' %}{%- endcapture -%}
+      "name": {{ brand_name | strip | json }}
     },
     "offers": [
       {%- for variant in product.variants -%}

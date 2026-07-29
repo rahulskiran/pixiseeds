@@ -1,0 +1,26 @@
+{%- comment -%}
+  Strip former brand name from any crawlable text (titles, descriptions, alts, vendors).
+  Usage: {% render 'scrub-lormur', text: some_string %}
+  Optional: pass fallback: true to output brand name when text is blank.
+{%- endcomment -%}
+{%- liquid
+  assign _t = text | default: ''
+  if _t == blank and fallback
+    echo 'The Isle of Seeds'
+  elsif _t == blank
+    echo ''
+  else
+    assign _t = _t | replace: 'Lormur Seeds', 'The Isle of Seeds'
+    assign _t = _t | replace: 'Lormur seeds', 'The Isle of Seeds'
+    assign _t = _t | replace: 'lormur seeds', 'The Isle of Seeds'
+    assign _t = _t | replace: 'LORMUR SEEDS', 'The Isle of Seeds'
+    assign _t = _t | replace: 'Lormur-Seeds', 'The Isle of Seeds'
+    assign _t = _t | replace: 'lormur-seeds', 'The Isle of Seeds'
+    assign _t = _t | replace: 'Lormur_Seeds', 'The Isle of Seeds'
+    assign _t = _t | replace: 'lormur_seeds', 'The Isle of Seeds'
+    assign _t = _t | replace: 'Lormur', 'The Isle of Seeds'
+    assign _t = _t | replace: 'lormur', 'The Isle of Seeds'
+    assign _t = _t | replace: 'LORMUR', 'The Isle of Seeds'
+    echo _t
+  endif
+-%}

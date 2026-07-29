@@ -34,7 +34,7 @@
                             {{ image.src | image_url }} {{ image.src.width }}w"
                           src="{{ image.src | image_url: width: 533 }}"
                           sizes="(min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 130 | divided_by: 4 }}px, (min-width: 990px) calc((100vw - 130px) / 4), (min-width: 750px) calc((100vw - 120px) / 3), calc((100vw - 35px) / 2)"
-                          alt="{{ image.src.alt | default: shop.name | escape }}"
+                          alt="{% capture _alt %}{% render 'scrub-lormur', text: image.src.alt, fallback: true %}{% endcapture %}{{ _alt | strip | escape }}"
                           loading="lazy"
                           width="{{ image.width }}"
                           height="{{ image.height }}"

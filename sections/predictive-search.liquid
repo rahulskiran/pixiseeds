@@ -147,7 +147,8 @@
                     <div class="m-predictive-search__item-content">
                       {%- if settings.predictive_search_show_vendor -%}
                         <span class="m:visually-hidden">{{ 'accessibility.vendor' | t }}</span>
-                        <div class="m-predictive-search__item-vendor">{{ product.vendor }}</div>
+                        {%- capture _vendor -%}{% render 'scrub-lormur', text: product.vendor, fallback: true %}{%- endcapture -%}
+                        <div class="m-predictive-search__item-vendor">{{ _vendor | strip }}</div>
                       {%- endif -%}
                       <p class="m-predictive-search__item-heading ">{{ product.title }}</p>
                       {%- if settings.predictive_search_show_price -%}
