@@ -13,6 +13,8 @@
     assign card_style = '1'
   endunless
 
+  assign vendor_text = 'The Isle of Seeds'
+
   case card_border_setting
     when 'off'
       assign _sb = false
@@ -28,19 +30,19 @@
 {% if _sb == 'inherit' %}
   {% case card_style %}
     {% when '1' %}
-      {% render 'product-card-1', product: product, image_ratio: image_ratio, card_bordered: _cb, show_vendor: show_vendor, show_cart_button: show_cart_button, index: index, animated: animated, animation_effect: animation_effect, color_scheme: color_scheme, pcard_alignment: pcard_alignment %}
+      {% render 'product-card-1', product: product, image_ratio: image_ratio, card_bordered: _cb, show_vendor: show_vendor, show_cart_button: show_cart_button, index: index, animated: animated, animation_effect: animation_effect, color_scheme: color_scheme, pcard_alignment: pcard_alignment, vendor_text: vendor_text %}
     {% when '2' %}
-      {% render 'product-card-2', product: product, image_ratio: image_ratio, card_bordered: _cb, show_vendor: show_vendor, show_cart_button: show_cart_button, index: index, animated: animated, animation_effect: animation_effect, color_scheme: color_scheme, pcard_alignment: pcard_alignment %}
+      {% render 'product-card-2', product: product, image_ratio: image_ratio, card_bordered: _cb, show_vendor: show_vendor, show_cart_button: show_cart_button, index: index, animated: animated, animation_effect: animation_effect, color_scheme: color_scheme, pcard_alignment: pcard_alignment, vendor_text: vendor_text %}
     {% when '3' %}
-      {% render 'product-card-3', product: product, image_ratio: image_ratio, card_bordered: _cb, show_vendor: show_vendor, show_cart_button: show_cart_button, index: index, animated: animated, animation_effect: animation_effect, color_scheme: color_scheme, pcard_alignment: pcard_alignment %}
+      {% render 'product-card-3', product: product, image_ratio: image_ratio, card_bordered: _cb, show_vendor: show_vendor, show_cart_button: show_cart_button, index: index, animated: animated, animation_effect: animation_effect, color_scheme: color_scheme, pcard_alignment: pcard_alignment, vendor_text: vendor_text %}
   {% endcase %}
 {% else %}
   {% case card_style %}
     {% when '1' %}
-      {% render 'product-card-1', product: product, image_ratio: image_ratio, card_bordered: _cb, show_border: _sb, show_vendor: show_vendor, show_cart_button: show_cart_button, index: index, animated: animated, animation_effect: animation_effect, color_scheme: color_scheme, pcard_alignment: pcard_alignment %}
+      {% render 'product-card-1', product: product, image_ratio: image_ratio, card_bordered: _cb, show_border: _sb, show_vendor: show_vendor, show_cart_button: show_cart_button, index: index, animated: animated, animation_effect: animation_effect, color_scheme: color_scheme, pcard_alignment: pcard_alignment, vendor_text: vendor_text %}
     {% when '2' %}
-      {% render 'product-card-2', product: product, image_ratio: image_ratio, card_bordered: _cb, show_border: _sb, show_vendor: show_vendor, show_cart_button: show_cart_button, index: index, animated: animated, animation_effect: animation_effect, color_scheme: color_scheme, pcard_alignment: pcard_alignment %}
+      {% render 'product-card-2', product: product, image_ratio: image_ratio, card_bordered: _cb, show_border: _sb, show_vendor: show_vendor, show_cart_button: show_cart_button, index: index, animated: animated, animation_effect: animation_effect, color_scheme: color_scheme, pcard_alignment: pcard_alignment, vendor_text: vendor_text %}
     {% when '3' %}
-      {% render 'product-card-3', product: product, image_ratio: image_ratio, card_bordered: _cb, show_border: _sb, show_vendor: show_vendor, show_cart_button: show_cart_button, index: index, animated: animated, animation_effect: animation_effect, color_scheme: color_scheme, pcard_alignment: pcard_alignment %}
+      {% render 'product-card-3', product: product, image_ratio: image_ratio, card_bordered: _cb, show_border: _sb, show_vendor: show_vendor, show_cart_button: show_cart_button, index: index, animated: animated, animation_effect: animation_effect, color_scheme: color_scheme, pcard_alignment: pcard_alignment, vendor_text: vendor_text %}
   {% endcase %}
 {% endif %}

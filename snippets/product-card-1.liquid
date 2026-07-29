@@ -300,7 +300,7 @@
       <a class="m-product-card__hidden-link m:hidden" href="{{ product.url }}" aria-label="{{ product.title }}"></a>
       <div class="m-product-card__info">
         {%- if show_vendor -%}
-          <span class="m-product-card__vendor">{{ product.vendor }}</span>
+          <span class="m-product-card__vendor">{{ vendor_text | default: product.vendor }}</span>
         {%- endif -%}
 
         <h3 class="m-product-card__title h6">
