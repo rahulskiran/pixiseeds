@@ -1,3 +1,16 @@
+{%- capture org_brand_name -%}{% render 'brand-name' %}{%- endcapture -%}
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "Organization",
+    "name": {{ org_brand_name | strip | json }},
+    {%- if settings.logo -%}
+      "logo": {{ settings.logo | image_url: width: 500 | prepend: "https:" | json }},
+    {%- endif -%}
+    "url": {{ shop.url | json }}
+  }
+</script>
+
 {{ 'section-header.css' | asset_url | stylesheet_tag }}
 {% comment %}{{ 'foxkit-mega-menu.css' | asset_url | stylesheet_tag }}{% endcomment %}
 <link
