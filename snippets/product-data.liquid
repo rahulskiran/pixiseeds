@@ -62,6 +62,13 @@
       {%- capture brand_name -%}{% render 'brand-name' %}{%- endcapture -%}
       "name": {{ brand_name | strip | json }}
     },
+    {%- if product.metafields.loox.num_reviews != blank and product.metafields.loox.num_reviews > 0 -%}
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": {{ product.metafields.loox.avg_rating | json }},
+        "reviewCount": {{ product.metafields.loox.num_reviews | json }}
+      },
+    {%- endif -%}
     "offers": [
       {%- for variant in product.variants -%}
         {
@@ -70,13 +77,15 @@
             "sku": {{ variant.sku | json }},
           {%- endif -%}
           {%- if variant.barcode.size == 12 -%}
-            "gtin12": {{ variant.barcode }},
-          {%- endif -%}
-          {%- if variant.barcode.size == 13 -%}
-            "gtin13": {{ variant.barcode }},
-          {%- endif -%}
-          {%- if variant.barcode.size == 14 -%}
-            "gtin14": {{ variant.barcode }},
+            "gtin12": {{ variant.barcode | json }},
+          {%- elsif variant.barcode.size == 13 -%}
+            "gtin13": {{ variant.barcode | json }},
+          {%- elsif variant.barcode.size == 14 -%}
+            "gtin14": {{ variant.barcode | json }},
+          {%- elsif variant.sku != blank -%}
+            "mpn": {{ variant.sku | json }},
+          {%- else -%}
+            "identifier_exists": false,
           {%- endif -%}
           "availability" : "http://schema.org/{% if variant.available %}InStock{% else %}OutOfStock{% endif %}",
           "price" : {{ variant.price | divided_by: 100.00 | json }},
