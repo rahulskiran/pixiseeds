@@ -94,8 +94,8 @@
             "variant_card_border_width": 1,
             "variant_card_selected_border_width": 2,
             "variant_card_border_color": "#d1d5db",
-            "variant_card_selected_border_color": "#ae5000",
-            "variant_card_price_color": "#ae5000",
+            "variant_card_selected_border_color": "#314B5D",
+            "variant_card_price_color": "#314B5D",
             "size_title": "Size"
           }
         },
@@ -140,7 +140,7 @@
             "shipping_title": "Shipping Information",
             "shipping_text": "<p>Free shipping on all orders over India</p>",
             "show_returns_text": true,
-            "returns_title": "Verified Seller @ Amazon.in",
+            "returns_title": "",
             "returns_text": ""
           }
         },
@@ -384,9 +384,9 @@
         "background_color": "#f4f1ea",
         "card_background": "#ffffff",
         "card_border_color": "#e5e0d8",
-        "accent_color": "#d96c3b",
+        "accent_color": "#456981",
         "accent_text_color": "#ffffff",
-        "heading_color": "#d96c3b",
+        "heading_color": "#456981",
         "subheading_color": "#5c655c",
         "text_color": "#3d3d3d",
         "card_radius": 12,
