@@ -63,15 +63,6 @@
             "heading_size": "h2"
           }
         },
-        "visitors_pf9GQa": {
-          "type": "visitors",
-          "settings": {
-            "live_views_text": "{count_number} people are viewing this right now",
-            "live_views_range": "20-30",
-            "live_view_duration": "10",
-            "live_view_icon_blinks": true
-          }
-        },
         "price": {
           "type": "price",
           "settings": {
@@ -171,7 +162,6 @@
         "569262ef-b84b-475c-8f61-0c14620f8fae",
         "81d0515f-440e-4127-8a79-aa458f08c46c",
         "title",
-        "visitors_pf9GQa",
         "price",
         "f62f65dc-7525-452d-a18c-2109730a02ec",
         "variant_picker",
