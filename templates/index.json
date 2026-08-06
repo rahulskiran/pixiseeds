@@ -1122,58 +1122,24 @@
         "image_slide_4FkAp4": {
           "type": "image_slide",
           "settings": {
-            "color_scheme": "",
-            "image": "shopify://shop_images/New_219_Lormur_Hero_1.webp",
-            "image_mobile": "shopify://shop_images/Fresh_Wellness_Starts_Here.webp",
+            "color_scheme": "background-3",
+            "image": "shopify://shop_images/New_219_Lormur_Hero_2.webp",
+            "image_mobile": "shopify://shop_images/Fresh_Wellness_Starts_Here_1.webp",
             "image_link": "",
             "enable_container_box": true,
             "content_position": "middle_left",
             "content_alignment": "center",
             "sub_heading": "",
-            "heading": "PLANT TODAY\nBLOOM TOMORROW",
-            "heading_size": "h3",
-            "description": "<p>Tell your brand's story through images</p>",
+            "heading": "",
+            "heading_size": "h2",
+            "description": "",
             "button_label": "",
-            "button_style": "m-button--primary"
-          }
-        },
-        "image_slide_4YUrnX": {
-          "type": "image_slide",
-          "settings": {
-            "color_scheme": "",
-            "image_link": "",
-            "enable_container_box": true,
-            "content_position": "middle_center",
-            "content_alignment": "center",
-            "sub_heading": "",
-            "heading": "Image slide",
-            "heading_size": "h3",
-            "description": "<p>Tell your brand's story through images</p>",
-            "button_label": "Button label",
-            "button_style": "m-button--primary"
-          }
-        },
-        "image_slide_KtKPrc": {
-          "type": "image_slide",
-          "settings": {
-            "color_scheme": "",
-            "image_link": "",
-            "enable_container_box": true,
-            "content_position": "middle_center",
-            "content_alignment": "center",
-            "sub_heading": "",
-            "heading": "Image slide",
-            "heading_size": "h3",
-            "description": "<p>Tell your brand's story through images</p>",
-            "button_label": "Button label",
             "button_style": "m-button--primary"
           }
         }
       },
       "block_order": [
-        "image_slide_4FkAp4",
-        "image_slide_4YUrnX",
-        "image_slide_KtKPrc"
+        "image_slide_4FkAp4"
       ],
       "name": "Slideshow",
       "settings": {
@@ -1202,7 +1168,7 @@
         "split_heading": "Spring savings are here",
         "split_heading_color": "#ffffff",
         "split_heading_size": "h2",
-        "split_heading_weight": "600",
+        "split_heading_weight": "700",
         "split_heading_font": "heading",
         "split_text": "<p>Use code at checkout and save on seasonal favorites.</p>",
         "split_text_color": "#ffffff",
