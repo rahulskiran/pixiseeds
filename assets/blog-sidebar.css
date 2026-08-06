@@ -1,1 +1,163 @@
-.m-blog-sidebar{margin-top:40px}@media screen and (min-width: 1024px){.m-blog-sidebar{flex:0 0 var(--m-sidebar-width);width:var(--m-sidebar-width);margin-top:0}}.m-section--boxed .m-blog-sidebar{position:relative;padding:var(--m-sidebar-boxed-py) var(--m-sidebar-boxed-px);border-radius:var(--boxed-radius, 0px)}.m-section--boxed .m-blog-sidebar:after{content:"";position:absolute;top:0;left:0;right:0;bottom:0;pointer-events:none;border-width:1px;border-style:solid;border-color:rgb(var(--color-border));border-radius:inherit}.m-recent-posts{margin-top:20px}.m-recent-post{display:grid;column-gap:12px;grid-template-columns:minmax(70px, 25%) auto}.m-recent-post+.m-recent-post{margin-top:20px}.m-recent-post__tag{color:rgb(var(--color-foreground));margin-bottom:8px;line-height:1}.m-recent-post__tag a{font-size:12px;line-height:1.333;text-transform:uppercase;letter-spacing:.3px}.m-recent-post__title{color:rgb(var(--color-foreground));margin-bottom:4px}.m-recent-post__title a:hover{text-decoration:underline}.m-recent-post__description{color:rgb(var(--color-foreground-secondary));font-size:14px;line-height:20px;margin-bottom:4px}.m-recent-post__meta{color:rgb(var(--color-foreground-secondary));font-size:14px;line-height:20px}.m-recent-post__meta span{color:rgb(var(--color-foreground))}
+.m-blog-sidebar {
+  margin-top: 40px;
+}
+@media screen and (min-width: 1024px) {
+  .m-blog-sidebar {
+    flex: 0 0 var(--m-sidebar-width);
+    width: var(--m-sidebar-width);
+    margin-top: 0;
+    position: sticky;
+    top: 32px;
+    align-self: flex-start;
+  }
+}
+.m-section--boxed .m-blog-sidebar {
+  position: relative;
+  padding: var(--m-sidebar-boxed-py) var(--m-sidebar-boxed-px);
+  border-radius: var(--boxed-radius, 0px);
+}
+.m-section--boxed .m-blog-sidebar:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  border-width: 1px;
+  border-style: solid;
+  border-color: rgb(var(--color-border));
+  border-radius: inherit;
+}
+
+/* Widget rhythm + accent title */
+.m-blog-sidebar .m-widget {
+  margin-top: 0;
+  padding-bottom: 32px;
+  margin-bottom: 32px;
+  border-bottom: 1px solid rgb(var(--color-border));
+}
+.m-blog-sidebar .m-widget:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+.m-blog-sidebar .m-widget__title {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 18px;
+  padding-left: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 14px;
+}
+.m-blog-sidebar .m-widget__title:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 2px;
+  bottom: 2px;
+  width: 3px;
+  border-radius: var(--rounded-full, 9999px);
+  background-color: rgb(var(--color-primary));
+}
+
+/* Categories */
+.m-blog-sidebar .m-link-lists .m-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-top: none;
+  border-bottom: 1px solid rgb(var(--color-border));
+  padding: 11px 2px;
+  transition: padding-left var(--m-duration-default, 0.25s) ease, color var(--m-duration-default, 0.25s) ease;
+}
+.m-blog-sidebar .m-link-lists__item:first-child .m-link {
+  border-top: 1px solid rgb(var(--color-border));
+}
+.m-blog-sidebar .m-link-lists .m-link:hover {
+  color: rgb(var(--color-foreground));
+  padding-left: 8px;
+}
+.m-blog-sidebar .m-link__count {
+  color: rgb(var(--color-foreground-secondary));
+  font-size: 12px;
+}
+
+/* Tags as pills */
+.m-blog-sidebar .m-link-lists--inline {
+  margin: -4px;
+}
+.m-blog-sidebar .m-link-lists--inline .m-link-lists__item {
+  margin: 4px;
+  padding: 0;
+}
+.m-blog-sidebar .m-link-lists--inline .m-link {
+  display: inline-flex;
+  padding: 7px 16px;
+  border: 1px solid rgb(var(--color-border));
+  border-radius: var(--rounded-full, 9999px);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.m-blog-sidebar .m-link-lists--inline .m-link:hover {
+  color: rgb(var(--color-button-text));
+  background-color: rgb(var(--color-primary));
+  border-color: rgb(var(--color-primary));
+}
+
+/* Recent posts */
+.m-recent-posts {
+  margin-top: 20px;
+}
+.m-recent-post {
+  display: grid;
+  column-gap: 12px;
+  grid-template-columns: minmax(70px, 25%) auto;
+}
+.m-recent-post + .m-recent-post {
+  margin-top: 20px;
+}
+.m-recent-post__thumbnail {
+  display: block;
+  overflow: hidden;
+  border-radius: var(--article-card-corner-radius, 0px);
+}
+.m-recent-post__tag {
+  color: rgb(var(--color-foreground));
+  margin-bottom: 8px;
+  line-height: 1;
+}
+.m-recent-post__tag a {
+  font-size: 12px;
+  line-height: 1.333;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+.m-recent-post__title {
+  color: rgb(var(--color-foreground));
+  margin-bottom: 4px;
+}
+.m-recent-post__title a {
+  transition: color var(--m-duration-default, 0.25s) ease;
+}
+.m-recent-post__title a:hover {
+  color: rgb(var(--color-primary));
+}
+.m-recent-post__description {
+  color: rgb(var(--color-foreground-secondary));
+  font-size: 14px;
+  line-height: 20px;
+  margin-bottom: 4px;
+}
+.m-recent-post__meta {
+  color: rgb(var(--color-foreground-secondary));
+  font-size: 14px;
+  line-height: 20px;
+}
+.m-recent-post__meta span {
+  color: rgb(var(--color-foreground));
+}

@@ -10,12 +10,16 @@
     {{ 'collection-' | append: current | placeholder_svg_tag: 'm-placeholder-svg m:object-cover m-image-loaded m:w-full m:h-full' }}
   </div>
   <div class="m-article-card__content">
-      <span class="m-article-card__tags">Minimog</span>
-      <span class="m-article-card__date">May 27, 2021</span>
+      <div class="m-article-card__meta">
+        <span>May 27, 2021</span>
+        <span class="m-article-card__meta-dot" aria-hidden="true"></span>
+        <span>1 min read</span>
+      </div>
       <h3 class="m-article-card__title h4">{{ 'homepage.onboarding.blog_title' | t }}</h3>
       <div class="m-article-card__excerpt">{{ 'homepage.onboarding.blog_excerpt' | t }}</div>
-      <a href="#" class="m-article-card__readmore m-button m-button--link">
+      <a href="#" class="m-article-card__readmore">
         {{ 'homepage.onboarding.blog_readmore' | t }}
+        {% render 'icon', name: 'arrow-right', size: 'small' %}
       </a>
   </div>
 </div>

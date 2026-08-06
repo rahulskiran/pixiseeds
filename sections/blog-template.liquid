@@ -43,6 +43,14 @@
 {% render 'page-title', title: blog.title, heading_size: 'h2', custom_style: page_header_style, show_breadcrumb: section.settings.show_breadcrumb %}
 
 {%- paginate blog.articles by section.settings.blog_list -%}
+{%- liquid
+  assign show_featured = false
+  assign featured_offset = 0
+  if section.settings.show_featured_post and paginate.current_page == 1 and current_tags == blank and blog.articles.size > 1
+    assign show_featured = true
+    assign featured_offset = 1
+  endif
+-%}
 <section
   data-section-type="blog-template"
   data-section-id="{{ section.id }}"
@@ -55,14 +63,25 @@
   <div class="m-page-width">
     <div class="m-blog__wrapper lg:m:display-flex m:items-start{% if section.settings.layout == 'left' %} m:flex-row-reverse{% endif %}">
       <div class="m-blog__inner m:flex-1{% if boxed_layout %} m-gradient m-color-{{ boxed_color_scheme }}{% endif %}">
+        {%- if show_featured -%}
+          {%- for article in blog.articles limit: 1 -%}
+            {% render 'article-card',
+              article: article,
+              featured: true,
+              index: 0,
+              animated: animated,
+              animation_effect: animation_effect
+            %}
+          {%- endfor -%}
+        {%- endif -%}
         <div class="m-blog__list m:grid m:grid-1-cols{% if view == 'grid' %} md:m:grid-2-cols lg:m:grid-{{ items }}-cols{% endif %}">
-          {%- for article in blog.articles -%}
+          {%- for article in blog.articles offset: featured_offset -%}
             <div class="m:column">
-              {% render 'article-card', 
-                article: article, 
+              {% render 'article-card',
+                article: article,
                 view: view,
                 index: forloop.index,
-                animated: animated, 
+                animated: animated,
                 animation_effect: animation_effect
               %}
             </div>
@@ -149,6 +168,13 @@
     {
       "type": "header",
       "content": "Layout"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_featured_post",
+      "label": "Show featured post",
+      "info": "Highlights the latest article in a large hero card. Hidden on tag/filtered pages.",
+      "default": true
     },
     {
       "type": "select",

@@ -26,9 +26,47 @@
   if view == 'list'
     assign title_size = 'h4'
   endif
+
+  assign featured = featured | default: false
+
+  assign word_count = article.content | strip_html | strip_newlines | split: ' ' | size
+  assign reading_time = word_count | divided_by: 200
+  if reading_time < 1
+    assign reading_time = 1
+  endif
 %}
 {% capture date %}{{ article.published_at | time_tag: format: 'month_day_year' }}{% endcapture %}
-<div 
+{% if featured %}
+<article
+  class="m-article-card m-article-card--featured{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}"
+  {% if animated %}data-cascade style="--animation-order: {{ index }};"{% endif %}
+>
+  {% if article.image != blank %}
+  <a class="m-article-card__featured-media m-hover-box m-hover-box--scale-up" href="{{ article.url }}" aria-hidden="true" tabindex="-1">
+    {% render 'responsive-image', image: article.image, aspect_ratio: '16/9' %}
+  </a>
+  {% endif %}
+  <div class="m-article-card__featured-body">
+    {%- if article.tags.size > 0 -%}
+      <a class="m-article-card__pill" href="{{ blog.url }}/tagged/{{ article.tags.first | handle }}">{%- for tag in article.tags limit: 1 -%}{{ tag }}{%- endfor -%}</a>
+    {%- endif -%}
+    <h2 class="m-article-card__featured-title"><a href="{{ article.url }}">{{ article.title }}</a></h2>
+    <div class="m-article-card__meta">
+      <span>{{ date }}</span>
+      <span class="m-article-card__meta-dot" aria-hidden="true"></span>
+      <span>{{ reading_time }} min read</span>
+    </div>
+    {%- if article_excerpt != blank -%}
+      <div class="m-article-card__featured-excerpt">{{ article_excerpt | strip_html | truncatewords: 32, '...' }}</div>
+    {%- endif -%}
+    <a class="m-article-card__readmore" href="{{ article.url }}">
+      {{ 'blogs.article.read_more' | t }}
+      {% render 'icon', name: 'arrow-right', size: 'small' %}
+    </a>
+  </div>
+</article>
+{% else %}
+<article
   class="m-article-card m-article-card--view-{{ view }}{% if card_bordered %} m-article-card--bordered{% endif %}{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}"
   {% if animated %}
     data-cascade
@@ -38,14 +76,18 @@
   {% if article.image != blank %}
   <a class="m-article-card__image m-hover-box m-hover-box--scale-up" href="{{ article.url }}">
     {% render 'responsive-image', image: article.image, aspect_ratio: settings.article_image_aspect_ratio %}
+    {%- if article.tags.size > 0 and article_show_tags -%}
+      <span class="m-article-card__pill m-article-card__pill--overlay">{%- for tag in article.tags limit: 1 -%}{{ tag }}{%- endfor -%}</span>
+    {%- endif -%}
   </a>
   {% endif %}
   <div class="m-article-card__content m:{{ content_align }}">
-    {%- if article.tags.size > 0 and article_show_tags -%}
-      <span class="m-article-card__tags">{%- for tag in article.tags limit: 1 -%}{{ tag }}{%- endfor -%}</span>
-    {%- endif -%}
     {%- if article_show_date -%}
-      <span class="m-article-card__date">{{ date }}</span>
+      <div class="m-article-card__meta">
+        <span>{{ date }}</span>
+        <span class="m-article-card__meta-dot" aria-hidden="true"></span>
+        <span>{{ reading_time }} min read</span>
+      </div>
     {%- endif -%}
     <h3 class="m-article-card__title {{ title_size }}"><a href="{{ article.url }}">{{ article.title }}</a></h3>
     {%- if article_show_excerpt and article_excerpt != blank -%}
@@ -54,9 +96,11 @@
       </div>
     {%- endif -%}
     {%- if article_show_button -%}
-      <a class="m-article-card__readmore m-button m-button--link" href="{{ article.url }}">
+      <a class="m-article-card__readmore m-article-card__readmore--text" href="{{ article.url }}">
         {{ 'blogs.article.read_more' | t }}
+        {% render 'icon', name: 'arrow-right', size: 'small' %}
       </a>
     {%- endif -%}
   </div>
-</div>
+</article>
+{% endif %}
