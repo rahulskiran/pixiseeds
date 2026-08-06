@@ -9,58 +9,12 @@
  */
 {
   "sections": {
-    "hero_banner_PlantToday": {
-      "type": "Image-banner",
-      "settings": {
-        "layout": "full-width",
-        "image_height": "large",
-        "color_scheme": "background-4",
-        "image": "",
-        "image_mobile": "",
-        "image_link": "",
-        "content_position": "bottom_left",
-        "content_alignment": "left",
-        "stack_images_on_mobile": false,
-        "content_alignment_mobile": "left",
-        "animations": "inherit",
-        "enable_bg_zoom_effect": false
-      },
-      "blocks": {
-        "heading_PlantToday": {
-          "type": "heading",
-          "settings": {
-            "heading": "Plant today\nBloom tomorrow",
-            "heading_size": "h1"
-          }
-        },
-        "button_ShopNow": {
-          "type": "button",
-          "settings": {
-            "button_label": "Shop now",
-            "button_link": "/collections/all",
-            "button_style": "m-button--primary"
-          }
-        },
-        "button_BestSellers": {
-          "type": "button",
-          "settings": {
-            "button_label": "Best sellers",
-            "button_link": "/collections/best-sellers",
-            "button_style": "m-button--secondary"
-          }
-        }
-      },
-      "block_order": [
-        "heading_PlantToday",
-        "button_ShopNow",
-        "button_BestSellers"
-      ]
-    },
     "slideshow_4HbFcY": {
       "type": "slideshow",
       "blocks": {
         "image_slide_3QY7Cg": {
           "type": "image_slide",
+          "disabled": true,
           "settings": {
             "color_scheme": "scheme-1",
             "image": "shopify://shop_images/New_219_Lormur_Hero.png",
@@ -321,7 +275,7 @@
         "label_text_transform": "uppercase",
         "label_letter_spacing": 120,
         "heading_spacing": 32,
-        "section_background": "#F3F7FA",
+        "section_background": "#f3f7fa",
         "heading_color": "#456981",
         "label_color": "#ffffff",
         "card_border_color": "#eadfcd",
@@ -681,8 +635,8 @@
         "card_label_size_desktop": 22,
         "card_label_weight": 400,
         "header_spacing": 36,
-        "background_color": "#F8FCFF",
-        "eyebrow_color": "#5D6D75",
+        "background_color": "#f8fcff",
+        "eyebrow_color": "#5d6d75",
         "heading_color": "#456981",
         "card_label_color": "#ffffff",
         "media_fallback_bg": "#e8e4dc",
@@ -887,16 +841,16 @@
         "card_text_size_mobile": 12,
         "card_text_size": 13,
         "header_spacing": 26,
-        "background_color": "#F8FCFF",
+        "background_color": "#f8fcff",
         "eyebrow_color": "#2d4a3e",
-        "heading_color": "#314B5D",
+        "heading_color": "#314b5d",
         "text_color": "#2d4a3e",
         "card_border_color": "#e5e0d8",
         "card_body_bg": "#133650",
         "media_fallback_bg": "#ebe6de",
-        "card_title_color": "#F8FCFF",
-        "card_subtext_color": "#F8FCFF",
-        "card_icon_color": "#F8FCFF",
+        "card_title_color": "#f8fcff",
+        "card_subtext_color": "#f8fcff",
+        "card_icon_color": "#f8fcff",
         "card_text_color": "#2d4a3e",
         "card_arrow_color": "#5a7268",
         "footer_link_label": "Or browse all plants",
@@ -983,7 +937,7 @@
         "pcard_layout": "",
         "pcard_image_ratio": "3/4",
         "show_vendor": true,
-        "atc_bg_color": "#5D6D75",
+        "atc_bg_color": "#5d6d75",
         "atc_text_color": "#ffffff",
         "atc_hover_bg_color": "#ffffff",
         "atc_hover_text_color": "#d96c3b",
@@ -1190,7 +1144,7 @@
       "name": "Grown by you",
       "settings": {
         "color_scheme": "scheme-ba41f7c8-a303-44e7-a1d3-a9c14a08a8da",
-        "background_color": "#F3F7FA",
+        "background_color": "#f3f7fa",
         "heading": "Grown By You",
         "heading_tag": "h2",
         "subheading": "Real gardens, real gardeners. Tag #BloomfieldSeeds to be featured.",
@@ -1303,7 +1257,6 @@
     }
   },
   "order": [
-    "hero_banner_PlantToday",
     "slideshow_4HbFcY",
     "new_col_6MtRnX",
     "3d92e37f-b44b-49a7-8000-f53f057128ae",
