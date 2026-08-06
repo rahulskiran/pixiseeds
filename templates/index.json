@@ -1145,6 +1145,42 @@
         "padding_top": 64,
         "padding_bottom": 64
       }
+    },
+    "blog_posts_k9A43x": {
+      "type": "blog-posts",
+      "name": "Blog posts",
+      "settings": {
+        "color_scheme": "background-4",
+        "boxed_layout": false,
+        "boxed_color_scheme": "",
+        "heading": "Blog posts",
+        "heading_size": "h2",
+        "header_alignment": "center",
+        "header_mobile_alignment": "left",
+        "header_divider": false,
+        "blog": "news",
+        "limit": 4,
+        "column": 4,
+        "column_gap": 30,
+        "row_gap": 30,
+        "article_image_aspect_ratio": "16/9",
+        "article_align_content": "text-left",
+        "article_show_tags": true,
+        "article_show_date": true,
+        "article_show_excerpt": true,
+        "article_show_button": true,
+        "button_link": "",
+        "button_text": "View More",
+        "button_style": "m-button--primary",
+        "mobile_layout": "col-1",
+        "enable_swipe_mobile": true,
+        "column_gap_mobile": 10,
+        "row_gap_mobile": 10,
+        "padding_top": 50,
+        "padding_bottom": 50,
+        "custom_class": "",
+        "animations": "inherit"
+      }
     }
   },
   "order": [
@@ -1158,6 +1194,7 @@
     "product_tabs_wrHLX8",
     "steal_garden_trQLtU",
     "grown_by_you_pUNg8P",
-    "premium_faq_BWjHfa"
+    "premium_faq_BWjHfa",
+    "blog_posts_k9A43x"
   ]
 }
