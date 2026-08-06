@@ -94,8 +94,8 @@
             "variant_card_border_width": 1,
             "variant_card_selected_border_width": 2,
             "variant_card_border_color": "#d1d5db",
-            "variant_card_selected_border_color": "#314B5D",
-            "variant_card_price_color": "#314B5D",
+            "variant_card_selected_border_color": "#314b5d",
+            "variant_card_price_color": "#314b5d",
             "size_title": "Size"
           }
         },
@@ -138,7 +138,7 @@
             "date_format": "%b %d",
             "show_shipping_text": true,
             "shipping_title": "Shipping Information",
-            "shipping_text": "<p>Free shipping on all orders over India</p>",
+            "shipping_text": "<p>Free shipping on all orders.</p>",
             "show_returns_text": true,
             "returns_title": "",
             "returns_text": ""
@@ -309,12 +309,12 @@
       ],
       "name": "Growing tips & guides",
       "settings": {
-        "soil_background": "#F8FCFF",
+        "soil_background": "#f8fcff",
         "accent_script_color": "#456981",
-        "main_title_color": "#314B5D",
+        "main_title_color": "#314b5d",
         "content_source": "from_product_description",
         "fallback_tab_label": "Details",
-        "tab_active_background": "#314B5D",
+        "tab_active_background": "#314b5d",
         "tab_active_text": "#ffffff",
         "tab_inactive_desktop": "#3d3d3d",
         "tab_inactive_mobile": "#ffffff",
