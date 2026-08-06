@@ -101,6 +101,7 @@
     "cookie_consent_placement": "bottom-left",
     "cookie_consent_theme": "white",
     "review_app": "loox",
+    "currency_code_enabled": true,
     "checkout_logo_image": "shopify://shop_images/Logo-PNG.png",
     "checkout_logo_position": "center",
     "checkout_logo_size": "medium",
