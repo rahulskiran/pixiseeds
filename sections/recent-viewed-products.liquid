@@ -1,4 +1,3 @@
-{{ 'component-product-card.css' | asset_url | stylesheet_tag }}
 {% liquid
   assign items_per_row = section.settings.items_per_row
   assign product_to_show = section.settings.product_to_show | default: 8

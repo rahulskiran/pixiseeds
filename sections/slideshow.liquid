@@ -160,10 +160,22 @@
                       {{ 'lifestyle-1' | placeholder_svg_tag: 'm-placeholder-svg m:w-full m:h-full' }}
                     </{% if image_link != blank %}a{% else %}div{% endif %}>
                   {% endif %}
-                  {% if image_desktop != blank %}
-                    <{% if image_link != blank %}a href="{{ image_link }}"{% else %}div{% endif %} 
+                  {%- liquid
+                    assign both_images = false
+                    if image_desktop != blank and image_mobile != blank
+                      assign both_images = true
+                    endif
+                  -%}
+                  {% if both_images %}
+                    {%- comment -%}
+                      Both a desktop and mobile image are set: use <picture> with a
+                      media-matched <source> so the browser fetches only the image it
+                      will actually render, instead of downloading both art-directed
+                      variants at high priority on every device.
+                    {%- endcomment -%}
+                    <{% if image_link != blank %}a href="{{ image_link }}"{% else %}div{% endif %}
                       {{ adapt_style }}
-                      class="m-slide__bg m:w-full m:h-full m-slide__bg--{{ section.settings.slide_height }} {% if image_mobile != blank %}m:hidden md:m:block{% else %}m:block{% endif %}"
+                      class="m-slide__bg m:w-full m:h-full m-slide__bg--{{ section.settings.slide_height }} m:block"
                       aria-label="{{ block.settings.heading }}"
                     >
                       {%- liquid
@@ -174,51 +186,89 @@
                       {%- liquid
                         assign atl = atl | strip
                       -%}
-
-                      {{
-                        image_desktop
-                        | image_url: width: 3840
-                        | image_tag:
-                          loading: loading,
-                          fetchpriority: fetchpriority,
-                          width: image_desktop.width,
-                          height: image_height,
-                          sizes: '100vw',
-                          widths: '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840',
-                          alt: atl
-                        | escape
-                      }}
+                      {%- capture mobile_srcset -%}
+                        {%- for w in '375,550,750,1100' | split: ',' -%}
+                          {{- image_mobile | image_url: width: w -}} {{ w }}w{% unless forloop.last %},{% endunless %}
+                        {%- endfor -%}
+                      {%- endcapture -%}
+                      <picture>
+                        <source media="(max-width: 767px)" sizes="100vw" srcset="{{ mobile_srcset | strip_newlines | strip }}">
+                        {{
+                          image_desktop
+                          | image_url: width: 3840
+                          | image_tag:
+                            loading: loading,
+                            fetchpriority: fetchpriority,
+                            width: image_desktop.width,
+                            height: image_height,
+                            sizes: '100vw',
+                            widths: '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840',
+                            alt: atl
+                          | escape
+                        }}
+                      </picture>
                     </{% if image_link != blank %}a{% else %}div{% endif %}>
-                  {% endif %}
-                  {% if image_mobile != blank %}
-                    <{% if image_link != blank %}a href="{{ image_link }}"{% else %}div{% endif %}
-                      {{ adapt_style }}
-                      class="m-slide__bg md:m:hidden m:block m:w-full m:h-full m-slide__bg--{{ section.settings.slide_height }}"
-                      aria-label="{{ block.settings.heading }}"
-                    >
-                      {%- liquid
-                        assign image_height = image_mobile.width | divided_by: image_mobile.aspect_ratio | round
-                        assign atl = image_mobile.alt | default: alt_default
-                      -%}
-                      {%- capture atl -%}{% render 'scrub-lormur', text: atl %}{%- endcapture -%}
-                      {%- liquid
-                        assign atl = atl | strip
-                      -%}
+                  {% else %}
+                    {% if image_desktop != blank %}
+                      <{% if image_link != blank %}a href="{{ image_link }}"{% else %}div{% endif %}
+                        {{ adapt_style }}
+                        class="m-slide__bg m:w-full m:h-full m-slide__bg--{{ section.settings.slide_height }} m:block"
+                        aria-label="{{ block.settings.heading }}"
+                      >
+                        {%- liquid
+                          assign image_height = image_desktop.width | divided_by: image_desktop.aspect_ratio | round
+                          assign atl = image_desktop.alt | default: alt_default
+                        -%}
+                        {%- capture atl -%}{% render 'scrub-lormur', text: atl %}{%- endcapture -%}
+                        {%- liquid
+                          assign atl = atl | strip
+                        -%}
 
-                      {{
-                        image_mobile
-                        | image_url: width: 1100
-                        | image_tag:
-                          loading: loading,
-                          fetchpriority: fetchpriority,
-                          width: image_mobile.width,
-                          height: image_height,
-                          sizes: '100vw',
-                          widths: '375, 550, 750, 1100',
-                          alt: atl
-                        | escape
-                      }}
-                    </{% if image_link != blank %}a{% else %}div{% endif %}>
+                        {{
+                          image_desktop
+                          | image_url: width: 3840
+                          | image_tag:
+                            loading: loading,
+                            fetchpriority: fetchpriority,
+                            width: image_desktop.width,
+                            height: image_height,
+                            sizes: '100vw',
+                            widths: '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840',
+                            alt: atl
+                          | escape
+                        }}
+                      </{% if image_link != blank %}a{% else %}div{% endif %}>
+                    {% endif %}
+                    {% if image_mobile != blank %}
+                      <{% if image_link != blank %}a href="{{ image_link }}"{% else %}div{% endif %}
+                        {{ adapt_style }}
+                        class="m-slide__bg m:w-full m:h-full m-slide__bg--{{ section.settings.slide_height }} m:block"
+                        aria-label="{{ block.settings.heading }}"
+                      >
+                        {%- liquid
+                          assign image_height = image_mobile.width | divided_by: image_mobile.aspect_ratio | round
+                          assign atl = image_mobile.alt | default: alt_default
+                        -%}
+                        {%- capture atl -%}{% render 'scrub-lormur', text: atl %}{%- endcapture -%}
+                        {%- liquid
+                          assign atl = atl | strip
+                        -%}
+
+                        {{
+                          image_mobile
+                          | image_url: width: 1100
+                          | image_tag:
+                            loading: loading,
+                            fetchpriority: fetchpriority,
+                            width: image_mobile.width,
+                            height: image_height,
+                            sizes: '100vw',
+                            widths: '375, 550, 750, 1100',
+                            alt: atl
+                          | escape
+                        }}
+                      </{% if image_link != blank %}a{% else %}div{% endif %}>
+                    {% endif %}
                   {% endif %}
                 </div>
                 <div 

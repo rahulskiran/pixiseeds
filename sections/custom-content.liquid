@@ -263,7 +263,6 @@
                         </div>
                       </div>
                     {% when 'product' %}
-                      {{ 'component-product-card.css' | asset_url | stylesheet_tag }}
                       {%- assign product = all_products[block.settings.product] -%}
                       {% if product.title.size > 0 %}
                         {% liquid
@@ -660,7 +659,6 @@
                         %}
                       {%- endif -%}
                     {% when 'handpicked_products' %}
-                      {{ 'component-product-card.css' | asset_url | stylesheet_tag }}
                       {% liquid
                         assign title = block.settings.title
                         assign sub_title = block.settings.sub_title

@@ -3,6 +3,8 @@
 {{ 'base.css' | asset_url | stylesheet_tag: preload: true }}
 {{ 'modules.css' | asset_url | stylesheet_tag: preload: true }}
 {{ 'vendor.css' | asset_url | stylesheet_tag: preload: true }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+{{ 'component-product-card.css' | asset_url | stylesheet_tag }}
 
 {% comment %} Minimog prefetch resources {% endcomment %}
 <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
