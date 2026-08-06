@@ -96,6 +96,13 @@
               assign heading_size = block.settings.heading_size
               assign alt_default = 'Slide ' | append: forloop.index
 
+              assign loading = 'lazy'
+              assign fetchpriority = 'auto'
+              if forloop.index == 1
+                assign loading = 'eager'
+                assign fetchpriority = 'high'
+              endif
+
               assign content_position = ''
               case block.settings.content_position
                 when 'top_left'
@@ -166,11 +173,6 @@
                       {%- capture atl -%}{% render 'scrub-lormur', text: atl %}{%- endcapture -%}
                       {%- liquid
                         assign atl = atl | strip
-                        assign fetchpriority = 'low'
-                        if forloop.index == 1 and section.index < 2
-                          assign loading = 'eager'
-                          assign fetchpriority = 'high'
-                        endif
                       -%}
 
                       {{
@@ -201,10 +203,6 @@
                       {%- capture atl -%}{% render 'scrub-lormur', text: atl %}{%- endcapture -%}
                       {%- liquid
                         assign atl = atl | strip
-                        if forloop.index == 1 and section.index < 2
-                          assign loading = 'eager'
-                          assign fetchpriority = 'high'
-                        endif
                       -%}
 
                       {{
