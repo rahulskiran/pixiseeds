@@ -306,7 +306,7 @@
         this.header.classList.add('scrolled-past-header');
         document.documentElement.classList.add('scrolled-past-header');
         this.setHeaderTopHeight();
-        if (!this.headerMenuIcon.classList.contains('is-open')) {
+        if (!this.headerIsAlwaysSticky && !this.headerMenuIcon.classList.contains('is-open')) {
           this.navBar.classList.add('nav-bar-hidden');
           this.headerTop.classList.add('nav-bar-hidden');
         }
