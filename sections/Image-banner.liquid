@@ -46,6 +46,13 @@
     assign no_image = true
   endif
 
+  assign loading = 'lazy'
+  assign fetchpriority = 'auto'
+  if section.index == 1
+    assign loading = 'eager'
+    assign fetchpriority = 'high'
+  endif
+
   for block in section.blocks
     if block.type == 'heading'
       assign heading_size = block.settings.heading_size
@@ -91,10 +98,11 @@
             image_desktop
             | image_url: width: 1920
             | image_tag:
-            loading: 'lazy',
+            loading: loading,
+            fetchpriority: fetchpriority,
             width: image_desktop.width,
             height: image_height_desktop,
-            widths: widths 
+            widths: widths
           }}
         </{% if image_link != blank %}a{% else %}div{% endif %}>
       {% endif %}
@@ -109,10 +117,11 @@
             image_mobile
             | image_url: width: 1920
             | image_tag:
-            loading: 'lazy',
+            loading: loading,
+            fetchpriority: fetchpriority,
             width: image_mobile.width,
             height: image_height_mobile,
-            widths: widths 
+            widths: widths
           }}
         </{% if image_link != blank %}a{% else %}div{% endif %}>
       {% endif %}
@@ -132,7 +141,7 @@
                   {% when 'heading' %}
                   {% if block.settings.heading != blank %}
                     <h2 class="m-hero-section__content-heading {{ heading_size }}" id="HeroNoMediaLink-{{ section.id }}">
-                      {{ block.settings.heading }}
+                      {{ block.settings.heading | newline_to_br }}
                     </h2>
                   {% endif %}
                   {% when 'description' %}
@@ -141,25 +150,34 @@
                       {{ block.settings.description }}
                     </div>
                   {% endif %}
-                  {% when 'button' %}
-                  {% if block.settings.button_label != blank %}
-                    {% capture arrow  %}<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4.5 2.25L8.25 6L4.5 9.75" stroke="CurrentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>{% endcapture %}
-                    {% capture triangle %}<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.51531 5.73474L4.76531 1.98474C4.71287 1.93223 4.64602 1.89647 4.57324 1.88198C4.50046 1.86748 4.42501 1.87491 4.35645 1.90332C4.28789 1.93172 4.22931 1.97984 4.1881 2.04156C4.1469 2.10328 4.12494 2.17584 4.125 2.25005V9.75005C4.12494 9.82426 4.1469 9.89682 4.1881 9.95855C4.22931 10.0203 4.28789 10.0684 4.35645 10.0968C4.42501 10.1252 4.50046 10.1326 4.57324 10.1181C4.64602 10.1036 4.71287 10.0679 4.76531 10.0154L8.51531 6.26536C8.55018 6.23054 8.57784 6.18918 8.59671 6.14365C8.61558 6.09813 8.62529 6.04933 8.62529 6.00005C8.62529 5.95077 8.61558 5.90197 8.59671 5.85645C8.57784 5.81092 8.55018 5.76957 8.51531 5.73474Z" fill="currentColor"/></svg>{% endcapture %}
-                    {% liquid 
-                      assign is_button_icon = false
-                      if block.settings.button_label contains '[arrow]' or block.settings.button_label contains '[triangle]'
-                        assign is_button_icon = true
-                      endif
-                    %}
-                    <a
-                      href="{{ image_link | default: '#' }}"
-                      class="m-button {{ block.settings.button_style }}{% if is_button_icon %} m-button--with-icon{% endif %}"
-                    >
-                      {{- block.settings.button_label | replace: '[arrow]', arrow | replace: '[triangle]', triangle -}}
-                    </a>
-                  {% endif %}
                 {% endcase %}
               {% endfor %}
+
+              {% assign button_blocks = section.blocks | where: 'type', 'button' %}
+              {% if button_blocks.size > 0 %}
+                <div class="m-hero-section__buttons m:flex m:flex-wrap">
+                  {% for block in button_blocks %}
+                    {% if block.settings.button_label != blank %}
+                      {% capture arrow  %}<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4.5 2.25L8.25 6L4.5 9.75" stroke="CurrentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>{% endcapture %}
+                      {% capture triangle %}<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.51531 5.73474L4.76531 1.98474C4.71287 1.93223 4.64602 1.89647 4.57324 1.88198C4.50046 1.86748 4.42501 1.87491 4.35645 1.90332C4.28789 1.93172 4.22931 1.97984 4.1881 2.04156C4.1469 2.10328 4.12494 2.17584 4.125 2.25005V9.75005C4.12494 9.82426 4.1469 9.89682 4.1881 9.95855C4.22931 10.0203 4.28789 10.0684 4.35645 10.0968C4.42501 10.1252 4.50046 10.1326 4.57324 10.1181C4.64602 10.1036 4.71287 10.0679 4.76531 10.0154L8.51531 6.26536C8.55018 6.23054 8.57784 6.18918 8.59671 6.14365C8.61558 6.09813 8.62529 6.04933 8.62529 6.00005C8.62529 5.95077 8.61558 5.90197 8.59671 5.85645C8.57784 5.81092 8.55018 5.76957 8.51531 5.73474Z" fill="currentColor"/></svg>{% endcapture %}
+                      {% liquid
+                        assign is_button_icon = false
+                        if block.settings.button_label contains '[arrow]' or block.settings.button_label contains '[triangle]'
+                          assign is_button_icon = true
+                        endif
+                        assign button_href = block.settings.button_link | default: image_link | default: '#'
+                      %}
+                      <a
+                        {{ block.shopify_attributes }}
+                        href="{{ button_href }}"
+                        class="m-button {{ block.settings.button_style }}{% if is_button_icon %} m-button--with-icon{% endif %}"
+                      >
+                        {{- block.settings.button_label | replace: '[arrow]', arrow | replace: '[triangle]', triangle -}}
+                      </a>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              {% endif %}
             </div>
           </div>
         </div>
@@ -486,6 +504,11 @@
           "id": "button_label",
           "label": "Button label",
           "default": "Button label"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
         },
         {
           "type": "select",

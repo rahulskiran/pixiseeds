@@ -9,6 +9,53 @@
  */
 {
   "sections": {
+    "hero_banner_PlantToday": {
+      "type": "Image-banner",
+      "settings": {
+        "layout": "full-width",
+        "image_height": "large",
+        "color_scheme": "background-4",
+        "image": "",
+        "image_mobile": "",
+        "image_link": "",
+        "content_position": "bottom_left",
+        "content_alignment": "left",
+        "stack_images_on_mobile": false,
+        "content_alignment_mobile": "left",
+        "animations": "inherit",
+        "enable_bg_zoom_effect": false
+      },
+      "blocks": {
+        "heading_PlantToday": {
+          "type": "heading",
+          "settings": {
+            "heading": "Plant today\nBloom tomorrow",
+            "heading_size": "h1"
+          }
+        },
+        "button_ShopNow": {
+          "type": "button",
+          "settings": {
+            "button_label": "Shop now",
+            "button_link": "/collections/all",
+            "button_style": "m-button--primary"
+          }
+        },
+        "button_BestSellers": {
+          "type": "button",
+          "settings": {
+            "button_label": "Best sellers",
+            "button_link": "/collections/best-sellers",
+            "button_style": "m-button--secondary"
+          }
+        }
+      },
+      "block_order": [
+        "heading_PlantToday",
+        "button_ShopNow",
+        "button_BestSellers"
+      ]
+    },
     "slideshow_4HbFcY": {
       "type": "slideshow",
       "blocks": {
@@ -1256,6 +1303,7 @@
     }
   },
   "order": [
+    "hero_banner_PlantToday",
     "slideshow_4HbFcY",
     "new_col_6MtRnX",
     "3d92e37f-b44b-49a7-8000-f53f057128ae",

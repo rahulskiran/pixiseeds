@@ -98,7 +98,7 @@
 
               assign loading = 'lazy'
               assign fetchpriority = 'auto'
-              if forloop.index == 1
+              if forloop.index == 1 and section.index == 1
                 assign loading = 'eager'
                 assign fetchpriority = 'high'
               endif
