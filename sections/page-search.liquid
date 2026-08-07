@@ -184,40 +184,6 @@
                 size_keys: size_keys,
                 threshold_amount_cents: threshold_amount_cents
               -%}
-            {%- elsif item.object_type == 'article' -%}
-              <li class="pcol__item" data-content-type="article">
-                <article class="pcol__card pcol__card--content">
-                  <a class="pcol__media" href="{{ item.url }}" aria-label="{{ item.title | escape }}">
-                    {%- if item.image != blank -%}
-                      <img
-                        class="pcol__img pcol__img--primary"
-                        src="{{ item.image | image_url: width: 800 }}"
-                        srcset="{{ item.image | image_url: width: 400 }} 400w, {{ item.image | image_url: width: 600 }} 600w, {{ item.image | image_url: width: 800 }} 800w"
-                        sizes="(min-width: 1100px) 25vw, (min-width: 750px) 33vw, 50vw"
-                        alt="{{ item.image.alt | default: item.title | escape }}"
-                        loading="lazy"
-                        width="800"
-                        height="800"
-                      >
-                    {%- else -%}
-                      <span class="pcol__img pcol__img--ph" aria-hidden="true">{{ 'product-1' | placeholder_svg_tag }}</span>
-                    {%- endif -%}
-                  </a>
-                  <div class="pcol__body">
-                    <p class="pcol__content-badge">Article</p>
-                    <h3 class="pcol__title"><a href="{{ item.url }}">{{ item.title }}</a></h3>
-                  </div>
-                </article>
-              </li>
-            {%- elsif item.object_type == 'page' -%}
-              <li class="pcol__item" data-content-type="page">
-                <article class="pcol__card pcol__card--content pcol__card--page-only">
-                  <div class="pcol__body pcol__body--page-only">
-                    <p class="pcol__content-badge">Page</p>
-                    <h3 class="pcol__title"><a href="{{ item.url }}">{{ item.title }}</a></h3>
-                  </div>
-                </article>
-              </li>
             {%- endif -%}
           {%- else -%}
             <li class="pcol__empty">
