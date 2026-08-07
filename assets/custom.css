@@ -213,4 +213,20 @@ body .foxkit-product-bundles .foxkit-product-card__variants {
   }
 }
 
+/* Show product card "Select options" / "Add to cart" button by default instead of on hover */
+@media screen and (min-width: 1280px) {
+  .m-product-card--style-1 .m-product-card__content .m-product-card__quick-add {
+    position: static;
+    opacity: 1;
+    pointer-events: auto;
+    padding: 0;
+    border: 0;
+    z-index: auto;
+    margin-top: 20px;
+  }
+  .m-product-card--style-1:after {
+    display: none !important;
+  }
+}
+
 
