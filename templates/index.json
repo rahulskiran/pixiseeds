@@ -118,7 +118,7 @@
         "card_kiMJ6N": {
           "type": "card",
           "settings": {
-            "image": "shopify://shop_images/French_Marigolds_growing_202604061453.webp",
+            "image": "shopify://shop_images/French_Marigolds_growing_202604061453_1.webp",
             "title": "Marigold Seeds",
             "link": "shopify://collections/marigold-seeds",
             "open_new_tab": false
@@ -485,7 +485,7 @@
         "card_dkqtRE": {
           "type": "card",
           "settings": {
-            "image": "shopify://shop_images/Plants_on_metal_202604071354.webp",
+            "image": "shopify://shop_images/Plants_on_metal_202604071354_2.webp",
             "title": "Pet-Friendly",
             "link": "shopify://collections/pet-friendly-collection",
             "open_new_tab": false
@@ -494,7 +494,7 @@
         "card_GWR8VB": {
           "type": "card",
           "settings": {
-            "image": "shopify://shop_images/Boston_Fern_in_202604071354.webp",
+            "image": "shopify://shop_images/Boston_Fern_in_202604071354_1.webp",
             "title": "Gifts",
             "link": "shopify://collections/best-sellers-collection",
             "open_new_tab": false
@@ -927,7 +927,7 @@
       "name": "Steal the garden",
       "settings": {
         "color_scheme": "scheme-ba41f7c8-a303-44e7-a1d3-a9c14a08a8da",
-        "image": "shopify://shop_images/Flower_garden_captured_on_iPhone_202604291205.webp",
+        "image": "shopify://shop_images/Flower_garden_captured_on_iPhone_202604291205_2.webp",
         "image_aspect_ratio": "16/9",
         "image_radius": 16,
         "heading": "Steal This Garden",
