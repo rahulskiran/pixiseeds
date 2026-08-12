@@ -1082,7 +1082,7 @@
           "type": "item",
           "settings": {
             "question": "What is your return policy?",
-            "answer": "<p>Unopened items in original packaging may be returned within 30 days. Seed packets are final sale once opened for quality assurance.</p>",
+            "answer": "<p>Unopened items in original packaging may be returned within 14 days. Seed packets are final sale once opened for quality assurance.</p>",
             "default_open": false
           }
         },
