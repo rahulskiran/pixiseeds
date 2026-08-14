@@ -56,6 +56,8 @@
         "custom_icon": "",
         "search_button": "icon-plain",
         "header_search_second_control": "category",
+        "header_search_max_width_desktop": 1200,
+        "header_search_height_desktop": 48,
         "header_search_collections": [
           "flower-seeds-collection",
           "vegetable-seeds-collection",
@@ -86,7 +88,7 @@
         "toggle_button_position": "menu",
         "open_default": false,
         "megamenu_color": "scheme-ba41f7c8-a303-44e7-a1d3-a9c14a08a8da",
-        "padding_top": 24,
+        "padding_top": 18,
         "padding_bottom": 0
       }
     }
