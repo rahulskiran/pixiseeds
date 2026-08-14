@@ -44,7 +44,7 @@
   endif
 -%}
 {%- liquid
-  assign search_max_width_desktop = section.settings.header_search_max_width_desktop | default: 760
+  assign search_max_width_desktop = section.settings.header_search_max_width_desktop | default: 900
   assign search_height_desktop = section.settings.header_search_height_desktop | default: 48
 -%}
 {% style %}
@@ -609,11 +609,11 @@
       "type": "range",
       "id": "header_search_max_width_desktop",
       "min": 280,
-      "max": 900,
+      "max": 1200,
       "step": 10,
       "unit": "px",
       "label": "Search bar max width (desktop)",
-      "default": 760,
+      "default": 900,
       "info": "Limits how wide the header search bar gets on tablet and desktop (768px and up). Mobile is unaffected."
     },
     {
