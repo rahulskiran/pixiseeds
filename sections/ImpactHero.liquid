@@ -1,0 +1,681 @@
+{%- liquid
+  assign section_animation = section.settings.animations | default: 'inherit'
+  assign animation_effect = settings.animations
+  if section_animation != 'inherit'
+    assign animation_effect = section_animation
+  endif
+  assign animated = false
+  if animation_effect != 'none'
+    assign animated = true
+  endif
+  if request.design_mode
+    assign animated = false
+  endif
+
+  assign heading_tag = section.settings.heading_tag | default: 'h1'
+  assign card_count = section.blocks.size | at_most: 3
+-%}
+
+{% style %}
+  .m-impact-hero--{{ section.id }} {
+    --ih-bg: {{ section.settings.background_color }};
+    --ih-text: {{ section.settings.text_color }};
+    --ih-muted: {{ section.settings.text_color | color_modify: 'alpha', 0.78 }};
+    --ih-rule: {{ section.settings.text_color | color_modify: 'alpha', 0.35 }};
+    --ih-radius: {{ section.settings.card_radius }}px;
+    --ih-gap: {{ section.settings.card_gap }}px;
+    --ih-title-m: {{ section.settings.title_size_mobile }}px;
+    --ih-title-d: {{ section.settings.title_size_desktop }}px;
+    --ih-body: {{ section.settings.body_size }}px;
+    --ih-card-ratio: {{ section.settings.card_ratio }}%;
+    --ih-overlay: {{ section.settings.overlay_color }};
+    --ih-overlay-strength: {{ section.settings.overlay_strength | divided_by: 100.0 }};
+    --ih-pill-bg: {{ section.settings.pill_color | color_modify: 'alpha', 0.55 }};
+  }
+
+  #shopify-section-{{ section.id }} .m-impact-hero {
+    background-color: var(--ih-bg);
+    color: var(--ih-text);
+    padding-top: {{ section.settings.padding_top_mobile }}px;
+    padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+    overflow: hidden;
+  }
+
+  .m-impact-hero__title {
+    margin: 0;
+    color: var(--ih-text);
+    font-size: var(--ih-title-m);
+    line-height: 1.06;
+    letter-spacing: -0.02em;
+    max-width: 16ch;
+  }
+
+  .m-impact-hero__text {
+    margin: 24px 0 0;
+    color: var(--ih-muted);
+    font-size: var(--ih-body);
+    line-height: 1.5;
+    max-width: 46ch;
+  }
+
+  .m-impact-hero__actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    margin-top: 32px;
+    flex-wrap: wrap;
+  }
+
+  .m-impact-hero__cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    min-width: 240px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--ih-rule);
+    color: var(--ih-text);
+    font-size: calc(var(--ih-body) + 2px);
+    font-weight: 500;
+    text-decoration: none;
+    transition: border-color 0.25s ease, gap 0.25s ease;
+  }
+
+  .m-impact-hero__cta:hover {
+    color: var(--ih-text);
+    border-bottom-color: var(--ih-text);
+    gap: 52px;
+  }
+
+  .m-impact-hero__cta svg,
+  .m-impact-hero__link svg {
+    flex-shrink: 0;
+    transition: transform 0.25s ease;
+  }
+
+  .m-impact-hero__cta:hover svg {
+    transform: translateX(4px);
+  }
+
+  .m-impact-hero__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--ih-text);
+    font-size: var(--ih-body);
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  .m-impact-hero__link:hover {
+    color: var(--ih-text);
+  }
+
+  .m-impact-hero__link:hover svg {
+    transform: translateY(3px);
+  }
+
+  .m-impact-hero__cards {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--ih-gap);
+    margin-top: 40px;
+  }
+
+  .m-impact-hero__card {
+    position: relative;
+    display: block;
+    border-radius: var(--ih-radius);
+    overflow: hidden;
+    background-color: {{ section.settings.background_color | color_lighten: 6 }};
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .m-impact-hero__media {
+    position: relative;
+    width: 100%;
+    padding-bottom: var(--ih-card-ratio);
+  }
+
+  .m-impact-hero__media img,
+  .m-impact-hero__media svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.3, 1);
+  }
+
+  .m-impact-hero__card:hover .m-impact-hero__media img {
+    transform: scale(1.04);
+  }
+
+  .m-impact-hero__card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      to top,
+      rgba({{ section.settings.overlay_color.red }}, {{ section.settings.overlay_color.green }}, {{ section.settings.overlay_color.blue }}, var(--ih-overlay-strength)) 0%,
+      rgba({{ section.settings.overlay_color.red }}, {{ section.settings.overlay_color.green }}, {{ section.settings.overlay_color.blue }}, 0) 62%
+    );
+  }
+
+  .m-impact-hero__content {
+    position: absolute;
+    inset: auto 0 0 0;
+    z-index: 2;
+    padding: 24px;
+    color: {{ section.settings.card_text_color }};
+  }
+
+  .m-impact-hero__caption {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.35;
+  }
+
+  .m-impact-hero__stat {
+    margin: 0;
+    font-size: 48px;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .m-impact-hero__stat-label {
+    margin: 10px 0 0;
+    font-size: 15px;
+    line-height: 1.3;
+  }
+
+  .m-impact-hero__pills {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 24px;
+    list-style: none;
+    margin: 0;
+  }
+
+  .m-impact-hero__pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 18px;
+    border-radius: 999px;
+    background-color: var(--ih-pill-bg);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    color: {{ section.settings.card_text_color }};
+    font-size: 15px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .m-impact-hero__pill:nth-child(2) {
+    transform: translateX(6px);
+  }
+
+  .m-impact-hero__pill:nth-child(3) {
+    transform: translateX(-4px);
+  }
+
+  @media screen and (min-width: 750px) {
+    .m-impact-hero__cards {
+      grid-template-columns: repeat({{ card_count | default: 3 }}, minmax(0, 1fr));
+    }
+  }
+
+  @media screen and (min-width: 990px) {
+    #shopify-section-{{ section.id }} .m-impact-hero {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+
+    .m-impact-hero__title {
+      font-size: var(--ih-title-d);
+    }
+
+    .m-impact-hero__text {
+      margin-top: 28px;
+    }
+
+    .m-impact-hero__actions {
+      margin-top: 44px;
+    }
+
+    .m-impact-hero__cards {
+      margin-top: {{ section.settings.cards_offset }}px;
+    }
+
+    .m-impact-hero__content {
+      padding: 28px;
+    }
+
+    .m-impact-hero__caption {
+      font-size: 17px;
+    }
+
+    .m-impact-hero__stat {
+      font-size: 64px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .m-impact-hero__card:hover .m-impact-hero__media img,
+    .m-impact-hero__cta:hover svg,
+    .m-impact-hero__link:hover svg {
+      transform: none;
+    }
+  }
+{% endstyle %}
+
+<section
+  class="m-section m-impact-hero m-impact-hero--{{ section.id }}"
+  data-section-type="impact-hero"
+  data-section-id="{{ section.id }}"
+>
+  <div class="m-page-width">
+    <div class="m-impact-hero__intro{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}">
+      {%- if section.settings.heading != blank -%}
+        <{{ heading_tag }} class="m-impact-hero__title">{{ section.settings.heading | escape }}</{{ heading_tag }}>
+      {%- endif -%}
+
+      {%- if section.settings.description != blank -%}
+        <p class="m-impact-hero__text">{{ section.settings.description }}</p>
+      {%- endif -%}
+
+      {%- if section.settings.cta_label != blank or section.settings.link_label != blank -%}
+        <div class="m-impact-hero__actions">
+          {%- if section.settings.cta_label != blank -%}
+            <a class="m-impact-hero__cta" href="{{ section.settings.cta_link | default: '#' }}">
+              <span>{{ section.settings.cta_label | escape }}</span>
+              <svg width="20" height="14" viewBox="0 0 20 14" fill="none" aria-hidden="true" focusable="false">
+                <path d="M1 7h17m0 0-6-6m6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          {%- endif -%}
+
+          {%- if section.settings.link_label != blank -%}
+            <a class="m-impact-hero__link" href="{{ section.settings.link_url | default: '#' }}">
+              <span>{{ section.settings.link_label | escape }}</span>
+              <svg width="14" height="18" viewBox="0 0 14 18" fill="none" aria-hidden="true" focusable="false">
+                <path d="M7 1v15m0 0 5.5-5.5M7 16l-5.5-5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="m-impact-hero__cards{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}">
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign card_tag = 'div'
+            if block.settings.link != blank
+              assign card_tag = 'a'
+            endif
+            assign card_alt = block.settings.image.alt | default: section.settings.heading
+          -%}
+          <{{ card_tag }}
+            class="m-impact-hero__card"
+            {% if card_tag == 'a' %}href="{{ block.settings.link }}"{% endif %}
+            {{ block.shopify_attributes }}
+          >
+            <div class="m-impact-hero__media">
+              {%- if block.settings.image != blank -%}
+                {{
+                  block.settings.image
+                  | image_url: width: 1200
+                  | image_tag:
+                    loading: 'eager',
+                    fetchpriority: 'high',
+                    widths: '300, 500, 700, 900, 1200',
+                    sizes: '(min-width: 990px) 30vw, (min-width: 750px) 45vw, 92vw',
+                    alt: card_alt
+                }}
+              {%- else -%}
+                {{ 'image' | placeholder_svg_tag: 'm-placeholder-svg' }}
+              {%- endif -%}
+            </div>
+
+            {%- case block.type -%}
+              {%- when 'card' -%}
+                {%- if block.settings.caption != blank -%}
+                  <div class="m-impact-hero__content">
+                    <p class="m-impact-hero__caption">{{ block.settings.caption | escape }}</p>
+                  </div>
+                {%- endif -%}
+
+              {%- when 'stat_card' -%}
+                <div class="m-impact-hero__content">
+                  {%- if block.settings.stat_value != blank -%}
+                    <p class="m-impact-hero__stat">{{ block.settings.stat_value | escape }}</p>
+                  {%- endif -%}
+                  {%- if block.settings.stat_label != blank -%}
+                    <p class="m-impact-hero__stat-label">{{ block.settings.stat_label | escape }}</p>
+                  {%- endif -%}
+                </div>
+
+              {%- when 'tag_card' -%}
+                {%- assign tags = block.settings.tags | split: ',' -%}
+                {%- if tags.size > 0 -%}
+                  <ul class="m-impact-hero__pills">
+                    {%- for tag in tags limit: 4 -%}
+                      {%- assign tag_label = tag | strip -%}
+                      {%- if tag_label != blank -%}
+                        <li class="m-impact-hero__pill">
+                          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true" focusable="false">
+                            <path d="M14 2C7.4 2 3 5 3 10c0 1.5.5 2.8 1.3 3.7C6 11 8.5 9 12 8c-3 1.7-5 4-6 7 5.4.6 8-3.7 8-13Z" fill="currentColor"/>
+                          </svg>
+                          <span>{{ tag_label | escape }}</span>
+                        </li>
+                      {%- endif -%}
+                    {%- endfor -%}
+                  </ul>
+                {%- endif -%}
+            {%- endcase -%}
+          </{{ card_tag }}>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Impact hero",
+  "tag": "section",
+  "class": "m-section-impact-hero",
+  "disabled_on": {
+    "groups": ["header", "footer", "aside"]
+  },
+  "max_blocks": 3,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Where modern farming meets global impact."
+    },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "label": "Heading level",
+      "default": "h1",
+      "options": [
+        { "value": "h1", "label": "H1" },
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" }
+      ]
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Through sustainable farming and smart collaboration, we grow more than crops — we grow impact.</p>"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Primary link label",
+      "default": "Start growing with us"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Primary link"
+    },
+    {
+      "type": "text",
+      "id": "link_label",
+      "label": "Secondary link label",
+      "default": "Learn more"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Secondary link"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#0b2f18"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "card_text_color",
+      "label": "Card text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Card overlay",
+      "default": "#0b2f18"
+    },
+    {
+      "type": "range",
+      "id": "overlay_strength",
+      "label": "Card overlay strength",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 70
+    },
+    {
+      "type": "color",
+      "id": "pill_color",
+      "label": "Tag pill background",
+      "default": "#0b2f18"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "title_size_mobile",
+      "label": "Heading size (mobile)",
+      "min": 26,
+      "max": 52,
+      "step": 1,
+      "unit": "px",
+      "default": 38
+    },
+    {
+      "type": "range",
+      "id": "title_size_desktop",
+      "label": "Heading size (desktop)",
+      "min": 40,
+      "max": 96,
+      "step": 2,
+      "unit": "px",
+      "default": 72
+    },
+    {
+      "type": "range",
+      "id": "body_size",
+      "label": "Body text size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "card_gap",
+      "label": "Card gap",
+      "min": 8,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "label": "Card corner radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "card_ratio",
+      "label": "Card height (% of width)",
+      "min": 60,
+      "max": 130,
+      "step": 5,
+      "unit": "%",
+      "default": 70
+    },
+    {
+      "type": "range",
+      "id": "cards_offset",
+      "label": "Space above cards (desktop)",
+      "min": 20,
+      "max": 140,
+      "step": 4,
+      "unit": "px",
+      "default": 72
+    },
+    {
+      "type": "select",
+      "id": "animations",
+      "label": "Animations",
+      "default": "inherit",
+      "options": [
+        { "value": "inherit", "label": "Inherit from theme" },
+        { "value": "none", "label": "None" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top (desktop)",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom (desktop)",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 88
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Padding top (mobile)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Padding bottom (mobile)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Image card",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "Caption",
+          "default": "Efficient distribution across regions, supporting supply chains with reliability and precision."
+        },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    },
+    {
+      "type": "tag_card",
+      "name": "Tag card",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        {
+          "type": "text",
+          "id": "tags",
+          "label": "Tags",
+          "info": "Separate with commas. Up to 4 shown.",
+          "default": "Driven, Rooted, Impactful"
+        },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    },
+    {
+      "type": "stat_card",
+      "name": "Stat card",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "stat_value", "label": "Stat", "default": "98%" },
+        { "type": "text", "id": "stat_label", "label": "Stat label", "default": "On-time delivery rate" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Impact hero",
+      "blocks": [
+        { "type": "card" },
+        { "type": "tag_card" },
+        { "type": "stat_card" }
+      ]
+    }
+  ]
+}
+{% endschema %}
