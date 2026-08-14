@@ -45,10 +45,16 @@
 -%}
 {%- assign search_max_width_desktop = section.settings.header_search_max_width_desktop | default: 520 -%}
 {% style %}
-  @media screen and (min-width: 1024px) {
+  @media screen and (min-width: 768px) {
     #shopify-section-{{ section.id }} .m-header__search {
-      max-width: {{ search_max_width_desktop }}px;
+      max-width: {{ search_max_width_desktop }}px !important;
       justify-self: start;
+      margin-left: 0;
+      margin-right: auto;
+    }
+    #shopify-section-{{ section.id }} .m-header__search .m-search,
+    #shopify-section-{{ section.id }} .m-header__search .m-search-form {
+      max-width: 100%;
     }
   }
 {% endstyle %}
@@ -597,8 +603,8 @@
       "step": 10,
       "unit": "px",
       "label": "Search bar max width (desktop)",
-      "default": 520,
-      "info": "Limits how wide the header search bar gets on desktop (1024px and up). Mobile is unaffected."
+      "default": 460,
+      "info": "Limits how wide the header search bar gets on tablet and desktop (768px and up). Mobile is unaffected."
     },
     {
       "type": "header",
