@@ -9,62 +9,6 @@
  */
 {
   "sections": {
-    "impact_hero_lormur": {
-      "type": "ImpactHero",
-      "blocks": {
-        "hero_card_1": {
-          "type": "card",
-          "settings": {
-            "image": "shopify://shop_images/Gardeners_hands_working_on_bench_202604291058.webp",
-            "caption": "Efficient distribution across regions, supporting supply chains with reliability and precision."
-          }
-        },
-        "hero_card_2": {
-          "type": "tag_card",
-          "settings": {
-            "image": "shopify://shop_images/Urban_backyard_kitchen_202604071423.webp",
-            "tags": "Driven, Rooted, Impactful"
-          }
-        },
-        "hero_card_3": {
-          "type": "stat_card",
-          "settings": {
-            "image": "shopify://shop_images/Seedlings_emerging_in_202604071419.webp",
-            "stat_value": "98%",
-            "stat_label": "On-time delivery rate"
-          }
-        }
-      },
-      "block_order": ["hero_card_1", "hero_card_2", "hero_card_3"],
-      "name": "Impact hero",
-      "settings": {
-        "heading": "Where modern farming meets global impact.",
-        "heading_tag": "h1",
-        "description": "<p>Through sustainable farming and smart collaboration, we grow more than crops \u2014 we grow impact.</p>",
-        "cta_label": "Start growing with us",
-        "cta_link": "/collections/all",
-        "link_label": "Learn more",
-        "link_url": "/pages/about-us",
-        "background_color": "#0b2f18",
-        "text_color": "#ffffff",
-        "card_text_color": "#ffffff",
-        "overlay_color": "#0b2f18",
-        "overlay_strength": 70,
-        "pill_color": "#0b2f18",
-        "title_size_mobile": 38,
-        "title_size_desktop": 72,
-        "body_size": 15,
-        "card_gap": 24,
-        "card_radius": 8,
-        "card_ratio": 70,
-        "cards_offset": 72,
-        "animations": "inherit",
-        "padding_top": 80,
-        "padding_bottom": 88,
-        "padding_top_mobile": 40,
-        "padding_bottom_mobile": 48
-      }
-    },
     "slideshow_Lgz7rJ": {
       "type": "slideshow",
       "blocks": {
@@ -1240,7 +1184,6 @@
     }
   },
   "order": [
-    "impact_hero_lormur",
     "slideshow_Lgz7rJ",
     "new_col_6MtRnX",
     "3d92e37f-b44b-49a7-8000-f53f057128ae",

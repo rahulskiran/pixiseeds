@@ -27,29 +27,11 @@
             "position": "center",
             "text": "Free Shipping On All Orders"
           }
-        },
-        "text_DHHdUT": {
-          "type": "text",
-          "disabled": true,
-          "settings": {
-            "position": "center",
-            "text": "✌🏼 Free Express Shipping All Over India"
-          }
-        },
-        "menu_ebrqpt": {
-          "type": "menu",
-          "disabled": true,
-          "settings": {
-            "position": "right",
-            "menu": "customer-account-main-menu"
-          }
         }
       },
       "block_order": [
         "menu_CEP3Lj",
-        "text_w7jAWQ",
-        "text_DHHdUT",
-        "menu_ebrqpt"
+        "text_w7jAWQ"
       ],
       "settings": {
         "color_scheme": "background-5"
@@ -107,23 +89,10 @@
         "padding_top": 24,
         "padding_bottom": 0
       }
-    },
-    "170991466638743ad7": {
-      "type": "apps",
-      "settings": {
-        "color_scheme": "",
-        "include_margins": true,
-        "boxed_layout": false,
-        "boxed_color_scheme": "",
-        "padding_top": 0,
-        "padding_bottom": 0,
-        "custom_class": ""
-      }
     }
   },
   "order": [
     "topbar_8RhN8X",
-    "header_yWqLw4",
-    "170991466638743ad7"
+    "header_yWqLw4"
   ]
 }
