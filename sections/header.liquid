@@ -43,6 +43,15 @@
     assign hasMega = true
   endif
 -%}
+{%- assign search_max_width_desktop = section.settings.header_search_max_width_desktop | default: 520 -%}
+{% style %}
+  @media screen and (min-width: 1024px) {
+    #shopify-section-{{ section.id }} .m-header__search {
+      max-width: {{ search_max_width_desktop }}px;
+      justify-self: start;
+    }
+  }
+{% endstyle %}
 {%- if section.settings.header_icons_use_custom_color -%}
   {% style %}
     #shopify-section-{{ section.id }} .m-header__top-wrapper .m-header__icons,
@@ -579,6 +588,17 @@
         }
       ],
       "info": "Sort: order for search (Search & Discovery). Category: pick collections under “Search bar categories” below. The bar shows a dropdown: default “All” (whole store), or only the collection you choose."
+    },
+    {
+      "type": "range",
+      "id": "header_search_max_width_desktop",
+      "min": 280,
+      "max": 900,
+      "step": 10,
+      "unit": "px",
+      "label": "Search bar max width (desktop)",
+      "default": 520,
+      "info": "Limits how wide the header search bar gets on desktop (1024px and up). Mobile is unaffected."
     },
     {
       "type": "header",
