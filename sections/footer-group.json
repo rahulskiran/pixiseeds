@@ -96,86 +96,6 @@
         "padding_right": 40
       }
     },
-    "a76f4314-395f-4e7d-bdc8-4260fd09fffe": {
-      "type": "featured-promotion",
-      "blocks": {
-        "sections--21255729283345__a76f4314-395f-4e7d-bdc8-4260fd09fffe-promotion-1": {
-          "type": "promotion",
-          "settings": {
-            "text_size": "h6",
-            "heading": "",
-            "description": "<p>Free Shipping All Over India</p>",
-            "desc_text_color": "subtext",
-            "icon_alignment": "center",
-            "image_size": 35,
-            "image_radius": 0
-          }
-        },
-        "sections--21255729283345__a76f4314-395f-4e7d-bdc8-4260fd09fffe-promotion-2": {
-          "type": "promotion",
-          "settings": {
-            "text_size": "h6",
-            "heading": "",
-            "description": "<p>High Quality Products</p>",
-            "desc_text_color": "subtext",
-            "icon_alignment": "start",
-            "image_size": 35,
-            "image_radius": 0
-          }
-        },
-        "sections--21255729283345__a76f4314-395f-4e7d-bdc8-4260fd09fffe-promotion-3": {
-          "type": "promotion",
-          "settings": {
-            "text_size": "h6",
-            "heading": "",
-            "description": "<p>Splendid Customer Service</p>",
-            "desc_text_color": "subtext",
-            "icon_alignment": "start",
-            "image_size": 35,
-            "image_radius": 0
-          }
-        },
-        "sections--21255729283345__a76f4314-395f-4e7d-bdc8-4260fd09fffe-promotion-4": {
-          "type": "promotion",
-          "settings": {
-            "text_size": "h6",
-            "heading": "",
-            "description": "<p>Safe & Secure Payments</p>",
-            "desc_text_color": "subtext",
-            "icon_alignment": "start",
-            "image_size": 35,
-            "image_radius": 0
-          }
-        }
-      },
-      "block_order": [
-        "sections--21255729283345__a76f4314-395f-4e7d-bdc8-4260fd09fffe-promotion-1",
-        "sections--21255729283345__a76f4314-395f-4e7d-bdc8-4260fd09fffe-promotion-2",
-        "sections--21255729283345__a76f4314-395f-4e7d-bdc8-4260fd09fffe-promotion-3",
-        "sections--21255729283345__a76f4314-395f-4e7d-bdc8-4260fd09fffe-promotion-4"
-      ],
-      "disabled": true,
-      "custom_css": [
-        ".m-section--boxed .m-section__wrapper:after {border-right-width: 0; border-left-width: 0;}",
-        ".m-promotion-card,.m-promotion-card__content-heading {--font-weight-body: 500; font-family: var(--font-stack-body); font-weight: var(--font-weight-body);}",
-        ".m-section--boxed .m-section__content {padding: 19px;}",
-        "@media (max-width: 767px) {.m-section--boxed .m-section__content {padding: 48px 0; }}"
-      ],
-      "settings": {
-        "color_scheme": "scheme-f08d43fd-4b1f-4a68-b4fd-0103c8af3c3c",
-        "item_divide": false,
-        "boxed_layout": false,
-        "boxed_color_scheme": "scheme-f08d43fd-4b1f-4a68-b4fd-0103c8af3c3c",
-        "section_padding_top": 61,
-        "section_padding_bottom": 61,
-        "items_per_row": 4,
-        "gap_desktop": 31,
-        "row_gap_desktop": 30,
-        "row_gap_mobile": 19,
-        "animations": "inherit",
-        "custom_classes": ""
-      }
-    },
     "mobile-sticky-bar": {
       "type": "mobile-sticky-bar",
       "disabled": true,
@@ -192,7 +112,6 @@
   },
   "order": [
     "new_footer_CMxiAM",
-    "a76f4314-395f-4e7d-bdc8-4260fd09fffe",
     "mobile-sticky-bar"
   ]
 }
