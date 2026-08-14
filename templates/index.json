@@ -52,6 +52,10 @@
         "cta_link": "",
         "link_label": "Explore our seeds",
         "link_url": "",
+        "background_image": "shopify://shop_images/Lush_botanical_garden_background__202608150307_0e639b76-e30c-46b0-9a01-8f598ac833ff.jpg",
+        "background_position": "center center",
+        "background_overlay_color": "#000000",
+        "background_overlay_opacity": 60,
         "background_color": "#0b2f18",
         "text_color": "#ffffff",
         "card_text_color": "#ffffff",
@@ -77,6 +81,7 @@
       "blocks": {
         "image_slide_4FkAp4": {
           "type": "image_slide",
+          "disabled": true,
           "settings": {
             "color_scheme": "background-3",
             "image": "shopify://shop_images/New_219_Lormur_Hero_2.webp",
