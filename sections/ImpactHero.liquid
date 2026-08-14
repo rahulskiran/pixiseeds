@@ -14,6 +14,13 @@
 
   assign heading_tag = section.settings.heading_tag | default: 'h1'
   assign card_count = section.blocks.size | at_most: 3
+
+  assign bg_image = section.settings.background_image
+  assign bg_image_mobile = section.settings.background_image_mobile | default: bg_image
+  assign has_bg_image = false
+  if bg_image != blank
+    assign has_bg_image = true
+  endif
 -%}
 
 {% style %}
@@ -39,7 +46,43 @@
     padding-top: {{ section.settings.padding_top_mobile }}px;
     padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
     overflow: hidden;
+    position: relative;
   }
+
+  {%- if has_bg_image -%}
+  .m-impact-hero--{{ section.id }} .m-impact-hero__bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .m-impact-hero--{{ section.id }} .m-impact-hero__bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: {{ section.settings.background_position | default: 'center center' }};
+    display: block;
+  }
+  .m-impact-hero--{{ section.id }} .m-impact-hero__bg::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: {{ section.settings.background_overlay_color | default: '#000000' }};
+    opacity: {{ section.settings.background_overlay_opacity | default: 30 | divided_by: 100.0 }};
+  }
+  .m-impact-hero--{{ section.id }} .m-page-width {
+    position: relative;
+    z-index: 1;
+  }
+  {%- if section.settings.background_image_mobile != blank -%}
+  .m-impact-hero--{{ section.id }} .m-impact-hero__bg-image--mobile { display: block; }
+  .m-impact-hero--{{ section.id }} .m-impact-hero__bg-image--desktop { display: none; }
+  @media screen and (min-width: 768px) {
+    .m-impact-hero--{{ section.id }} .m-impact-hero__bg-image--mobile { display: none; }
+    .m-impact-hero--{{ section.id }} .m-impact-hero__bg-image--desktop { display: block; }
+  }
+  {%- endif -%}
+  {%- endif -%}
 
   .m-impact-hero__title {
     margin: 0;
@@ -286,6 +329,32 @@
   data-section-type="impact-hero"
   data-section-id="{{ section.id }}"
 >
+  {%- if has_bg_image -%}
+    <div class="m-impact-hero__bg">
+      {%- if section.settings.background_image_mobile != blank -%}
+        {{
+          bg_image_mobile
+          | image_url: width: 1200
+          | image_tag:
+            class: 'm-impact-hero__bg-image--mobile',
+            widths: '600, 900, 1200',
+            sizes: '100vw',
+            alt: bg_image_mobile.alt,
+            loading: 'eager'
+        }}
+      {%- endif -%}
+      {{
+        bg_image
+        | image_url: width: 3000
+        | image_tag:
+          class: 'm-impact-hero__bg-image--desktop',
+          widths: '750, 1100, 1500, 1780, 2000, 3000',
+          sizes: '100vw',
+          alt: bg_image.alt,
+          loading: 'eager'
+      }}
+    </div>
+  {%- endif -%}
   <div class="m-page-width">
     <div class="m-impact-hero__intro{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}">
       {%- if section.settings.heading != blank -%}
@@ -452,6 +521,53 @@
       "type": "url",
       "id": "link_url",
       "label": "Secondary link"
+    },
+    {
+      "type": "header",
+      "content": "Background image"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image",
+      "info": "Sits behind the whole section. Leave empty to use the background colour only."
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image_mobile",
+      "label": "Background image (mobile)",
+      "info": "Optional. Falls back to the main image if empty."
+    },
+    {
+      "type": "select",
+      "id": "background_position",
+      "label": "Image position",
+      "default": "center center",
+      "options": [
+        { "value": "center center", "label": "Center" },
+        { "value": "center top", "label": "Top" },
+        { "value": "center bottom", "label": "Bottom" },
+        { "value": "left center", "label": "Left" },
+        { "value": "right center", "label": "Right" }
+      ],
+      "info": "Which part of the image stays visible when it is cropped."
+    },
+    {
+      "type": "color",
+      "id": "background_overlay_color",
+      "label": "Image overlay",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "background_overlay_opacity",
+      "label": "Image overlay opacity",
+      "min": 0,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "default": 30,
+      "info": "Darkens the image so the heading and buttons stay readable."
     },
     {
       "type": "header",
