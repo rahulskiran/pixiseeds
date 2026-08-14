@@ -40,6 +40,7 @@
         "tag_card_b4PDWr",
         "stat_card_nyWBkK"
       ],
+      "disabled": true,
       "name": "Impact hero",
       "settings": {
         "heading": "Where modern farming meets global impact.",
@@ -74,7 +75,6 @@
       "blocks": {
         "image_slide_4FkAp4": {
           "type": "image_slide",
-          "disabled": true,
           "settings": {
             "color_scheme": "background-3",
             "image": "shopify://shop_images/New_219_Lormur_Hero_2.webp",
