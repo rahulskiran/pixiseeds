@@ -46,8 +46,25 @@
 {%- liquid
   assign search_max_width_desktop = section.settings.header_search_max_width_desktop | default: 900
   assign search_height_desktop = section.settings.header_search_height_desktop | default: 48
+
+  assign search_as_icon = section.settings.header_search_as_icon
+  assign menu_in_top_row = section.settings.header_menu_in_top_row
+
+  assign transparent_header = section.settings.header_transparent
+  assign transparent_text = section.settings.header_transparent_text_color | default: '#ffffff'
+  assign transparent_active = false
+  if transparent_header
+    if section.settings.header_transparent_home_only
+      if request.page_type == 'index'
+        assign transparent_active = true
+      endif
+    else
+      assign transparent_active = true
+    endif
+  endif
 -%}
 {% style %}
+  {%- unless search_as_icon -%}
   @media screen and (min-width: 768px) {
     #shopify-section-{{ section.id }} .m-header__search {
       max-width: {{ search_max_width_desktop }}px !important;
@@ -67,6 +84,58 @@
       line-height: normal;
     }
   }
+  {%- endunless -%}
+
+  {%- if search_as_icon -%}
+  /* Search collapsed to an icon that opens the search modal */
+  #shopify-section-{{ section.id }} .m-header__search-toggle {
+    display: flex;
+    align-items: center;
+  }
+  #shopify-section-{{ section.id }} .m-header__search-toggle .m-modal__toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: inherit;
+  }
+  {%- endif -%}
+
+  {%- if menu_in_top_row -%}
+  /* Single-row header: logo left, menu centre, icons right */
+  #shopify-section-{{ section.id }} .m-header__menu-inline {
+    grid-area: menu;
+    justify-self: center;
+    align-items: center;
+    min-width: 0;
+  }
+  #shopify-section-{{ section.id }} .m-header__menu-inline .m-list-menu--inline {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  @media screen and (min-width: 1280px) {
+    #shopify-section-{{ section.id }} .m-header__top {
+      grid-template-areas: "heading menu icons";
+      grid-template-columns: auto 1fr auto;
+    }
+  }
+  @media screen and (max-width: 1279px) {
+    #shopify-section-{{ section.id }} .m-header__top {
+      grid-template-areas: "drawer heading icons";
+      grid-template-columns: auto auto 1fr;
+    }
+  }
+  @media screen and (max-width: 1023px) {
+    #shopify-section-{{ section.id }} .m-header__top {
+      grid-template-areas: "drawer heading icons";
+      grid-template-columns: auto auto 1fr;
+      row-gap: 0;
+    }
+  }
+  /* The nav-row toggle has nothing left to toggle in a single-row header */
+  #shopify-section-{{ section.id }} .m-header-menu-icon {
+    display: none !important;
+  }
+  {%- endif -%}
 {% endstyle %}
 {%- if section.settings.header_icons_use_custom_color -%}
   {% style %}
@@ -90,7 +159,47 @@
     }
   {% endstyle %}
 {%- endif -%}
-<{% if section.settings.sticky_header_type != 'none' %}sticky-header data-sticky-type="{{ section.settings.sticky_header_type }}"{% else %}div{% endif %} 
+{%- if transparent_active -%}
+  {% style %}
+    /* Transparent header: content slides up underneath, solid once scrolled */
+    .m-main-content {
+      margin-top: calc(-1 * var(--header-height, 0px));
+    }
+    html body #shopify-section-{{ section.id }} .m-header__top-wrapper,
+    html body #shopify-section-{{ section.id }} .m-header__nav {
+      background: transparent !important;
+      border-bottom-color: transparent !important;
+      box-shadow: none !important;
+    }
+    html body #shopify-section-{{ section.id }} .m-header__top-wrapper,
+    html body #shopify-section-{{ section.id }} .m-header__top-wrapper a,
+    html body #shopify-section-{{ section.id }} .m-header__top-wrapper button,
+    html body #shopify-section-{{ section.id }} .m-header__nav a,
+    html body #shopify-section-{{ section.id }} .m-header__icons,
+    html body #shopify-section-{{ section.id }} .m-header__icons a,
+    html body #shopify-section-{{ section.id }} .m-header__icons button,
+    html body #shopify-section-{{ section.id }} .m-header__icons .m-icon-text,
+    html body #shopify-section-{{ section.id }} .m-header__menu-item > a {
+      color: {{ transparent_text }} !important;
+    }
+    html.scrolled-past-header body #shopify-section-{{ section.id }} .m-header__top-wrapper,
+    html.scrolled-past-header body #shopify-section-{{ section.id }} .m-header__nav {
+      background: rgb(var(--color-background)) !important;
+    }
+    html.scrolled-past-header body #shopify-section-{{ section.id }} .m-header__top-wrapper,
+    html.scrolled-past-header body #shopify-section-{{ section.id }} .m-header__top-wrapper a,
+    html.scrolled-past-header body #shopify-section-{{ section.id }} .m-header__top-wrapper button,
+    html.scrolled-past-header body #shopify-section-{{ section.id }} .m-header__nav a,
+    html.scrolled-past-header body #shopify-section-{{ section.id }} .m-header__icons,
+    html.scrolled-past-header body #shopify-section-{{ section.id }} .m-header__icons a,
+    html.scrolled-past-header body #shopify-section-{{ section.id }} .m-header__icons button,
+    html.scrolled-past-header body #shopify-section-{{ section.id }} .m-header__icons .m-icon-text,
+    html.scrolled-past-header body #shopify-section-{{ section.id }} .m-header__menu-item > a {
+      color: rgb(var(--color-foreground)) !important;
+    }
+  {% endstyle %}
+{%- endif -%}
+<{% if section.settings.sticky_header_type != 'none' %}sticky-header data-sticky-type="{{ section.settings.sticky_header_type }}"{% else %}div{% endif %}
   class="m-header m:block {% if section.settings.separator_line == 'bottom' or section.settings.separator_line == 'middle-bottom' %} m-header--show-separator-line{% endif %}"
   {% if section.settings.mega_menu_heading != blank and section.settings.open_default %}
     data-mega-menu
@@ -158,15 +267,30 @@
           </h1>
         {%- endif -%}
       </div>
+      {%- unless search_as_icon -%}
       <div class="m-header__search m:flex">
-        {%- liquid 
+        {%- liquid
           if toggle_button_position == 'top' and hasMega
             render 'header-addon-mega-menu', section: section, classes: 'm:hidden xl:m:block show-close-button m-megamenu--top'
           endif
           render 'header-addon-search', classes: 'm:flex-1 m:w-full', input_id: 'Search-In-Header'
         -%}
       </div>
+      {%- endunless -%}
+      {%- if menu_in_top_row and section.settings.menu != blank -%}
+      <div class="m-header__menu-inline m:hidden xl:m:flex">
+        {%- liquid
+          if search_as_icon and toggle_button_position == 'top' and hasMega
+            render 'header-addon-mega-menu', section: section, classes: 'show-close-button m-megamenu--top'
+          endif
+          render 'header-dropdown-menu', hasMega: hasMega
+        -%}
+      </div>
+      {%- endif -%}
       <div class="m-header__icons">
+        {%- if search_as_icon -%}
+          {% render 'search-modal', section: section, wrapper_classes: 'm-header__search-toggle' %}
+        {%- endif -%}
         {% if section.settings.custom_icon != blank %}
           <div class="m:hidden xl:m:block">
             {{ section.settings.custom_icon }}
@@ -181,7 +305,8 @@
       </div>
     </div>
   </div>
-  <div 
+  {%- unless menu_in_top_row -%}
+  <div
     class="m-header__nav m-section--padding m-color-{{ menu_color_scheme }} m-gradient m:hidden xl:m:block"
     style="--section-padding-bottom: {{ section.settings.padding_bottom }}px;"
   >
@@ -248,6 +373,7 @@
       </div>
     </div>
   </div>
+  {%- endunless -%}
 </{% if section.settings.sticky_header_type != 'none' %}sticky-header data-sticky-type="{{ section.settings.sticky_header_type }}"{% else %}div{% endif %}>
 {% javascript %}
   class StickyHeader extends HTMLElement {
@@ -296,6 +422,7 @@
       } else {
         this.headerMenuIcon.classList.add('is-open');
       }
+      if (!this.navBar) return;
       if (this.navBar.classList.contains('nav-bar-hidden')) {
         this.navBar.classList.remove('nav-bar-hidden');
         this.headerTop.classList.remove('nav-bar-hidden');
@@ -312,7 +439,7 @@
 
     setHeaderHeight() {
       document.documentElement.style.setProperty('--header-height', `${this.header.offsetHeight}px`);
-      document.documentElement.style.setProperty('--nav-bar-height', `${this.navBar.offsetHeight}px`);
+      document.documentElement.style.setProperty('--nav-bar-height', `${this.navBar ? this.navBar.offsetHeight : 0}px`);
     }
 
     createObserver() {
@@ -332,7 +459,7 @@
         document.documentElement.classList.add('scrolled-past-header');
         this.setHeaderTopHeight();
         if (!this.headerIsAlwaysSticky && !this.headerMenuIcon.classList.contains('is-open')) {
-          this.navBar.classList.add('nav-bar-hidden');
+          this.navBar && this.navBar.classList.add('nav-bar-hidden');
           this.headerTop.classList.add('nav-bar-hidden');
         }
         this.megamenu && this.megamenu.init();
@@ -356,7 +483,7 @@
       } else if (scrollTop <= this.headerBounds.top) {
         this.header.classList.remove('scrolled-past-header');
         document.documentElement.classList.remove('scrolled-past-header');
-        this.navBar.classList.remove('nav-bar-hidden');
+        this.navBar && this.navBar.classList.remove('nav-bar-hidden');
         this.headerTop.classList.remove('nav-bar-hidden');
         this.headerMenuIcon.classList.remove('is-open');
         this.setHeaderHeight();
@@ -415,6 +542,45 @@
     ]
   },
   "settings": [
+    {
+      "type": "header",
+      "content": "Header layout"
+    },
+    {
+      "type": "checkbox",
+      "id": "header_menu_in_top_row",
+      "label": "Show menu in the top row",
+      "default": true,
+      "info": "Puts the menu in the middle of the logo row and removes the separate menu row below it."
+    },
+    {
+      "type": "checkbox",
+      "id": "header_search_as_icon",
+      "label": "Show search as an icon",
+      "default": true,
+      "info": "Replaces the search bar with a search icon that opens the search overlay."
+    },
+    {
+      "type": "checkbox",
+      "id": "header_transparent",
+      "label": "Transparent header",
+      "default": true,
+      "info": "Page content slides up behind the header so the banner shows through. The header turns solid once you scroll."
+    },
+    {
+      "type": "checkbox",
+      "id": "header_transparent_home_only",
+      "label": "Transparent on home page only",
+      "default": true,
+      "info": "Recommended. On other pages the header keeps its normal background so content is not hidden behind it."
+    },
+    {
+      "type": "color",
+      "id": "header_transparent_text_color",
+      "label": "Header text colour when transparent",
+      "default": "#ffffff",
+      "info": "Use a colour that reads well over your banner image."
+    },
     {
       "type": "header",
       "content": "General"

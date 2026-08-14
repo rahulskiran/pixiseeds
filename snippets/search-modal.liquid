@@ -1,4 +1,5 @@
-<details-modal class="m:display-flex m:items-center lg:m:hidden">
+{%- assign modal_classes = wrapper_classes | default: 'lg:m:hidden' -%}
+<details-modal class="m:display-flex m:items-center {{ modal_classes }}">
   <div class="m-modal__container m:display-flex">
     <button class="m-modal__toggle" aria-label="{{ 'accessibility.addons.search' | t }}">
       <svg class="m-svg-icon--large" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
