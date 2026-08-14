@@ -9,11 +9,72 @@
  */
 {
   "sections": {
+    "impact_hero_3mLEet": {
+      "type": "ImpactHero",
+      "blocks": {
+        "card_PfxBDd": {
+          "type": "card",
+          "settings": {
+            "caption": "Efficient distribution across regions, supporting supply chains with reliability and precision.",
+            "link": ""
+          }
+        },
+        "tag_card_b4PDWr": {
+          "type": "tag_card",
+          "settings": {
+            "tags": "Driven, Rooted, Impactful",
+            "link": ""
+          }
+        },
+        "stat_card_nyWBkK": {
+          "type": "stat_card",
+          "settings": {
+            "stat_value": "98%",
+            "stat_label": "On-time delivery rate",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "card_PfxBDd",
+        "tag_card_b4PDWr",
+        "stat_card_nyWBkK"
+      ],
+      "name": "Impact hero",
+      "settings": {
+        "heading": "Where modern farming meets global impact.",
+        "heading_tag": "h1",
+        "description": "<p>Through sustainable farming and smart collaboration, we grow more than crops — we grow impact.</p>",
+        "cta_label": "Start growing with us",
+        "cta_link": "",
+        "link_label": "Learn more",
+        "link_url": "",
+        "background_color": "#0b2f18",
+        "text_color": "#ffffff",
+        "card_text_color": "#ffffff",
+        "overlay_color": "#0b2f18",
+        "overlay_strength": 70,
+        "pill_color": "#0b2f18",
+        "title_size_mobile": 38,
+        "title_size_desktop": 72,
+        "body_size": 15,
+        "card_gap": 24,
+        "card_radius": 8,
+        "card_ratio": 70,
+        "cards_offset": 72,
+        "animations": "inherit",
+        "padding_top": 80,
+        "padding_bottom": 88,
+        "padding_top_mobile": 40,
+        "padding_bottom_mobile": 48
+      }
+    },
     "slideshow_Lgz7rJ": {
       "type": "slideshow",
       "blocks": {
         "image_slide_4FkAp4": {
           "type": "image_slide",
+          "disabled": true,
           "settings": {
             "color_scheme": "background-3",
             "image": "shopify://shop_images/New_219_Lormur_Hero_2.webp",
@@ -1180,66 +1241,6 @@
         "padding_bottom": 50,
         "custom_class": "",
         "animations": "inherit"
-      }
-    },
-    "impact_hero_3mLEet": {
-      "type": "ImpactHero",
-      "blocks": {
-        "card_PfxBDd": {
-          "type": "card",
-          "settings": {
-            "caption": "Efficient distribution across regions, supporting supply chains with reliability and precision.",
-            "link": ""
-          }
-        },
-        "tag_card_b4PDWr": {
-          "type": "tag_card",
-          "settings": {
-            "tags": "Driven, Rooted, Impactful",
-            "link": ""
-          }
-        },
-        "stat_card_nyWBkK": {
-          "type": "stat_card",
-          "settings": {
-            "stat_value": "98%",
-            "stat_label": "On-time delivery rate",
-            "link": ""
-          }
-        }
-      },
-      "block_order": [
-        "card_PfxBDd",
-        "tag_card_b4PDWr",
-        "stat_card_nyWBkK"
-      ],
-      "name": "Impact hero",
-      "settings": {
-        "heading": "Where modern farming meets global impact.",
-        "heading_tag": "h1",
-        "description": "<p>Through sustainable farming and smart collaboration, we grow more than crops — we grow impact.</p>",
-        "cta_label": "Start growing with us",
-        "cta_link": "",
-        "link_label": "Learn more",
-        "link_url": "",
-        "background_color": "#0b2f18",
-        "text_color": "#ffffff",
-        "card_text_color": "#ffffff",
-        "overlay_color": "#0b2f18",
-        "overlay_strength": 70,
-        "pill_color": "#0b2f18",
-        "title_size_mobile": 38,
-        "title_size_desktop": 72,
-        "body_size": 15,
-        "card_gap": 24,
-        "card_radius": 8,
-        "card_ratio": 70,
-        "cards_offset": 72,
-        "animations": "inherit",
-        "padding_top": 80,
-        "padding_bottom": 88,
-        "padding_top_mobile": 40,
-        "padding_bottom_mobile": 48
       }
     }
   },
