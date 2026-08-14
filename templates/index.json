@@ -15,22 +15,25 @@
         "card_PfxBDd": {
           "type": "card",
           "settings": {
-            "caption": "Efficient distribution across regions, supporting supply chains with reliability and precision.",
+            "image": "shopify://shop_images/Seeds_and_seedlings_on_soil_202608150259.jpg",
+            "caption": "Carefully selected seeds for gardens, growers, and every growing journey.",
             "link": ""
           }
         },
         "tag_card_b4PDWr": {
           "type": "tag_card",
           "settings": {
-            "tags": "Driven, Rooted, Impactful",
+            "image": "shopify://shop_images/Botanical_photograph_of_plant_gr__202608150302.jpg",
+            "tags": "Fresh, Selected,Grow Ready",
             "link": ""
           }
         },
         "stat_card_nyWBkK": {
           "type": "stat_card",
           "settings": {
-            "stat_value": "98%",
-            "stat_label": "On-time delivery rate",
+            "image": "shopify://shop_images/Seeds_and_plants_arrangement_202608150303.jpg",
+            "stat_value": "100+",
+            "stat_label": "Seed varieties to explore",
             "link": ""
           }
         }
@@ -40,15 +43,14 @@
         "tag_card_b4PDWr",
         "stat_card_nyWBkK"
       ],
-      "disabled": true,
       "name": "Impact hero",
       "settings": {
-        "heading": "Where modern farming meets global impact.",
+        "heading": "Where better seeds meet better growing.",
         "heading_tag": "h1",
-        "description": "<p>Through sustainable farming and smart collaboration, we grow more than crops — we grow impact.</p>",
+        "description": "<p>From beautiful flowers to fresh vegetables, we help you grow more with carefully selected seeds.</p>",
         "cta_label": "Start growing with us",
         "cta_link": "",
-        "link_label": "Learn more",
+        "link_label": "Explore our seeds",
         "link_url": "",
         "background_color": "#0b2f18",
         "text_color": "#ffffff",
