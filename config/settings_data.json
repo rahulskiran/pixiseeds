@@ -15,7 +15,7 @@
     "use_ajax_atc": true,
     "show_scroll_top_button": true,
     "page_width": 1400,
-    "enable_full_width": true,
+    "enable_full_width": false,
     "site_padding_left_mobile": 20,
     "site_padding_right_mobile": 20,
     "site_padding_left": 80,
