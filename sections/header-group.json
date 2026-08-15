@@ -45,7 +45,7 @@
         "sticky_header_type": "always",
         "separator_line": "none",
         "customers": "icon",
-        "show_wishlist": false,
+        "show_wishlist": true,
         "show_compare": false,
         "icon_size": "large",
         "header_icons_use_custom_color": true,
@@ -56,8 +56,6 @@
         "custom_icon": "",
         "search_button": "icon-plain",
         "header_search_second_control": "category",
-        "header_search_max_width_desktop": 1200,
-        "header_search_height_desktop": 48,
         "header_search_collections": [
           "flower-seeds-collection",
           "vegetable-seeds-collection",
