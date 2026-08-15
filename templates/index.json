@@ -55,7 +55,7 @@
         "background_image": "shopify://shop_images/Lush_botanical_garden_background__202608150307_0e639b76-e30c-46b0-9a01-8f598ac833ff.jpg",
         "background_position": "center center",
         "background_overlay_color": "#000000",
-        "background_overlay_opacity": 60,
+        "background_overlay_opacity": 75,
         "background_color": "#0b2f18",
         "text_color": "#ffffff",
         "card_text_color": "#ffffff",
