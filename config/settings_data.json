@@ -48,7 +48,7 @@
     "hot_badge_scheme": "scheme-98abe1c5-d453-445f-a04d-6584e08129ae",
     "sold_out_badge_scheme": "background-3",
     "pcard_layout": "1",
-    "pcard_alignment": "center",
+    "pcard_alignment": "left",
     "pcard_image_ratio": "1/1",
     "show_swatch_option": false,
     "show_cart_button": true,
@@ -168,7 +168,7 @@
     "color_schemes": {
       "background-1": {
         "settings": {
-          "primary_accent": "#00530A",
+          "primary_accent": "#00530a",
           "background": "#ffffff",
           "background_gradient": "",
           "text": "#222222",
@@ -177,9 +177,9 @@
           "button_label": "#ffffff",
           "secondary_button": "#f2f2f2",
           "secondary_button_label": "#000000",
-          "outline_button_label": "#00530A",
+          "outline_button_label": "#00530a",
           "border": "#eeeeee",
-          "price_sale": "#00530A",
+          "price_sale": "#00530a",
           "price_regular": "#666666",
           "form_field": "#f2f2f2",
           "form_field_label": "#000000",
