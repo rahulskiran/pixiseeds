@@ -43,6 +43,20 @@
     assign hasMega = true
   endif
 -%}
+{%- if section.settings.show_track_order -%}
+  {% style %}
+    #shopify-section-{{ section.id }} .m-header__icon--track-order {
+      display: flex;
+      align-items: center;
+      column-gap: 8px;
+      white-space: nowrap;
+      color: rgb(var(--color-foreground));
+    }
+    #shopify-section-{{ section.id }} .m-header__icon-label {
+      line-height: 1.2;
+    }
+  {% endstyle %}
+{%- endif -%}
 {%- if section.settings.header_icons_use_custom_color -%}
   {% style %}
     #shopify-section-{{ section.id }} .m-header__top-wrapper .m-header__icons,
@@ -148,6 +162,7 @@
           </div>
         {% endif %}
         {%- liquid
+          render 'header-addon-track-order', section: section, icon_size: section.settings.icon_size, color_scheme: color_scheme
           render 'header-addon-customer', customers: customers, icon_size: section.settings.icon_size, color_scheme: color_scheme
           render 'header-addon-wishlist', show_wishlist: show_wishlist, icon_size: section.settings.icon_size, color_scheme: color_scheme
           render 'header-addon-compare', show_compare: show_compare, icon_size: section.settings.icon_size, color_scheme: color_scheme
@@ -443,6 +458,36 @@
         }
       ],
       "default": "bottom"
+    },
+    {
+      "type": "header",
+      "content": "Track your order"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_track_order",
+      "label": "Show track your order button",
+      "default": true,
+      "info": "Appears in the header next to the search bar."
+    },
+    {
+      "type": "text",
+      "id": "track_order_label",
+      "label": "Button text",
+      "default": "Track your order"
+    },
+    {
+      "type": "url",
+      "id": "track_order_link",
+      "label": "Button link",
+      "info": "Point this at your order tracking page. Defaults to /pages/track-your-order."
+    },
+    {
+      "type": "checkbox",
+      "id": "track_order_show_label",
+      "label": "Show text next to the icon",
+      "default": true,
+      "info": "On smaller screens only the icon is shown, to save space."
     },
     {
       "type": "header",

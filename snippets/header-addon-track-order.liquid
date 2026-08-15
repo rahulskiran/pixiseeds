@@ -1,0 +1,33 @@
+{% liquid
+  assign track_url = section.settings.track_order_link
+  if track_url == blank
+    assign track_url = '/pages/track-your-order'
+  endif
+  assign track_label = section.settings.track_order_label | default: 'Track your order'
+  assign show_label = section.settings.track_order_show_label
+%}
+{% if section.settings.show_track_order %}
+  <a
+    href="{{ track_url }}"
+    class="m-header__icon m-header__icon--track-order{% if show_label %} m-header__icon--has-label{% endif %}"
+    aria-label="{{ track_label | escape }}"
+  >
+    <span
+      data-tippy-theme="m-color-{{ color_scheme }}"
+      data-tippy-content="{{ track_label | escape }}"
+      data-tippy-placement="bottom"
+      class="m:block m-header__icon-group"
+    >
+      <svg class="m-svg-icon--{{ icon_size }}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2.25 8.25H15.75V17.25C15.75 17.4489 15.671 17.6397 15.5303 17.7803C15.3897 17.921 15.1989 18 15 18H3C2.80109 18 2.61032 17.921 2.46967 17.7803C2.32902 17.6397 2.25 17.4489 2.25 17.25V8.25Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M15.75 11.25H20.25L21.75 14.25V17.25C21.75 17.4489 21.671 17.6397 21.5303 17.7803C21.3897 17.921 21.1989 18 21 18H19.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M15.75 18H8.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M6.375 20.25C7.40053 20.25 8.23125 19.4193 8.23125 18.3938C8.23125 17.3682 7.40053 16.5375 6.375 16.5375C5.34947 16.5375 4.51875 17.3682 4.51875 18.3938C4.51875 19.4193 5.34947 20.25 6.375 20.25Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M17.625 20.25C18.6505 20.25 19.4812 19.4193 19.4812 18.3938C19.4812 17.3682 18.6505 16.5375 17.625 16.5375C16.5995 16.5375 15.7688 17.3682 15.7688 18.3938C15.7688 19.4193 16.5995 20.25 17.625 20.25Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </span>
+    {% if show_label %}
+      <span class="m-header__icon-label m:hidden xl:m:block">{{ track_label }}</span>
+    {% endif %}
+  </a>
+{% endif %}
