@@ -46,14 +46,39 @@
 {%- if section.settings.show_track_order -%}
   {% style %}
     #shopify-section-{{ section.id }} .m-header__icon--track-order {
-      display: flex;
+      display: inline-flex;
       align-items: center;
+      justify-content: center;
       column-gap: 8px;
       white-space: nowrap;
       color: rgb(var(--color-foreground));
+      border: 1px solid rgba(var(--color-foreground), 0.25);
+      border-radius: 999px;
+      padding: 8px 16px;
+      line-height: 1;
+      transition: background-color var(--m-duration-default, 0.25s) ease,
+                  border-color var(--m-duration-default, 0.25s) ease,
+                  color var(--m-duration-default, 0.25s) ease;
+    }
+    #shopify-section-{{ section.id }} .m-header__icon--track-order:hover {
+      background-color: rgb(var(--color-foreground));
+      border-color: rgb(var(--color-foreground));
+      color: rgb(var(--color-background));
+    }
+    #shopify-section-{{ section.id }} .m-header__icon--track-order .m-header__icon-group {
+      display: flex;
+      align-items: center;
     }
     #shopify-section-{{ section.id }} .m-header__icon-label {
       line-height: 1.2;
+      font-size: 14px;
+    }
+    /* Icon-only below 1280px: keep the pill a circle rather than a stretched oval */
+    @media screen and (max-width: 1279px) {
+      #shopify-section-{{ section.id }} .m-header__icon--track-order {
+        padding: 8px;
+        column-gap: 0;
+      }
     }
   {% endstyle %}
 {%- endif -%}
