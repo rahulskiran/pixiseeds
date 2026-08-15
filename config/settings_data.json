@@ -48,7 +48,7 @@
     "hot_badge_scheme": "scheme-98abe1c5-d453-445f-a04d-6584e08129ae",
     "sold_out_badge_scheme": "background-3",
     "pcard_layout": "1",
-    "pcard_alignment": "left",
+    "pcard_alignment": "center",
     "pcard_image_ratio": "1/1",
     "show_swatch_option": false,
     "show_cart_button": true,
