@@ -96,6 +96,7 @@
     "search_bar_text_color": "#8a7269",
     "search_bar_icon_color": "#456981",
     "popups_drawer_color_scheme": "background-1",
+    "wishlist_page": "wishlist",
     "show_cookie_consent": false,
     "cookie_design_mode": false,
     "cookie_consent_placement": "bottom-left",
@@ -252,7 +253,7 @@
       "background-5": {
         "settings": {
           "primary_accent": "#ffffff",
-          "background": "#00530A",
+          "background": "#00530a",
           "background_gradient": "",
           "text": "#ffffff",
           "subtext": "#eeeeee",
