@@ -234,7 +234,7 @@
         "label_text_transform": "uppercase",
         "label_letter_spacing": 120,
         "heading_spacing": 32,
-        "section_background": "#FFFFFF",
+        "section_background": "#ffffff",
         "heading_color": "#456981",
         "label_color": "#ffffff",
         "card_border_color": "#eadfcd",
@@ -473,7 +473,7 @@
       ],
       "name": "Product Collection",
       "settings": {
-        "color_scheme": "scheme-ba41f7c8-a303-44e7-a1d3-a9c14a08a8da",
+        "color_scheme": "background-1",
         "boxed_layout": false,
         "grid_bordered": false,
         "boxed_color_scheme": "scheme-98abe1c5-d453-445f-a04d-6584e08129ae",
