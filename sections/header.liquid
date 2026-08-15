@@ -44,39 +44,70 @@
   endif
 -%}
 {%- if section.settings.show_track_order -%}
+  {%- liquid
+    assign track_bg = section.settings.track_order_bg | default: '#1c3a2b'
+    assign track_bg_end = section.settings.track_order_bg_end | default: track_bg
+    assign track_text = section.settings.track_order_text_color | default: '#ffffff'
+  -%}
   {% style %}
-    #shopify-section-{{ section.id }} .m-header__icon--track-order {
+    /* Decorated pill. The !important beats the header icon colour override,
+       which otherwise paints the label dark-on-dark. */
+    html body #shopify-section-{{ section.id }} .m-header__icon--track-order {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      column-gap: 8px;
+      column-gap: 10px;
       white-space: nowrap;
-      color: rgb(var(--color-foreground));
-      border: 1px solid rgba(var(--color-foreground), 0.25);
-      border-radius: 999px;
-      padding: 8px 16px;
+      padding: 10px 20px;
       line-height: 1;
-      transition: background-color var(--m-duration-default, 0.25s) ease,
-                  border-color var(--m-duration-default, 0.25s) ease,
-                  color var(--m-duration-default, 0.25s) ease;
+      border: 0;
+      border-radius: 999px;
+      color: {{ track_text }} !important;
+      background-image: linear-gradient(135deg, {{ track_bg }} 0%, {{ track_bg_end }} 100%);
+      box-shadow: 0 2px 6px {{ track_bg | color_modify: 'alpha', 0.28 }},
+                  inset 0 1px 0 rgba(255, 255, 255, 0.14);
+      transition: transform var(--m-duration-default, 0.25s) ease,
+                  box-shadow var(--m-duration-default, 0.25s) ease,
+                  filter var(--m-duration-default, 0.25s) ease;
     }
-    #shopify-section-{{ section.id }} .m-header__icon--track-order:hover {
-      background-color: rgb(var(--color-foreground));
-      border-color: rgb(var(--color-foreground));
-      color: rgb(var(--color-background));
+    html body #shopify-section-{{ section.id }} .m-header__icon--track-order:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.08);
+      box-shadow: 0 6px 16px {{ track_bg | color_modify: 'alpha', 0.38 }},
+                  inset 0 1px 0 rgba(255, 255, 255, 0.2);
     }
+    html body #shopify-section-{{ section.id }} .m-header__icon--track-order:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 6px {{ track_bg | color_modify: 'alpha', 0.3 }};
+    }
+    html body #shopify-section-{{ section.id }} .m-header__icon--track-order svg {
+      color: {{ track_text }} !important;
+    }
+    /* Icon sits in its own soft disc so the pill reads as two elements */
     #shopify-section-{{ section.id }} .m-header__icon--track-order .m-header__icon-group {
       display: flex;
       align-items: center;
+      justify-content: center;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.16);
+    }
+    #shopify-section-{{ section.id }} .m-header__icon--track-order .m-svg-icon--large,
+    #shopify-section-{{ section.id }} .m-header__icon--track-order .m-svg-icon--medium {
+      width: 17px;
+      height: 17px;
     }
     #shopify-section-{{ section.id }} .m-header__icon-label {
       line-height: 1.2;
       font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.01em;
     }
     /* Icon-only below 1280px: keep the pill a circle rather than a stretched oval */
     @media screen and (max-width: 1279px) {
-      #shopify-section-{{ section.id }} .m-header__icon--track-order {
-        padding: 8px;
+      html body #shopify-section-{{ section.id }} .m-header__icon--track-order {
+        padding: 9px;
         column-gap: 0;
       }
     }
@@ -513,6 +544,25 @@
       "label": "Show text next to the icon",
       "default": true,
       "info": "On smaller screens only the icon is shown, to save space."
+    },
+    {
+      "type": "color",
+      "id": "track_order_bg",
+      "label": "Pill colour",
+      "default": "#1c3a2b"
+    },
+    {
+      "type": "color",
+      "id": "track_order_bg_end",
+      "label": "Pill gradient end colour",
+      "default": "#2f6b4a",
+      "info": "Set this to the same value as the pill colour for a flat fill."
+    },
+    {
+      "type": "color",
+      "id": "track_order_text_color",
+      "label": "Pill text colour",
+      "default": "#ffffff"
     },
     {
       "type": "header",
