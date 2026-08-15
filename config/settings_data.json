@@ -168,8 +168,8 @@
     "color_schemes": {
       "background-1": {
         "settings": {
-          "primary_accent": "#ae5000",
-          "background": "#FFFFFF",
+          "primary_accent": "#00530A",
+          "background": "#ffffff",
           "background_gradient": "",
           "text": "#222222",
           "subtext": "#666666",
@@ -177,9 +177,9 @@
           "button_label": "#ffffff",
           "secondary_button": "#f2f2f2",
           "secondary_button_label": "#000000",
-          "outline_button_label": "#ae5000",
+          "outline_button_label": "#00530A",
           "border": "#eeeeee",
-          "price_sale": "#ae5000",
+          "price_sale": "#00530A",
           "price_regular": "#666666",
           "form_field": "#f2f2f2",
           "form_field_label": "#000000",
