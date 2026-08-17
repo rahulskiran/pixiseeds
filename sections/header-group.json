@@ -46,7 +46,7 @@
         "separator_line": "none",
         "show_track_order": true,
         "track_order_label": "Track your order",
-        "track_order_link": "",
+        "track_order_link": "https://isleofseeds.com/apps/17TRACK",
         "track_order_show_label": true,
         "track_order_text_color": "#1c3a2b",
         "track_order_border_color": "#1c3a2b",
