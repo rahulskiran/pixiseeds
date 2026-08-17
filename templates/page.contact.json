@@ -1,1 +1,103 @@
-{"sections":{"adac0b41-dbf3-4c9d-a9dd-e31b93a4d1b4":{"type":"breadcrumb","settings":{"text_alignment":"left","hide_current":false,"hide_on_mb":false,"padding_top":14,"padding_bottom":0,"animations":"inherit"}},"main":{"type":"page","settings":{"use_container_narrow":true,"show_breadcrumb":false,"show_page_content":false,"page_header_padding_top":38,"page_header_padding_bottom":60,"padding_top":0,"padding_bottom":50}},"maps":{"type":"google-maps","disabled":true,"settings":{"layout":"grid","color_scheme":"","map_height":"medium","map_style":"standard","map_zoom":14,"map_address":"620 King St W, Toronto, ON M5V 1M7, Canada","content_position":"middle-left","text_alignment":"left","use_content_in_container":false,"animations":"inherit","padding_top":0,"padding_bottom":50}},"contact-form":{"type":"contact-form","blocks":{"text-block-1":{"type":"textblock","disabled":true,"settings":{"title":"Address","content":"<p>7895 Piermont Dr NE <br/>Albuquerque, NM 198866, <br/><span style=\"text-decoration:underline\">See Our Stores</span></p>"}},"text-block-2":{"type":"textblock","disabled":true,"settings":{"title":"Information","content":"<p>+391 (0)35 2568 4593</p><p>hello@domain.com</p>"}}},"block_order":["text-block-1","text-block-2"],"settings":{"title":"We would love to hear from you.","description":"","show_name":true,"show_phone":true,"show_signup_email":true,"animations":"inherit","padding_top":20,"padding_bottom":30}},"contact-details":{"type":"custom-liquid","settings":{"custom_liquid":"<style>\n  .m-contact-details__inner {\n    padding-bottom: 60px;\n    max-width: 720px;\n  }\n\n  .m-contact-details__title {\n    margin: 0 0 4px;\n    letter-spacing: -0.01em;\n  }\n  .m-contact-details__intro {\n    margin: 0 0 28px;\n    font-size: 15px;\n    line-height: 1.6;\n    color: rgb(var(--color-foreground-secondary));\n  }\n\n  .m-contact-details__list {\n    list-style: none;\n    margin: 0;\n    padding: 0;\n    border-top: 1px solid rgb(var(--color-border));\n  }\n\n  .m-contact-details__row {\n    display: grid;\n    grid-template-columns: 210px minmax(0, 1fr);\n    align-items: baseline;\n    gap: 4px 24px;\n    margin: 0;\n    padding: 18px 0;\n    border-bottom: 1px solid rgb(var(--color-border));\n  }\n\n  .m-contact-details__label {\n    font-size: 12px;\n    font-weight: 600;\n    line-height: 1.4;\n    letter-spacing: 0.09em;\n    text-transform: uppercase;\n    color: rgb(var(--color-foreground-secondary));\n  }\n\n  .m-contact-details__value {\n    font-size: 16px;\n    line-height: 1.6;\n    color: rgb(var(--color-foreground));\n    overflow-wrap: anywhere;\n  }\n\n  .m-contact-details__value a {\n    color: inherit;\n    text-decoration: none;\n    border-bottom: 1px solid rgba(var(--color-foreground), 0.3);\n    padding-bottom: 1px;\n    transition: border-color 0.2s ease;\n  }\n  .m-contact-details__value a:hover {\n    border-bottom-color: rgb(var(--color-foreground));\n  }\n\n  @media (max-width: 767px) {\n    .m-contact-details__inner { padding-bottom: 40px; }\n    .m-contact-details__intro { margin-bottom: 22px; }\n    .m-contact-details__row {\n      grid-template-columns: minmax(0, 1fr);\n      padding: 15px 0;\n      gap: 5px;\n    }\n    .m-contact-details__label { font-size: 11px; }\n    .m-contact-details__value { font-size: 15px; }\n  }\n</style>\n\n<div class=\"m-page-width\">\n  <div class=\"m-contact-details__inner\">\n    <h2 class=\"h4 m-contact-details__title\">Our details</h2>\n    <p class=\"m-contact-details__intro\">Everything you need to reach us, and who we are on paper.</p>\n\n    <ul class=\"m-contact-details__list\">\n      <li class=\"m-contact-details__row\">\n        <span class=\"m-contact-details__label\">Official name</span>\n        <span class=\"m-contact-details__value\">Isle of Seeds</span>\n      </li>\n      <li class=\"m-contact-details__row\">\n        <span class=\"m-contact-details__label\">Registered business</span>\n        <span class=\"m-contact-details__value\">Creative Farmer Ltd</span>\n      </li>\n      <li class=\"m-contact-details__row\">\n        <span class=\"m-contact-details__label\">Registered address</span>\n        <span class=\"m-contact-details__value\">128 City Road, London,<br />United Kingdom, EC1V 2NX</span>\n      </li>\n      <li class=\"m-contact-details__row\">\n        <span class=\"m-contact-details__label\">Telephone</span>\n        <span class=\"m-contact-details__value\"><a href=\"tel:+443308285978\">+44 330 828 5978</a></span>\n      </li>\n      <li class=\"m-contact-details__row\">\n        <span class=\"m-contact-details__label\">Email</span>\n        <span class=\"m-contact-details__value\"><a href=\"mailto:support@isleofseeds.com\">support@isleofseeds.com</a></span>\n      </li>\n    </ul>\n  </div>\n</div>","custom_class":"m-contact-details"}}},"order":["adac0b41-dbf3-4c9d-a9dd-e31b93a4d1b4","main","maps","contact-form","contact-details"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "adac0b41-dbf3-4c9d-a9dd-e31b93a4d1b4": {
+      "type": "breadcrumb",
+      "settings": {
+        "text_alignment": "left",
+        "hide_current": false,
+        "hide_on_mb": false,
+        "padding_top": 14,
+        "padding_bottom": 0,
+        "animations": "inherit"
+      }
+    },
+    "main": {
+      "type": "page",
+      "settings": {
+        "use_container_narrow": true,
+        "show_breadcrumb": false,
+        "show_page_content": false,
+        "page_header_padding_top": 38,
+        "page_header_padding_bottom": 60,
+        "padding_top": 0,
+        "padding_bottom": 50
+      }
+    },
+    "maps": {
+      "type": "google-maps",
+      "disabled": true,
+      "settings": {
+        "layout": "grid",
+        "color_scheme": "",
+        "map_height": "medium",
+        "map_style": "standard",
+        "map_zoom": 14,
+        "map_address": "620 King St W, Toronto, ON M5V 1M7, Canada",
+        "content_position": "middle-left",
+        "text_alignment": "left",
+        "use_content_in_container": false,
+        "animations": "inherit",
+        "padding_top": 0,
+        "padding_bottom": 50
+      }
+    },
+    "contact-form": {
+      "type": "contact-form",
+      "blocks": {
+        "text-block-1": {
+          "type": "textblock",
+          "disabled": true,
+          "settings": {
+            "title": "Address",
+            "content": "<p>7895 Piermont Dr NE <br/>Albuquerque, NM 198866, <br/><span style=\"text-decoration:underline\">See Our Stores</span></p>"
+          }
+        },
+        "text-block-2": {
+          "type": "textblock",
+          "disabled": true,
+          "settings": {
+            "title": "Information",
+            "content": "<p>+391 (0)35 2568 4593</p><p>hello@domain.com</p>"
+          }
+        }
+      },
+      "block_order": [
+        "text-block-1",
+        "text-block-2"
+      ],
+      "settings": {
+        "title": "We would love to hear from you.",
+        "description": "",
+        "show_name": true,
+        "show_phone": true,
+        "show_signup_email": true,
+        "animations": "inherit",
+        "padding_top": 20,
+        "padding_bottom": 30
+      }
+    },
+    "contact-details": {
+      "type": "custom-liquid",
+      "settings": {
+        "custom_liquid": "<style>\n  .m-contact-details__inner {\n    padding-bottom: 60px;\n    max-width: 720px;\n  }\n\n  .m-contact-details__title {\n    margin: 0 0 4px;\n    letter-spacing: -0.01em;\n  }\n  .m-contact-details__intro {\n    margin: 0 0 28px;\n    font-size: 15px;\n    line-height: 1.6;\n    color: rgb(var(--color-foreground-secondary));\n  }\n\n  .m-contact-details__list {\n    list-style: none;\n    margin: 0;\n    padding: 0;\n    border-top: 1px solid rgb(var(--color-border));\n  }\n\n  .m-contact-details__row {\n    display: grid;\n    grid-template-columns: 210px minmax(0, 1fr);\n    align-items: baseline;\n    gap: 4px 24px;\n    margin: 0;\n    padding: 18px 0;\n    border-bottom: 1px solid rgb(var(--color-border));\n  }\n\n  .m-contact-details__label {\n    font-size: 12px;\n    font-weight: 600;\n    line-height: 1.4;\n    letter-spacing: 0.09em;\n    text-transform: uppercase;\n    color: rgb(var(--color-foreground-secondary));\n  }\n\n  .m-contact-details__value {\n    font-size: 16px;\n    line-height: 1.6;\n    color: rgb(var(--color-foreground));\n    overflow-wrap: anywhere;\n  }\n\n  .m-contact-details__value a {\n    color: inherit;\n    text-decoration: none;\n    border-bottom: 1px solid rgba(var(--color-foreground), 0.3);\n    padding-bottom: 1px;\n    transition: border-color 0.2s ease;\n  }\n  .m-contact-details__value a:hover {\n    border-bottom-color: rgb(var(--color-foreground));\n  }\n\n  @media (max-width: 767px) {\n    .m-contact-details__inner { padding-bottom: 40px; }\n    .m-contact-details__intro { margin-bottom: 22px; }\n    .m-contact-details__row {\n      grid-template-columns: minmax(0, 1fr);\n      padding: 15px 0;\n      gap: 5px;\n    }\n    .m-contact-details__label { font-size: 11px; }\n    .m-contact-details__value { font-size: 15px; }\n  }\n</style>\n\n<div class=\"m-page-width\">\n  <div class=\"m-contact-details__inner\">\n    <h2 class=\"h4 m-contact-details__title\">Our details</h2>\n    <p class=\"m-contact-details__intro\">Everything you need to reach us, and who we are on paper.</p>\n\n    <ul class=\"m-contact-details__list\">\n      <li class=\"m-contact-details__row\">\n        <span class=\"m-contact-details__label\">Official name</span>\n        <span class=\"m-contact-details__value\">Isle of Seeds</span>\n      </li>\n      <li class=\"m-contact-details__row\">\n        <span class=\"m-contact-details__label\">Registered business</span>\n        <span class=\"m-contact-details__value\">Creative Farmer Ltd</span>\n      </li>\n      <li class=\"m-contact-details__row\">\n        <span class=\"m-contact-details__label\">Registered address</span>\n        <span class=\"m-contact-details__value\">128 City Road, London,<br />United Kingdom, EC1V 2NX</span>\n      </li>\n      <li class=\"m-contact-details__row\">\n        <span class=\"m-contact-details__label\">Telephone</span>\n        <span class=\"m-contact-details__value\"><a href=\"tel:+443308285978\">+44 330 828 5978</a></span>\n      </li>\n      <li class=\"m-contact-details__row\">\n        <span class=\"m-contact-details__label\">Email</span>\n        <span class=\"m-contact-details__value\"><a href=\"mailto:support@isleofseeds.com\">support@isleofseeds.com</a></span>\n      </li>\n    </ul>\n  </div>\n</div>",
+        "custom_class": "m-contact-details"
+      }
+    }
+  },
+  "order": [
+    "adac0b41-dbf3-4c9d-a9dd-e31b93a4d1b4",
+    "main",
+    "maps",
+    "contact-form",
+    "contact-details"
+  ]
+}

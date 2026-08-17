@@ -1,1 +1,30 @@
-{"sections":{"main":{"type":"collection-list-template","settings":{"title":"All collection","description":"<p>Posuere in netus a eu varius adipiscing suspendisse elementum vitae tempor suspendisse <br\/>ullamcorper aenean taciti morbi potenti.<\/p>","page_header_padding_top":60,"page_header_padding_bottom":60,"boxed_layout":false,"grid_bordered":false,"boxed_color_scheme":"","padding_top":0,"padding_bottom":0}}},"order":["main"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "collection-list-template",
+      "settings": {
+        "title": "All collection",
+        "description": "",
+        "page_header_padding_top": 60,
+        "page_header_padding_bottom": 60,
+        "boxed_layout": false,
+        "grid_bordered": false,
+        "boxed_color_scheme": "",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}
