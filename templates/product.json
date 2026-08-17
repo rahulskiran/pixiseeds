@@ -79,7 +79,7 @@
           "settings": {
             "variant_picker_loading_shimmer": false,
             "variant_card_enable": true,
-            "variant_card_show_image": true,
+            "variant_card_show_image": false,
             "variant_card_show_compare_price": false,
             "variant_card_show_save": false,
             "variant_card_save_prefix": "Save",
