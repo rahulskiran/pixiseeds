@@ -15,7 +15,7 @@
         "card_PfxBDd": {
           "type": "card",
           "settings": {
-            "image": "shopify://shop_images/Seeds_and_seedlings_on_soil_202608150259.jpg",
+            "image": "shopify://shop_images/Seeds_and_seedlings_on_soil_202608150259.webp",
             "caption": "Carefully selected seeds for gardens, growers, and every growing journey.",
             "link": ""
           }
@@ -23,7 +23,7 @@
         "tag_card_b4PDWr": {
           "type": "tag_card",
           "settings": {
-            "image": "shopify://shop_images/Botanical_photograph_of_plant_gr__202608150302.jpg",
+            "image": "shopify://shop_images/Botanical_photograph_of_plant_gr__202608150302.webp",
             "tags": "Fresh, Selected,Grow Ready",
             "link": ""
           }
@@ -31,7 +31,7 @@
         "stat_card_nyWBkK": {
           "type": "stat_card",
           "settings": {
-            "image": "shopify://shop_images/Seeds_and_plants_arrangement_202608150303.jpg",
+            "image": "shopify://shop_images/Seeds_and_plants_arrangement_202608150303.webp",
             "stat_value": "100+",
             "stat_label": "Seed varieties to explore",
             "link": ""
@@ -52,7 +52,7 @@
         "cta_link": "shopify://collections/all-year-round-seeds-collection",
         "link_label": "Explore our seeds",
         "link_url": "shopify://collections",
-        "background_image": "shopify://shop_images/Lush_botanical_garden_background__202608150307_0e639b76-e30c-46b0-9a01-8f598ac833ff.jpg",
+        "background_image": "shopify://shop_images/Lush_botanical_garden_background__202608150307_0e639b76-e30c-46b0-9a01-8f598ac833ff.webp",
         "background_position": "center center",
         "background_overlay_color": "#000000",
         "background_overlay_opacity": 75,
