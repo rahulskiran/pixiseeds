@@ -138,7 +138,7 @@
             "date_format": "%b %d",
             "show_shipping_text": true,
             "shipping_title": "Shipping Information",
-            "shipping_text": "<p>Free shipping on all orders.</p>",
+            "shipping_text": "<p>Shipping charges are calculated at checkout based on your delivery destination and order details.</p>",
             "show_returns_text": true,
             "returns_title": "",
             "returns_text": ""
@@ -327,7 +327,7 @@
         "card_padding": 24,
         "grid_gap": 28,
         "image_radius": 12,
-        "panel_bar_background": "#EDEDED",
+        "panel_bar_background": "#ededed",
         "body_text_color": "#2a2a2a",
         "subtext_color": "#4a4a4a",
         "eyebrow": "Get the Most From This Product",
