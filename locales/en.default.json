@@ -103,6 +103,7 @@
       }
     },
     "header": {
+      "more": "More",
       "search_filter": {
         "option_1": "Search within:",
         "option_2": "All products"
