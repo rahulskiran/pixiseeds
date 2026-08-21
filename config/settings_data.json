@@ -165,6 +165,18 @@
       }
     },
     "content_for_index": [],
+    "blocks": {
+      "2542267821724622230": {
+        "type": "shopify://apps/paypal-payments-studio/blocks/paypal-drawer-cart/019df789-f519-7bce-9967-1ff928443aa9",
+        "disabled": false,
+        "settings": {}
+      },
+      "6463974994027631510": {
+        "type": "shopify://apps/paypal-payments-studio/blocks/paypal-sdk/019df789-f519-7bce-9967-1ff928443aa9",
+        "disabled": false,
+        "settings": {}
+      }
+    },
     "color_schemes": {
       "background-1": {
         "settings": {
@@ -253,7 +265,7 @@
       "background-5": {
         "settings": {
           "primary_accent": "#ffffff",
-          "background": "#003B08",
+          "background": "#003b08",
           "background_gradient": "",
           "text": "#ffffff",
           "subtext": "#eeeeee",
