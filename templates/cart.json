@@ -1,1 +1,85 @@
-{"sections":{"main":{"type":"cart-template","settings":{"page_header_padding_top":44,"page_header_padding_bottom":80,"padding_top":0,"padding_bottom":0}},"recent-viewed-products":{"type":"recent-viewed-products","settings":{"color_scheme":"","boxed_layout":false,"grid_bordered":false,"boxed_color_scheme":"","heading":"Recently viewed","heading_size":"h3","header_divider":false,"pcard_layout":"","pcard_image_ratio":"","show_vendor":true,"product_to_show":10,"items_per_row":5,"column_gap":30,"row_gap":30,"enable_slider":true,"show_pagination":false,"show_navigation":true,"navigation_position":"outside","mobile_layout":"col-1","enable_swipe_mobile":true,"column_gap_mobile":16,"row_gap_mobile":24,"padding_top":100,"padding_bottom":0,"custom_class":"","animations":"inherit"}}},"order":["main","recent-viewed-products"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "cart-template",
+      "settings": {
+        "page_header_padding_top": 44,
+        "page_header_padding_bottom": 80,
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "recent-viewed-products": {
+      "type": "recent-viewed-products",
+      "settings": {
+        "color_scheme": "",
+        "boxed_layout": false,
+        "grid_bordered": false,
+        "boxed_color_scheme": "",
+        "heading": "Recently viewed",
+        "heading_size": "h3",
+        "header_divider": false,
+        "header_alignment": "left",
+        "pcard_layout": "",
+        "pcard_image_ratio": "",
+        "show_vendor": true,
+        "product_to_show": 10,
+        "items_per_row": 5,
+        "column_gap": 30,
+        "row_gap": 30,
+        "enable_slider": true,
+        "show_pagination": false,
+        "show_navigation": true,
+        "navigation_position": "outside",
+        "mobile_layout": "col-1",
+        "enable_swipe_mobile": true,
+        "column_gap_mobile": 16,
+        "row_gap_mobile": 24,
+        "padding_top": 100,
+        "padding_bottom": 0,
+        "custom_class": "",
+        "animations": "inherit"
+      }
+    },
+    "17872916003018f949": {
+      "type": "apps",
+      "blocks": {
+        "paypal_payments_studio_paypal_cart_button_VCK4dD": {
+          "type": "shopify://apps/paypal-payments-studio/blocks/paypal-cart-button/019df789-f519-7bce-9967-1ff928443aa9",
+          "settings": {
+            "button_color": "default",
+            "button_shape": "default",
+            "font_size": 14,
+            "letter_spacing": 0
+          }
+        }
+      },
+      "block_order": [
+        "paypal_payments_studio_paypal_cart_button_VCK4dD"
+      ],
+      "settings": {
+        "color_scheme": "",
+        "include_margins": true,
+        "boxed_layout": false,
+        "boxed_color_scheme": "",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "custom_class": ""
+      }
+    }
+  },
+  "order": [
+    "main",
+    "recent-viewed-products",
+    "17872916003018f949"
+  ]
+}
