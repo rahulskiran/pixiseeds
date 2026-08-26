@@ -1,0 +1,674 @@
+{%- liquid
+  assign section_animation = section.settings.animations | default: 'inherit'
+  assign animation_effect = settings.animations
+  if section_animation != 'inherit'
+    assign animation_effect = section_animation
+  endif
+  assign animated = false
+  if animation_effect != 'none'
+    assign animated = true
+  endif
+
+  assign bg_image = section.settings.background_image
+  assign has_bg = false
+  if bg_image != blank
+    assign has_bg = true
+  endif
+
+  assign column_count = section.blocks.size
+  if column_count < 1
+    assign column_count = 1
+  endif
+  if column_count > 4
+    assign column_count = 4
+  endif
+-%}
+
+{% style %}
+  .m-pixi-farmers--{{ section.id }} {
+    --pf-heading-color: {{ section.settings.heading_color }};
+    --pf-text-color: {{ section.settings.text_color }};
+    --pf-accent: {{ section.settings.accent_color }};
+    --pf-icon-bg: {{ section.settings.icon_background }};
+    --pf-icon-border: {{ section.settings.icon_border_color }};
+    --pf-divider: {{ section.settings.divider_color }};
+    --pf-card-bg: {{ section.settings.card_background }};
+    --pf-heading-size-mobile: {{ section.settings.heading_size_mobile }}px;
+    --pf-heading-size-desktop: {{ section.settings.heading_size_desktop }}px;
+    --pf-body-size-mobile: {{ section.settings.body_size_mobile }}px;
+    --pf-body-size-desktop: {{ section.settings.body_size_desktop }}px;
+    --pf-icon-size: {{ section.settings.icon_size }}px;
+    --pf-gap: {{ section.settings.column_gap_mobile }}px;
+    --pf-columns: {{ column_count }};
+    --pf-overlay: {{ section.settings.overlay_color | color_modify: 'alpha', section.settings.overlay_opacity | divided_by: 100.0 }};
+    background-color: {{ section.settings.background_color }};
+  }
+
+  @media screen and (min-width: 990px) {
+    .m-pixi-farmers--{{ section.id }} {
+      --pf-gap: {{ section.settings.column_gap_desktop }}px;
+    }
+  }
+
+  #shopify-section-{{ section.id }} .m-pixi-farmers {
+    position: relative;
+    overflow: hidden;
+    padding-top: {{ section.settings.padding_top_mobile }}px;
+    padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+  }
+
+  @media screen and (min-width: 990px) {
+    #shopify-section-{{ section.id }} .m-pixi-farmers {
+      padding-top: {{ section.settings.padding_top_desktop }}px;
+      padding-bottom: {{ section.settings.padding_bottom_desktop }}px;
+    }
+  }
+
+  .m-pixi-farmers--{{ section.id }} .m-pixi-farmers__bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .m-pixi-farmers--{{ section.id }} .m-pixi-farmers__bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: {{ section.settings.background_position }};
+    display: block;
+    transform: scale(1.02);
+  }
+
+  .m-pixi-farmers--{{ section.id }} .m-pixi-farmers__bg::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.92) 0%,
+      var(--pf-overlay) 42%,
+      var(--pf-overlay) 100%
+    );
+  }
+
+  .m-pixi-farmers--{{ section.id }} .m-pixi-farmers__inner {
+    position: relative;
+    z-index: 1;
+  }
+
+  .m-pixi-farmers--{{ section.id }} .m-pixi-farmers__heading {
+    margin: 0 auto {{ section.settings.heading_spacing }}px;
+    max-width: 18ch;
+    text-align: center;
+    font-family: var(--font-stack-header);
+    font-weight: {{ section.settings.heading_weight }};
+    font-size: var(--pf-heading-size-mobile);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    color: var(--pf-heading-color);
+  }
+
+  @media screen and (min-width: 990px) {
+    .m-pixi-farmers--{{ section.id }} .m-pixi-farmers__heading {
+      font-size: var(--pf-heading-size-desktop);
+      max-width: none;
+    }
+  }
+
+  .m-pixi-farmers--{{ section.id }} .m-pixi-farmers__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--pf-gap);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  @media screen and (min-width: 750px) {
+    .m-pixi-farmers--{{ section.id }} .m-pixi-farmers__grid {
+      grid-template-columns: repeat(min(var(--pf-columns), 2), minmax(0, 1fr));
+    }
+  }
+
+  @media screen and (min-width: 990px) {
+    .m-pixi-farmers--{{ section.id }} .m-pixi-farmers__grid {
+      grid-template-columns: repeat(var(--pf-columns), minmax(0, 1fr));
+    }
+  }
+
+  .m-pixi-farmers--{{ section.id }} .m-pixi-farmers__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 18px;
+    padding: 28px 20px 24px;
+    border-radius: {{ section.settings.card_radius }}px;
+    background: var(--pf-card-bg);
+    border: 1px solid color-mix(in srgb, var(--pf-accent) 12%, transparent);
+    box-shadow: 0 12px 40px rgba(15, 27, 18, 0.06);
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+  }
+
+  .m-pixi-farmers--{{ section.id }} .m-pixi-farmers__item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 18px 48px rgba(15, 27, 18, 0.1);
+  }
+
+  .m-pixi-farmers--{{ section.id }} .m-pixi-farmers__icon-wrap {
+    width: var(--pf-icon-size);
+    height: var(--pf-icon-size);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .m-pixi-farmers--{{ section.id }} .m-pixi-farmers__icon-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+
+  .m-pixi-farmers--{{ section.id }} .m-pixi-farmers__icon-svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .m-pixi-farmers--{{ section.id }} .m-pixi-farmers__text {
+    margin: 0;
+    max-width: 22ch;
+    font-family: var(--font-stack-body);
+    font-size: var(--pf-body-size-mobile);
+    line-height: 1.45;
+    font-weight: {{ section.settings.body_weight }};
+    color: var(--pf-text-color);
+  }
+
+  @media screen and (min-width: 990px) {
+    .m-pixi-farmers--{{ section.id }} .m-pixi-farmers__text {
+      font-size: var(--pf-body-size-desktop);
+      max-width: 26ch;
+    }
+  }
+
+  .m-pixi-farmers--{{ section.id }} .m-pixi-farmers__divider {
+    width: min(100%, 920px);
+    height: 2px;
+    margin: {{ section.settings.divider_spacing }}px auto 0;
+    border: 0;
+    border-radius: 999px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      var(--pf-divider) 18%,
+      var(--pf-divider) 82%,
+      transparent 100%
+    );
+    opacity: 0.85;
+  }
+{% endstyle %}
+
+<section class="m-section m-pixi-farmers m-pixi-farmers--{{ section.id }}">
+  {%- if has_bg -%}
+    <div class="m-pixi-farmers__bg" aria-hidden="true">
+      {{
+        bg_image
+        | image_url: width: 2400
+        | image_tag:
+          loading: 'lazy',
+          widths: '750, 1100, 1500, 2000, 2400',
+          sizes: '100vw',
+          alt: ''
+      }}
+    </div>
+  {%- endif -%}
+
+  <div class="m-page-width m-pixi-farmers__inner">
+    {%- if section.settings.heading != blank -%}
+      <{{ section.settings.heading_tag | default: 'h2' }} class="m-pixi-farmers__heading{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}">
+        {{ section.settings.heading | escape }}
+      </{{ section.settings.heading_tag | default: 'h2' }}>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <ul class="m-pixi-farmers__grid" role="list">
+        {%- for block in section.blocks -%}
+          <li
+            class="m-pixi-farmers__item{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}"
+            {{ block.shopify_attributes }}
+            {% if animated %}
+              style="--animation-order: {{ forloop.index }};"
+            {% endif %}
+          >
+            <div class="m-pixi-farmers__icon-wrap">
+              {%- if block.settings.icon != blank -%}
+                {{
+                  block.settings.icon
+                  | image_url: width: 400
+                  | image_tag:
+                    loading: 'lazy',
+                    class: 'm-pixi-farmers__icon-img',
+                    widths: '120, 180, 240, 320, 400',
+                    sizes: '120px',
+                    alt: block.settings.text | escape
+                }}
+              {%- else -%}
+                {%- case block.settings.icon_style -%}
+                  {%- when 'non_gmo' -%}
+                    <svg class="m-pixi-farmers__icon-svg" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                      <circle cx="60" cy="60" r="56" fill="var(--pf-icon-bg)" stroke="var(--pf-icon-border)" stroke-width="3"/>
+                      <path d="M44 72C44 58 52 46 60 42C68 46 76 58 76 72" stroke="var(--pf-accent)" stroke-width="2.5" stroke-linecap="round"/>
+                      <path d="M60 42V78" stroke="var(--pf-accent)" stroke-width="2.5" stroke-linecap="round"/>
+                      <path d="M48 58C52 52 56 49 60 49C64 49 68 52 72 58" stroke="var(--pf-accent)" stroke-width="2.5" stroke-linecap="round"/>
+                      <text x="60" y="96" text-anchor="middle" fill="var(--pf-accent)" font-size="11" font-weight="700" letter-spacing="0.08em" font-family="Arial, sans-serif">NON GMO</text>
+                    </svg>
+                  {%- when 'non_neonic' -%}
+                    <svg class="m-pixi-farmers__icon-svg" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                      <path d="M60 8L104 34V86L60 112L16 86V34L60 8Z" fill="var(--pf-icon-bg)" stroke="var(--pf-icon-border)" stroke-width="3" stroke-linejoin="round"/>
+                      <text x="60" y="58" text-anchor="middle" fill="var(--pf-accent)" font-size="10.5" font-weight="700" letter-spacing="0.06em" font-family="Arial, sans-serif">NON</text>
+                      <text x="60" y="72" text-anchor="middle" fill="var(--pf-accent)" font-size="10.5" font-weight="700" letter-spacing="0.06em" font-family="Arial, sans-serif">NEONIC</text>
+                    </svg>
+                  {%- when 'seed_care' -%}
+                    <svg class="m-pixi-farmers__icon-svg" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                      <path d="M24 78C34 58 48 44 60 38C72 44 86 58 96 78C86 88 74 94 60 96C46 94 34 88 24 78Z" fill="var(--pf-icon-bg)" stroke="var(--pf-icon-border)" stroke-width="3" stroke-linejoin="round"/>
+                      <ellipse cx="60" cy="72" rx="14" ry="18" fill="#ffffff" stroke="var(--pf-accent)" stroke-width="2"/>
+                      <path d="M60 54V62" stroke="var(--pf-accent)" stroke-width="2.5" stroke-linecap="round"/>
+                      <path d="M52 48L60 40L68 48" stroke="var(--pf-accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M48 36H56M64 36H72M56 30H64" stroke="var(--pf-accent)" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                  {%- else -%}
+                    <svg class="m-pixi-farmers__icon-svg" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                      <circle cx="60" cy="60" r="56" fill="var(--pf-icon-bg)" stroke="var(--pf-icon-border)" stroke-width="3"/>
+                      <path d="M40 62H80M60 42V82" stroke="var(--pf-accent)" stroke-width="3" stroke-linecap="round"/>
+                    </svg>
+                {%- endcase -%}
+              {%- endif -%}
+            </div>
+
+            {%- if block.settings.text != blank -%}
+              <p class="m-pixi-farmers__text">{{ block.settings.text | escape }}</p>
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+
+    {%- if section.settings.show_divider -%}
+      <hr class="m-pixi-farmers__divider" aria-hidden="true">
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Pixi Farmers promise",
+  "tag": "section",
+  "class": "m-pixi-farmers-section",
+  "disabled_on": {
+    "groups": ["header", "footer", "aside"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "We are Pixi Farmers!"
+    },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "label": "Heading level",
+      "options": [
+        { "value": "h1", "label": "H1" },
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image",
+      "info": "Optional floral or garden photo. A soft overlay keeps text readable."
+    },
+    {
+      "type": "select",
+      "id": "background_position",
+      "label": "Background position",
+      "options": [
+        { "value": "center center", "label": "Center" },
+        { "value": "center top", "label": "Top" },
+        { "value": "center bottom", "label": "Bottom" }
+      ],
+      "default": "center center"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Fallback background",
+      "default": "#faf8f5"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Image overlay tint",
+      "default": "#fff5f8"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Overlay strength",
+      "default": 75
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#0f1b12"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Body text color",
+      "default": "#1c3a2b"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent / icon color",
+      "default": "#2d5a3d"
+    },
+    {
+      "type": "color",
+      "id": "card_background",
+      "label": "Card background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "icon_background",
+      "label": "Icon badge fill",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "icon_border_color",
+      "label": "Icon badge border",
+      "default": "#2d5a3d"
+    },
+    {
+      "type": "color",
+      "id": "divider_color",
+      "label": "Divider line color",
+      "default": "#1c3a2b"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "min": 24,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "label": "Heading size (mobile)",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "heading_size_desktop",
+      "min": 28,
+      "max": 72,
+      "step": 1,
+      "unit": "px",
+      "label": "Heading size (desktop)",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "heading_weight",
+      "min": 400,
+      "max": 800,
+      "step": 100,
+      "label": "Heading weight",
+      "default": 700
+    },
+    {
+      "type": "range",
+      "id": "body_size_mobile",
+      "min": 14,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "label": "Body size (mobile)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "body_size_desktop",
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Body size (desktop)",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "body_weight",
+      "min": 400,
+      "max": 700,
+      "step": 100,
+      "label": "Body weight",
+      "default": 500
+    },
+    {
+      "type": "range",
+      "id": "heading_spacing",
+      "min": 24,
+      "max": 72,
+      "step": 4,
+      "unit": "px",
+      "label": "Space below heading",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "min": 72,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "label": "Icon size",
+      "default": 112
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Card corner radius",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "column_gap_mobile",
+      "min": 12,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Column gap (mobile)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "column_gap_desktop",
+      "min": 16,
+      "max": 56,
+      "step": 2,
+      "unit": "px",
+      "label": "Column gap (desktop)",
+      "default": 28
+    },
+    {
+      "type": "checkbox",
+      "id": "show_divider",
+      "label": "Show bottom divider line",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "divider_spacing",
+      "min": 16,
+      "max": 72,
+      "step": 4,
+      "unit": "px",
+      "label": "Space above divider",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top (mobile)",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom (mobile)",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top (desktop)",
+      "default": 72
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom (desktop)",
+      "default": 72
+    },
+    {
+      "type": "select",
+      "id": "animations",
+      "label": "Scroll reveal",
+      "default": "fade-in-up",
+      "options": [
+        { "value": "inherit", "label": "Inherit global setting" },
+        { "value": "none", "label": "None" },
+        { "value": "fade-in", "label": "Fade in" },
+        { "value": "fade-in-up", "label": "Fade in up" },
+        { "value": "fade-in-left", "label": "Fade in left" },
+        { "value": "fade-in-right", "label": "Fade in right" }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon image",
+          "info": "Optional. Upload a badge or icon. Built-in icons are used when empty."
+        },
+        {
+          "type": "select",
+          "id": "icon_style",
+          "label": "Built-in icon",
+          "options": [
+            { "value": "non_gmo", "label": "Non GMO badge" },
+            { "value": "non_neonic", "label": "Non Neonic badge" },
+            { "value": "seed_care", "label": "Seed care" },
+            { "value": "custom", "label": "Simple plus" }
+          ],
+          "default": "non_gmo"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Thoughtfully sourced, naturally grown varieties"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "Pixi Farmers promise",
+      "blocks": [
+        {
+          "type": "feature",
+          "settings": {
+            "icon_style": "non_gmo",
+            "text": "Thoughtfully sourced, naturally grown varieties"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon_style": "non_neonic",
+            "text": "Helpful Growing Guidance"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon_style": "seed_care",
+            "text": "Handled and packed with care for every order"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

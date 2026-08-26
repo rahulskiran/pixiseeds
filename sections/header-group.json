@@ -51,7 +51,7 @@
         "track_order_text_color": "#1c3a2b",
         "track_order_border_color": "#1c3a2b",
         "customers": "icon",
-        "show_wishlist": false,
+        "show_wishlist": true,
         "show_compare": false,
         "icon_size": "large",
         "header_icons_use_custom_color": true,

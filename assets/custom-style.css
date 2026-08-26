@@ -38,6 +38,40 @@
   width: 100% !important;
   left: -100%!important;
 }
+
+/* Header dropdown: horizontal multi-row layout (desktop nav) */
+@media screen and (min-width: 1280px) {
+  .m-header__menu-item--parent > .m-header__submenu:not(.m-header__submenu-level3):not(.m-header__menu-more__list) {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: flex-start;
+    align-content: flex-start;
+    min-width: 320px;
+    max-width: min(92vw, 880px);
+    width: max-content;
+    padding: 12px 8px;
+  }
+
+  .m-header__menu-item--parent > .m-header__submenu:not(.m-header__submenu-level3):not(.m-header__menu-more__list) > .m-header__menu-item {
+    flex: 0 0 auto;
+    width: auto;
+  }
+
+  .m-header__menu-item--parent > .m-header__submenu:not(.m-header__submenu-level3):not(.m-header__menu-more__list) > .m-header__menu-item > a {
+    width: auto;
+    white-space: nowrap;
+    --m-menu-item-padding-t: 8px;
+    --m-menu-item-padding-r: 14px;
+    --m-menu-item-padding-b: 8px;
+    --m-menu-item-padding-l: 14px;
+  }
+
+  .m-header__menu-item--parent > .m-header__submenu:not(.m-header__submenu-level3):not(.m-header__menu-more__list) > .m-header__menu-item > .m-header__submenu-level3 {
+    min-width: 200px;
+    max-width: 280px;
+  }
+}
 /* FOXKIT */
 .m-megamenu__navigation-container.m-foxkit-menu-desktop {
   padding-bottom: 26px;

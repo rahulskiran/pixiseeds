@@ -50,7 +50,7 @@
         "description": "<p>From beautiful flowers to fresh vegetables, we help you grow more with carefully selected seeds.</p>",
         "cta_label": "Start growing with us",
         "cta_link": "shopify://collections/all-year-round-seeds-collection",
-        "link_label": "Explore our seeds",
+        "link_label": "",
         "link_url": "shopify://collections",
         "background_image": "shopify://shop_images/ChatGPT_Image_Aug_27_2026_03_37_25_AM.png",
         "background_image_mobile": "shopify://shop_images/ChatGPT_Image_Aug_27_2026_03_42_43_AM.png",
@@ -168,6 +168,71 @@
         "animations": "inherit",
         "padding_top": 52,
         "padding_bottom": 52
+      }
+    },
+    "pixi_farmers_trust": {
+      "type": "PixiFarmers",
+      "blocks": {
+        "feature_non_gmo": {
+          "type": "feature",
+          "settings": {
+            "icon_style": "non_gmo",
+            "text": "Thoughtfully sourced, naturally grown varieties"
+          }
+        },
+        "feature_non_neonic": {
+          "type": "feature",
+          "settings": {
+            "icon_style": "non_neonic",
+            "text": "Helpful Growing Guidance"
+          }
+        },
+        "feature_seed_care": {
+          "type": "feature",
+          "settings": {
+            "icon_style": "seed_care",
+            "text": "Handled and packed with care for every order"
+          }
+        }
+      },
+      "block_order": [
+        "feature_non_gmo",
+        "feature_non_neonic",
+        "feature_seed_care"
+      ],
+      "name": "Pixi Farmers promise",
+      "settings": {
+        "heading": "We are Pixi Farmers!",
+        "heading_tag": "h2",
+        "background_position": "center center",
+        "background_color": "#faf8f5",
+        "overlay_color": "#fff5f8",
+        "overlay_opacity": 75,
+        "heading_color": "#0f1b12",
+        "text_color": "#1c3a2b",
+        "accent_color": "#2d5a3d",
+        "card_background": "#ffffff",
+        "icon_background": "#ffffff",
+        "icon_border_color": "#2d5a3d",
+        "divider_color": "#1c3a2b",
+        "heading_size_mobile": 32,
+        "heading_size_desktop": 48,
+        "heading_weight": 700,
+        "body_size_mobile": 16,
+        "body_size_desktop": 18,
+        "body_weight": 500,
+        "heading_spacing": 40,
+        "icon_size": 112,
+        "card_radius": 16,
+        "column_gap_mobile": 16,
+        "column_gap_desktop": 28,
+        "show_divider": true,
+        "divider_spacing": 40,
+        "padding_top_mobile": 48,
+        "padding_bottom_mobile": 48,
+        "padding_top_desktop": 72,
+        "padding_bottom_desktop": 72,
+        "animations": "fade-in-up"
       }
     },
     "3d92e37f-b44b-49a7-8000-f53f057128ae": {
@@ -1158,6 +1223,7 @@
   "order": [
     "impact_hero_3mLEet",
     "new_col_6MtRnX",
+    "pixi_farmers_trust",
     "3d92e37f-b44b-49a7-8000-f53f057128ae",
     "0bb7c3df-f5b4-4745-b7be-7842c5658f4a",
     "fyplant_6abMrT",

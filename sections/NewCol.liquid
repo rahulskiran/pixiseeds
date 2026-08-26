@@ -80,13 +80,35 @@
 
     <div class="m-newcol__grid">
       {% for block in section.blocks %}
+        {%- liquid
+          assign card_collection = block.settings.collection
+          if card_collection == blank and block.settings.link != blank and block.settings.link contains '/collections/'
+            assign collection_handle = block.settings.link | split: '/collections/' | last | split: '?' | first | split: '#' | first
+            assign card_collection = collections[collection_handle]
+          endif
+
+          assign card_image = block.settings.image
+          if card_image == blank and card_collection != blank
+            assign card_image = card_collection.featured_image
+          endif
+
+          assign card_link = block.settings.link
+          if card_link == blank and card_collection != blank
+            assign card_link = card_collection.url
+          endif
+
+          assign card_title = block.settings.title
+          if card_title == blank and card_collection != blank
+            assign card_title = card_collection.title
+          endif
+        -%}
         <div
-          class="m-newcol__card{% if block.settings.link != blank %} m-newcol__card--link{% endif %}{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}"
+          class="m-newcol__card{% if card_link != blank %} m-newcol__card--link{% endif %}{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}"
           {{ block.shopify_attributes }}
         >
-          {% if block.settings.link != blank %}
+          {% if card_link != blank %}
             <a
-              href="{{ block.settings.link }}"
+              href="{{ card_link }}"
               class="m-newcol__card-inner"
               {% if block.settings.open_new_tab %}
                 target="_blank"
@@ -98,10 +120,10 @@
           {% endif %}
 
           <div class="m-newcol__image-wrap">
-            {% if block.settings.image != blank %}
-              {%- assign card_alt = block.settings.image.alt | default: block.settings.title | escape -%}
+            {% if card_image != blank %}
+              {%- assign card_alt = card_image.alt | default: card_title | escape -%}
               {{
-                block.settings.image
+                card_image
                 | image_url: width: 800
                 | image_tag:
                   loading: 'lazy',
@@ -118,12 +140,12 @@
           </div>
 
           <div class="m-newcol__content">
-            {% if block.settings.title != blank %}
-              <p class="m-newcol__label">{{ block.settings.title | escape }}</p>
+            {% if card_title != blank %}
+              <p class="m-newcol__label">{{ card_title | escape }}</p>
             {% endif %}
           </div>
 
-          {% if block.settings.link != blank %}
+          {% if card_link != blank %}
             </a>
           {% else %}
             </div>
@@ -574,21 +596,28 @@
       "name": "Card",
       "settings": [
         {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
           "type": "image_picker",
           "id": "image",
-          "label": "Card Image",
-          "info": "Recommended high quality image"
+          "label": "Card image",
+          "info": "Optional. Uses the collection featured image when empty."
         },
         {
           "type": "text",
           "id": "title",
           "label": "Label",
-          "default": "Full sun"
+          "default": "Full sun",
+          "info": "Leave blank to use the collection title."
         },
         {
           "type": "url",
           "id": "link",
-          "label": "Link"
+          "label": "Link",
+          "info": "Optional. Uses the collection URL when empty."
         },
         {
           "type": "checkbox",
