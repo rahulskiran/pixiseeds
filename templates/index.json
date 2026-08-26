@@ -137,6 +137,7 @@
         },
         "card_X4mzP6": {
           "type": "card",
+          "disabled": true,
           "settings": {
             "collection": "",
             "title": "",
@@ -146,6 +147,7 @@
         },
         "card_HcM3KQ": {
           "type": "card",
+          "disabled": true,
           "settings": {
             "collection": "",
             "title": "",
