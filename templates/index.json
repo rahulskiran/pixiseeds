@@ -81,6 +81,24 @@
     "new_col_6MtRnX": {
       "type": "NewCol",
       "blocks": {
+        "card_BbMXdp": {
+          "type": "card",
+          "settings": {
+            "collection": "",
+            "title": "",
+            "link": "shopify://collections/marigold-seeds",
+            "open_new_tab": false
+          }
+        },
+        "card_3YL9eD": {
+          "type": "card",
+          "settings": {
+            "collection": "",
+            "title": "",
+            "link": "shopify://collections/dipladenia-red-flower",
+            "open_new_tab": false
+          }
+        },
         "card_jAwxAB": {
           "type": "card",
           "settings": {
@@ -137,6 +155,8 @@
         }
       },
       "block_order": [
+        "card_BbMXdp",
+        "card_3YL9eD",
         "card_jAwxAB",
         "card_dnCLLD",
         "card_VG6rxP",
