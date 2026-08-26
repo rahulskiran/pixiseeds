@@ -54,7 +54,7 @@
         "link_url": "shopify://collections",
         "background_image": "shopify://shop_images/ChatGPT_Image_Aug_27_2026_03_37_25_AM.png",
         "background_image_mobile": "shopify://shop_images/ChatGPT_Image_Aug_27_2026_03_42_43_AM.png",
-        "background_height_desktop": "adapt",
+        "background_height_desktop": "content",
         "background_position": "center center",
         "background_overlay_color": "#000000",
         "background_overlay_opacity": 40,
