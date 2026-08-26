@@ -18,7 +18,7 @@
         "mobile_columns": 2,
         "gap_x": 30,
         "gap_y": 30,
-        "content_width": "contained",
+        "content_width": "full",
         "inner_max_width": 1440,
         "padding_left": 40,
         "padding_right": 40,
