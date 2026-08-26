@@ -85,7 +85,7 @@
           "type": "card",
           "settings": {
             "collection": "",
-            "title": "Tomato Seeds",
+            "title": "",
             "link": "shopify://collections/caladium-mix",
             "open_new_tab": false
           }
@@ -94,7 +94,7 @@
           "type": "card",
           "settings": {
             "collection": "",
-            "title": "Lettuce Seeds",
+            "title": "",
             "link": "shopify://collections/cosmos-seeds",
             "open_new_tab": false
           }
@@ -103,8 +103,8 @@
           "type": "card",
           "settings": {
             "collection": "",
-            "title": "Zinnnia Seeds",
-            "link": "shopify://collections/zinnia-seeds",
+            "title": "",
+            "link": "shopify://collections/clematis-flower-1",
             "open_new_tab": false
           }
         },
@@ -112,8 +112,8 @@
           "type": "card",
           "settings": {
             "collection": "",
-            "title": "Marigold Seeds",
-            "link": "shopify://collections/marigold-seeds",
+            "title": "",
+            "link": "shopify://collections/danish-hollyhock",
             "open_new_tab": false
           }
         },
@@ -121,8 +121,8 @@
           "type": "card",
           "settings": {
             "collection": "",
-            "title": "microgreen seeds",
-            "link": "shopify://collections/microgreen-seeds",
+            "title": "",
+            "link": "shopify://collections/annual-seeds",
             "open_new_tab": false
           }
         },
@@ -130,8 +130,8 @@
           "type": "card",
           "settings": {
             "collection": "",
-            "title": "cucumber seeds",
-            "link": "shopify://collections/cucumber-seeds",
+            "title": "",
+            "link": "shopify://collections/bougainvillea-1",
             "open_new_tab": false
           }
         }
