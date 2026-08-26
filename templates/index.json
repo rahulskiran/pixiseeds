@@ -442,7 +442,7 @@
         "48dec5f3-b589-4fbe-a810-0f92c0b33f16": {
           "type": "tab",
           "settings": {
-            "collection": "all-year-round-seeds-collection",
+            "collection": "flower-seeds",
             "heading": "Vegetables",
             "icon_image_width": 30,
             "icon_svg": ""
@@ -450,6 +450,7 @@
         },
         "c355a43c-fe28-4eb9-ab35-18bd3b51e6c0": {
           "type": "tab",
+          "disabled": true,
           "settings": {
             "collection": "flower-seeds-collection",
             "heading": "Flowers",
@@ -459,6 +460,7 @@
         },
         "b0e6fc3f-c467-4492-a155-e29e1c1f0daf": {
           "type": "tab",
+          "disabled": true,
           "settings": {
             "collection": "herb-seeds-collection",
             "heading": "Herbs",
@@ -489,7 +491,7 @@
         "boxed_layout": false,
         "grid_bordered": false,
         "boxed_color_scheme": "background-1",
-        "heading": "Garden Picks",
+        "heading": "Best Sellers",
         "heading_size": "h2",
         "tab_header_style": "1",
         "header_divider": false,
