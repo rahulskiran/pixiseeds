@@ -54,6 +54,7 @@
         "link_url": "shopify://collections",
         "background_image": "shopify://shop_images/ChatGPT_Image_Aug_27_2026_03_37_25_AM.png",
         "background_image_mobile": "shopify://shop_images/ChatGPT_Image_Aug_27_2026_03_42_43_AM.png",
+        "background_height_desktop": "adapt",
         "background_position": "center center",
         "background_overlay_color": "#000000",
         "background_overlay_opacity": 40,
@@ -83,22 +84,25 @@
         "card_jAwxAB": {
           "type": "card",
           "settings": {
+            "collection": "",
             "title": "Tomato Seeds",
-            "link": "shopify://collections/tomato-seeds",
+            "link": "shopify://collections/caladium-mix",
             "open_new_tab": false
           }
         },
         "card_dnCLLD": {
           "type": "card",
           "settings": {
+            "collection": "",
             "title": "Lettuce Seeds",
-            "link": "shopify://collections/lettuce-seeds",
+            "link": "shopify://collections/cosmos-seeds",
             "open_new_tab": false
           }
         },
         "card_VG6rxP": {
           "type": "card",
           "settings": {
+            "collection": "",
             "title": "Zinnnia Seeds",
             "link": "shopify://collections/zinnia-seeds",
             "open_new_tab": false
@@ -107,6 +111,7 @@
         "card_kiMJ6N": {
           "type": "card",
           "settings": {
+            "collection": "",
             "title": "Marigold Seeds",
             "link": "shopify://collections/marigold-seeds",
             "open_new_tab": false
@@ -115,6 +120,7 @@
         "card_X4mzP6": {
           "type": "card",
           "settings": {
+            "collection": "",
             "title": "microgreen seeds",
             "link": "shopify://collections/microgreen-seeds",
             "open_new_tab": false
@@ -123,6 +129,7 @@
         "card_HcM3KQ": {
           "type": "card",
           "settings": {
+            "collection": "",
             "title": "cucumber seeds",
             "link": "shopify://collections/cucumber-seeds",
             "open_new_tab": false
