@@ -21,6 +21,14 @@
   if bg_image != blank
     assign has_bg_image = true
   endif
+
+  assign bg_height_desktop = section.settings.background_height_desktop | default: 'adapt'
+  assign desktop_aspect = bg_image.aspect_ratio | default: 2.4
+  if bg_image_mobile != blank
+    assign mobile_aspect = bg_image_mobile.aspect_ratio | default: desktop_aspect
+  else
+    assign mobile_aspect = desktop_aspect
+  endif
 -%}
 
 {% style %}
@@ -38,6 +46,8 @@
     --ih-overlay: {{ section.settings.overlay_color }};
     --ih-overlay-strength: {{ section.settings.overlay_strength | divided_by: 100.0 }};
     --ih-pill-bg: {{ section.settings.pill_color | color_modify: 'alpha', 0.55 }};
+    --ih-aspect-desktop: {{ desktop_aspect }};
+    --ih-aspect-mobile: {{ mobile_aspect }};
   }
 
   #shopify-section-{{ section.id }} .m-impact-hero {
@@ -82,6 +92,20 @@
     .m-impact-hero--{{ section.id }} .m-impact-hero__bg-image--desktop { display: block; }
   }
   {%- endif -%}
+  {%- endif -%}
+
+  {%- if has_bg_image -%}
+  @media screen and (max-width: 767px) {
+    #shopify-section-{{ section.id }} .m-impact-hero.m-impact-hero--mobile-adapt {
+      min-height: calc(100vw / var(--ih-aspect-mobile));
+    }
+  }
+
+  @media screen and (min-width: 768px) {
+    #shopify-section-{{ section.id }} .m-impact-hero.m-impact-hero--desktop-adapt {
+      min-height: calc(100vw / var(--ih-aspect-desktop));
+    }
+  }
   {%- endif -%}
 
   .m-impact-hero__title {
@@ -325,7 +349,7 @@
 {% endstyle %}
 
 <section
-  class="m-section m-impact-hero m-impact-hero--{{ section.id }}"
+  class="m-section m-impact-hero m-impact-hero--{{ section.id }}{% if has_bg_image %} m-impact-hero--has-bg m-impact-hero--mobile-adapt{% if bg_height_desktop == 'adapt' %} m-impact-hero--desktop-adapt{% endif %}{% endif %}"
   data-section-type="impact-hero"
   data-section-id="{{ section.id }}"
 >
@@ -537,6 +561,17 @@
       "id": "background_image_mobile",
       "label": "Background image (mobile)",
       "info": "Optional. Falls back to the main image if empty."
+    },
+    {
+      "type": "select",
+      "id": "background_height_desktop",
+      "label": "Desktop background height",
+      "default": "adapt",
+      "options": [
+        { "value": "adapt", "label": "Adapt to image" },
+        { "value": "content", "label": "Fit to content" }
+      ],
+      "info": "Adapt sizes the hero to the desktop image proportions so the banner is not over-cropped."
     },
     {
       "type": "select",
