@@ -14,24 +14,24 @@
       "blocks": {
         "card_PfxBDd": {
           "type": "card",
+          "disabled": true,
           "settings": {
-            "image": "shopify://shop_images/Seeds_and_seedlings_on_soil_202608150259.webp",
             "caption": "Carefully selected seeds for gardens, growers, and every growing journey.",
             "link": ""
           }
         },
         "tag_card_b4PDWr": {
           "type": "tag_card",
+          "disabled": true,
           "settings": {
-            "image": "shopify://shop_images/Botanical_photograph_of_plant_gr__202608150302.webp",
             "tags": "Fresh, Selected,Grow Ready",
             "link": ""
           }
         },
         "stat_card_nyWBkK": {
           "type": "stat_card",
+          "disabled": true,
           "settings": {
-            "image": "shopify://shop_images/Seeds_and_plants_arrangement_202608150303.webp",
             "stat_value": "100+",
             "stat_label": "Seed varieties to explore",
             "link": ""
@@ -52,10 +52,11 @@
         "cta_link": "shopify://collections/all-year-round-seeds-collection",
         "link_label": "Explore our seeds",
         "link_url": "shopify://collections",
-        "background_image": "shopify://shop_images/Lush_botanical_garden_background__202608150307_0e639b76-e30c-46b0-9a01-8f598ac833ff.webp",
+        "background_image": "shopify://shop_images/ChatGPT_Image_Aug_27_2026_03_37_25_AM.png",
+        "background_image_mobile": "shopify://shop_images/ChatGPT_Image_Aug_27_2026_03_42_43_AM.png",
         "background_position": "center center",
         "background_overlay_color": "#000000",
-        "background_overlay_opacity": 75,
+        "background_overlay_opacity": 40,
         "background_color": "#0b2f18",
         "text_color": "#ffffff",
         "card_text_color": "#ffffff",
@@ -82,7 +83,6 @@
         "card_jAwxAB": {
           "type": "card",
           "settings": {
-            "image": "shopify://shop_images/Cherry_tomatoes_growing_202604061452_1.webp",
             "title": "Tomato Seeds",
             "link": "shopify://collections/tomato-seeds",
             "open_new_tab": false
@@ -91,7 +91,6 @@
         "card_dnCLLD": {
           "type": "card",
           "settings": {
-            "image": "shopify://shop_images/Lettuce_plants_in_202604061452.webp",
             "title": "Lettuce Seeds",
             "link": "shopify://collections/lettuce-seeds",
             "open_new_tab": false
@@ -100,7 +99,6 @@
         "card_VG6rxP": {
           "type": "card",
           "settings": {
-            "image": "shopify://shop_images/Zinnia_flower_with_202604061452.webp",
             "title": "Zinnnia Seeds",
             "link": "shopify://collections/zinnia-seeds",
             "open_new_tab": false
@@ -109,7 +107,6 @@
         "card_kiMJ6N": {
           "type": "card",
           "settings": {
-            "image": "shopify://shop_images/French_Marigolds_growing_202604061453_1.webp",
             "title": "Marigold Seeds",
             "link": "shopify://collections/marigold-seeds",
             "open_new_tab": false
@@ -118,7 +115,6 @@
         "card_X4mzP6": {
           "type": "card",
           "settings": {
-            "image": "shopify://shop_images/Purple_green_micro-sprouts_202604061501.webp",
             "title": "microgreen seeds",
             "link": "shopify://collections/microgreen-seeds",
             "open_new_tab": false
@@ -127,7 +123,6 @@
         "card_HcM3KQ": {
           "type": "card",
           "settings": {
-            "image": "shopify://shop_images/Cucumber_fruit_and_202604061504.webp",
             "title": "cucumber seeds",
             "link": "shopify://collections/cucumber-seeds",
             "open_new_tab": false
@@ -458,7 +453,6 @@
         "card_xRmTyL": {
           "type": "card",
           "settings": {
-            "image": "shopify://shop_images/Variegated_Monstera_leaf_202604071354.webp",
             "title": "New Arrivals",
             "link": "shopify://collections/all-year-round-seeds-collection",
             "open_new_tab": false
@@ -467,7 +461,6 @@
         "card_y7xRAd": {
           "type": "card",
           "settings": {
-            "image": "shopify://shop_images/Plant_gift_with_202604071354.webp",
             "title": "Low-Maintenance",
             "link": "shopify://collections/low-maintenance-collection",
             "open_new_tab": false
@@ -476,7 +469,6 @@
         "card_dkqtRE": {
           "type": "card",
           "settings": {
-            "image": "shopify://shop_images/Plants_on_metal_202604071354_2.webp",
             "title": "Pet-Friendly",
             "link": "shopify://collections/pet-friendly-collection",
             "open_new_tab": false
@@ -485,7 +477,6 @@
         "card_GWR8VB": {
           "type": "card",
           "settings": {
-            "image": "shopify://shop_images/Boston_Fern_in_202604071354_1.webp",
             "title": "Gifts",
             "link": "shopify://collections/best-sellers-collection",
             "open_new_tab": false
@@ -654,7 +645,6 @@
         "card_Aqg4qN": {
           "type": "card",
           "settings": {
-            "image": "shopify://shop_images/Snake_Plants_in_202604071336.webp",
             "icon_preset": "sun",
             "title": "Low light",
             "text": "Thrives in shady spots",
@@ -665,7 +655,6 @@
         "card_triUzh": {
           "type": "card",
           "settings": {
-            "image": "shopify://shop_images/Plant_and_cat_202604071336.webp",
             "icon_preset": "paw",
             "title": "Pet-friendly",
             "text": "Safe for furry friends",
@@ -676,7 +665,6 @@
         "card_mtdXtn": {
           "type": "card",
           "settings": {
-            "image": "shopify://shop_images/Monstera_leaf_with_202604071336.webp",
             "icon_preset": "sparkle",
             "title": "Statement plants",
             "text": "Bold and dramatic",
@@ -687,7 +675,6 @@
         "card_zPcikh": {
           "type": "card",
           "settings": {
-            "image": "shopify://shop_images/Succulents_in_concrete_202604071336.webp",
             "icon_preset": "leaf",
             "title": "Easy care",
             "text": "No Stress Taken",
@@ -918,7 +905,6 @@
       "name": "Steal the garden",
       "settings": {
         "color_scheme": "background-1",
-        "image": "shopify://shop_images/Flower_garden_captured_on_iPhone_202604291205_2.webp",
         "image_aspect_ratio": "16/9",
         "image_radius": 16,
         "heading": "Steal This Garden",
@@ -951,7 +937,6 @@
         "photo_RhyYnk": {
           "type": "photo",
           "settings": {
-            "image": "shopify://shop_images/Hands_holding_homegrown_202604071419_433003bd-377d-47b3-8dcf-b3683fef0d76.webp",
             "image_link": "",
             "enable_hotspot": false,
             "product": "",
@@ -962,7 +947,6 @@
         "photo_kxLF98": {
           "type": "photo",
           "settings": {
-            "image": "shopify://shop_images/Seedlings_emerging_in_202604071419.webp",
             "image_link": "",
             "enable_hotspot": false,
             "product": "",
@@ -973,7 +957,6 @@
         "photo_fXD8tN": {
           "type": "photo",
           "settings": {
-            "image": "shopify://shop_images/Urban_backyard_kitchen_202604071423.webp",
             "image_link": "",
             "enable_hotspot": false,
             "product": "",
@@ -984,7 +967,6 @@
         "photo_HTzVLP": {
           "type": "photo",
           "settings": {
-            "image": "shopify://shop_images/Young_pepper_plant_202604071419.webp",
             "image_link": "",
             "enable_hotspot": false,
             "product": "",
@@ -995,7 +977,6 @@
         "photo_cCzddn": {
           "type": "photo",
           "settings": {
-            "image": "shopify://shop_images/Hand_pulling_carrots_202604071504_1.webp",
             "image_link": "",
             "enable_hotspot": false,
             "product": "",
@@ -1006,7 +987,6 @@
         "photo_KpqWjy": {
           "type": "photo",
           "settings": {
-            "image": "shopify://shop_images/Hands_holding_homegrown_202604071419_433003bd-377d-47b3-8dcf-b3683fef0d76.webp",
             "image_link": "",
             "enable_hotspot": false,
             "product": "",

@@ -9,7 +9,7 @@
  */
 {
   "current": {
-    "logo": "shopify://shop_images/logo_2.png",
+    "logo": "shopify://shop_images/Asset_2_61b91963-ae39-42e3-8e0c-bfe586a2c548.png",
     "logo_width": 120,
     "favicon": "shopify://shop_images/icon.png",
     "use_ajax_atc": true,
@@ -165,18 +165,6 @@
       }
     },
     "content_for_index": [],
-    "blocks": {
-      "2542267821724622230": {
-        "type": "shopify://apps/paypal-payments-studio/blocks/paypal-drawer-cart/019df789-f519-7bce-9967-1ff928443aa9",
-        "disabled": false,
-        "settings": {}
-      },
-      "6463974994027631510": {
-        "type": "shopify://apps/paypal-payments-studio/blocks/paypal-sdk/019df789-f519-7bce-9967-1ff928443aa9",
-        "disabled": false,
-        "settings": {}
-      }
-    },
     "color_schemes": {
       "background-1": {
         "settings": {
