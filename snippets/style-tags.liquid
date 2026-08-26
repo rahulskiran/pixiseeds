@@ -212,9 +212,7 @@
 {%- endif -%}
 
 <link rel="stylesheet" href="{{ 'custom-style.css' | asset_url }}" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="{{ 'custom.css' | asset_url }}" media="print" onload="this.media='all'">
 <noscript>{{ 'custom-style.css' | asset_url | stylesheet_tag }}</noscript>
-<noscript>{{ 'custom.css' | asset_url | stylesheet_tag }}</noscript>
 
 {% if request.path == '/challenge' %}
   {% render 'customer-challenge-style' %}
