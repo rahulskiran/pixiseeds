@@ -490,19 +490,19 @@
           "type": "color",
           "id": "badge_bg_color",
           "label": "Background",
-          "default": "#f5f1ec"
+          "default": "#f7f1ec"
         },
         {
           "type": "color",
           "id": "badge_text_color",
           "label": "Text",
-          "default": "#2e1503"
+          "default": "#3a1705"
         },
         {
           "type": "color",
           "id": "badge_border_color",
           "label": "Border",
-          "default": "#ebe4dc"
+          "default": "#eadfd6"
         },
         {
           "type": "range",
@@ -727,19 +727,19 @@
           "type": "color",
           "id": "variant_card_border_color",
           "label": "Default border color",
-          "default": "#d8cdc2"
+          "default": "#e0d1c4"
         },
         {
           "type": "color",
           "id": "variant_card_selected_border_color",
           "label": "Selected border color",
-          "default": "#a8480a"
+          "default": "#a03f0b"
         },
         {
           "type": "color",
           "id": "variant_card_price_color",
           "label": "Price color",
-          "default": "#a8480a"
+          "default": "#a03f0b"
         },
         {
           "type": "header",
@@ -1080,6 +1080,74 @@
           "label": "Date format",
           "default": "%b %d",
           "info": "Example: %m/%d [Learn more about date format here.](http://strftime.net/)"
+        },
+        {
+          "type": "header",
+          "content": "Delivery breakdown"
+        },
+        {
+          "type": "paragraph",
+          "content": "Handling + transit are shown as a compact breakdown and drive the estimated date range. Set the maximums to 0 to fall back to \"Deliver in\"."
+        },
+        {
+          "type": "text",
+          "id": "handling_label",
+          "label": "Handling label",
+          "default": "Handling"
+        },
+        {
+          "type": "number",
+          "id": "handling_min",
+          "label": "Handling time: min (business days)",
+          "default": 2
+        },
+        {
+          "type": "number",
+          "id": "handling_max",
+          "label": "Handling time: max (business days)",
+          "default": 3
+        },
+        {
+          "type": "text",
+          "id": "transit_label",
+          "label": "Transit label",
+          "default": "Transit"
+        },
+        {
+          "type": "number",
+          "id": "transit_min",
+          "label": "Transit time: min (business days)",
+          "default": 6
+        },
+        {
+          "type": "number",
+          "id": "transit_max",
+          "label": "Transit time: max (business days)",
+          "default": 8
+        },
+        {
+          "type": "text",
+          "id": "total_label",
+          "label": "Total label",
+          "default": "Total"
+        },
+        {
+          "type": "text",
+          "id": "business_days_note",
+          "label": "Business days note",
+          "default": "Business days, Monday to Friday."
+        },
+        {
+          "type": "text",
+          "id": "cutoff_text",
+          "label": "Order cutoff",
+          "default": "Order by 5:00 PM IST to ship the same business day"
+        },
+        {
+          "type": "text",
+          "id": "exclusions_text",
+          "label": "Exclusions",
+          "default": "No dispatch on weekends or Indian public holidays"
         },
         {
           "type": "checkbox",

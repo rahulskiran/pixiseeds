@@ -42,16 +42,25 @@
         document.documentElement.classList.add('shopify-design-mode');
       }
     </script>
+  {%- capture org_brand -%}{% render 'brand-name' %}{%- endcapture -%}
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "Organization",
-  "name": "Isle of Seeds",
-  "url": "https://isleofseeds.com",
-  "sameAs": [
-    "https://www.instagram.com/isleofseeds/",
-    "https://www.facebook.com/profile.php?id=61592712101359"
-  ],
+  "name": {{ org_brand | strip | json }},
+  "url": {{ request.origin | json }},
+  {%- capture social_profiles -%}
+    {%- if settings.social_instagram_link != blank %}{{ settings.social_instagram_link | json }},{% endif -%}
+    {%- if settings.social_facebook_link != blank %}{{ settings.social_facebook_link | json }},{% endif -%}
+    {%- if settings.social_twitter_link != blank %}{{ settings.social_twitter_link | json }},{% endif -%}
+    {%- if settings.social_youtube_link != blank %}{{ settings.social_youtube_link | json }},{% endif -%}
+    {%- if settings.social_pinterest_link != blank %}{{ settings.social_pinterest_link | json }},{% endif -%}
+    {%- if settings.social_tiktok_link != blank %}{{ settings.social_tiktok_link | json }},{% endif -%}
+  {%- endcapture -%}
+  {%- assign social_profiles = social_profiles | strip | remove_last: ',' -%}
+  {%- if social_profiles != blank -%}
+  "sameAs": [{{ social_profiles }}],
+  {%- endif -%}
   "address": {
     "@type": "PostalAddress",
     "streetAddress": "128 City Road",
@@ -61,6 +70,12 @@
   }
 }
 </script>
+{%- comment -%}
+  FAQPage markup must only appear on pages that visibly render these exact
+  questions. The PremiumFaq section carries them on the home and product
+  templates; emitting it site-wide breaks Google's structured data guidelines.
+{%- endcomment -%}
+{%- if template.name == 'index' or template.name == 'product' -%}
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -101,6 +116,7 @@
   ]
 }
 </script>
+{%- endif -%}
 </head>
 
   <body

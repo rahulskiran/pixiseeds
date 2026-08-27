@@ -39,6 +39,17 @@
   endif
 -%}
 
+{%- liquid
+  comment
+    Google Merchant Center cross-checks this markup against the product feed.
+    priceValidUntil is required for rich results; a rolling one-year window keeps
+    it from going stale. Return window mirrors the published returns policy.
+  endcomment
+  assign price_valid_until = 'now' | date: '%s' | plus: 31536000 | date: '%Y-%m-%d'
+  assign return_days = 14
+  assign return_country = shop.address.country_code | default: 'GB'
+-%}
+
 <script type="application/ld+json">
   {
     "@context": "http://schema.org/",
@@ -88,8 +99,23 @@
             "identifier_exists": false,
           {%- endif -%}
           "availability" : "http://schema.org/{% if variant.available %}InStock{% else %}OutOfStock{% endif %}",
+          "itemCondition" : "https://schema.org/NewCondition",
           "price" : {{ variant.price | divided_by: 100.00 | json }},
           "priceCurrency" : {{ cart.currency.iso_code | json }},
+          "priceValidUntil" : {{ price_valid_until | json }},
+          "hasMerchantReturnPolicy" : {
+            "@type": "MerchantReturnPolicy",
+            "applicableCountry": {{ return_country | json }},
+            "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+            "merchantReturnDays": {{ return_days }},
+            "returnMethod": "https://schema.org/ReturnByMail",
+            "returnFees": "https://schema.org/FreeReturn"
+          },
+          {%- comment -%}
+            shippingDetails is intentionally omitted: Google compares it against the
+            real rates in your Merchant Center feed, and a guessed value causes item
+            disapprovals. Add it here once the shipping zones and rates are settled.
+          {%- endcomment -%}
           "url" : {{ request.origin | append: variant.url | json }}
         }{% unless forloop.last %},{% endunless %}
       {%- endfor -%}

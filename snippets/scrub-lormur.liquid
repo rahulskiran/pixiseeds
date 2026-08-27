@@ -1,29 +1,41 @@
 {%- comment -%}
-  Strip former brand name from any crawlable text (titles, descriptions, alts, vendors).
+  Strip former brand names from any crawlable text (titles, descriptions, alts, vendors).
   Usage: {% render 'scrub-lormur', text: some_string %}
-  Optional: pass fallback: true to output brand name when text is blank.
+  Optional: pass fallback: true to output the current brand name when text is blank.
+
+  The replacement brand is read from the 'brand-name' snippet, so renaming the
+  store means editing that one file — never this one.
+
+  Note: this only rewrites what is printed in HTML. It does NOT change the product
+  data Shopify sends to Google Merchant Center, so any product whose title or body
+  still contains a former brand should be cleaned in the admin as well.
 {%- endcomment -%}
+{%- capture brand -%}{% render 'brand-name' %}{%- endcapture -%}
+{%- assign brand = brand | strip -%}
 {%- liquid
   assign _t = text | default: ''
   if _t == blank and fallback
-    echo 'Isle of Seeds'
+    echo brand
   elsif _t == blank
     echo ''
   else
-    assign _t = _t | replace: 'The Isle of Seeds', 'Isle of Seeds'
-    assign _t = _t | replace: 'the isle of seeds', 'Isle of Seeds'
-    assign _t = _t | replace: 'THE ISLE OF SEEDS', 'Isle of Seeds'
-    assign _t = _t | replace: 'Lormur Seeds', 'Isle of Seeds'
-    assign _t = _t | replace: 'Lormur seeds', 'Isle of Seeds'
-    assign _t = _t | replace: 'lormur seeds', 'Isle of Seeds'
-    assign _t = _t | replace: 'LORMUR SEEDS', 'Isle of Seeds'
-    assign _t = _t | replace: 'Lormur-Seeds', 'Isle of Seeds'
-    assign _t = _t | replace: 'lormur-seeds', 'Isle of Seeds'
-    assign _t = _t | replace: 'Lormur_Seeds', 'Isle of Seeds'
-    assign _t = _t | replace: 'lormur_seeds', 'Isle of Seeds'
-    assign _t = _t | replace: 'Lormur', 'Isle of Seeds'
-    assign _t = _t | replace: 'lormur', 'Isle of Seeds'
-    assign _t = _t | replace: 'LORMUR', 'Isle of Seeds'
+    assign _t = _t | replace: 'The Isle of Seeds', brand
+    assign _t = _t | replace: 'the isle of seeds', brand
+    assign _t = _t | replace: 'THE ISLE OF SEEDS', brand
+    assign _t = _t | replace: 'Isle of Seeds', brand
+    assign _t = _t | replace: 'isle of seeds', brand
+    assign _t = _t | replace: 'ISLE OF SEEDS', brand
+    assign _t = _t | replace: 'Lormur Seeds', brand
+    assign _t = _t | replace: 'Lormur seeds', brand
+    assign _t = _t | replace: 'lormur seeds', brand
+    assign _t = _t | replace: 'LORMUR SEEDS', brand
+    assign _t = _t | replace: 'Lormur-Seeds', brand
+    assign _t = _t | replace: 'lormur-seeds', brand
+    assign _t = _t | replace: 'Lormur_Seeds', brand
+    assign _t = _t | replace: 'lormur_seeds', brand
+    assign _t = _t | replace: 'Lormur', brand
+    assign _t = _t | replace: 'lormur', brand
+    assign _t = _t | replace: 'LORMUR', brand
     echo _t
   endif
 -%}

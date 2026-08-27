@@ -5,6 +5,8 @@
     - color_scheme, pcard_alignment
     - card_border_setting: 'inherit' | 'on' | 'off'
 {% endcomment %}
+{%- capture vendor_text -%}{% render 'brand-name' %}{%- endcapture -%}
+{%- assign vendor_text = vendor_text | strip -%}
 {% liquid
   if show_cart_button == nil
     assign show_cart_button = settings.show_cart_button
@@ -13,7 +15,6 @@
     assign card_style = '1'
   endunless
 
-  assign vendor_text = 'Isle of Seeds'
 
   case card_border_setting
     when 'off'

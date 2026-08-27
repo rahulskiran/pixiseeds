@@ -52,7 +52,7 @@
           <div class="m-gmaps__inner m-gmaps__inner--{{ section.settings.map_height }}">
             {% liquid
               assign asp_rat = section.settings.image.aspect_ratio
-              assign alt_src = section.settings.image.alt | default: 'The Isle of Seeds'
+              assign alt_src = section.settings.image.alt
             %}
             {%- capture alt -%}{% render 'scrub-lormur', text: alt_src, fallback: true %}{%- endcapture -%}
             {%- assign alt = alt | strip | escape -%}

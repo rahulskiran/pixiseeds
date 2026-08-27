@@ -641,32 +641,101 @@
           {% endif %}
         </div>
       {%- when 'shipping' -%}
+        {% liquid
+          assign date_format = block.settings.date_format | default: '%b %d'
+          assign day_seconds = 86400
+          assign now = 'now' | date: '%s'
+
+          assign h_min = block.settings.handling_min | default: 0
+          assign h_max = block.settings.handling_max | default: 0
+          assign t_min = block.settings.transit_min | default: 0
+          assign t_max = block.settings.transit_max | default: 0
+          assign total_min = h_min | plus: t_min
+          assign total_max = h_max | plus: t_max
+
+          comment
+            Business days -> calendar days (5 working days per 7 calendar days).
+            Falls back to the legacy "deliver_days" setting when the handling /
+            transit ranges have not been filled in.
+          endcomment
+          if total_max > 0
+            assign cal_min = total_min | times: 7 | divided_by: 5
+            assign cal_max = total_max | times: 7 | divided_by: 5
+          else
+            assign base = block.settings.deliver_days | times: 1
+            assign cal_min = base | minus: 2
+            assign cal_max = base | plus: 2
+          endif
+
+          assign from_offset = cal_min | times: day_seconds
+          assign to_offset = cal_max | times: day_seconds
+          assign from = now | plus: from_offset | date: date_format
+          assign to = now | plus: to_offset | date: date_format
+        %}
         <ul class="m-product-shipping">
           {% if block.settings.show_delivery_times %}
-            <li class="m-product-shipping--item m-product-shipping__deliver m:display-flex m:items-start">
-              <span class="m-product-shipping__icon">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 21C16.5563 21 20.25 17.3063 20.25 12.75C20.25 8.19365 16.5563 4.5 12 4.5C7.44365 4.5 3.75 8.19365 3.75 12.75C3.75 17.3063 7.44365 21 12 21Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                  <path d="M12 12.75L15.75 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                  <path d="M9.75 1.5H14.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </span>
-              {% liquid
-                assign range = 2 | times: 24 | times: 60 | times: 60
-                assign deliver_in = block.settings.deliver_days | times: 24 | times: 60 | times: 60
-                assign date_format = block.settings.date_format | default: '%b %d'
-                assign now = 'now' | date: '%s'
-
-                assign from = now | plus: deliver_in | minus: range | date: date_format
-                assign to = now | plus: deliver_in | plus: range | date: date_format
-              %}
-              <div class="m-product-shipping__content">
-                <span class="m-product-shipping__title">{{ block.settings.deliver_text }}</span>
-                <span class="m-product-shipping__text m:text-small-medium">{{ from }} - {{ to }}</span>
+            <li class="m-product-shipping--item m-delivery-card">
+              <div class="m-delivery-card__head">
+                <span class="m-delivery-card__icon" aria-hidden="true">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 21C16.5563 21 20.25 17.3063 20.25 12.75C20.25 8.19365 16.5563 4.5 12 4.5C7.44365 4.5 3.75 8.19365 3.75 12.75C3.75 17.3063 7.44365 21 12 21Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12 12.75L15.75 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M9.75 1.5H14.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+                <span class="m-delivery-card__title">{{ block.settings.deliver_text }}</span>
+                <span class="m-delivery-card__date">{{ from }} &ndash; {{ to }}</span>
               </div>
+
+              {% if total_max > 0 %}
+                <div class="m-delivery-card__steps">
+                  <div class="m-delivery-card__step">
+                    <span class="m-delivery-card__step-label">{{ block.settings.handling_label | default: 'Handling' }}</span>
+                    <span class="m-delivery-card__step-value">{{ h_min }}&ndash;{{ h_max }} days</span>
+                  </div>
+                  <div class="m-delivery-card__step">
+                    <span class="m-delivery-card__step-label">{{ block.settings.transit_label | default: 'Transit' }}</span>
+                    <span class="m-delivery-card__step-value">{{ t_min }}&ndash;{{ t_max }} days</span>
+                  </div>
+                  <div class="m-delivery-card__step m-delivery-card__step--total">
+                    <span class="m-delivery-card__step-label">{{ block.settings.total_label | default: 'Total' }}</span>
+                    <span class="m-delivery-card__step-value">{{ total_min }}&ndash;{{ total_max }} days</span>
+                  </div>
+                </div>
+                <p class="m-delivery-card__note">{{ block.settings.business_days_note | default: 'Business days, Monday to Friday.' }}</p>
+              {% endif %}
+
+              {% if block.settings.cutoff_text != blank or block.settings.exclusions_text != blank %}
+                <ul class="m-delivery-card__facts">
+                  {% if block.settings.cutoff_text != blank %}
+                    <li class="m-delivery-card__fact">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/>
+                        <path d="M12 7v5l3 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      <span>{{ block.settings.cutoff_text }}</span>
+                    </li>
+                  {% endif %}
+                  {% if block.settings.exclusions_text != blank %}
+                    <li class="m-delivery-card__fact">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="3.5" y="5" width="17" height="15" rx="2" stroke="currentColor" stroke-width="1.6"/>
+                        <path d="M3.5 10h17M8 3.5v3M16 3.5v3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                      </svg>
+                      <span>{{ block.settings.exclusions_text }}</span>
+                    </li>
+                  {% endif %}
+                </ul>
+              {% endif %}
+
+              {% if block.settings.show_shipping_text and block.settings.shipping_text != blank %}
+                <div class="m-delivery-card__shipping">
+                  {% if block.settings.shipping_title != blank %}<span class="m-delivery-card__shipping-title">{{ block.settings.shipping_title }}</span>{% endif %}
+                  <div class="m-delivery-card__shipping-text">{{ block.settings.shipping_text }}</div>
+                </div>
+              {% endif %}
             </li>
-          {% endif %}
-          {% if block.settings.show_shipping_text and block.settings.shipping_text != blank %}
+          {% elsif block.settings.show_shipping_text and block.settings.shipping_text != blank %}
             <li class="m-product-shipping--item m-product-shipping__info m:display-flex m:items-start">
               <span class="m-product-shipping__icon">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -676,7 +745,7 @@
                   <path d="M6 14.25H7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                   <path d="M16.5 14.25H18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                   <path d="M21 11.25L18.1978 4.94531C18.1389 4.81276 18.0428 4.70015 17.9211 4.62111C17.7995 4.54207 17.6576 4.5 17.5125 4.5H6.4875C6.34244 4.5 6.20049 4.54207 6.07886 4.62111C5.95722 4.70015 5.86112 4.81276 5.80219 4.94531L3 11.25V17.25H21V11.25Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>                  
+                </svg>
               </span>
               <div class="m-product-shipping__content">
                 <span class="m-product-shipping__title">{{ block.settings.shipping_title }}</span>
@@ -692,7 +761,7 @@
                   <path d="M16.5938 14.2969V9.42188L7.5 4.40625" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                   <path d="M20.896 6.99341L12.0835 11.9997L3.10229 6.99341" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                   <path d="M12.0844 12L12 22.0125" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>                                    
+                </svg>
               </span>
               <div class="m-product-shipping__content">
                 <span class="m-product-shipping__title">{{ block.settings.returns_title }}</span>

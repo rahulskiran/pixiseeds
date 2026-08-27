@@ -23,68 +23,111 @@
     assign use_from_description = false
   endif
 
+  comment
+    Pick the heading level the tabs are built from. A description that opens with
+    a single <h1> product title should still tab on its <h2>/<h3> section
+    headings, so prefer the first level that yields at least two sections and
+    only fall back to a one-tab level when nothing else splits.
+  endcomment
   assign desc_parse_mode = 'none'
+  assign desc_chunks = blank
+  assign valid_count = 0
+
   if use_from_description
-    assign pnorm = product_html | replace: '<H1', '<h1' | replace: '</H1', '</h1' | replace: '<H2', '<h2' | replace: '</H2', '</h2' | replace: '<H3', '<h3' | replace: '</H3', '</h3'
-    if pnorm contains '<h2'
-      assign desc_chunks = pnorm | split: '<h2'
-      assign valid_count = 0
-      for part in desc_chunks
-        if forloop.index0 > 0 and part != blank and part contains '</h2>'
-          assign valid_count = valid_count | plus: 1
+    assign pnorm = product_html | replace: '<H1', '<h1' | replace: '</H1', '</h1' | replace: '<H2', '<h2' | replace: '</H2', '</h2' | replace: '<H3', '<h3' | replace: '</H3', '</h3' | replace: '<H4', '<h4' | replace: '</H4', '</h4'
+
+    assign forced_level = section.settings.desc_split_level | default: 'auto'
+    if forced_level == 'auto'
+      assign candidates = 'h2,h3,h4,h1,strong_p' | split: ','
+    else
+      assign candidates = forced_level | split: ','
+    endif
+
+    assign best_mode = 'none'
+    assign best_count = 0
+    assign solo_mode = 'none'
+    assign solo_count = 0
+
+    for cand in candidates
+      assign c_count = 0
+      if cand == 'strong_p'
+        assign c_chunks = pnorm | split: '<p><strong>'
+        assign c_close = '</strong>'
+      else
+        assign c_open = '<' | append: cand
+        assign c_close = '</' | append: cand | append: '>'
+        assign c_chunks = pnorm | split: c_open
+      endif
+
+      for part in c_chunks
+        if forloop.index0 > 0 and part != blank and part contains c_close
+          assign c_count = c_count | plus: 1
         endif
       endfor
-      if valid_count > 0
-        assign desc_parse_mode = 'h2'
+
+      if c_count > 1 and best_mode == 'none'
+        assign best_mode = cand
+        assign best_count = c_count
+      endif
+      if c_count > 0 and solo_mode == 'none'
+        assign solo_mode = cand
+        assign solo_count = c_count
+      endif
+    endfor
+
+    if best_mode == 'none'
+      assign best_mode = solo_mode
+      assign best_count = solo_count
+    endif
+
+    if best_mode != 'none'
+      assign desc_parse_mode = best_mode
+      assign valid_count = best_count
+      if best_mode == 'strong_p'
+        assign desc_chunks = pnorm | split: '<p><strong>'
+      else
+        assign desc_open = '<' | append: best_mode
+        assign desc_chunks = pnorm | split: desc_open
       endif
     endif
-    if desc_parse_mode == 'none' and pnorm contains '<h1'
-      assign desc_chunks = pnorm | split: '<h1'
-      assign valid_count = 0
-      for part in desc_chunks
-        if forloop.index0 > 0 and part != blank and part contains '</h1>'
-          assign valid_count = valid_count | plus: 1
-        endif
-      endfor
-      if valid_count > 0
-        assign desc_parse_mode = 'h1'
-      endif
-    endif
-    if desc_parse_mode == 'none' and pnorm contains '<h3'
-      assign desc_chunks = pnorm | split: '<h3'
-      assign valid_count = 0
-      for part in desc_chunks
-        if forloop.index0 > 0 and part != blank and part contains '</h3>'
-          assign valid_count = valid_count | plus: 1
-        endif
-      endfor
-      if valid_count > 0
-        assign desc_parse_mode = 'h3'
-      endif
-    endif
-    if desc_parse_mode == 'none' and product_html contains '<p><strong>'
-      assign desc_chunks = product_html | split: '<p><strong>'
-      assign valid_count = 0
-      for part in desc_chunks
-        if part != blank and part contains '</strong>'
-          assign valid_count = valid_count | plus: 1
-        endif
-      endfor
-      if valid_count > 0
-        assign desc_parse_mode = 'strong_p'
-      endif
-    endif
-    if use_from_description and desc_parse_mode == 'none' and product_html != blank
+
+    if desc_parse_mode == 'none' and product_html != blank
       assign single_desc_fallback = true
       assign valid_count = 1
-    elsif use_from_description and desc_parse_mode == 'none' and product_html == blank
+    elsif desc_parse_mode == 'none' and product_html == blank
       assign use_from_description = false
+    endif
+  endif
+
+  comment
+    The copy above the first heading has no heading of its own. Give it a tab so
+    it is not orphaned, unless the merchant wants it above the tab row.
+  endcomment
+  assign lead_html = ''
+  assign lead_text = ''
+  assign has_lead_tab = false
+  assign lead_above = false
+  assign lead_offset = 0
+
+  if use_from_description and desc_parse_mode != 'none' and single_desc_fallback == false
+    assign lead_html = desc_chunks | first
+    assign lead_text = lead_html | strip_html | strip
+    if lead_text != blank
+      if section.settings.intro_placement == 'above'
+        assign lead_above = true
+      else
+        assign has_lead_tab = true
+      endif
     endif
   endif
 
   assign vcap = valid_count
   if use_from_description and vcap > 12
     assign vcap = 12
+  endif
+  if has_lead_tab
+    assign vcap = vcap | plus: 1
+    assign lead_offset = 1
   endif
 -%}
 
@@ -185,17 +228,30 @@
           >
         {%- else -%}
           {%- assign di = 0 -%}
+          {%- if has_lead_tab -%}
+            <input
+              type="radio"
+              name="growtabs-{{ section.id }}"
+              id="growtab-{{ section.id }}-desc-0"
+              class="m-growtabs__state visually-hidden"
+              tabindex="-1"
+              checked
+            >
+            {%- assign di = 1 -%}
+          {%- endif -%}
           {%- for part in desc_chunks -%}
             {%- assign row_ok = false -%}
             {%- case desc_parse_mode -%}
               {%- when 'strong_p' -%}
-                {%- if part != blank and part contains '</strong>' -%}{%- assign row_ok = true -%}{%- endif -%}
+                {%- if forloop.index0 > 0 and part != blank and part contains '</strong>' -%}{%- assign row_ok = true -%}{%- endif -%}
               {%- when 'h1' -%}
                 {%- if forloop.index0 > 0 and part != blank and part contains '</h1>' -%}{%- assign row_ok = true -%}{%- endif -%}
               {%- when 'h2' -%}
                 {%- if forloop.index0 > 0 and part != blank and part contains '</h2>' -%}{%- assign row_ok = true -%}{%- endif -%}
               {%- when 'h3' -%}
                 {%- if forloop.index0 > 0 and part != blank and part contains '</h3>' -%}{%- assign row_ok = true -%}{%- endif -%}
+              {%- when 'h4' -%}
+                {%- if forloop.index0 > 0 and part != blank and part contains '</h4>' -%}{%- assign row_ok = true -%}{%- endif -%}
             {%- endcase -%}
             {%- if di < vcap and row_ok -%}
               <input
@@ -214,6 +270,9 @@
         {%- endif -%}
 
         <div class="m-growtabs__shell m-growtips__card">
+          {%- if lead_above -%}
+            <div class="m-growtips__rte m-growtips__lead rte">{{ lead_html }}</div>
+          {%- endif -%}
           <div class="m-growtabs__nav" role="tablist">
             {%- if single_desc_fallback -%}
               {%- assign _fb = section.settings.fallback_tab_label | default: 'Details' -%}
@@ -222,17 +281,26 @@
               </label>
             {%- else -%}
               {%- assign di = 0 -%}
+              {%- if has_lead_tab -%}
+                {%- assign lead_label = section.settings.intro_tab_label | default: 'Description' -%}
+                <label class="m-growtabs__navlabel" for="growtab-{{ section.id }}-desc-0" role="tab">
+                  {{- lead_label | escape -}}
+                </label>
+                {%- assign di = 1 -%}
+              {%- endif -%}
               {%- for part in desc_chunks -%}
                 {%- assign row_ok = false -%}
                 {%- case desc_parse_mode -%}
                   {%- when 'strong_p' -%}
-                    {%- if part != blank and part contains '</strong>' -%}{%- assign row_ok = true -%}{%- endif -%}
+                    {%- if forloop.index0 > 0 and part != blank and part contains '</strong>' -%}{%- assign row_ok = true -%}{%- endif -%}
                   {%- when 'h1' -%}
                     {%- if forloop.index0 > 0 and part != blank and part contains '</h1>' -%}{%- assign row_ok = true -%}{%- endif -%}
                   {%- when 'h2' -%}
                     {%- if forloop.index0 > 0 and part != blank and part contains '</h2>' -%}{%- assign row_ok = true -%}{%- endif -%}
                   {%- when 'h3' -%}
                     {%- if forloop.index0 > 0 and part != blank and part contains '</h3>' -%}{%- assign row_ok = true -%}{%- endif -%}
+                  {%- when 'h4' -%}
+                    {%- if forloop.index0 > 0 and part != blank and part contains '</h4>' -%}{%- assign row_ok = true -%}{%- endif -%}
                 {%- endcase -%}
                 {%- if di < vcap and row_ok -%}
                   {%- case desc_parse_mode -%}
@@ -241,15 +309,23 @@
                       {%- assign p_title = segs[0] | strip_html | strip -%}
                     {%- when 'h1' -%}
                       {%- assign segs = part | split: '</h1>' -%}
-                      {%- assign thead = segs[0] | split: '>' | last -%}
+                      {%- assign hattrs = segs[0] | split: '>' | first -%}
+                      {%- assign thead = segs[0] | remove_first: hattrs | remove_first: '>' -%}
                       {%- assign p_title = thead | strip_html | strip -%}
                     {%- when 'h2' -%}
                       {%- assign segs = part | split: '</h2>' -%}
-                      {%- assign thead = segs[0] | split: '>' | last -%}
+                      {%- assign hattrs = segs[0] | split: '>' | first -%}
+                      {%- assign thead = segs[0] | remove_first: hattrs | remove_first: '>' -%}
                       {%- assign p_title = thead | strip_html | strip -%}
                     {%- when 'h3' -%}
                       {%- assign segs = part | split: '</h3>' -%}
-                      {%- assign thead = segs[0] | split: '>' | last -%}
+                      {%- assign hattrs = segs[0] | split: '>' | first -%}
+                      {%- assign thead = segs[0] | remove_first: hattrs | remove_first: '>' -%}
+                      {%- assign p_title = thead | strip_html | strip -%}
+                    {%- when 'h4' -%}
+                      {%- assign segs = part | split: '</h4>' -%}
+                      {%- assign hattrs = segs[0] | split: '>' | first -%}
+                      {%- assign thead = segs[0] | remove_first: hattrs | remove_first: '>' -%}
                       {%- assign p_title = thead | strip_html | strip -%}
                   {%- endcase -%}
                   <label
@@ -288,23 +364,41 @@
                     <div class="m-growtips__panel-bar">
                       <span class="m-growtips__panel-bar-text">{{ _bar | escape }}</span>
                     </div>
-                    <div class="m-growtips__rte rte">{{ product_html | raw }}</div>
+                    <div class="m-growtips__rte rte">{{ product_html }}</div>
                   </div>
                 </div>
               </div>
             {%- else -%}
               {%- assign di = 0 -%}
+              {%- if has_lead_tab -%}
+                {%- assign lead_label = section.settings.intro_tab_label | default: 'Description' -%}
+                <div class="m-growtabs__panel m-growtips__panel" role="tabpanel">
+                  <div class="m-growtips__panel-grid">
+                    <div class="m-growtips__panel-copy m-growtips__panel-copy--solo">
+                      {%- if lead_label != blank -%}
+                        <div class="m-growtips__panel-bar">
+                          <span class="m-growtips__panel-bar-text">{{ lead_label | escape }}</span>
+                        </div>
+                      {%- endif -%}
+                      <div class="m-growtips__rte rte">{{ lead_html }}</div>
+                    </div>
+                  </div>
+                </div>
+                {%- assign di = 1 -%}
+              {%- endif -%}
               {%- for part in desc_chunks -%}
                 {%- assign row_ok = false -%}
                 {%- case desc_parse_mode -%}
                   {%- when 'strong_p' -%}
-                    {%- if part != blank and part contains '</strong>' -%}{%- assign row_ok = true -%}{%- endif -%}
+                    {%- if forloop.index0 > 0 and part != blank and part contains '</strong>' -%}{%- assign row_ok = true -%}{%- endif -%}
                   {%- when 'h1' -%}
                     {%- if forloop.index0 > 0 and part != blank and part contains '</h1>' -%}{%- assign row_ok = true -%}{%- endif -%}
                   {%- when 'h2' -%}
                     {%- if forloop.index0 > 0 and part != blank and part contains '</h2>' -%}{%- assign row_ok = true -%}{%- endif -%}
                   {%- when 'h3' -%}
                     {%- if forloop.index0 > 0 and part != blank and part contains '</h3>' -%}{%- assign row_ok = true -%}{%- endif -%}
+                  {%- when 'h4' -%}
+                    {%- if forloop.index0 > 0 and part != blank and part contains '</h4>' -%}{%- assign row_ok = true -%}{%- endif -%}
                 {%- endcase -%}
                 {%- if di < vcap and row_ok -%}
                   {%- assign p_title = '' -%}
@@ -316,21 +410,31 @@
                       {%- if segs.size > 1 -%}{%- assign body_html = segs[1] -%}{%- endif -%}
                     {%- when 'h1' -%}
                       {%- assign segs = part | split: '</h1>' -%}
-                      {%- assign thead = segs[0] | split: '>' | last -%}
+                      {%- assign hattrs = segs[0] | split: '>' | first -%}
+                      {%- assign thead = segs[0] | remove_first: hattrs | remove_first: '>' -%}
                       {%- assign p_title = thead | strip_html | strip -%}
                       {%- if segs.size > 1 -%}{%- assign body_html = segs[1] -%}{%- endif -%}
                     {%- when 'h2' -%}
                       {%- assign segs = part | split: '</h2>' -%}
-                      {%- assign thead = segs[0] | split: '>' | last -%}
+                      {%- assign hattrs = segs[0] | split: '>' | first -%}
+                      {%- assign thead = segs[0] | remove_first: hattrs | remove_first: '>' -%}
                       {%- assign p_title = thead | strip_html | strip -%}
                       {%- if segs.size > 1 -%}{%- assign body_html = segs[1] -%}{%- endif -%}
                     {%- when 'h3' -%}
                       {%- assign segs = part | split: '</h3>' -%}
-                      {%- assign thead = segs[0] | split: '>' | last -%}
+                      {%- assign hattrs = segs[0] | split: '>' | first -%}
+                      {%- assign thead = segs[0] | remove_first: hattrs | remove_first: '>' -%}
+                      {%- assign p_title = thead | strip_html | strip -%}
+                      {%- if segs.size > 1 -%}{%- assign body_html = segs[1] -%}{%- endif -%}
+                    {%- when 'h4' -%}
+                      {%- assign segs = part | split: '</h4>' -%}
+                      {%- assign hattrs = segs[0] | split: '>' | first -%}
+                      {%- assign thead = segs[0] | remove_first: hattrs | remove_first: '>' -%}
                       {%- assign p_title = thead | strip_html | strip -%}
                       {%- if segs.size > 1 -%}{%- assign body_html = segs[1] -%}{%- endif -%}
                   {%- endcase -%}
-                  {%- assign img_b = tab_list | slice: di, 1 | first -%}
+                  {%- assign img_i = di | minus: lead_offset -%}
+                  {%- assign img_b = tab_list | slice: img_i, 1 | first -%}
                   <div
                     class="m-growtabs__panel m-growtips__panel"
                     role="tabpanel"
@@ -357,7 +461,7 @@
                           </div>
                         {%- endif -%}
                         {%- if body_html != blank -%}
-                          <div class="m-growtips__rte rte">{{ body_html | raw }}</div>
+                          <div class="m-growtips__rte rte">{{ body_html }}</div>
                         {%- endif -%}
                       </div>
                     </div>
@@ -371,6 +475,10 @@
       </div>
 
       <div class="m-growtips__mobile-acc">
+        {%- if lead_above -%}
+          <div class="m-growtips__rte m-growtips__lead m-growtips__lead--mobile rte">{{ lead_html }}</div>
+        {%- endif -%}
+
         {%- if single_desc_fallback -%}
           {%- assign img0 = tab_list | slice: 0, 1 | first -%}
           <collapsible-tab
@@ -406,7 +514,7 @@
                     <div class="m-growtips__panel-bar m-growtips__panel-bar--mobile">
                       <span class="m-growtips__panel-bar-text">{{ _fbm | escape }}</span>
                     </div>
-                    <div class="m-growtips__rte rte">{{ product_html | raw }}</div>
+                    <div class="m-growtips__rte rte">{{ product_html }}</div>
                   </div>
                 </div>
               </div>
@@ -414,17 +522,40 @@
           </collapsible-tab>
         {%- else -%}
           {%- assign di = 0 -%}
+          {%- if has_lead_tab -%}
+            {%- assign lead_label = section.settings.intro_tab_label | default: 'Description' -%}
+            <collapsible-tab
+              class="m-collapsible m-growtips__acc-item no-js-hidden"
+              data-block-id="grow-collapsible-desc-0"
+              {% if section.settings.open_first_mobile %}
+                open="true"
+              {% endif %}
+            >
+              <h3 class="m-collapsible--button m-growtips__acc-trigger" data-trigger>
+                <span class="m-growtips__acc-icon" aria-hidden="true">+</span>
+                <span class="m-growtips__acc-title">{{ lead_label | escape }}</span>
+              </h3>
+              <div class="m-collapsible--content" data-content hidden>
+                <div class="m-collapsible--content__inner m-growtips__acc-inner">
+                  <div class="m-growtips__rte rte">{{ lead_html }}</div>
+                </div>
+              </div>
+            </collapsible-tab>
+            {%- assign di = 1 -%}
+          {%- endif -%}
           {%- for part in desc_chunks -%}
             {%- assign row_ok = false -%}
             {%- case desc_parse_mode -%}
               {%- when 'strong_p' -%}
-                {%- if part != blank and part contains '</strong>' -%}{%- assign row_ok = true -%}{%- endif -%}
+                {%- if forloop.index0 > 0 and part != blank and part contains '</strong>' -%}{%- assign row_ok = true -%}{%- endif -%}
               {%- when 'h1' -%}
                 {%- if forloop.index0 > 0 and part != blank and part contains '</h1>' -%}{%- assign row_ok = true -%}{%- endif -%}
               {%- when 'h2' -%}
                 {%- if forloop.index0 > 0 and part != blank and part contains '</h2>' -%}{%- assign row_ok = true -%}{%- endif -%}
               {%- when 'h3' -%}
                 {%- if forloop.index0 > 0 and part != blank and part contains '</h3>' -%}{%- assign row_ok = true -%}{%- endif -%}
+              {%- when 'h4' -%}
+                {%- if forloop.index0 > 0 and part != blank and part contains '</h4>' -%}{%- assign row_ok = true -%}{%- endif -%}
             {%- endcase -%}
             {%- if di < vcap and row_ok -%}
               {%- assign p_title = '' -%}
@@ -436,21 +567,31 @@
                   {%- if segs.size > 1 -%}{%- assign body_html = segs[1] -%}{%- endif -%}
                 {%- when 'h1' -%}
                   {%- assign segs = part | split: '</h1>' -%}
-                  {%- assign thead = segs[0] | split: '>' | last -%}
+                  {%- assign hattrs = segs[0] | split: '>' | first -%}
+                  {%- assign thead = segs[0] | remove_first: hattrs | remove_first: '>' -%}
                   {%- assign p_title = thead | strip_html | strip -%}
                   {%- if segs.size > 1 -%}{%- assign body_html = segs[1] -%}{%- endif -%}
                 {%- when 'h2' -%}
                   {%- assign segs = part | split: '</h2>' -%}
-                  {%- assign thead = segs[0] | split: '>' | last -%}
+                  {%- assign hattrs = segs[0] | split: '>' | first -%}
+                  {%- assign thead = segs[0] | remove_first: hattrs | remove_first: '>' -%}
                   {%- assign p_title = thead | strip_html | strip -%}
                   {%- if segs.size > 1 -%}{%- assign body_html = segs[1] -%}{%- endif -%}
                 {%- when 'h3' -%}
                   {%- assign segs = part | split: '</h3>' -%}
-                  {%- assign thead = segs[0] | split: '>' | last -%}
+                  {%- assign hattrs = segs[0] | split: '>' | first -%}
+                  {%- assign thead = segs[0] | remove_first: hattrs | remove_first: '>' -%}
+                  {%- assign p_title = thead | strip_html | strip -%}
+                  {%- if segs.size > 1 -%}{%- assign body_html = segs[1] -%}{%- endif -%}
+                {%- when 'h4' -%}
+                  {%- assign segs = part | split: '</h4>' -%}
+                  {%- assign hattrs = segs[0] | split: '>' | first -%}
+                  {%- assign thead = segs[0] | remove_first: hattrs | remove_first: '>' -%}
                   {%- assign p_title = thead | strip_html | strip -%}
                   {%- if segs.size > 1 -%}{%- assign body_html = segs[1] -%}{%- endif -%}
               {%- endcase -%}
-              {%- assign img_b = tab_list | slice: di, 1 | first -%}
+              {%- assign img_i = di | minus: lead_offset -%}
+              {%- assign img_b = tab_list | slice: img_i, 1 | first -%}
               <collapsible-tab
                 class="m-collapsible m-growtips__acc-item no-js-hidden"
                 data-block-id="grow-collapsible-desc-{{ di }}"
@@ -486,7 +627,7 @@
                           </div>
                         {%- endif -%}
                         {%- if body_html != blank -%}
-                          <div class="m-growtips__rte rte">{{ body_html | raw }}</div>
+                          <div class="m-growtips__rte rte">{{ body_html }}</div>
                         {%- endif -%}
                       </div>
                     </div>
@@ -756,6 +897,10 @@
     vertical-align: middle;
     object-fit: cover;
   }
+  .m-growtips__lead {
+    margin-bottom: clamp(1.1rem, 2.5vw, 1.6rem);
+    color: var(--grow-text);
+  }
   .m-growtips__panel-copy {
     min-width: 0;
     color: var(--grow-text);
@@ -938,7 +1083,38 @@
         { "value": "tab_blocks", "label": "Manual (tab blocks)" },
         { "value": "from_product_description", "label": "From product description" }
       ],
-      "info": "Parsers, in order: <h2>…</h2> sections, else <h1>…</h1>, else <h3>…</h3>, else <p><strong>Title</strong></p> plus body. Each section becomes a tab. Optional Tab blocks in order add an image per section."
+      "info": "Each heading in the description becomes a tab. Optional Tab blocks in order add an image per section."
+    },
+    {
+      "type": "select",
+      "id": "desc_split_level",
+      "label": "Make a tab from",
+      "default": "auto",
+      "options": [
+        { "value": "auto", "label": "Auto (first level with 2+ sections)" },
+        { "value": "h1", "label": "Heading 1" },
+        { "value": "h2", "label": "Heading 2" },
+        { "value": "h3", "label": "Heading 3" },
+        { "value": "h4", "label": "Heading 4" },
+        { "value": "strong_p", "label": "Bold paragraph" }
+      ],
+      "info": "Auto prefers H2, then H3, H4, H1, bold paragraphs \u2014 skipping any level that only yields a single tab, such as an H1 product title. Text above the first heading stays above the tabs."
+    },
+    {
+      "type": "select",
+      "id": "intro_placement",
+      "label": "Copy above the first heading",
+      "default": "tab",
+      "options": [
+        { "value": "tab", "label": "Show as its own first tab" },
+        { "value": "above", "label": "Show above the tab row" }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "intro_tab_label",
+      "label": "Label for that tab",
+      "default": "Description"
     },
     {
       "type": "text",
@@ -950,7 +1126,7 @@
       "type": "color",
       "id": "tab_active_background",
       "label": "Active tab (pill) background",
-      "default": "#8a3c08"
+      "default": "#7e320a"
     },
     {
       "type": "color",

@@ -50,7 +50,7 @@
                   assign image_aspect_ratio = block.settings.image.aspect_ratio
               endif
 
-              assign alt_src = block.settings.image.alt | default: 'The Isle of Seeds'
+              assign alt_src = block.settings.image.alt
             -%}
             {%- capture alt -%}{% render 'scrub-lormur', text: alt_src, fallback: true %}{%- endcapture -%}
             {%- assign alt = alt | strip | escape -%}
