@@ -206,24 +206,24 @@
           "type": "feature",
           "settings": {
             "icon_style": "non_gmo",
-            "text": "Thoughtfully sourced, naturally grown varieties",
-            "title": "Non GMO"
+            "title": "Non GMO",
+            "text": "Thoughtfully sourced, naturally grown varieties"
           }
         },
         "feature_non_neonic": {
           "type": "feature",
           "settings": {
             "icon_style": "non_neonic",
-            "text": "Helpful growing guidance with every packet",
-            "title": "Non neonic"
+            "title": "Non neonic",
+            "text": "Helpful growing guidance with every packet"
           }
         },
         "feature_seed_care": {
           "type": "feature",
           "settings": {
             "icon_style": "seed_care",
-            "text": "Handled and packed with care for every order",
-            "title": "Seed care"
+            "title": "Seed care",
+            "text": "Handled and packed with care for every order"
           }
         }
       },
@@ -234,8 +234,11 @@
       ],
       "name": "Pixi Farmers promise",
       "settings": {
+        "eyebrow": "Our promise",
         "heading": "We are Pixi Farmers",
+        "subheading": "Seeds chosen, tested and packed by people who grow them.",
         "heading_tag": "h2",
+        "layout_style": "minimal",
         "background_position": "center center",
         "background_color": "#faf8f5",
         "overlay_color": "#faf8f5",
@@ -264,10 +267,7 @@
         "padding_bottom_mobile": 64,
         "padding_top_desktop": 104,
         "padding_bottom_desktop": 104,
-        "animations": "fade-in-up",
-        "eyebrow": "Our promise",
-        "subheading": "Seeds chosen, tested and packed by people who grow them.",
-        "layout_style": "minimal"
+        "animations": "fade-in-up"
       }
     },
     "3d92e37f-b44b-49a7-8000-f53f057128ae": {
@@ -831,8 +831,8 @@
         "card_title_color": "#f8fcff",
         "card_subtext_color": "#f8fcff",
         "card_icon_color": "#f8fcff",
-        "card_text_color": "#00530a",
-        "card_arrow_color": "#5a7268",
+        "card_text_color": "#C45508",
+        "card_arrow_color": "#C45508",
         "footer_link_label": "Or browse all plants",
         "footer_link": "",
         "footer_link_new_tab": false,
@@ -1013,6 +1013,7 @@
         "hotspot_bbyM4E",
         "hotspot_fMwUEm"
       ],
+      "disabled": true,
       "name": "Steal the garden",
       "settings": {
         "color_scheme": "background-1",
@@ -1140,129 +1141,6 @@
         "padding_bottom_mobile": 32,
         "padding_top": 48,
         "padding_bottom": 48
-      }
-    },
-    "premium_faq_BWjHfa": {
-      "type": "PremiumFaq",
-      "blocks": {
-        "item_pAcJqB": {
-          "type": "item",
-          "settings": {
-            "question": "How do I choose the right seeds for my climate?",
-            "answer": "<p>Every product page lists ideal growing zones and seasons. When in doubt, start with varieties labeled for your region or contact us for a quick recommendation.</p>",
-            "default_open": false
-          }
-        },
-        "item_YkB4DL": {
-          "type": "item",
-          "settings": {
-            "question": "Do you ship internationally?",
-            "answer": "<p>We currently ship within the regions listed at checkout. If your country is not available, join our list—we expand routes regularly.</p>",
-            "default_open": false
-          }
-        },
-        "item_c6FeLd": {
-          "type": "item",
-          "settings": {
-            "question": "What is your return policy?",
-            "answer": "<p>Unopened items in original packaging may be returned within 14 days. Seed packets are final sale once opened for quality assurance.</p>",
-            "default_open": false
-          }
-        },
-        "item_xFrTrF": {
-          "type": "item",
-          "settings": {
-            "question": "How should I store seeds?",
-            "answer": "<p>Keep them cool, dry, and away from light. A sealed jar in the refrigerator extends viability for many seasons.</p>",
-            "default_open": false
-          }
-        }
-      },
-      "block_order": [
-        "item_pAcJqB",
-        "item_YkB4DL",
-        "item_c6FeLd",
-        "item_xFrTrF"
-      ],
-      "name": "Premium FAQ",
-      "settings": {
-        "color_scheme": "background-1",
-        "background_color": "#ffffff",
-        "enable_gradient": false,
-        "gradient_color_1": "#faf8f4",
-        "gradient_color_2": "#ebe6dc",
-        "tab_background": "#ffffff",
-        "tab_border_color": "#00530a",
-        "tab_border_hover_color": "#d4cfc4",
-        "tab_hover_background": "#faf9f7",
-        "tab_open_background": "#ffffff",
-        "tab_question_color": "#222222",
-        "tab_answer_color": "#4a4a4a",
-        "answer_panel_background": "#fbfaf8",
-        "number_color": "#6b7c6b",
-        "icon_background": "#00530a",
-        "icon_color": "#ffffff",
-        "eyebrow": "Answers",
-        "heading": "Questions we hear often",
-        "heading_tag": "h2",
-        "intro": "",
-        "cta_label": "",
-        "cta_link": "",
-        "show_numbers": true,
-        "title_size_mobile": 32,
-        "title_size_desktop": 42,
-        "intro_size": 16,
-        "question_size": 17,
-        "answer_size": 15,
-        "question_font_weight": "500",
-        "answer_font_weight": "400",
-        "header_max_width": 540,
-        "content_max_width": 840,
-        "card_radius": 14,
-        "card_padding_x": 22,
-        "card_padding_y": 18,
-        "item_gap": 12,
-        "animations": "fade-in",
-        "padding_top_mobile": 40,
-        "padding_bottom_mobile": 40,
-        "padding_top": 64,
-        "padding_bottom": 64
-      }
-    },
-    "blog_posts_k9A43x": {
-      "type": "blog-posts",
-      "name": "Blog posts",
-      "settings": {
-        "color_scheme": "background-1",
-        "boxed_layout": false,
-        "boxed_color_scheme": "",
-        "heading": "Blog posts",
-        "heading_size": "h2",
-        "header_alignment": "center",
-        "header_mobile_alignment": "left",
-        "header_divider": false,
-        "blog": "news",
-        "limit": 3,
-        "column": 3,
-        "column_gap": 30,
-        "row_gap": 30,
-        "article_image_aspect_ratio": "16/9",
-        "article_align_content": "text-left",
-        "article_show_tags": true,
-        "article_show_date": true,
-        "article_show_excerpt": true,
-        "article_show_button": true,
-        "button_link": "",
-        "button_text": "View More",
-        "button_style": "m-button--primary",
-        "mobile_layout": "col-1",
-        "enable_swipe_mobile": true,
-        "column_gap_mobile": 10,
-        "row_gap_mobile": 10,
-        "padding_top": 50,
-        "padding_bottom": 50,
-        "custom_class": "",
-        "animations": "inherit"
       }
     },
     "grow_smarter_home": {
@@ -1414,6 +1292,129 @@
         "padding_bottom": 96,
         "padding_top_mobile": 56,
         "padding_bottom_mobile": 56
+      }
+    },
+    "premium_faq_BWjHfa": {
+      "type": "PremiumFaq",
+      "blocks": {
+        "item_pAcJqB": {
+          "type": "item",
+          "settings": {
+            "question": "How do I choose the right seeds for my climate?",
+            "answer": "<p>Every product page lists ideal growing zones and seasons. When in doubt, start with varieties labeled for your region or contact us for a quick recommendation.</p>",
+            "default_open": false
+          }
+        },
+        "item_YkB4DL": {
+          "type": "item",
+          "settings": {
+            "question": "Do you ship internationally?",
+            "answer": "<p>We currently ship within the regions listed at checkout. If your country is not available, join our list—we expand routes regularly.</p>",
+            "default_open": false
+          }
+        },
+        "item_c6FeLd": {
+          "type": "item",
+          "settings": {
+            "question": "What is your return policy?",
+            "answer": "<p>Unopened items in original packaging may be returned within 14 days. Seed packets are final sale once opened for quality assurance.</p>",
+            "default_open": false
+          }
+        },
+        "item_xFrTrF": {
+          "type": "item",
+          "settings": {
+            "question": "How should I store seeds?",
+            "answer": "<p>Keep them cool, dry, and away from light. A sealed jar in the refrigerator extends viability for many seasons.</p>",
+            "default_open": false
+          }
+        }
+      },
+      "block_order": [
+        "item_pAcJqB",
+        "item_YkB4DL",
+        "item_c6FeLd",
+        "item_xFrTrF"
+      ],
+      "name": "Premium FAQ",
+      "settings": {
+        "color_scheme": "background-1",
+        "background_color": "#ffffff",
+        "enable_gradient": false,
+        "gradient_color_1": "#faf8f4",
+        "gradient_color_2": "#ebe6dc",
+        "tab_background": "#ffffff",
+        "tab_border_color": "#00530a",
+        "tab_border_hover_color": "#d4cfc4",
+        "tab_hover_background": "#faf9f7",
+        "tab_open_background": "#ffffff",
+        "tab_question_color": "#222222",
+        "tab_answer_color": "#4a4a4a",
+        "answer_panel_background": "#fbfaf8",
+        "number_color": "#6b7c6b",
+        "icon_background": "#C45508",
+        "icon_color": "#ffffff",
+        "eyebrow": "Answers",
+        "heading": "Questions we hear often",
+        "heading_tag": "h2",
+        "intro": "",
+        "cta_label": "",
+        "cta_link": "",
+        "show_numbers": true,
+        "title_size_mobile": 32,
+        "title_size_desktop": 42,
+        "intro_size": 16,
+        "question_size": 17,
+        "answer_size": 15,
+        "question_font_weight": "500",
+        "answer_font_weight": "400",
+        "header_max_width": 540,
+        "content_max_width": 840,
+        "card_radius": 14,
+        "card_padding_x": 22,
+        "card_padding_y": 18,
+        "item_gap": 12,
+        "animations": "fade-in",
+        "padding_top_mobile": 40,
+        "padding_bottom_mobile": 40,
+        "padding_top": 64,
+        "padding_bottom": 64
+      }
+    },
+    "blog_posts_k9A43x": {
+      "type": "blog-posts",
+      "name": "Blog posts",
+      "settings": {
+        "color_scheme": "background-1",
+        "boxed_layout": false,
+        "boxed_color_scheme": "",
+        "heading": "Blog posts",
+        "heading_size": "h2",
+        "header_alignment": "center",
+        "header_mobile_alignment": "left",
+        "header_divider": false,
+        "blog": "news",
+        "limit": 3,
+        "column": 3,
+        "column_gap": 30,
+        "row_gap": 30,
+        "article_image_aspect_ratio": "16/9",
+        "article_align_content": "text-left",
+        "article_show_tags": true,
+        "article_show_date": true,
+        "article_show_excerpt": true,
+        "article_show_button": true,
+        "button_link": "",
+        "button_text": "View More",
+        "button_style": "m-button--primary",
+        "mobile_layout": "col-1",
+        "enable_swipe_mobile": true,
+        "column_gap_mobile": 10,
+        "row_gap_mobile": 10,
+        "padding_top": 50,
+        "padding_bottom": 50,
+        "custom_class": "",
+        "animations": "inherit"
       }
     }
   },

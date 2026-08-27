@@ -168,12 +168,12 @@
     "color_schemes": {
       "background-1": {
         "settings": {
-          "primary_accent": "#00530a",
+          "primary_accent": "#C45508",
           "background": "#ffffff",
           "background_gradient": "",
           "text": "#222222",
           "subtext": "#666666",
-          "button": "#00530a",
+          "button": "#C45508",
           "button_label": "#ffffff",
           "secondary_button": "#f2f2f2",
           "secondary_button_label": "#000000",
