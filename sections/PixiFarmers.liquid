@@ -32,20 +32,15 @@
     --pf-heading-color: {{ section.settings.heading_color }};
     --pf-text-color: {{ section.settings.text_color }};
     --pf-accent: {{ section.settings.accent_color }};
-    --pf-icon-bg: {{ section.settings.icon_background }};
-    --pf-icon-border: {{ section.settings.icon_border_color }};
     --pf-divider: {{ section.settings.divider_color }};
     --pf-card-bg: {{ section.settings.card_background }};
     --pf-band: {{ section.settings.band_color }};
     --pf-rule: color-mix(in srgb, {{ section.settings.divider_color }} 18%, transparent);
-    --pf-badge-fill: color-mix(in srgb, {{ section.settings.accent_color }} 12%, transparent);
-    --pf-badge-ring: color-mix(in srgb, {{ section.settings.accent_color }} 34%, transparent);
     --pf-heading-size-mobile: {{ section.settings.heading_size_mobile }}px;
     --pf-heading-size-desktop: {{ section.settings.heading_size_desktop }}px;
     --pf-body-size-mobile: {{ section.settings.body_size_mobile }}px;
     --pf-body-size-desktop: {{ section.settings.body_size_desktop }}px;
     --pf-icon-size: {{ section.settings.icon_size }}px;
-    --pf-badge-size: {{ section.settings.icon_size | plus: 44 }}px;
     --pf-gap: {{ section.settings.column_gap_mobile }}px;
     --pf-columns: {{ column_count }};
     --pf-radius: {{ section.settings.card_radius }}px;
@@ -259,25 +254,21 @@
     background: var(--pf-rule);
   }
 
-  /* ---- Icon in a weighted badge ---- */
+  /* ---- Icon, unenclosed ---- */
 
   .m-pixi-farmers--{{ section.id }} .m-pixi-farmers__icon-wrap {
-    width: var(--pf-badge-size);
-    height: var(--pf-badge-size);
+    width: var(--pf-icon-size);
+    height: var(--pf-icon-size);
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    border-radius: 999px;
-    background: var(--pf-badge-fill);
-    border: 1px solid var(--pf-badge-ring);
     color: var(--pf-accent);
-    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), background 0.4s ease;
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .m-pixi-farmers--{{ section.id }} .m-pixi-farmers__item:hover .m-pixi-farmers__icon-wrap {
     transform: translateY(-4px);
-    background: color-mix(in srgb, var(--pf-accent) 20%, transparent);
   }
 
   .m-pixi-farmers--{{ section.id }} .m-pixi-farmers__icon-img,
@@ -457,7 +448,11 @@
   "tag": "section",
   "class": "m-pixi-farmers-section",
   "disabled_on": {
-    "groups": ["header", "footer", "aside"]
+    "groups": [
+      "header",
+      "footer",
+      "aside"
+    ]
   },
   "settings": [
     {
@@ -483,9 +478,18 @@
       "id": "heading_tag",
       "label": "Heading level",
       "options": [
-        { "value": "h1", "label": "H1" },
-        { "value": "h2", "label": "H2" },
-        { "value": "h3", "label": "H3" }
+        {
+          "value": "h1",
+          "label": "H1"
+        },
+        {
+          "value": "h2",
+          "label": "H2"
+        },
+        {
+          "value": "h3",
+          "label": "H3"
+        }
       ],
       "default": "h2"
     },
@@ -494,8 +498,14 @@
       "id": "layout_style",
       "label": "Layout style",
       "options": [
-        { "value": "panel", "label": "Filled band" },
-        { "value": "flat", "label": "Flat (no band)" }
+        {
+          "value": "panel",
+          "label": "Filled band"
+        },
+        {
+          "value": "flat",
+          "label": "Flat (no band)"
+        }
       ],
       "default": "panel"
     },
@@ -520,9 +530,18 @@
       "id": "background_position",
       "label": "Background position",
       "options": [
-        { "value": "center center", "label": "Center" },
-        { "value": "center top", "label": "Top" },
-        { "value": "center bottom", "label": "Bottom" }
+        {
+          "value": "center center",
+          "label": "Center"
+        },
+        {
+          "value": "center top",
+          "label": "Top"
+        },
+        {
+          "value": "center bottom",
+          "label": "Bottom"
+        }
       ],
       "default": "center center"
     },
@@ -576,18 +595,6 @@
       "label": "Card background",
       "info": "Used with the Cards layout only.",
       "default": "#ffffff"
-    },
-    {
-      "type": "color",
-      "id": "icon_background",
-      "label": "Icon badge fill",
-      "default": "#ffffff"
-    },
-    {
-      "type": "color",
-      "id": "icon_border_color",
-      "label": "Icon badge border",
-      "default": "#a03f0b"
     },
     {
       "type": "color",
@@ -777,12 +784,30 @@
       "label": "Scroll reveal",
       "default": "fade-in-up",
       "options": [
-        { "value": "inherit", "label": "Inherit global setting" },
-        { "value": "none", "label": "None" },
-        { "value": "fade-in", "label": "Fade in" },
-        { "value": "fade-in-up", "label": "Fade in up" },
-        { "value": "fade-in-left", "label": "Fade in left" },
-        { "value": "fade-in-right", "label": "Fade in right" }
+        {
+          "value": "inherit",
+          "label": "Inherit global setting"
+        },
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "fade-in",
+          "label": "Fade in"
+        },
+        {
+          "value": "fade-in-up",
+          "label": "Fade in up"
+        },
+        {
+          "value": "fade-in-left",
+          "label": "Fade in left"
+        },
+        {
+          "value": "fade-in-right",
+          "label": "Fade in right"
+        }
       ]
     }
   ],
@@ -802,10 +827,22 @@
           "id": "icon_style",
           "label": "Built-in icon",
           "options": [
-            { "value": "non_gmo", "label": "Sprout" },
-            { "value": "non_neonic", "label": "Guidance" },
-            { "value": "seed_care", "label": "Seed in hand" },
-            { "value": "custom", "label": "Simple plus" }
+            {
+              "value": "non_gmo",
+              "label": "Sprout"
+            },
+            {
+              "value": "non_neonic",
+              "label": "Guidance"
+            },
+            {
+              "value": "seed_care",
+              "label": "Seed in hand"
+            },
+            {
+              "value": "custom",
+              "label": "Simple plus"
+            }
           ],
           "default": "non_gmo"
         },

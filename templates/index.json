@@ -733,8 +733,6 @@
         "text_color": "#7a6455",
         "accent_color": "#bc4a0d",
         "card_background": "#ffffff",
-        "icon_background": "#ffffff",
-        "icon_border_color": "#bc4a0d",
         "divider_color": "#eadfd6",
         "heading_size_mobile": 28,
         "heading_size_desktop": 40,
