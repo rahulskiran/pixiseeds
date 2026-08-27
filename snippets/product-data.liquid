@@ -47,7 +47,7 @@
   endcomment
   assign price_valid_until = 'now' | date: '%s' | plus: 31536000 | date: '%Y-%m-%d'
   assign return_days = 14
-  assign return_country = shop.address.country_code | default: 'GB'
+  assign return_country = shop.address.country_code | default: 'IN'
 -%}
 
 <script type="application/ld+json">
