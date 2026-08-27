@@ -199,77 +199,6 @@
         "padding_bottom": 52
       }
     },
-    "pixi_farmers_trust": {
-      "type": "PixiFarmers",
-      "blocks": {
-        "feature_non_gmo": {
-          "type": "feature",
-          "settings": {
-            "icon_style": "non_gmo",
-            "title": "Non GMO",
-            "text": "Thoughtfully sourced, naturally grown varieties"
-          }
-        },
-        "feature_non_neonic": {
-          "type": "feature",
-          "settings": {
-            "icon_style": "non_neonic",
-            "title": "Non neonic",
-            "text": "Helpful growing guidance with every packet"
-          }
-        },
-        "feature_seed_care": {
-          "type": "feature",
-          "settings": {
-            "icon_style": "seed_care",
-            "title": "Seed care",
-            "text": "Handled and packed with care for every order"
-          }
-        }
-      },
-      "block_order": [
-        "feature_non_gmo",
-        "feature_non_neonic",
-        "feature_seed_care"
-      ],
-      "name": "Pixi Farmers promise",
-      "settings": {
-        "eyebrow": "Our promise",
-        "heading": "We are Pixi Farmers",
-        "subheading": "Seeds chosen, tested and packed by people who grow them.",
-        "heading_tag": "h2",
-        "layout_style": "minimal",
-        "background_position": "center center",
-        "background_color": "#faf8f5",
-        "overlay_color": "#faf8f5",
-        "overlay_opacity": 80,
-        "heading_color": "#3a1705",
-        "text_color": "#7a6455",
-        "accent_color": "#bc4a0d",
-        "card_background": "#ffffff",
-        "icon_background": "#ffffff",
-        "icon_border_color": "#bc4a0d",
-        "divider_color": "#eadfd6",
-        "heading_size_mobile": 28,
-        "heading_size_desktop": 40,
-        "heading_weight": 500,
-        "body_size_mobile": 14,
-        "body_size_desktop": 15,
-        "body_weight": 400,
-        "heading_spacing": 64,
-        "icon_size": 64,
-        "card_radius": 0,
-        "column_gap_mobile": 16,
-        "column_gap_desktop": 56,
-        "show_divider": false,
-        "divider_spacing": 56,
-        "padding_top_mobile": 64,
-        "padding_bottom_mobile": 64,
-        "padding_top_desktop": 104,
-        "padding_bottom_desktop": 104,
-        "animations": "fade-in-up"
-      }
-    },
     "3d92e37f-b44b-49a7-8000-f53f057128ae": {
       "type": "collection-list",
       "blocks": {
@@ -555,6 +484,7 @@
         "card_4jyPTj": {
           "type": "card",
           "settings": {
+            "collection": "",
             "title": "",
             "link": "shopify://collections/ground-cover-1",
             "open_new_tab": false
@@ -563,6 +493,7 @@
         "card_xRmTyL": {
           "type": "card",
           "settings": {
+            "collection": "",
             "title": "",
             "link": "shopify://collections/flower-seeds",
             "open_new_tab": false
@@ -571,6 +502,7 @@
         "card_y7xRAd": {
           "type": "card",
           "settings": {
+            "collection": "",
             "title": "",
             "link": "shopify://collections/vegetable-seeds",
             "open_new_tab": false
@@ -579,6 +511,7 @@
         "card_dkqtRE": {
           "type": "card",
           "settings": {
+            "collection": "",
             "title": "",
             "link": "shopify://collections/fruit-seeds",
             "open_new_tab": false
@@ -587,6 +520,7 @@
         "card_GWR8VB": {
           "type": "card",
           "settings": {
+            "collection": "",
             "title": "",
             "link": "shopify://collections/herb-seeds-1",
             "open_new_tab": false
@@ -750,6 +684,77 @@
         "animations": "inherit"
       }
     },
+    "pixi_farmers_trust": {
+      "type": "PixiFarmers",
+      "blocks": {
+        "feature_non_gmo": {
+          "type": "feature",
+          "settings": {
+            "icon_style": "non_gmo",
+            "title": "Non GMO",
+            "text": "Thoughtfully sourced, naturally grown varieties"
+          }
+        },
+        "feature_non_neonic": {
+          "type": "feature",
+          "settings": {
+            "icon_style": "non_neonic",
+            "title": "Non neonic",
+            "text": "Helpful growing guidance with every packet"
+          }
+        },
+        "feature_seed_care": {
+          "type": "feature",
+          "settings": {
+            "icon_style": "seed_care",
+            "title": "Seed care",
+            "text": "Handled and packed with care for every order"
+          }
+        }
+      },
+      "block_order": [
+        "feature_non_gmo",
+        "feature_non_neonic",
+        "feature_seed_care"
+      ],
+      "name": "Pixi Farmers promise",
+      "settings": {
+        "eyebrow": "Our promise",
+        "heading": "We are Pixi Farmers",
+        "subheading": "Seeds chosen, tested and packed by people who grow them.",
+        "heading_tag": "h2",
+        "layout_style": "minimal",
+        "background_position": "center center",
+        "background_color": "#faf8f5",
+        "overlay_color": "#faf8f5",
+        "overlay_opacity": 80,
+        "heading_color": "#3a1705",
+        "text_color": "#7a6455",
+        "accent_color": "#bc4a0d",
+        "card_background": "#ffffff",
+        "icon_background": "#ffffff",
+        "icon_border_color": "#bc4a0d",
+        "divider_color": "#eadfd6",
+        "heading_size_mobile": 28,
+        "heading_size_desktop": 40,
+        "heading_weight": 500,
+        "body_size_mobile": 14,
+        "body_size_desktop": 15,
+        "body_weight": 400,
+        "heading_spacing": 64,
+        "icon_size": 64,
+        "card_radius": 0,
+        "column_gap_mobile": 16,
+        "column_gap_desktop": 56,
+        "show_divider": false,
+        "divider_spacing": 56,
+        "padding_top_mobile": 64,
+        "padding_bottom_mobile": 64,
+        "padding_top_desktop": 104,
+        "padding_bottom_desktop": 104,
+        "animations": "fade-in-up"
+      }
+    },
     "choose_plant_9GdbhL": {
       "type": "ChoosePlant",
       "blocks": {
@@ -800,6 +805,7 @@
         "card_mtdXtn",
         "card_zPcikh"
       ],
+      "disabled": true,
       "name": "Choose your plant",
       "settings": {
         "eyebrow": "Find your perfect plant",
@@ -863,26 +869,8 @@
         "tab_49Pbrn": {
           "type": "tab",
           "settings": {
-            "collection": "red-pink-flowers-collection",
-            "heading": "Red & Pink Flowers",
-            "icon_image_width": 30,
-            "icon_svg": ""
-          }
-        },
-        "tab_xXyAnJ": {
-          "type": "tab",
-          "settings": {
-            "collection": "exotic-rarities",
-            "heading": "Exotic",
-            "icon_image_width": 30,
-            "icon_svg": ""
-          }
-        },
-        "tab_riwzJc": {
-          "type": "tab",
-          "settings": {
-            "collection": "green-foliage-plants-collection",
-            "heading": "Green Foilage Plants",
+            "collection": "ground-cover-1",
+            "heading": "Ground Cover",
             "icon_image_width": 30,
             "icon_svg": ""
           }
@@ -900,8 +888,6 @@
       },
       "block_order": [
         "tab_49Pbrn",
-        "tab_xXyAnJ",
-        "tab_riwzJc",
         "tab_XHahbE"
       ],
       "name": "Product Collection",
@@ -1421,11 +1407,11 @@
   "order": [
     "impact_hero_3mLEet",
     "new_col_6MtRnX",
-    "pixi_farmers_trust",
     "3d92e37f-b44b-49a7-8000-f53f057128ae",
     "0bb7c3df-f5b4-4745-b7be-7842c5658f4a",
     "fyplant_6abMrT",
     "product_tabs_GRzT43",
+    "pixi_farmers_trust",
     "choose_plant_9GdbhL",
     "product_tabs_wrHLX8",
     "steal_garden_trQLtU",
