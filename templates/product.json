@@ -136,6 +136,16 @@
             "deliver_text": "Estimated Delivery",
             "deliver_days": "12-15",
             "date_format": "%b %d",
+            "handling_label": "Handling",
+            "handling_min": 2,
+            "handling_max": 3,
+            "transit_label": "Transit",
+            "transit_min": 6,
+            "transit_max": 8,
+            "total_label": "Total",
+            "business_days_note": "Business days, Monday to Friday.",
+            "cutoff_text": "Order by 5:00 PM IST to ship the same business day",
+            "exclusions_text": "No dispatch on weekends or Indian public holidays",
             "show_shipping_text": false,
             "shipping_title": "Shipping Information",
             "shipping_text": "<p>Shipping charges are calculated at checkout based on your delivery destination and order details.</p>",
@@ -313,6 +323,9 @@
         "accent_script_color": "#bc4a0d",
         "main_title_color": "#3a1705",
         "content_source": "from_product_description",
+        "desc_split_level": "auto",
+        "intro_placement": "tab",
+        "intro_tab_label": "Description",
         "fallback_tab_label": "Details",
         "tab_active_background": "#bc4a0d",
         "tab_active_text": "#ffffff",
@@ -347,7 +360,7 @@
           "settings": {
             "title": "Prepare your soil & tray",
             "text": "<p>Fill trays or small pots with seed-starting mix. Press gently to settle—no need to pack tight.</p>",
-            "image": "shopify://shop_images/Gardeners_hands_working_on_bench_202604291058.webp"
+            "image": "shopify://shop_images/ChatGPT_Image_Aug_27_2026_07_07_35_AM.png"
           }
         },
         "step_iYLp7h": {
@@ -355,7 +368,7 @@
           "settings": {
             "title": "Sow seeds at the right depth",
             "text": "<p>Plant roughly 2–3× the seed’s width deep. Tiny seeds can be pressed lightly into the surface.</p>",
-            "image": "shopify://shop_images/Gardener_s_hands_working_on_bench_202604291101_2f10007f-a1ff-44dc-b86c-c13877b16aa8.jpg"
+            "image": "shopify://shop_images/ChatGPT_Image_Aug_27_2026_07_05_55_AM.png"
           }
         },
         "step_pDX9kz": {
@@ -363,7 +376,7 @@
           "settings": {
             "title": "Water & keep warm",
             "text": "<p>Mist or bottom-water. Cover until sprouting if the packet suggests it. Keep in a bright, warm spot.</p>",
-            "image": "shopify://shop_images/Gardeners_hands_working_on_bench_202604291058.webp"
+            "image": "shopify://shop_images/ChatGPT_Image_Aug_27_2026_07_05_39_AM.png"
           }
         }
       },
@@ -441,6 +454,7 @@
       ],
       "name": "FAQ",
       "settings": {
+        "emit_faq_schema": false,
         "color_scheme": "scheme-ba41f7c8-a303-44e7-a1d3-a9c14a08a8da",
         "background_color": "#f7f5f0",
         "enable_gradient": false,
@@ -481,8 +495,7 @@
         "padding_top_mobile": 36,
         "padding_bottom_mobile": 36,
         "padding_top": 56,
-        "padding_bottom": 56,
-        "emit_faq_schema": false
+        "padding_bottom": 56
       }
     },
     "recently-viewed-new": {
