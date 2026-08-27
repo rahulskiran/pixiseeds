@@ -70,13 +70,6 @@
             "sale_badge_type": "percentage"
           }
         },
-        "paypal_payments_studio_paypal_messaging_kpwgyG": {
-          "type": "shopify://apps/paypal-payments-studio/blocks/paypal-messaging/019df789-f519-7bce-9967-1ff928443aa9",
-          "settings": {
-            "font_size": 14,
-            "letter_spacing": 0
-          }
-        },
         "f62f65dc-7525-452d-a18c-2109730a02ec": {
           "type": "short_description",
           "settings": {}
@@ -170,7 +163,6 @@
         "81d0515f-440e-4127-8a79-aa458f08c46c",
         "title",
         "price",
-        "paypal_payments_studio_paypal_messaging_kpwgyG",
         "f62f65dc-7525-452d-a18c-2109730a02ec",
         "variant_picker",
         "buy_buttons",

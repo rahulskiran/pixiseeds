@@ -23,6 +23,7 @@
     },
     "collection-header": {
       "type": "main-collection-banner",
+      "disabled": true,
       "custom_css": [],
       "settings": {
         "color_scheme": "",
@@ -34,8 +35,37 @@
         "collection_all_desc": "",
         "padding_top": 44,
         "padding_bottom": 0
-      },
-      "disabled": true
+      }
+    },
+    "collection_hero": {
+      "type": "CollectionHero",
+      "name": "Collection hero",
+      "settings": {
+        "eyebrow": "",
+        "heading": "{{ collection.metafields.custom.collection_hero_name | metafield_text }}",
+        "description": "{{ collection.metafields.custom.collection_hero_description | metafield_tag }}",
+        "subheading": "{{ collection.metafields.custom.collection_hero_sub_heading | metafield_text }}",
+        "highlights": "{{ collection.metafields.custom.collection_hero_bullet_one | metafield_tag }}{{ collection.metafields.custom.collection_hero_bullet_two | metafield_tag }}{{ collection.metafields.custom.collection_hero_bullet_three | metafield_tag }}{{ collection.metafields.custom.collection_hero_bullet_four | metafield_tag }}",
+        "heading_tag": "h1",
+        "background_color": "#ffffff",
+        "heading_color": "#3d1a03",
+        "text_color": "#7a6154",
+        "accent_color": "#c45508",
+        "rule_color": "#f0e4da",
+        "heading_size_mobile": 32,
+        "heading_size_desktop": 52,
+        "heading_weight": 400,
+        "body_size_mobile": 14,
+        "body_size_desktop": 16,
+        "column_ratio": 1.2,
+        "show_rule": true,
+        "rule_spacing": 56,
+        "padding_top_mobile": 40,
+        "padding_bottom_mobile": 16,
+        "padding_top_desktop": 72,
+        "padding_bottom_desktop": 24,
+        "animations": "fade-in-up"
+      }
     },
     "main": {
       "type": "main-collection-product-grid",
@@ -254,36 +284,6 @@
         "shipping_bar_fg": "#ffffff",
         "show_free_ship_chip": false,
         "chip_text_color": "#c45508"
-      }
-    },
-    "collection_hero": {
-      "type": "CollectionHero",
-      "name": "Collection hero",
-      "settings": {
-        "eyebrow": "",
-        "heading": "",
-        "description": "",
-        "subheading": "",
-        "highlights": "",
-        "heading_tag": "h1",
-        "background_color": "#ffffff",
-        "heading_color": "#3d1a03",
-        "text_color": "#7a6154",
-        "accent_color": "#c45508",
-        "rule_color": "#f0e4da",
-        "heading_size_mobile": 32,
-        "heading_size_desktop": 52,
-        "heading_weight": 400,
-        "body_size_mobile": 14,
-        "body_size_desktop": 16,
-        "column_ratio": 1.2,
-        "show_rule": true,
-        "rule_spacing": 56,
-        "padding_top_mobile": 40,
-        "padding_bottom_mobile": 16,
-        "padding_top_desktop": 72,
-        "padding_bottom_desktop": 24,
-        "animations": "fade-in-up"
       }
     }
   },
