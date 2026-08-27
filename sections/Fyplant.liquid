@@ -32,6 +32,16 @@
   if animation_effect != 'none'
     assign animated = true
   endif
+
+  assign card_count = 0
+  for block in section.blocks
+    if block.type == 'card'
+      assign card_count = card_count | plus: 1
+    endif
+  endfor
+  if card_count < 1
+    assign card_count = 1
+  endif
 -%}
 
 {% style %}
@@ -50,6 +60,7 @@
     --m-fy-overlay-bottom: {{ overlay_bottom }};
     --m-fy-overlay-stop: {{ section.settings.overlay_gradient_height }}%;
     --m-fy-label-pad: {{ section.settings.label_inset }}px;
+    --m-fy-cols: {{ card_count }};
     background-color: {{ section.settings.background_color }};
   }
   @media screen and (min-width: 990px) {
@@ -90,10 +101,32 @@
     <div class="m-fyplant__grid{% if section.settings.mobile_carousel %} m-fyplant__grid--carousel-mobile{% endif %}">
       {% for block in section.blocks %}
         {% if block.type == 'card' %}
+          {%- liquid
+            assign card_collection = block.settings.collection
+            if card_collection == blank and block.settings.link != blank and block.settings.link contains '/collections/'
+              assign collection_handle = block.settings.link | split: '/collections/' | last | split: '?' | first | split: '#' | first
+              assign card_collection = collections[collection_handle]
+            endif
+
+            assign card_image = block.settings.image
+            if card_image == blank and card_collection != blank
+              assign card_image = card_collection.featured_image
+            endif
+
+            assign card_link = block.settings.link
+            if card_link == blank and card_collection != blank
+              assign card_link = card_collection.url
+            endif
+
+            assign card_title = block.settings.title
+            if card_title == blank and card_collection != blank
+              assign card_title = card_collection.title
+            endif
+          -%}
           <div class="m-fyplant__cell{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}" {{ block.shopify_attributes }}>
-            {% if block.settings.link != blank %}
+            {% if card_link != blank %}
               <a
-                href="{{ block.settings.link }}"
+                href="{{ card_link }}"
                 class="m-fyplant__card"
                 {% if block.settings.open_new_tab %}
                   target="_blank"
@@ -105,16 +138,19 @@
             {% endif %}
 
             <div class="m-fyplant__media">
-              {% if block.settings.image != blank %}
-                {%- assign alt = block.settings.image.alt | default: block.settings.title | escape -%}
+              {% if card_image != blank %}
+                {%- liquid
+                  assign alt = card_image.alt | default: card_title | escape
+                  assign card_sizes = '(min-width: 990px) calc((100vw - 100px) / ' | append: card_count | append: '), (min-width: 750px) 45vw, 88vw'
+                -%}
                 {{
-                  block.settings.image
+                  card_image
                   | image_url: width: 1000
                   | image_tag:
                     loading: 'lazy',
                     class: 'm-fyplant__img',
                     widths: '300, 450, 600, 800, 1000',
-                    sizes: '(min-width: 1200px) 23vw, (min-width: 750px) 45vw, 88vw',
+                    sizes: card_sizes,
                     alt: alt
                 }}
               {% else %}
@@ -124,11 +160,11 @@
               {% endif %}
             </div>
 
-            {% if block.settings.title != blank %}
-              <p class="m-fyplant__label">{{ block.settings.title | escape }}</p>
+            {% if card_title != blank %}
+              <p class="m-fyplant__label">{{ card_title | escape }}</p>
             {% endif %}
 
-            {% if block.settings.link != blank %}
+            {% if card_link != blank %}
               </a>
             {% else %}
               </div>
@@ -197,9 +233,14 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--m-fy-gap, 16px);
   }
+  @media screen and (min-width: 750px) {
+    .m-fyplant--{{ section.id }} .m-fyplant__grid {
+      grid-template-columns: repeat(var(--m-fy-cols, 5), minmax(0, 1fr));
+    }
+  }
   @media screen and (min-width: 990px) {
     .m-fyplant--{{ section.id }} .m-fyplant__grid {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(var(--m-fy-cols, 5), minmax(0, 1fr));
     }
   }
   @media screen and (max-width: 749px) {
@@ -490,7 +531,7 @@
       "type": "color",
       "id": "eyebrow_color",
       "label": "Eyebrow (sage / muted)",
-      "default": "#6b8f7e"
+      "default": "#7a6154"
     },
     {
       "type": "color",
@@ -721,20 +762,28 @@
       "name": "Category",
       "settings": [
         {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
           "type": "image_picker",
           "id": "image",
-          "label": "Image"
+          "label": "Image",
+          "info": "Optional. Uses the collection featured image when empty."
         },
         {
           "type": "text",
           "id": "title",
           "label": "Label",
-          "default": "Category"
+          "default": "Category",
+          "info": "Leave blank to use the collection title."
         },
         {
           "type": "url",
           "id": "link",
-          "label": "Link"
+          "label": "Link",
+          "info": "Optional. Uses the collection URL when empty."
         },
         {
           "type": "checkbox",

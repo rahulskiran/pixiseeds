@@ -1,0 +1,533 @@
+{%- liquid
+  assign animation_effect = settings.animations
+  assign section_animation = section.settings.animations | default: 'inherit'
+  if section_animation != 'inherit'
+    assign animation_effect = section_animation
+  endif
+  assign animated = false
+  if animation_effect != 'none'
+    assign animated = true
+  endif
+
+  comment
+    Editor-bound dynamic sources win. When a setting is left empty we fall back to
+    the collection's own hero metafields, then to the plain collection fields, so
+    the section still renders on collections that were never given hero copy.
+  endcomment
+
+  assign heading = section.settings.heading
+  if heading == blank
+    assign heading = collection.metafields.custom.collection_hero_name
+  endif
+  if heading == blank
+    assign heading = collection.title
+  endif
+
+  assign description = section.settings.description
+  if description == blank
+    assign description = collection.metafields.custom.collection_hero_description
+  endif
+  if description == blank
+    assign description = collection.description
+  endif
+
+  assign subheading = section.settings.subheading
+  if subheading == blank
+    assign subheading = collection.metafields.custom.collection_hero_sub_heading
+  endif
+
+  assign highlights = section.settings.highlights
+  if highlights == blank
+    assign highlights = collection.metafields.custom.collection_hero_highlights
+  endif
+
+  assign has_aside = false
+  if subheading != blank or highlights != blank
+    assign has_aside = true
+  endif
+-%}
+
+{% style %}
+  .m-collection-hero--{{ section.id }} {
+    --ch-heading-color: {{ section.settings.heading_color }};
+    --ch-text-color: {{ section.settings.text_color }};
+    --ch-accent: {{ section.settings.accent_color }};
+    --ch-rule: color-mix(in srgb, {{ section.settings.rule_color }} 14%, transparent);
+    --ch-heading-size-mobile: {{ section.settings.heading_size_mobile }}px;
+    --ch-heading-size-desktop: {{ section.settings.heading_size_desktop }}px;
+    --ch-body-size-mobile: {{ section.settings.body_size_mobile }}px;
+    --ch-body-size-desktop: {{ section.settings.body_size_desktop }}px;
+    background-color: {{ section.settings.background_color }};
+  }
+
+  #shopify-section-{{ section.id }} .m-collection-hero {
+    position: relative;
+    padding-top: {{ section.settings.padding_top_mobile }}px;
+    padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+  }
+
+  @media screen and (min-width: 990px) {
+    #shopify-section-{{ section.id }} .m-collection-hero {
+      padding-top: {{ section.settings.padding_top_desktop }}px;
+      padding-bottom: {{ section.settings.padding_bottom_desktop }}px;
+    }
+  }
+
+  .m-collection-hero--{{ section.id }} .m-collection-hero__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 28px;
+    max-width: 1180px;
+    margin: 0 auto;
+  }
+
+  @media screen and (min-width: 990px) {
+    .m-collection-hero--{{ section.id }} .m-collection-hero__grid {
+      grid-template-columns: minmax(0, {{ section.settings.column_ratio }}fr) minmax(0, 1fr);
+      gap: 0;
+      align-items: start;
+    }
+
+    .m-collection-hero--{{ section.id }} .m-collection-hero__main {
+      padding-right: 72px;
+    }
+
+    .m-collection-hero--{{ section.id }} .m-collection-hero__aside {
+      padding-left: 72px;
+      border-left: 1px solid var(--ch-rule);
+    }
+  }
+
+  /* ---- Eyebrow ---- */
+
+  .m-collection-hero--{{ section.id }} .m-collection-hero__eyebrow {
+    display: block;
+    margin: 0 0 16px;
+    font-family: var(--font-stack-body);
+    font-size: 10px;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--ch-accent);
+  }
+
+  /* ---- Heading ---- */
+
+  .m-collection-hero--{{ section.id }} .m-collection-hero__heading {
+    margin: 0;
+    font-family: var(--font-stack-header);
+    font-weight: {{ section.settings.heading_weight }};
+    font-size: var(--ch-heading-size-mobile);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--ch-heading-color);
+    text-wrap: balance;
+  }
+
+  .m-collection-hero--{{ section.id }} .m-collection-hero__description {
+    margin: 20px 0 0;
+    max-width: 52ch;
+    font-family: var(--font-stack-body);
+    font-size: var(--ch-body-size-mobile);
+    line-height: 1.75;
+    font-weight: 400;
+    color: var(--ch-text-color);
+  }
+
+  .m-collection-hero--{{ section.id }} .m-collection-hero__description > * + * {
+    margin-top: 14px;
+  }
+
+  .m-collection-hero--{{ section.id }} .m-collection-hero__description p {
+    margin: 0;
+  }
+
+  .m-collection-hero--{{ section.id }} .m-collection-hero__description a {
+    color: var(--ch-accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  @media screen and (min-width: 990px) {
+    .m-collection-hero--{{ section.id }} .m-collection-hero__heading {
+      font-size: var(--ch-heading-size-desktop);
+    }
+
+    .m-collection-hero--{{ section.id }} .m-collection-hero__description {
+      font-size: var(--ch-body-size-desktop);
+      margin-top: 24px;
+    }
+  }
+
+  /* ---- Aside ---- */
+
+  .m-collection-hero--{{ section.id }} .m-collection-hero__subheading {
+    margin: 0;
+    font-family: var(--font-stack-body);
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 1.5;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ch-heading-color);
+  }
+
+  .m-collection-hero--{{ section.id }} .m-collection-hero__subheading + .m-collection-hero__highlights {
+    margin-top: 22px;
+    padding-top: 22px;
+    border-top: 1px solid var(--ch-rule);
+  }
+
+  .m-collection-hero--{{ section.id }} .m-collection-hero__highlights {
+    font-family: var(--font-stack-body);
+    font-size: var(--ch-body-size-mobile);
+    line-height: 1.7;
+    color: var(--ch-text-color);
+  }
+
+  .m-collection-hero--{{ section.id }} .m-collection-hero__highlights ul,
+  .m-collection-hero--{{ section.id }} .m-collection-hero__highlights ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .m-collection-hero--{{ section.id }} .m-collection-hero__highlights li {
+    position: relative;
+    padding-left: 26px;
+  }
+
+  .m-collection-hero--{{ section.id }} .m-collection-hero__highlights li + li {
+    margin-top: 12px;
+  }
+
+  {%- comment -%}
+    The tick is drawn as a masked background so it inherits the accent color and
+    stays crisp at any size, without needing an SVG per list item.
+  {%- endcomment -%}
+  .m-collection-hero--{{ section.id }} .m-collection-hero__highlights li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 11px;
+    height: 11px;
+    transform: translateY(-50%);
+    background-color: var(--ch-accent);
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M1.5 6.4L4.4 9.3L10.5 2.7' fill='none' stroke='%23000' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M1.5 6.4L4.4 9.3L10.5 2.7' fill='none' stroke='%23000' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: contain;
+    mask-size: contain;
+  }
+
+  .m-collection-hero--{{ section.id }} .m-collection-hero__highlights p {
+    margin: 0;
+  }
+
+  .m-collection-hero--{{ section.id }} .m-collection-hero__highlights p + p {
+    margin-top: 12px;
+  }
+
+  @media screen and (min-width: 990px) {
+    .m-collection-hero--{{ section.id }} .m-collection-hero__highlights {
+      font-size: var(--ch-body-size-desktop);
+    }
+  }
+
+  {%- comment -%}
+    Stacked layout keeps the two halves apart with a horizontal hairline instead
+    of the vertical one used from 990px up.
+  {%- endcomment -%}
+  @media screen and (max-width: 989px) {
+    .m-collection-hero--{{ section.id }} .m-collection-hero__aside {
+      padding-top: 28px;
+      border-top: 1px solid var(--ch-rule);
+    }
+  }
+
+  .m-collection-hero--{{ section.id }} .m-collection-hero__rule {
+    max-width: 1180px;
+    height: 1px;
+    margin: {{ section.settings.rule_spacing }}px auto 0;
+    border: 0;
+    background: var(--ch-rule);
+  }
+{% endstyle %}
+
+<section class="m-section m-collection-hero m-collection-hero--{{ section.id }}">
+  <div class="m-page-width">
+    <div class="m-collection-hero__grid">
+      <div class="m-collection-hero__main{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}">
+        {%- if section.settings.eyebrow != blank -%}
+          <span class="m-collection-hero__eyebrow">{{ section.settings.eyebrow | escape }}</span>
+        {%- endif -%}
+
+        {%- if heading != blank -%}
+          <{{ section.settings.heading_tag | default: 'h1' }} class="m-collection-hero__heading">
+            {{ heading }}
+          </{{ section.settings.heading_tag | default: 'h1' }}>
+        {%- endif -%}
+
+        {%- if description != blank -%}
+          <div class="m-collection-hero__description">{{ description }}</div>
+        {%- endif -%}
+      </div>
+
+      {%- if has_aside -%}
+        <div
+          class="m-collection-hero__aside{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}"
+          {% if animated %}
+            style="--animation-order: 2;"
+          {% endif %}
+        >
+          {%- if subheading != blank -%}
+            <p class="m-collection-hero__subheading">{{ subheading }}</p>
+          {%- endif -%}
+
+          {%- if highlights != blank -%}
+            <div class="m-collection-hero__highlights">{{ highlights }}</div>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- if section.settings.show_rule -%}
+      <hr class="m-collection-hero__rule" aria-hidden="true">
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Collection hero",
+  "tag": "section",
+  "class": "m-collection-hero-section",
+  "enabled_on": {
+    "templates": ["collection"]
+  },
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Connect each field to a collection metafield with the dynamic source button. Left empty, they fall back to the collection's hero metafields, then to its title and description."
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading"
+    },
+    {
+      "type": "richtext",
+      "id": "highlights",
+      "label": "Highlights",
+      "info": "A bulleted list renders with tick marks."
+    },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "label": "Heading level",
+      "options": [
+        { "value": "h1", "label": "H1" },
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" }
+      ],
+      "default": "h1"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading",
+      "default": "#331804"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Body text",
+      "default": "#7a6154"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent and ticks",
+      "default": "#a8480a"
+    },
+    {
+      "type": "color",
+      "id": "rule_color",
+      "label": "Hairline rules",
+      "default": "#331804"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "label": "Heading size (mobile)",
+      "min": 22,
+      "max": 52,
+      "step": 1,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "heading_size_desktop",
+      "label": "Heading size (desktop)",
+      "min": 28,
+      "max": 88,
+      "step": 1,
+      "unit": "px",
+      "default": 52
+    },
+    {
+      "type": "range",
+      "id": "heading_weight",
+      "label": "Heading weight",
+      "min": 300,
+      "max": 700,
+      "step": 100,
+      "default": 400
+    },
+    {
+      "type": "range",
+      "id": "body_size_mobile",
+      "label": "Body size (mobile)",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "body_size_desktop",
+      "label": "Body size (desktop)",
+      "min": 12,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "column_ratio",
+      "label": "Left column width",
+      "min": 1,
+      "max": 2,
+      "step": 0.1,
+      "default": 1.2,
+      "info": "Relative to the right column."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rule",
+      "label": "Show closing hairline",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "rule_spacing",
+      "label": "Space above hairline",
+      "min": 16,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Top padding (mobile)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Bottom padding (mobile)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "label": "Top padding (desktop)",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 72
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "label": "Bottom padding (desktop)",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Animation"
+    },
+    {
+      "type": "select",
+      "id": "animations",
+      "label": "Animation",
+      "options": [
+        { "value": "inherit", "label": "Use theme setting" },
+        { "value": "none", "label": "None" },
+        { "value": "fade-in", "label": "Fade in" },
+        { "value": "fade-in-up", "label": "Fade in up" }
+      ],
+      "default": "fade-in-up"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection hero"
+    }
+  ]
+}
+{% endschema %}

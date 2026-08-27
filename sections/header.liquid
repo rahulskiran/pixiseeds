@@ -45,7 +45,7 @@
 -%}
 {%- if section.settings.show_track_order -%}
   {%- liquid
-    assign track_text = section.settings.track_order_text_color | default: '#1c3a2b'
+    assign track_text = section.settings.track_order_text_color | default: '#5c2a06'
     assign track_border = section.settings.track_order_border_color | default: track_text
   -%}
   {% style %}
@@ -526,13 +526,13 @@
       "type": "color",
       "id": "track_order_text_color",
       "label": "Pill text colour",
-      "default": "#1c3a2b"
+      "default": "#5c2a06"
     },
     {
       "type": "color",
       "id": "track_order_border_color",
       "label": "Pill outline colour",
-      "default": "#1c3a2b",
+      "default": "#5c2a06",
       "info": "Drawn at 40% opacity, and solid on hover."
     },
     {
