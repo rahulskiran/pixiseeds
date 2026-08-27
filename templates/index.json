@@ -546,11 +546,19 @@
     "fyplant_6abMrT": {
       "type": "Fyplant",
       "blocks": {
+        "card_4jyPTj": {
+          "type": "card",
+          "settings": {
+            "title": "Category",
+            "link": "shopify://collections/ground-cover-1",
+            "open_new_tab": false
+          }
+        },
         "card_xRmTyL": {
           "type": "card",
           "settings": {
             "title": "",
-            "link": "shopify://collections/ajuga-reptans-flower",
+            "link": "shopify://collections/flower-seeds",
             "open_new_tab": false
           }
         },
@@ -558,7 +566,7 @@
           "type": "card",
           "settings": {
             "title": "",
-            "link": "shopify://collections/cherry-tomato-seeds",
+            "link": "shopify://collections/vegetable-seeds",
             "open_new_tab": false
           }
         },
@@ -566,7 +574,7 @@
           "type": "card",
           "settings": {
             "title": "",
-            "link": "shopify://collections/curry-leaf",
+            "link": "shopify://collections/fruit-seeds",
             "open_new_tab": false
           }
         },
@@ -580,6 +588,7 @@
         }
       },
       "block_order": [
+        "card_4jyPTj",
         "card_xRmTyL",
         "card_y7xRAd",
         "card_dkqtRE",
