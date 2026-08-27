@@ -206,21 +206,24 @@
           "type": "feature",
           "settings": {
             "icon_style": "non_gmo",
-            "text": "Thoughtfully sourced, naturally grown varieties"
+            "text": "Thoughtfully sourced, naturally grown varieties",
+            "title": "Non GMO"
           }
         },
         "feature_non_neonic": {
           "type": "feature",
           "settings": {
             "icon_style": "non_neonic",
-            "text": "Helpful Growing Guidance"
+            "text": "Helpful growing guidance with every packet",
+            "title": "Non neonic"
           }
         },
         "feature_seed_care": {
           "type": "feature",
           "settings": {
             "icon_style": "seed_care",
-            "text": "Handled and packed with care for every order"
+            "text": "Handled and packed with care for every order",
+            "title": "Seed care"
           }
         }
       },
@@ -231,37 +234,40 @@
       ],
       "name": "Pixi Farmers promise",
       "settings": {
-        "heading": "We are Pixi Farmers!",
+        "heading": "We are Pixi Farmers",
         "heading_tag": "h2",
         "background_position": "center center",
         "background_color": "#faf8f5",
-        "overlay_color": "#fff5f8",
-        "overlay_opacity": 75,
-        "heading_color": "#0f1b12",
-        "text_color": "#1c3a2b",
+        "overlay_color": "#faf8f5",
+        "overlay_opacity": 80,
+        "heading_color": "#12211a",
+        "text_color": "#5a675f",
         "accent_color": "#2d5a3d",
         "card_background": "#ffffff",
         "icon_background": "#ffffff",
         "icon_border_color": "#2d5a3d",
-        "divider_color": "#1c3a2b",
-        "heading_size_mobile": 32,
-        "heading_size_desktop": 48,
-        "heading_weight": 700,
-        "body_size_mobile": 16,
-        "body_size_desktop": 18,
-        "body_weight": 500,
-        "heading_spacing": 40,
-        "icon_size": 112,
-        "card_radius": 16,
+        "divider_color": "#12211a",
+        "heading_size_mobile": 28,
+        "heading_size_desktop": 40,
+        "heading_weight": 500,
+        "body_size_mobile": 14,
+        "body_size_desktop": 15,
+        "body_weight": 400,
+        "heading_spacing": 64,
+        "icon_size": 64,
+        "card_radius": 0,
         "column_gap_mobile": 16,
-        "column_gap_desktop": 28,
-        "show_divider": true,
-        "divider_spacing": 40,
-        "padding_top_mobile": 48,
-        "padding_bottom_mobile": 48,
-        "padding_top_desktop": 72,
-        "padding_bottom_desktop": 72,
-        "animations": "fade-in-up"
+        "column_gap_desktop": 56,
+        "show_divider": false,
+        "divider_spacing": 56,
+        "padding_top_mobile": 64,
+        "padding_bottom_mobile": 64,
+        "padding_top_desktop": 104,
+        "padding_bottom_desktop": 104,
+        "animations": "fade-in-up",
+        "eyebrow": "Our promise",
+        "subheading": "Seeds chosen, tested and packed by people who grow them.",
+        "layout_style": "minimal"
       }
     },
     "3d92e37f-b44b-49a7-8000-f53f057128ae": {
@@ -1258,6 +1264,157 @@
         "custom_class": "",
         "animations": "inherit"
       }
+    },
+    "grow_smarter_home": {
+      "type": "GrowSmarter",
+      "blocks": {
+        "gs_shipping": {
+          "type": "feature",
+          "settings": {
+            "icon_style": "shipping",
+            "title": "Free shipping",
+            "text": "On every order, with no minimum spend."
+          }
+        },
+        "gs_plant": {
+          "type": "feature",
+          "settings": {
+            "icon_style": "plant",
+            "title": "Easy to plant",
+            "text": "Clear sowing notes for beginners and experts alike."
+          }
+        },
+        "gs_safe": {
+          "type": "feature",
+          "settings": {
+            "icon_style": "safe",
+            "title": "Safe and reliable",
+            "text": "Responsibly sourced and germination tested."
+          }
+        },
+        "gs_support": {
+          "type": "feature",
+          "settings": {
+            "icon_style": "support",
+            "title": "Real support",
+            "text": "Growing help from our team whenever you need it."
+          }
+        }
+      },
+      "block_order": [
+        "gs_shipping",
+        "gs_plant",
+        "gs_safe",
+        "gs_support"
+      ],
+      "name": "Grow Smarter",
+      "settings": {
+        "eyebrow": "Why Pixi Seeds",
+        "heading": "Grow smarter",
+        "subheading": "Everything we do is built around one thing — making the seeds you plant easier to grow.",
+        "heading_tag": "h2",
+        "content_alignment": "left",
+        "show_index": true,
+        "link_label": "",
+        "link_url": "",
+        "background_color": "#ffffff",
+        "heading_color": "#12211a",
+        "text_color": "#5a675f",
+        "accent_color": "#2d5a3d",
+        "rule_color": "#12211a",
+        "heading_size_mobile": 30,
+        "heading_size_desktop": 46,
+        "heading_weight": 400,
+        "title_size": 19,
+        "title_weight": 400,
+        "body_size_mobile": 14,
+        "body_size_desktop": 15,
+        "icon_size": 40,
+        "heading_spacing": 64,
+        "padding_top_mobile": 64,
+        "padding_bottom_mobile": 64,
+        "padding_top_desktop": 112,
+        "padding_bottom_desktop": 112,
+        "animations": "fade-in-up"
+      }
+    },
+    "premium_reviews_pixi": {
+      "type": "PixiReviews",
+      "blocks": {
+        "review_1": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "quote": "<p>My order arrived within the estimated window and the tracking was accurate the whole way. Every packet turned up sealed and labelled.</p>",
+            "name": "Rachel Adams",
+            "role": "Bengaluru, India",
+            "verified": true
+          }
+        },
+        "review_2": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "quote": "<p>Everything looked exactly as described on the site. Clean packaging, clear sowing notes, and strong germination within the week.</p>",
+            "name": "Thomas Greene",
+            "role": "Pune, India",
+            "verified": true
+          }
+        },
+        "review_3": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "quote": "<p>I started with two varieties and now half my balcony is from Pixi. The growing guides made the whole thing genuinely easy.</p>",
+            "name": "Ananya Rao",
+            "role": "Hyderabad, India",
+            "verified": true
+          }
+        }
+      },
+      "block_order": [
+        "review_1",
+        "review_2",
+        "review_3"
+      ],
+      "name": "Premium reviews",
+      "settings": {
+        "eyebrow": "Reviews",
+        "heading": "Loved by growers everywhere",
+        "heading_tag": "h2",
+        "intro": "Real notes from the people growing with our seeds.",
+        "header_alignment": "split",
+        "cta_label": "",
+        "cta_link": "",
+        "show_score": true,
+        "score_value": "4.9",
+        "score_label": "Based on 1,200+ verified orders",
+        "verified_label": "Verified",
+        "columns": 3,
+        "card_style": "outlined",
+        "show_avatar": true,
+        "content_max_width": 1280,
+        "card_gap": 24,
+        "card_padding": 32,
+        "card_radius": 4,
+        "title_size_mobile": 32,
+        "title_size_desktop": 48,
+        "heading_weight": 500,
+        "quote_size_mobile": 15,
+        "quote_size_desktop": 16,
+        "background_color": "#ffffff",
+        "card_background": "#ffffff",
+        "text_color": "#11150f",
+        "muted_color": "#7b8078",
+        "line_color": "#e4e6e1",
+        "accent_color": "#0b2f18",
+        "star_color": "#11150f",
+        "animations": "inherit",
+        "padding_top": 96,
+        "padding_bottom": 96,
+        "padding_top_mobile": 56,
+        "padding_bottom_mobile": 56
+      }
     }
   },
   "order": [
@@ -1272,6 +1429,8 @@
     "product_tabs_wrHLX8",
     "steal_garden_trQLtU",
     "grown_by_you_pUNg8P",
+    "grow_smarter_home",
+    "premium_reviews_pixi",
     "premium_faq_BWjHfa",
     "blog_posts_k9A43x"
   ]

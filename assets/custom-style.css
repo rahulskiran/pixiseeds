@@ -39,36 +39,90 @@
   left: -100%!important;
 }
 
-/* Header dropdown: horizontal multi-row layout (desktop nav) */
+/* Header dropdown: fixed mega menu panel + aligned grid (desktop nav) */
 @media screen and (min-width: 1280px) {
+  .m-header__menu-center header-overflow-menu {
+    position: relative;
+  }
+
+  .m-header__menu-center .m-header__menu-item--parent {
+    position: static;
+  }
+
   .m-header__menu-item--parent > .m-header__submenu:not(.m-header__submenu-level3):not(.m-header__menu-more__list) {
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-    align-items: flex-start;
-    align-content: flex-start;
-    min-width: 320px;
-    max-width: min(92vw, 880px);
-    width: max-content;
-    padding: 12px 8px;
+    position: absolute;
+    left: 0;
+    right: auto;
+    top: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 4px;
+    align-items: stretch;
+    min-width: min(calc(100vw - (var(--site-padding-left, 15px) + var(--site-padding-right, 15px))), 960px);
+    max-width: min(calc(100vw - (var(--site-padding-left, 15px) + var(--site-padding-right, 15px))), 960px);
+    width: min(calc(100vw - (var(--site-padding-left, 15px) + var(--site-padding-right, 15px))), 960px);
+    padding: 16px;
+    box-sizing: border-box;
+    z-index: 6;
+  }
+
+  /* Full-width hover bridge so moving from any top link down into the panel stays open */
+  .m-header__menu-item--parent > .m-header__submenu:not(.m-header__submenu-level3):not(.m-header__menu-more__list)::before {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100vw;
+    height: 20px;
+  }
+
+  .m-header__menu-item--parent:not(:hover):not(:has(> .m-header__submenu:hover)) > .m-header__submenu:not(.m-header__submenu-level3):not(.m-header__menu-more__list) {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translate3d(0, 12px, 0);
+  }
+
+  .m-header__menu-item--parent:hover > .m-header__submenu:not(.m-header__submenu-level3):not(.m-header__menu-more__list),
+  .m-header__menu-item--parent:has(> .m-header__submenu:hover) > .m-header__submenu:not(.m-header__submenu-level3):not(.m-header__menu-more__list) {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateZ(0);
   }
 
   .m-header__menu-item--parent > .m-header__submenu:not(.m-header__submenu-level3):not(.m-header__menu-more__list) > .m-header__menu-item {
-    flex: 0 0 auto;
-    width: auto;
+    position: relative;
+    min-width: 0;
+    margin: 0;
   }
 
   .m-header__menu-item--parent > .m-header__submenu:not(.m-header__submenu-level3):not(.m-header__menu-more__list) > .m-header__menu-item > a {
-    width: auto;
-    white-space: nowrap;
-    --m-menu-item-padding-t: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    min-height: 42px;
+    padding: 10px 14px;
+    white-space: normal;
+    line-height: 1.35;
+    box-sizing: border-box;
+    --m-menu-item-padding-t: 10px;
     --m-menu-item-padding-r: 14px;
-    --m-menu-item-padding-b: 8px;
+    --m-menu-item-padding-b: 10px;
     --m-menu-item-padding-l: 14px;
   }
 
+  .m-header__menu-item--parent > .m-header__submenu:not(.m-header__submenu-level3):not(.m-header__menu-more__list) > .m-header__menu-item > a .m-header__menu-item--icon {
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+
   .m-header__menu-item--parent > .m-header__submenu:not(.m-header__submenu-level3):not(.m-header__menu-more__list) > .m-header__menu-item > .m-header__submenu-level3 {
-    min-width: 200px;
+    top: 0;
+    left: 100%;
+    min-width: 220px;
     max-width: 280px;
   }
 }

@@ -1,0 +1,728 @@
+{%- liquid
+  assign section_animation = section.settings.animations | default: 'inherit'
+  assign animation_effect = settings.animations
+  if section_animation != 'inherit'
+    assign animation_effect = section_animation
+  endif
+  assign animated = false
+  if animation_effect != 'none'
+    assign animated = true
+  endif
+
+  assign column_count = section.blocks.size
+  if column_count < 1
+    assign column_count = 1
+  endif
+  if column_count > 4
+    assign column_count = 4
+  endif
+
+  assign align = section.settings.content_alignment | default: 'left'
+-%}
+
+{% style %}
+  .m-grow-smarter--{{ section.id }} {
+    --gs-heading-color: {{ section.settings.heading_color }};
+    --gs-text-color: {{ section.settings.text_color }};
+    --gs-accent: {{ section.settings.accent_color }};
+    --gs-rule: color-mix(in srgb, {{ section.settings.rule_color }} 14%, transparent);
+    --gs-rule-strong: color-mix(in srgb, {{ section.settings.rule_color }} 26%, transparent);
+    --gs-heading-size-mobile: {{ section.settings.heading_size_mobile }}px;
+    --gs-heading-size-desktop: {{ section.settings.heading_size_desktop }}px;
+    --gs-body-size-mobile: {{ section.settings.body_size_mobile }}px;
+    --gs-body-size-desktop: {{ section.settings.body_size_desktop }}px;
+    --gs-icon-size: {{ section.settings.icon_size }}px;
+    --gs-columns: {{ column_count }};
+    background-color: {{ section.settings.background_color }};
+  }
+
+  #shopify-section-{{ section.id }} .m-grow-smarter {
+    position: relative;
+    padding-top: {{ section.settings.padding_top_mobile }}px;
+    padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+  }
+
+  @media screen and (min-width: 990px) {
+    #shopify-section-{{ section.id }} .m-grow-smarter {
+      padding-top: {{ section.settings.padding_top_desktop }}px;
+      padding-bottom: {{ section.settings.padding_bottom_desktop }}px;
+    }
+  }
+
+  /* ---- Header ---- */
+
+  .m-grow-smarter--{{ section.id }} .m-grow-smarter__header {
+    max-width: 1180px;
+    margin: 0 auto {{ section.settings.heading_spacing }}px;
+    text-align: center;
+  }
+
+  .m-grow-smarter--{{ section.id }} .m-grow-smarter__eyebrow {
+    display: block;
+    margin: 0 0 18px;
+    font-family: var(--font-stack-body);
+    font-size: 10px;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gs-accent);
+  }
+
+  .m-grow-smarter--{{ section.id }} .m-grow-smarter__heading {
+    margin: 0;
+    font-family: var(--font-stack-header);
+    font-weight: {{ section.settings.heading_weight }};
+    font-size: var(--gs-heading-size-mobile);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--gs-heading-color);
+  }
+
+  .m-grow-smarter--{{ section.id }} .m-grow-smarter__subheading {
+    margin: 16px auto 0;
+    max-width: 48ch;
+    font-family: var(--font-stack-body);
+    font-size: var(--gs-body-size-mobile);
+    line-height: 1.65;
+    font-weight: 400;
+    color: var(--gs-text-color);
+  }
+
+  @media screen and (min-width: 990px) {
+    .m-grow-smarter--{{ section.id }} .m-grow-smarter__heading {
+      font-size: var(--gs-heading-size-desktop);
+    }
+
+    .m-grow-smarter--{{ section.id }} .m-grow-smarter__subheading {
+      font-size: var(--gs-body-size-desktop);
+    }
+  }
+
+  /* ---- Grid ---- */
+
+  .m-grow-smarter--{{ section.id }} .m-grow-smarter__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    margin: 0 auto;
+    padding: 0;
+    list-style: none;
+    max-width: 1180px;
+    border-top: 1px solid var(--gs-rule);
+  }
+
+  .m-grow-smarter--{{ section.id }} .m-grow-smarter__item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: {% if align == 'center' %}center{% else %}flex-start{% endif %};
+    text-align: {% if align == 'center' %}center{% else %}left{% endif %};
+    padding: 34px 4px 36px;
+    border-bottom: 1px solid var(--gs-rule);
+  }
+
+  @media screen and (min-width: 750px) {
+    .m-grow-smarter--{{ section.id }} .m-grow-smarter__grid {
+      grid-template-columns: repeat(min(var(--gs-columns), 2), minmax(0, 1fr));
+    }
+
+    .m-grow-smarter--{{ section.id }} .m-grow-smarter__item {
+      padding: 44px 34px 46px;
+    }
+
+    {%- comment -%}
+      Two-column range: the right-hand cell of every row gets the vertical
+      hairline; the left-hand cell keeps the flush outer edge.
+    {%- endcomment -%}
+    .m-grow-smarter--{{ section.id }} .m-grow-smarter__item:nth-child(even) {
+      border-left: 1px solid var(--gs-rule);
+    }
+  }
+
+  @media screen and (min-width: 990px) {
+    .m-grow-smarter--{{ section.id }} .m-grow-smarter__grid {
+      grid-template-columns: repeat(var(--gs-columns), minmax(0, 1fr));
+    }
+
+    .m-grow-smarter--{{ section.id }} .m-grow-smarter__item {
+      padding: 52px 40px 56px;
+      border-left: 1px solid var(--gs-rule);
+    }
+
+    .m-grow-smarter--{{ section.id }} .m-grow-smarter__item:first-child {
+      border-left: 0;
+      padding-left: {% if align == 'center' %}40px{% else %}0{% endif %};
+    }
+
+    .m-grow-smarter--{{ section.id }} .m-grow-smarter__item:last-child {
+      padding-right: {% if align == 'center' %}40px{% else %}0{% endif %};
+    }
+  }
+
+  /* ---- Index number ---- */
+
+  .m-grow-smarter--{{ section.id }} .m-grow-smarter__index {
+    font-family: var(--font-stack-body);
+    font-size: 10px;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: 0.24em;
+    color: var(--gs-text-color);
+    opacity: 0.45;
+  }
+
+  /* ---- Icon ---- */
+
+  .m-grow-smarter--{{ section.id }} .m-grow-smarter__icon-wrap {
+    width: var(--gs-icon-size);
+    height: var(--gs-icon-size);
+    margin-top: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--gs-accent);
+    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .m-grow-smarter--{{ section.id }} .m-grow-smarter__item:hover .m-grow-smarter__icon-wrap {
+    transform: translateY(-4px);
+  }
+
+  .m-grow-smarter--{{ section.id }} .m-grow-smarter__icon-img,
+  .m-grow-smarter--{{ section.id }} .m-grow-smarter__icon-svg {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+
+  /* ---- Copy ---- */
+
+  .m-grow-smarter--{{ section.id }} .m-grow-smarter__title {
+    margin: 26px 0 0;
+    font-family: var(--font-stack-header);
+    font-size: {{ section.settings.title_size }}px;
+    font-weight: {{ section.settings.title_weight }};
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    color: var(--gs-heading-color);
+  }
+
+  .m-grow-smarter--{{ section.id }} .m-grow-smarter__text {
+    margin: 10px 0 0;
+    max-width: 30ch;
+    font-family: var(--font-stack-body);
+    font-size: var(--gs-body-size-mobile);
+    line-height: 1.7;
+    font-weight: 400;
+    color: var(--gs-text-color);
+  }
+
+  @media screen and (min-width: 990px) {
+    .m-grow-smarter--{{ section.id }} .m-grow-smarter__text {
+      font-size: var(--gs-body-size-desktop);
+      max-width: 26ch;
+    }
+  }
+
+  /* ---- Optional footnote link ---- */
+
+  .m-grow-smarter--{{ section.id }} .m-grow-smarter__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin: 40px auto 0;
+    padding-bottom: 4px;
+    font-family: var(--font-stack-body);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gs-heading-color);
+    text-decoration: none;
+    border-bottom: 1px solid var(--gs-rule-strong);
+    transition: border-color 0.4s ease, color 0.4s ease;
+  }
+
+  .m-grow-smarter--{{ section.id }} .m-grow-smarter__link:hover {
+    color: var(--gs-accent);
+    border-bottom-color: var(--gs-accent);
+  }
+
+  .m-grow-smarter--{{ section.id }} .m-grow-smarter__link svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .m-grow-smarter--{{ section.id }} .m-grow-smarter__footer {
+    text-align: center;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .m-grow-smarter--{{ section.id }} .m-grow-smarter__icon-wrap,
+    .m-grow-smarter--{{ section.id }} .m-grow-smarter__link {
+      transition: none;
+    }
+  }
+{% endstyle %}
+
+<section class="m-section m-grow-smarter m-grow-smarter--{{ section.id }}">
+  <div class="m-page-width m-grow-smarter__inner">
+    {%- if section.settings.eyebrow != blank or section.settings.heading != blank or section.settings.subheading != blank -%}
+      <div class="m-grow-smarter__header{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}">
+        {%- if section.settings.eyebrow != blank -%}
+          <span class="m-grow-smarter__eyebrow">{{ section.settings.eyebrow | escape }}</span>
+        {%- endif -%}
+
+        {%- if section.settings.heading != blank -%}
+          <{{ section.settings.heading_tag | default: 'h2' }} class="m-grow-smarter__heading">
+            {{ section.settings.heading | escape }}
+          </{{ section.settings.heading_tag | default: 'h2' }}>
+        {%- endif -%}
+
+        {%- if section.settings.subheading != blank -%}
+          <p class="m-grow-smarter__subheading">{{ section.settings.subheading | escape }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <ul class="m-grow-smarter__grid" role="list">
+        {%- for block in section.blocks -%}
+          <li
+            class="m-grow-smarter__item{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}"
+            {{ block.shopify_attributes }}
+            {% if animated %}
+              style="--animation-order: {{ forloop.index }};"
+            {% endif %}
+          >
+            {%- if section.settings.show_index -%}
+              <span class="m-grow-smarter__index">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+            {%- endif -%}
+
+            <div class="m-grow-smarter__icon-wrap">
+              {%- if block.settings.icon != blank -%}
+                {{
+                  block.settings.icon
+                  | image_url: width: 400
+                  | image_tag:
+                    loading: 'lazy',
+                    class: 'm-grow-smarter__icon-img',
+                    widths: '120, 180, 240, 320, 400',
+                    sizes: '120px',
+                    alt: block.settings.title | escape
+                }}
+              {%- else -%}
+                {%- case block.settings.icon_style -%}
+                  {%- when 'shipping' -%}
+                    {%- comment -%} Shipping: a plain parcel van, drawn on the same 1.1px hairline as the rest {%- endcomment -%}
+                    <svg class="m-grow-smarter__icon-svg" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                      <path d="M6 20H34V44H6V20Z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/>
+                      <path d="M34 27H45L52 34V44H34V27Z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/>
+                      <circle cx="19" cy="47" r="4" stroke="currentColor" stroke-width="1.1"/>
+                      <circle cx="45" cy="47" r="4" stroke="currentColor" stroke-width="1.1"/>
+                      <path d="M2 27H14M6 33H16" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" opacity="0.45"/>
+                    </svg>
+                  {%- when 'plant' -%}
+                    {%- comment -%} Easy to plant: a seedling breaking the soil line {%- endcomment -%}
+                    <svg class="m-grow-smarter__icon-svg" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                      <path d="M32 50V26" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+                      <path d="M32 30C32 22.8 26.4 17 18 16C18 24.2 23.6 30 32 30Z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/>
+                      <path d="M32 34C32 26.8 37.6 21 46 20C46 28.2 40.4 34 32 34Z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/>
+                      <path d="M14 50H50" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" opacity="0.45"/>
+                    </svg>
+                  {%- when 'safe' -%}
+                    {%- comment -%} Safe and reliable: shield with a check {%- endcomment -%}
+                    <svg class="m-grow-smarter__icon-svg" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                      <path d="M32 9L52 17V32C52 43 43.4 51.6 32 55C20.6 51.6 12 43 12 32V17L32 9Z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/>
+                      <path d="M24 31.5L29.8 37L41 26" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  {%- when 'support' -%}
+                    {%- comment -%} Customer service: headset arc with earcups {%- endcomment -%}
+                    <svg class="m-grow-smarter__icon-svg" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                      <path d="M14 36V32C14 22.0589 22.0589 14 32 14C41.9411 14 50 22.0589 50 32V36" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+                      <path d="M9 36H14V47H12C10.3431 47 9 45.6569 9 44V36Z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/>
+                      <path d="M50 36H55V44C55 45.6569 53.6569 47 52 47H50V36Z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/>
+                      <path d="M50 47V49C50 51.7614 47.7614 54 45 54H36" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" opacity="0.45"/>
+                    </svg>
+                  {%- when 'guarantee' -%}
+                    {%- comment -%} Guarantee: a seal with a sprout inside {%- endcomment -%}
+                    <svg class="m-grow-smarter__icon-svg" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                      <circle cx="32" cy="28" r="18" stroke="currentColor" stroke-width="1.1"/>
+                      <path d="M32 36V26" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+                      <path d="M32 28C32 24 29 21 25 20.5C25 24.5 28 28 32 28Z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/>
+                      <path d="M32 30C32 26.4 35 23.5 39 23C39 26.9 36 30 32 30Z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/>
+                      <path d="M23 44L21 57L32 51L43 57L41 44" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round" opacity="0.45"/>
+                    </svg>
+                  {%- else -%}
+                    <svg class="m-grow-smarter__icon-svg" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                      <circle cx="32" cy="32" r="20" stroke="currentColor" stroke-width="1.1"/>
+                      <path d="M23 32L29.5 38.5L42 26" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                {%- endcase -%}
+              {%- endif -%}
+            </div>
+
+            {%- if block.settings.title != blank -%}
+              <h3 class="m-grow-smarter__title">{{ block.settings.title | escape }}</h3>
+            {%- endif -%}
+
+            {%- if block.settings.text != blank -%}
+              <p class="m-grow-smarter__text">{{ block.settings.text | escape }}</p>
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+
+    {%- if section.settings.link_label != blank and section.settings.link_url != blank -%}
+      <div class="m-grow-smarter__footer{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}">
+        <a class="m-grow-smarter__link" href="{{ section.settings.link_url }}">
+          {{ section.settings.link_label | escape }}
+          <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M2 8H14M14 8L9 3M14 8L9 13" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Grow Smarter",
+  "tag": "section",
+  "class": "m-grow-smarter-section",
+  "disabled_on": {
+    "groups": ["header", "footer", "aside"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Why Pixi Seeds"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Grow smarter"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Everything we do is built around one thing — making the seeds you plant easier to grow."
+    },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "label": "Heading level",
+      "options": [
+        { "value": "h1", "label": "H1" },
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "label": "Column alignment",
+      "options": [
+        { "value": "left", "label": "Left (editorial)" },
+        { "value": "center", "label": "Center" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_index",
+      "label": "Show column numbers",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Link"
+    },
+    {
+      "type": "text",
+      "id": "link_label",
+      "label": "Link label"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Link"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading",
+      "default": "#12211a"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Body text",
+      "default": "#5a675f"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent and icons",
+      "default": "#2d5a3d"
+    },
+    {
+      "type": "color",
+      "id": "rule_color",
+      "label": "Hairline rules",
+      "default": "#12211a"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "label": "Heading size (mobile)",
+      "min": 22,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "heading_size_desktop",
+      "label": "Heading size (desktop)",
+      "min": 28,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "default": 46
+    },
+    {
+      "type": "range",
+      "id": "heading_weight",
+      "label": "Heading weight",
+      "min": 300,
+      "max": 700,
+      "step": 100,
+      "default": 400
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Column title size",
+      "min": 14,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "default": 19
+    },
+    {
+      "type": "range",
+      "id": "title_weight",
+      "label": "Column title weight",
+      "min": 300,
+      "max": 700,
+      "step": 100,
+      "default": 400
+    },
+    {
+      "type": "range",
+      "id": "body_size_mobile",
+      "label": "Body size (mobile)",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "body_size_desktop",
+      "label": "Body size (desktop)",
+      "min": 12,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "label": "Icon size",
+      "min": 28,
+      "max": 72,
+      "step": 2,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "heading_spacing",
+      "label": "Space below heading",
+      "min": 24,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Top padding (mobile)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Bottom padding (mobile)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "label": "Top padding (desktop)",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 112
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "label": "Bottom padding (desktop)",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 112
+    },
+    {
+      "type": "header",
+      "content": "Animation"
+    },
+    {
+      "type": "select",
+      "id": "animations",
+      "label": "Animation",
+      "options": [
+        { "value": "inherit", "label": "Use theme setting" },
+        { "value": "none", "label": "None" },
+        { "value": "fade-in", "label": "Fade in" },
+        { "value": "fade-in-up", "label": "Fade in up" }
+      ],
+      "default": "fade-in-up"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Column",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Custom icon",
+          "info": "Optional. Leave empty to use the matching line icon below."
+        },
+        {
+          "type": "select",
+          "id": "icon_style",
+          "label": "Built-in icon",
+          "options": [
+            { "value": "shipping", "label": "Delivery van" },
+            { "value": "plant", "label": "Seedling" },
+            { "value": "safe", "label": "Shield" },
+            { "value": "support", "label": "Headset" },
+            { "value": "guarantee", "label": "Seal" },
+            { "value": "check", "label": "Check" }
+          ],
+          "default": "shipping"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Free shipping"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "On every order, with no minimum spend."
+        }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "Grow Smarter",
+      "blocks": [
+        {
+          "type": "feature",
+          "settings": {
+            "icon_style": "shipping",
+            "title": "Free shipping",
+            "text": "On every order, with no minimum spend."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon_style": "plant",
+            "title": "Easy to plant",
+            "text": "Clear sowing notes for beginners and experts alike."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon_style": "safe",
+            "title": "Safe and reliable",
+            "text": "Responsibly sourced and germination tested."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon_style": "support",
+            "title": "Real support",
+            "text": "Growing help from our team whenever you need it."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
