@@ -18,7 +18,7 @@
           "type": "menu_column",
           "settings": {
             "heading": "Policies",
-            "menu": "policies"
+            "menu": "footer"
           }
         },
         "newsletter_pK8Ra9": {
@@ -37,8 +37,8 @@
       ],
       "name": "Footer New",
       "settings": {
-        "logo_image": "shopify://shop_images/isleofseeds_white.png",
-        "logo_height": 40,
+        "logo_image": "shopify://shop_images/Asset_2_61b91963-ae39-42e3-8e0c-bfe586a2c548.png",
+        "logo_height": 54,
         "logo_text": "Isleofseeds",
         "logo_highlight": "",
         "logo_font_size": 24,
@@ -77,7 +77,7 @@
         "payment_icons_alignment": "center",
         "payment_icons_gap": 10,
         "bg_image_opacity": 30,
-        "bg_color": "#00530A",
+        "bg_color": "#00530a",
         "text_color": "#ffffff",
         "heading_color": "#ffffff",
         "link_color": "#c8d6c9",
