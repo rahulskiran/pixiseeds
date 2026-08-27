@@ -1,1 +1,111 @@
-{"sections":{"6205d07a-2aa1-4964-8333-a8d7829c44bc":{"type":"breadcrumb","settings":{"text_alignment":"left","hide_current":false,"hide_on_mb":false,"animations":"inherit"}},"page":{"type":"page","settings":{"show_breadcrumb":false,"show_page_content":false,"page_header_padding_top":38,"page_header_padding_bottom":0,"padding_top":0,"padding_bottom":50}},"main":{"type":"page-faqs","blocks":{"c1c6b647-dc12-471a-9c64-52fe3d961d87":{"type":"image","settings":{}},"92c57ab0-90c9-4eca-8d8f-acc554ff8262":{"type":"text","settings":{"text":"<p>Awkwardness gives me great comfort. I’ve never been cool, but I’ve felt cool. I’ve been in the cool place, but I wasn’t really cool – I was trying to pass for hip or cool.<\/p>","text_size":"h4","text_color":"body","font_family":"heading"}},"54a224ce-0661-4018-9aa2-868f6a75e36e":{"type":"text","settings":{"text":"<p>A girl should be two things: classy and fabulous. I am convinced that there can be luxury in simplicity. I wanted to dress the woman who lives and works, not the woman in a painting. It’s hard to balance everything. It’s always challenging. My relationships with producers or photographers – these are relationships that took years. I can’t get sucked into that celebrity thing, because I think it’s just crass. My aim is to make the poor look rich.<\/p>","text_size":"h6","text_color":"subtext","font_family":"body"}},"accordion-1":{"type":"accordion","settings":{"title":"What shipping methods are availbale?","content":"<p>Lorem ipsum dolor sit amet conse ctetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat.<br\/><br\/>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit.<\/p>","open":false}},"accordion-2":{"type":"accordion","settings":{"title":"How long will it take to get my package?","content":"<p>Lorem ipsum dolor sit amet conse ctetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.<\/p>","open":false}},"accordion-3":{"type":"accordion","settings":{"title":"Do you ship internationally?","content":"<p>Lorem ipsum dolor sit amet conse ctetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.<\/p>","open":false}},"accordion-4":{"type":"accordion","settings":{"title":"What payment methods are accepted?","content":"<p>Lorem ipsum dolor sit amet conse ctetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat.<\/p>","open":false}},"accordion-5":{"type":"accordion","settings":{"title":"Is buying on-line safe?","content":"<p>Lorem ipsum dolor sit amet conse ctetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.<\/p>","open":false}}},"block_order":["c1c6b647-dc12-471a-9c64-52fe3d961d87","92c57ab0-90c9-4eca-8d8f-acc554ff8262","54a224ce-0661-4018-9aa2-868f6a75e36e","accordion-1","accordion-2","accordion-3","accordion-4","accordion-5"],"settings":{"enable_narrow_width":true,"padding_top":80,"padding_bottom":0}}},"order":["6205d07a-2aa1-4964-8333-a8d7829c44bc","page","main"]}
+{
+  "sections": {
+    "6205d07a-2aa1-4964-8333-a8d7829c44bc": {
+      "type": "breadcrumb",
+      "settings": {
+        "text_alignment": "left",
+        "hide_current": false,
+        "hide_on_mb": false,
+        "animations": "inherit"
+      }
+    },
+    "page": {
+      "type": "page",
+      "settings": {
+        "show_breadcrumb": false,
+        "show_page_content": false,
+        "page_header_padding_top": 38,
+        "page_header_padding_bottom": 0,
+        "padding_top": 0,
+        "padding_bottom": 50
+      }
+    },
+    "main": {
+      "type": "page-faqs",
+      "blocks": {
+        "c1c6b647-dc12-471a-9c64-52fe3d961d87": {
+          "type": "image",
+          "settings": {}
+        },
+        "92c57ab0-90c9-4eca-8d8f-acc554ff8262": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Everything you need to know before you sow.</p>",
+            "text_size": "h4",
+            "text_color": "body",
+            "font_family": "heading"
+          }
+        },
+        "54a224ce-0661-4018-9aa2-868f6a75e36e": {
+          "type": "text",
+          "settings": {
+            "text": "<p>If your question is not answered here, our team is happy to help with variety choices, growing conditions, or anything about your order. Email <a href=\"mailto:support@pixiseeds.com\">support@pixiseeds.com</a> and we will get back to you.</p>",
+            "text_size": "h6",
+            "text_color": "subtext",
+            "font_family": "body"
+          }
+        },
+        "accordion-1": {
+          "type": "accordion",
+          "settings": {
+            "title": "How do I choose the right seeds for my climate?",
+            "content": "<p>Every product page lists ideal growing zones and seasons. When in doubt, start with varieties labeled for your region or contact us for a quick recommendation.</p>",
+            "open": true
+          }
+        },
+        "accordion-2": {
+          "type": "accordion",
+          "settings": {
+            "title": "How should I store my seeds?",
+            "content": "<p>Keep them cool, dry, and away from light. A sealed jar in the refrigerator extends viability for many seasons.</p>",
+            "open": false
+          }
+        },
+        "accordion-3": {
+          "type": "accordion",
+          "settings": {
+            "title": "Do you ship internationally?",
+            "content": "<p>We currently ship within the regions listed at checkout. If your country is not available, join our list — we expand routes regularly.</p>",
+            "open": false
+          }
+        },
+        "accordion-4": {
+          "type": "accordion",
+          "settings": {
+            "title": "What is your return policy?",
+            "content": "<p>Unopened items in original packaging may be returned within 14 days. Seed packets are final sale once opened for quality assurance.</p>",
+            "open": false
+          }
+        },
+        "accordion-5": {
+          "type": "accordion",
+          "settings": {
+            "title": "Do you guarantee germination?",
+            "content": "<p>Our seeds are selected and tested for viability, but germination depends on soil, water, temperature, and care after they leave us, so results cannot be guaranteed. If a packet arrives damaged or incorrect, contact us within 14 days and we will put it right.</p>",
+            "open": false
+          }
+        }
+      },
+      "block_order": [
+        "c1c6b647-dc12-471a-9c64-52fe3d961d87",
+        "92c57ab0-90c9-4eca-8d8f-acc554ff8262",
+        "54a224ce-0661-4018-9aa2-868f6a75e36e",
+        "accordion-1",
+        "accordion-2",
+        "accordion-3",
+        "accordion-4",
+        "accordion-5"
+      ],
+      "settings": {
+        "enable_narrow_width": true,
+        "padding_top": 80,
+        "padding_bottom": 0
+      }
+    }
+  },
+  "order": [
+    "6205d07a-2aa1-4964-8333-a8d7829c44bc",
+    "page",
+    "main"
+  ]
+}

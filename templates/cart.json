@@ -52,20 +52,6 @@
     },
     "17872916003018f949": {
       "type": "apps",
-      "blocks": {
-        "paypal_payments_studio_paypal_cart_button_JDMTPN": {
-          "type": "shopify://apps/paypal-payments-studio/blocks/paypal-cart-button/019df789-f519-7bce-9967-1ff928443aa9",
-          "settings": {
-            "button_color": "default",
-            "button_shape": "default",
-            "font_size": 14,
-            "letter_spacing": 0
-          }
-        }
-      },
-      "block_order": [
-        "paypal_payments_studio_paypal_cart_button_JDMTPN"
-      ],
       "settings": {
         "color_scheme": "",
         "include_margins": true,

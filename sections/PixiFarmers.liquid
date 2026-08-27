@@ -23,7 +23,8 @@
     assign column_count = 4
   endif
 
-  assign style = section.settings.layout_style | default: 'minimal'
+  assign style = section.settings.layout_style | default: 'panel'
+  assign mode = section.settings.theme_mode | default: 'dark'
 -%}
 
 {% style %}
@@ -35,14 +36,19 @@
     --pf-icon-border: {{ section.settings.icon_border_color }};
     --pf-divider: {{ section.settings.divider_color }};
     --pf-card-bg: {{ section.settings.card_background }};
-    --pf-rule: color-mix(in srgb, {{ section.settings.divider_color }} 16%, transparent);
+    --pf-band: {{ section.settings.band_color }};
+    --pf-rule: color-mix(in srgb, {{ section.settings.divider_color }} 18%, transparent);
+    --pf-badge-fill: color-mix(in srgb, {{ section.settings.accent_color }} 12%, transparent);
+    --pf-badge-ring: color-mix(in srgb, {{ section.settings.accent_color }} 34%, transparent);
     --pf-heading-size-mobile: {{ section.settings.heading_size_mobile }}px;
     --pf-heading-size-desktop: {{ section.settings.heading_size_desktop }}px;
     --pf-body-size-mobile: {{ section.settings.body_size_mobile }}px;
     --pf-body-size-desktop: {{ section.settings.body_size_desktop }}px;
     --pf-icon-size: {{ section.settings.icon_size }}px;
+    --pf-badge-size: {{ section.settings.icon_size | plus: 44 }}px;
     --pf-gap: {{ section.settings.column_gap_mobile }}px;
     --pf-columns: {{ column_count }};
+    --pf-radius: {{ section.settings.card_radius }}px;
     --pf-overlay: {{ section.settings.overlay_color | color_modify: 'alpha', section.settings.overlay_opacity | divided_by: 100.0 }};
     background-color: {{ section.settings.background_color }};
   }
@@ -65,6 +71,34 @@
       padding-top: {{ section.settings.padding_top_desktop }}px;
       padding-bottom: {{ section.settings.padding_bottom_desktop }}px;
     }
+  }
+
+  /* ---- The band: a filled slab that anchors the page ---- */
+
+  .m-pixi-farmers--{{ section.id }} .m-pixi-farmers__band {
+    position: relative;
+    overflow: hidden;
+    background: var(--pf-band);
+    border-radius: var(--pf-radius);
+    padding: clamp(40px, 7vw, 84px) clamp(22px, 5vw, 72px);
+  }
+
+  .m-pixi-farmers--{{ section.id }}.m-pixi-farmers--flat .m-pixi-farmers__band {
+    background: none;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  {%- comment -%} A soft off-centre glow keeps the slab from reading as a flat rectangle. {%- endcomment -%}
+  .m-pixi-farmers--{{ section.id }} .m-pixi-farmers__band::before {
+    content: "";
+    position: absolute;
+    top: -30%;
+    right: -10%;
+    width: 60%;
+    aspect-ratio: 1;
+    background: radial-gradient(circle, color-mix(in srgb, var(--pf-accent) 22%, transparent) 0%, transparent 70%);
+    pointer-events: none;
   }
 
   .m-pixi-farmers--{{ section.id }} .m-pixi-farmers__bg {
@@ -94,24 +128,44 @@
     z-index: 1;
   }
 
-  /* ---- Header ---- */
+  /* ---- Header: asymmetric, so the eye has somewhere to start ---- */
 
   .m-pixi-farmers--{{ section.id }} .m-pixi-farmers__header {
-    text-align: center;
-    margin: 0 auto {{ section.settings.heading_spacing }}px;
-    max-width: 46ch;
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: 18px;
+    margin-bottom: {{ section.settings.heading_spacing }}px;
+  }
+
+  @media screen and (min-width: 990px) {
+    .m-pixi-farmers--{{ section.id }} .m-pixi-farmers__header {
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+      align-items: end;
+      gap: 40px;
+    }
   }
 
   .m-pixi-farmers--{{ section.id }} .m-pixi-farmers__eyebrow {
-    display: block;
-    margin: 0 0 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 16px;
     font-family: var(--font-stack-body);
     font-size: 11px;
-    font-weight: 500;
+    font-weight: 600;
     line-height: 1;
-    letter-spacing: 0.24em;
+    letter-spacing: 0.26em;
     text-transform: uppercase;
     color: var(--pf-accent);
+  }
+
+  .m-pixi-farmers--{{ section.id }} .m-pixi-farmers__eyebrow::before {
+    content: "";
+    width: 28px;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.7;
   }
 
   .m-pixi-farmers--{{ section.id }} .m-pixi-farmers__heading {
@@ -119,19 +173,18 @@
     font-family: var(--font-stack-header);
     font-weight: {{ section.settings.heading_weight }};
     font-size: var(--pf-heading-size-mobile);
-    line-height: 1.14;
-    letter-spacing: -0.015em;
+    line-height: 1.02;
+    letter-spacing: -0.03em;
     color: var(--pf-heading-color);
   }
 
   .m-pixi-farmers--{{ section.id }} .m-pixi-farmers__subheading {
-    margin: 14px 0 0;
+    margin: 0;
+    max-width: 42ch;
     font-family: var(--font-stack-body);
     font-size: var(--pf-body-size-mobile);
-    line-height: 1.6;
-    font-weight: 400;
+    line-height: 1.65;
     color: var(--pf-text-color);
-    opacity: 0.85;
   }
 
   @media screen and (min-width: 990px) {
@@ -141,19 +194,21 @@
 
     .m-pixi-farmers--{{ section.id }} .m-pixi-farmers__subheading {
       font-size: var(--pf-body-size-desktop);
+      padding-bottom: 6px;
     }
   }
 
   /* ---- Grid ---- */
 
   .m-pixi-farmers--{{ section.id }} .m-pixi-farmers__grid {
+    position: relative;
+    z-index: 1;
     display: grid;
     grid-template-columns: 1fr;
     gap: var(--pf-gap);
-    margin: 0 auto;
+    margin: 0;
     padding: 0;
     list-style: none;
-    max-width: 1080px;
   }
 
   @media screen and (min-width: 750px) {
@@ -172,106 +227,63 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 22px;
+    align-items: flex-start;
+    text-align: left;
+    gap: 20px;
+    padding: 30px 0 0;
   }
 
-  /* Minimal: hairline rules instead of card chrome */
-
-  .m-pixi-farmers--{{ section.id }}.m-pixi-farmers--minimal .m-pixi-farmers__grid {
-    gap: 0;
-  }
-
-  .m-pixi-farmers--{{ section.id }}.m-pixi-farmers--minimal .m-pixi-farmers__item {
-    padding: 34px 24px;
-  }
-
-  .m-pixi-farmers--{{ section.id }}.m-pixi-farmers--minimal .m-pixi-farmers__item + .m-pixi-farmers__item::before {
+  {%- comment -%} A short accent rule per column reads heavier than a full hairline grid. {%- endcomment -%}
+  .m-pixi-farmers--{{ section.id }} .m-pixi-farmers__item::before {
     content: "";
     position: absolute;
-    left: 12%;
-    right: 12%;
     top: 0;
+    left: 0;
+    width: 44px;
+    height: 2px;
+    background: var(--pf-accent);
+    transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .m-pixi-farmers--{{ section.id }} .m-pixi-farmers__item:hover::before {
+    width: 88px;
+  }
+
+  .m-pixi-farmers--{{ section.id }} .m-pixi-farmers__item::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
     height: 1px;
     background: var(--pf-rule);
   }
 
-  @media screen and (min-width: 750px) {
-    .m-pixi-farmers--{{ section.id }}.m-pixi-farmers--minimal .m-pixi-farmers__item {
-      padding: 8px calc(var(--pf-gap) / 2);
-    }
-
-    .m-pixi-farmers--{{ section.id }}.m-pixi-farmers--minimal .m-pixi-farmers__item + .m-pixi-farmers__item::before {
-      left: 0;
-      right: auto;
-      top: 6%;
-      bottom: 6%;
-      width: 1px;
-      height: auto;
-    }
-  }
-
-  {%- comment -%}
-    Two-column range: only even items sit in the second column, so the vertical
-    rule must skip anything that wraps to the start of a row.
-  {%- endcomment -%}
-  @media screen and (min-width: 750px) and (max-width: 989px) {
-    .m-pixi-farmers--{{ section.id }}.m-pixi-farmers--minimal .m-pixi-farmers__item:nth-child(odd)::before {
-      display: none;
-    }
-
-    .m-pixi-farmers--{{ section.id }}.m-pixi-farmers--minimal .m-pixi-farmers__item:nth-child(n + 3)::after {
-      content: "";
-      position: absolute;
-      left: 12%;
-      right: 12%;
-      top: 0;
-      height: 1px;
-      background: var(--pf-rule);
-    }
-
-    .m-pixi-farmers--{{ section.id }}.m-pixi-farmers--minimal .m-pixi-farmers__item {
-      padding-top: 32px;
-      padding-bottom: 32px;
-    }
-  }
-
-  /* Cards */
-
-  .m-pixi-farmers--{{ section.id }}.m-pixi-farmers--card .m-pixi-farmers__item {
-    padding: 40px 28px;
-    background: var(--pf-card-bg);
-    border: 1px solid var(--pf-rule);
-    border-radius: {{ section.settings.card_radius }}px;
-    transition: border-color 0.4s ease;
-  }
-
-  .m-pixi-farmers--{{ section.id }}.m-pixi-farmers--card .m-pixi-farmers__item:hover {
-    border-color: color-mix(in srgb, var(--pf-accent) 45%, transparent);
-  }
-
-  /* ---- Icon ---- */
+  /* ---- Icon in a weighted badge ---- */
 
   .m-pixi-farmers--{{ section.id }} .m-pixi-farmers__icon-wrap {
-    width: var(--pf-icon-size);
-    height: var(--pf-icon-size);
+    width: var(--pf-badge-size);
+    height: var(--pf-badge-size);
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+    border-radius: 999px;
+    background: var(--pf-badge-fill);
+    border: 1px solid var(--pf-badge-ring);
     color: var(--pf-accent);
-    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), background 0.4s ease;
   }
 
   .m-pixi-farmers--{{ section.id }} .m-pixi-farmers__item:hover .m-pixi-farmers__icon-wrap {
-    transform: translateY(-3px);
+    transform: translateY(-4px);
+    background: color-mix(in srgb, var(--pf-accent) 20%, transparent);
   }
 
   .m-pixi-farmers--{{ section.id }} .m-pixi-farmers__icon-img,
   .m-pixi-farmers--{{ section.id }} .m-pixi-farmers__icon-svg {
-    width: 100%;
-    height: 100%;
+    width: var(--pf-icon-size);
+    height: var(--pf-icon-size);
     object-fit: contain;
     display: block;
   }
@@ -282,9 +294,9 @@
     margin: 0;
     font-family: var(--font-stack-body);
     font-size: 12px;
-    font-weight: 500;
+    font-weight: 600;
     line-height: 1;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
     color: var(--pf-heading-color);
   }
@@ -295,10 +307,10 @@
 
   .m-pixi-farmers--{{ section.id }} .m-pixi-farmers__text {
     margin: 0;
-    max-width: 24ch;
+    max-width: 30ch;
     font-family: var(--font-stack-body);
     font-size: var(--pf-body-size-mobile);
-    line-height: 1.65;
+    line-height: 1.6;
     font-weight: {{ section.settings.body_weight }};
     color: var(--pf-text-color);
   }
@@ -306,13 +318,11 @@
   @media screen and (min-width: 990px) {
     .m-pixi-farmers--{{ section.id }} .m-pixi-farmers__text {
       font-size: var(--pf-body-size-desktop);
-      max-width: 26ch;
     }
   }
 
   .m-pixi-farmers--{{ section.id }} .m-pixi-farmers__divider {
     width: 100%;
-    max-width: 1080px;
     height: 1px;
     margin: {{ section.settings.divider_spacing }}px auto 0;
     border: 0;
@@ -321,13 +331,13 @@
 
   @media (prefers-reduced-motion: reduce) {
     .m-pixi-farmers--{{ section.id }} .m-pixi-farmers__icon-wrap,
-    .m-pixi-farmers--{{ section.id }} .m-pixi-farmers__item {
+    .m-pixi-farmers--{{ section.id }} .m-pixi-farmers__item::before {
       transition: none;
     }
   }
 {% endstyle %}
 
-<section class="m-section m-pixi-farmers m-pixi-farmers--{{ section.id }} m-pixi-farmers--{{ style }}">
+<section class="m-section m-pixi-farmers m-pixi-farmers--{{ section.id }} m-pixi-farmers--{{ style }} m-pixi-farmers--{{ mode }}">
   {%- if has_bg -%}
     <div class="m-pixi-farmers__bg" aria-hidden="true">
       {{
@@ -343,97 +353,101 @@
   {%- endif -%}
 
   <div class="m-page-width m-pixi-farmers__inner">
-    {%- if section.settings.eyebrow != blank or section.settings.heading != blank or section.settings.subheading != blank -%}
-      <div class="m-pixi-farmers__header{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}">
-        {%- if section.settings.eyebrow != blank -%}
-          <span class="m-pixi-farmers__eyebrow">{{ section.settings.eyebrow | escape }}</span>
-        {%- endif -%}
+    <div class="m-pixi-farmers__band">
+      {%- if section.settings.eyebrow != blank or section.settings.heading != blank or section.settings.subheading != blank -%}
+        <div class="m-pixi-farmers__header{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}">
+          <div>
+            {%- if section.settings.eyebrow != blank -%}
+              <span class="m-pixi-farmers__eyebrow">{{ section.settings.eyebrow | escape }}</span>
+            {%- endif -%}
 
-        {%- if section.settings.heading != blank -%}
-          <{{ section.settings.heading_tag | default: 'h2' }} class="m-pixi-farmers__heading">
-            {{ section.settings.heading | escape }}
-          </{{ section.settings.heading_tag | default: 'h2' }}>
-        {%- endif -%}
+            {%- if section.settings.heading != blank -%}
+              <{{ section.settings.heading_tag | default: 'h2' }} class="m-pixi-farmers__heading">
+                {{ section.settings.heading | escape }}
+              </{{ section.settings.heading_tag | default: 'h2' }}>
+            {%- endif -%}
+          </div>
 
-        {%- if section.settings.subheading != blank -%}
-          <p class="m-pixi-farmers__subheading">{{ section.settings.subheading | escape }}</p>
-        {%- endif -%}
-      </div>
-    {%- endif -%}
+          {%- if section.settings.subheading != blank -%}
+            <p class="m-pixi-farmers__subheading">{{ section.settings.subheading | escape }}</p>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
 
-    {%- if section.blocks.size > 0 -%}
-      <ul class="m-pixi-farmers__grid" role="list">
-        {%- for block in section.blocks -%}
-          <li
-            class="m-pixi-farmers__item{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}"
-            {{ block.shopify_attributes }}
-            {% if animated %}
-              style="--animation-order: {{ forloop.index }};"
-            {% endif %}
-          >
-            <div class="m-pixi-farmers__icon-wrap">
-              {%- if block.settings.icon != blank -%}
-                {{
-                  block.settings.icon
-                  | image_url: width: 400
-                  | image_tag:
-                    loading: 'lazy',
-                    class: 'm-pixi-farmers__icon-img',
-                    widths: '120, 180, 240, 320, 400',
-                    sizes: '120px',
-                    alt: block.settings.text | escape
-                }}
-              {%- else -%}
-                {%- case block.settings.icon_style -%}
-                  {%- when 'non_gmo' -%}
-                    {%- comment -%} Sprout: two leaves rising from a single stem {%- endcomment -%}
-                    <svg class="m-pixi-farmers__icon-svg" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                      <path d="M32 54V26" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/>
-                      <path d="M32 30C32 22 26 15 17 14C17 23 23 30 32 30Z" stroke="currentColor" stroke-width="1.25" stroke-linejoin="round"/>
-                      <path d="M32 34C32 26 38 19 47 18C47 27 41 34 32 34Z" stroke="currentColor" stroke-width="1.25" stroke-linejoin="round"/>
-                      <path d="M22 54H42" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" opacity="0.45"/>
-                    </svg>
-                  {%- when 'non_neonic' -%}
-                    {%- comment -%} Guidance: seedling under a watchful arc {%- endcomment -%}
-                    <svg class="m-pixi-farmers__icon-svg" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                      <path d="M12 34C12 22.9543 20.9543 14 32 14C43.0457 14 52 22.9543 52 34" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/>
-                      <path d="M32 52V36" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/>
-                      <path d="M32 40C32 34.4772 27.5228 30 22 30C22 35.5228 26.4772 40 32 40Z" stroke="currentColor" stroke-width="1.25" stroke-linejoin="round"/>
-                      <path d="M32 38C32 33.5817 35.5817 30 40 30C40 34.4183 36.4183 38 32 38Z" stroke="currentColor" stroke-width="1.25" stroke-linejoin="round"/>
-                      <circle cx="32" cy="9" r="1.5" fill="currentColor"/>
-                    </svg>
-                  {%- when 'seed_care' -%}
-                    {%- comment -%} Care: a seed cradled in an open hand {%- endcomment -%}
-                    <svg class="m-pixi-farmers__icon-svg" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                      <path d="M10 38C10 38 18 50 32 50C46 50 54 38 54 38" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/>
-                      <ellipse cx="32" cy="30" rx="7" ry="10" stroke="currentColor" stroke-width="1.25"/>
-                      <path d="M32 34V22" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" opacity="0.5"/>
-                      <path d="M26 15L32 10L38 15" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" opacity="0.55"/>
-                    </svg>
-                  {%- else -%}
-                    <svg class="m-pixi-farmers__icon-svg" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                      <circle cx="32" cy="32" r="21" stroke="currentColor" stroke-width="1.25"/>
-                      <path d="M22 32H42M32 22V42" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/>
-                    </svg>
-                {%- endcase -%}
+      {%- if section.blocks.size > 0 -%}
+        <ul class="m-pixi-farmers__grid" role="list">
+          {%- for block in section.blocks -%}
+            <li
+              class="m-pixi-farmers__item{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}"
+              {{ block.shopify_attributes }}
+              {% if animated %}
+                style="--animation-order: {{ forloop.index }};"
+              {% endif %}
+            >
+              <div class="m-pixi-farmers__icon-wrap">
+                {%- if block.settings.icon != blank -%}
+                  {{
+                    block.settings.icon
+                    | image_url: width: 400
+                    | image_tag:
+                      loading: 'lazy',
+                      class: 'm-pixi-farmers__icon-img',
+                      widths: '120, 180, 240, 320, 400',
+                      sizes: '120px',
+                      alt: block.settings.text | escape
+                  }}
+                {%- else -%}
+                  {%- case block.settings.icon_style -%}
+                    {%- when 'non_gmo' -%}
+                      {%- comment -%} Sprout: two leaves rising from a single stem {%- endcomment -%}
+                      <svg class="m-pixi-farmers__icon-svg" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M32 54V26" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                        <path d="M32 30C32 22 26 15 17 14C17 23 23 30 32 30Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                        <path d="M32 34C32 26 38 19 47 18C47 27 41 34 32 34Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                        <path d="M22 54H42" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" opacity="0.45"/>
+                      </svg>
+                    {%- when 'non_neonic' -%}
+                      {%- comment -%} Guidance: seedling under a watchful arc {%- endcomment -%}
+                      <svg class="m-pixi-farmers__icon-svg" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M12 34C12 22.9543 20.9543 14 32 14C43.0457 14 52 22.9543 52 34" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                        <path d="M32 52V36" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                        <path d="M32 40C32 34.4772 27.5228 30 22 30C22 35.5228 26.4772 40 32 40Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                        <path d="M32 38C32 33.5817 35.5817 30 40 30C40 34.4183 36.4183 38 32 38Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                        <circle cx="32" cy="9" r="1.8" fill="currentColor"/>
+                      </svg>
+                    {%- when 'seed_care' -%}
+                      {%- comment -%} Care: a seed cradled in an open hand {%- endcomment -%}
+                      <svg class="m-pixi-farmers__icon-svg" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M10 38C10 38 18 50 32 50C46 50 54 38 54 38" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                        <ellipse cx="32" cy="30" rx="7" ry="10" stroke="currentColor" stroke-width="1.6"/>
+                        <path d="M32 34V22" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" opacity="0.5"/>
+                        <path d="M26 15L32 10L38 15" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.55"/>
+                      </svg>
+                    {%- else -%}
+                      <svg class="m-pixi-farmers__icon-svg" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <circle cx="32" cy="32" r="21" stroke="currentColor" stroke-width="1.6"/>
+                        <path d="M22 32H42M32 22V42" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                      </svg>
+                  {%- endcase -%}
+                {%- endif -%}
+              </div>
+
+              {%- if block.settings.title != blank -%}
+                <p class="m-pixi-farmers__title">{{ block.settings.title | escape }}</p>
               {%- endif -%}
-            </div>
 
-            {%- if block.settings.title != blank -%}
-              <p class="m-pixi-farmers__title">{{ block.settings.title | escape }}</p>
-            {%- endif -%}
+              {%- if block.settings.text != blank -%}
+                <p class="m-pixi-farmers__text">{{ block.settings.text | escape }}</p>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
 
-            {%- if block.settings.text != blank -%}
-              <p class="m-pixi-farmers__text">{{ block.settings.text | escape }}</p>
-            {%- endif -%}
-          </li>
-        {%- endfor -%}
-      </ul>
-    {%- endif -%}
-
-    {%- if section.settings.show_divider -%}
-      <hr class="m-pixi-farmers__divider" aria-hidden="true">
-    {%- endif -%}
+      {%- if section.settings.show_divider -%}
+        <hr class="m-pixi-farmers__divider" aria-hidden="true">
+      {%- endif -%}
+    </div>
   </div>
 </section>
 
@@ -480,10 +494,16 @@
       "id": "layout_style",
       "label": "Layout style",
       "options": [
-        { "value": "minimal", "label": "Minimal (hairline dividers)" },
-        { "value": "card", "label": "Cards" }
+        { "value": "panel", "label": "Filled band" },
+        { "value": "flat", "label": "Flat (no band)" }
       ],
-      "default": "minimal"
+      "default": "panel"
+    },
+    {
+      "type": "color",
+      "id": "band_color",
+      "label": "Band fill",
+      "default": "#2a1c14"
     },
     {
       "type": "header",
@@ -536,19 +556,19 @@
       "type": "color",
       "id": "heading_color",
       "label": "Heading color",
-      "default": "#3a1705"
+      "default": "#fdf5f0"
     },
     {
       "type": "color",
       "id": "text_color",
       "label": "Body text color",
-      "default": "#7a6455"
+      "default": "#c9b8ac"
     },
     {
       "type": "color",
       "id": "accent_color",
       "label": "Accent / icon color",
-      "default": "#a03f0b"
+      "default": "#e08a4f"
     },
     {
       "type": "color",
@@ -573,7 +593,7 @@
       "type": "color",
       "id": "divider_color",
       "label": "Rule / divider color",
-      "default": "#3a1705"
+      "default": "#fdf5f0"
     },
     {
       "type": "header",
@@ -597,7 +617,7 @@
       "step": 1,
       "unit": "px",
       "label": "Heading size (desktop)",
-      "default": 40
+      "default": 60
     },
     {
       "type": "range",
@@ -669,7 +689,7 @@
       "step": 2,
       "unit": "px",
       "label": "Card corner radius",
-      "default": 0
+      "default": 4
     },
     {
       "type": "range",

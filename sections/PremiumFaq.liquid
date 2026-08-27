@@ -359,6 +359,35 @@
   }
 {% endstyle %}
 
+{%- comment -%}
+  FAQPage markup is generated from this section's own blocks, so the structured
+  data can never drift from the answers a visitor actually sees. Google requires
+  the two to match. Turn it off on secondary placements so the same FAQPage is
+  not emitted across many URLs.
+{%- endcomment -%}
+{%- if section.settings.emit_faq_schema and section.blocks.size > 0 -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {%- for block in section.blocks -%}
+          {%- if block.settings.question != blank and block.settings.answer != blank -%}
+            {
+              "@type": "Question",
+              "name": {{ block.settings.question | strip_html | strip | json }},
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": {{ block.settings.answer | strip_html | strip | json }}
+              }
+            }{% unless forloop.last %},{% endunless %}
+          {%- endif -%}
+        {%- endfor -%}
+      ]
+    }
+  </script>
+{%- endif -%}
+
 {% schema %}
 {
   "name": "FAQ",
@@ -368,6 +397,13 @@
     "groups": ["header", "footer", "aside"]
   },
   "settings": [
+    {
+      "type": "checkbox",
+      "id": "emit_faq_schema",
+      "label": "Output FAQ structured data",
+      "default": true,
+      "info": "Adds FAQPage schema built from the questions below. Enable on one template only."
+    },
     {
       "type": "header",
       "content": "Section"

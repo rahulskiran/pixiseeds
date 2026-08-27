@@ -481,7 +481,8 @@
         "padding_top_mobile": 36,
         "padding_bottom_mobile": 36,
         "padding_top": 56,
-        "padding_bottom": 56
+        "padding_bottom": 56,
+        "emit_faq_schema": false
       }
     },
     "recently-viewed-new": {
