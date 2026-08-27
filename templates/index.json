@@ -549,32 +549,32 @@
         "card_xRmTyL": {
           "type": "card",
           "settings": {
-            "title": "New Arrivals",
-            "link": "shopify://collections/all-year-round-seeds-collection",
+            "title": "",
+            "link": "shopify://collections/ajuga-reptans-flower",
             "open_new_tab": false
           }
         },
         "card_y7xRAd": {
           "type": "card",
           "settings": {
-            "title": "Low-Maintenance",
-            "link": "shopify://collections/low-maintenance-collection",
+            "title": "",
+            "link": "shopify://collections/cherry-tomato-seeds",
             "open_new_tab": false
           }
         },
         "card_dkqtRE": {
           "type": "card",
           "settings": {
-            "title": "Pet-Friendly",
-            "link": "shopify://collections/pet-friendly-collection",
+            "title": "",
+            "link": "shopify://collections/curry-leaf",
             "open_new_tab": false
           }
         },
         "card_GWR8VB": {
           "type": "card",
           "settings": {
-            "title": "Gifts",
-            "link": "shopify://collections/best-sellers-collection",
+            "title": "",
+            "link": "shopify://collections/herb-seeds-1",
             "open_new_tab": false
           }
         }
