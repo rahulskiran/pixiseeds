@@ -46,7 +46,7 @@
         "separator_line": "none",
         "show_track_order": true,
         "track_order_label": "Track your order",
-        "track_order_link": "/apps/17TRACK",
+        "track_order_link": "https://pixiseeds.com/apps/17TRACK",
         "track_order_show_label": true,
         "track_order_text_color": "#bc4a0d",
         "track_order_border_color": "#bc4a0d",
