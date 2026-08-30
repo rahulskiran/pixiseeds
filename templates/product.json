@@ -107,8 +107,8 @@
             "show_dynamic_checkout": true,
             "show_gift_card_recipient": true,
             "buy_buttons_use_custom_colors": true,
-            "buy_buttons_atc_bg": "#E59500",
-            "buy_buttons_atc_text": "#FFFFFF",
+            "buy_buttons_atc_bg": "#e59500",
+            "buy_buttons_atc_text": "#ffffff",
             "buy_buttons_checkout_bg": "#dc8149",
             "buy_buttons_checkout_text": "#ffffff"
           }
@@ -144,7 +144,7 @@
             "transit_max": 8,
             "total_label": "Total",
             "business_days_note": "Business days, Monday to Friday.",
-            "cutoff_text": "Order by 5:00 PM IST to ship the same business day",
+            "cutoff_text": "Order by 5:00 PM GMT to ship the same business day",
             "exclusions_text": "No dispatch on weekends or Indian public holidays",
             "show_shipping_text": false,
             "shipping_title": "Shipping Information",
