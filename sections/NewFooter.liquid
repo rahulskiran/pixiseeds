@@ -240,7 +240,7 @@
             {%- if section.settings.info_hours != blank -%}
               <div class="bf__info-item bf__info-item--inline">
                 <span class="bf__info-term">{{ section.settings.info_label_hours }}</span>
-                <span class="bf__info-value">{{ section.settings.info_hours }}</span>
+                <span class="bf__info-value">{{ section.settings.info_hours | newline_to_br }}</span>
               </div>
             {%- endif -%}
           </div>
@@ -953,7 +953,7 @@
       "type": "text",
       "id": "info_registered_name",
       "label": "Registered business name",
-      "default": "Agriguard360"
+      "default": "Indian Seeds House"
     },
     {
       "type": "text",
@@ -1005,7 +1005,7 @@
       "type": "text",
       "id": "info_email",
       "label": "Email address",
-      "default": "support@agriguard360.com"
+      "default": "support@indianseedshouse.com"
     },
     {
       "type": "text",
@@ -1017,7 +1017,7 @@
       "type": "textarea",
       "id": "info_hours",
       "label": "Office hours text",
-      "default": "Monday to Friday, 09:30 – 17:00 (United Kingdom – GMT)"
+      "default": "Monday to Friday, 09:30 - 17:00\n(United Kingdom – GMT)"
     },
 
     { "type": "header", "content": "Disclaimer" },
