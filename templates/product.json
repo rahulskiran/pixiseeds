@@ -331,7 +331,7 @@
         "tab_active_text": "#ffffff",
         "tab_inactive_desktop": "#7a6455",
         "tab_inactive_mobile": "#3a1705",
-        "open_first_mobile": true,
+        "open_first_mobile": false,
         "mobile_divider_color": "#eadfd6",
         "mobile_answer_text": "#2a1c14",
         "mobile_answer_muted": "#7a6455",
