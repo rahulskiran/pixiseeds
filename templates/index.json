@@ -717,10 +717,10 @@
         "feature_non_neonic",
         "feature_seed_care"
       ],
-      "name": "Pixi Farmers promise",
+      "name": "Farmers promise",
       "settings": {
         "eyebrow": "Our promise",
-        "heading": "We are Pixi Farmers",
+        "heading": "We are Indian Seed House",
         "subheading": "Seeds chosen, tested and packed by people who grow them.",
         "heading_tag": "h2",
         "layout_style": "minimal",
@@ -842,14 +842,6 @@
     "grow_smarter_home": {
       "type": "GrowSmarter",
       "blocks": {
-        "gs_shipping": {
-          "type": "feature",
-          "settings": {
-            "icon_style": "shipping",
-            "title": "Free shipping",
-            "text": "On every order, with no minimum spend."
-          }
-        },
         "gs_plant": {
           "type": "feature",
           "settings": {
@@ -876,14 +868,13 @@
         }
       },
       "block_order": [
-        "gs_shipping",
         "gs_plant",
         "gs_safe",
         "gs_support"
       ],
       "name": "Grow Smarter",
       "settings": {
-        "eyebrow": "Why Indian Seeds house",
+        "eyebrow": "Why Indian Seed House",
         "heading": "Grow smarter",
         "subheading": "Everything we do is built around one thing — making the seeds you plant easier to grow.",
         "heading_tag": "h2",

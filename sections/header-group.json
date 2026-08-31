@@ -20,18 +20,10 @@
             "position": "center",
             "menu": ""
           }
-        },
-        "text_w7jAWQ": {
-          "type": "text",
-          "settings": {
-            "position": "center",
-            "text": "Free Shipping On All Orders"
-          }
         }
       },
       "block_order": [
-        "menu_CEP3Lj",
-        "text_w7jAWQ"
+        "menu_CEP3Lj"
       ],
       "settings": {
         "color_scheme": "background-5"
