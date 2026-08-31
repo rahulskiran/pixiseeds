@@ -52,8 +52,6 @@
     },
     "contact-form": {
       "type": "contact-form",
-      "blocks": {},
-      "block_order": [],
       "settings": {
         "title": "We would love to hear from you.",
         "description": "",
