@@ -168,12 +168,12 @@
     "color_schemes": {
       "background-1": {
         "settings": {
-          "primary_accent": "#bc4a0d",
+          "primary_accent": "#5F2C12",
           "background": "#ffffff",
           "background_gradient": "",
           "text": "#2a1c14",
           "subtext": "#7a6455",
-          "button": "#bc4a0d",
+          "button": "#5F2C12",
           "button_label": "#ffffff",
           "secondary_button": "#fae8dc",
           "secondary_button_label": "#2a1c14",
@@ -253,7 +253,7 @@
       "background-5": {
         "settings": {
           "primary_accent": "#e0a21a",
-          "background": "#ab3a00",
+          "background": "#5F2C12",
           "background_gradient": "",
           "text": "#ffffff",
           "subtext": "#f4d2bc",
