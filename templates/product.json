@@ -116,9 +116,9 @@
         "addons": {
           "type": "addons",
           "settings": {
-            "show_atcp": true,
-            "show_ask_a_question": true,
-            "show_social": true
+            "show_atcp": false,
+            "show_ask_a_question": false,
+            "show_social": false
           }
         },
         "faa71e88-5273-4515-9496-6bdd0db8fa4b": {
@@ -327,7 +327,7 @@
         "intro_placement": "tab",
         "intro_tab_label": "Description",
         "fallback_tab_label": "Details",
-        "tab_active_background": "#bc4a0d",
+        "tab_active_background": "#5F2C12",
         "tab_active_text": "#ffffff",
         "tab_inactive_desktop": "#7a6455",
         "tab_inactive_mobile": "#3a1705",
@@ -397,7 +397,7 @@
         "background_color": "#f4f1ea",
         "card_background": "#ffffff",
         "card_border_color": "#eadfd6",
-        "accent_color": "#bc4a0d",
+        "accent_color": "#5F2C12",
         "accent_text_color": "#ffffff",
         "heading_color": "#3a1705",
         "subheading_color": "#7a6455",
@@ -455,9 +455,9 @@
       "name": "FAQ",
       "settings": {
         "emit_faq_schema": false,
-        "color_scheme": "scheme-ba41f7c8-a303-44e7-a1d3-a9c14a08a8da",
+        "color_scheme": "background-1",
         "background_color": "#f7f5f0",
-        "enable_gradient": false,
+        "enable_gradient": true,
         "gradient_color_1": "#faf8f4",
         "gradient_color_2": "#ebe6dc",
         "tab_background": "#ffffff",
@@ -469,7 +469,7 @@
         "tab_answer_color": "#7a6455",
         "answer_panel_background": "#f7f5f0",
         "number_color": "#7a6455",
-        "icon_background": "#bc4a0d",
+        "icon_background": "#5F2C12",
         "icon_color": "#ffffff",
         "eyebrow": "Help",
         "heading": "Frequently asked questions",
