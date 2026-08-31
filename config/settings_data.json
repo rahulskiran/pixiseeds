@@ -10,7 +10,7 @@
 {
   "current": {
     "logo": "shopify://shop_images/Green_and_White_Modern_Vegan_Market_Logo.png",
-    "logo_width": 155,
+    "logo_width": 125,
     "favicon": "shopify://shop_images/icon.png",
     "use_ajax_atc": true,
     "show_scroll_top_button": true,
@@ -168,12 +168,12 @@
     "color_schemes": {
       "background-1": {
         "settings": {
-          "primary_accent": "#5F2C12",
+          "primary_accent": "#5f2c12",
           "background": "#ffffff",
           "background_gradient": "",
           "text": "#2a1c14",
           "subtext": "#7a6455",
-          "button": "#5F2C12",
+          "button": "#5f2c12",
           "button_label": "#ffffff",
           "secondary_button": "#fae8dc",
           "secondary_button_label": "#2a1c14",
@@ -253,7 +253,7 @@
       "background-5": {
         "settings": {
           "primary_accent": "#e0a21a",
-          "background": "#5F2C12",
+          "background": "#5f2c12",
           "background_gradient": "",
           "text": "#ffffff",
           "subtext": "#f4d2bc",
