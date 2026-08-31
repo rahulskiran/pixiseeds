@@ -14,6 +14,13 @@
     "topbar_8RhN8X": {
       "type": "topbar",
       "blocks": {
+        "text_8gd8J3": {
+          "type": "text",
+          "settings": {
+            "position": "center",
+            "text": "Free Shipping On All Orders"
+          }
+        },
         "menu_CEP3Lj": {
           "type": "menu",
           "settings": {
@@ -23,6 +30,7 @@
         }
       },
       "block_order": [
+        "text_8gd8J3",
         "menu_CEP3Lj"
       ],
       "settings": {
