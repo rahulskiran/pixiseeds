@@ -36,7 +36,7 @@
             "title": "Recent Post",
             "sidebar_recent_blog_name": "",
             "sidebar_recent_blog_count": "3",
-            "blog_show_tags": true,
+            "blog_show_tags": false,
             "blog_show_author": false,
             "blog_show_date": false,
             "show_excerpt": false,
