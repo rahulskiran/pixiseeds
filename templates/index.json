@@ -1018,7 +1018,7 @@
         "article_show_date": true,
         "article_show_excerpt": true,
         "article_show_button": true,
-        "button_link": "",
+        "button_link": "shopify://blogs/news",
         "button_text": "View More",
         "button_style": "m-button--primary",
         "mobile_layout": "col-1",
