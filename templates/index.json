@@ -914,7 +914,7 @@
           "type": "item",
           "settings": {
             "question": "How do I choose the right seeds for my climate?",
-            "answer": "<p>Every product page lists ideal growing zones and seasons. When in doubt, start with varieties labeled for your region or contact us for a quick recommendation.</p>",
+            "answer": "<p>Choose seeds that are suitable for your local climate, growing season, and planting conditions. Check the product description for available growing information and consider factors such as temperature, sunlight, and seasonal requirements. Whether you're gardening in the United Kingdom or the United States, selecting varieties suited to your region can help support successful growing. If you need assistance, contact our customer support team.</p>",
             "default_open": false
           }
         },
@@ -922,7 +922,7 @@
           "type": "item",
           "settings": {
             "question": "Do you ship internationally?",
-            "answer": "<p>We currently ship within the regions listed at checkout. If your country is not available, join our list—we expand routes regularly.</p>",
+            "answer": "<p>Yes, Indian Seed House currently offers free standard shipping to the United Kingdom and United States. Orders are typically processed within 2–3 business days, with an estimated transit time of 6–8 business days, making the total estimated delivery time 8–11 business days. Shipping is subject to product eligibility, destination availability, and applicable import regulations. For more details, please refer to our Shipping & Delivery Policy.</p>",
             "default_open": false
           }
         },
@@ -930,7 +930,7 @@
           "type": "item",
           "settings": {
             "question": "What is your return policy?",
-            "answer": "<p>Unopened items in original packaging may be returned within 14 days. Seed packets are final sale once opened for quality assurance.</p>",
+            "answer": "<p>Indian Seed House accepts returns of eligible, unused, and unopened products in their original packaging within 14 days of delivery for customers in the United Kingdom and United States. Opened or unsealed seed packets are generally not eligible for change-of-mind returns, except where applicable consumer protection laws provide otherwise. For damaged, defective, or incorrect items, please contact our support team as soon as possible. For full details, please refer to our Return & Refund Policy.</p>",
             "default_open": false
           }
         },
@@ -938,7 +938,7 @@
           "type": "item",
           "settings": {
             "question": "How should I store seeds?",
-            "answer": "<p>Keep them cool, dry, and away from light. A sealed jar in the refrigerator extends viability for many seasons.</p>",
+            "answer": "<p>Store seeds in a cool, dry, and dark place, away from direct sunlight, moisture, and temperature fluctuations. Keep them in airtight containers or their original sealed packaging to help maintain seed quality and viability. For longer-term storage, refrigeration may be suitable for many seed varieties when they are properly dried and sealed. Storage requirements can vary depending on the seed type.</p>",
             "default_open": false
           }
         }
