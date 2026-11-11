@@ -922,7 +922,7 @@
           "type": "item",
           "settings": {
             "question": "Do you ship internationally?",
-            "answer": "<p>Yes, Indian Seed House currently offers free standard shipping to the United Kingdom and United States. Orders are typically processed within 2–3 business days, with an estimated transit time of 6–8 business days, making the total estimated delivery time 8–11 business days. Shipping is subject to product eligibility, destination availability, and applicable import regulations. For more details, please refer to our Shipping & Delivery Policy.</p>",
+            "answer": "<p>Yes, Indian Seed House currently offers <strong>free standard shipping to the United Kingdom, United States, and Australia</strong>. Orders are typically processed within <strong>2–3 business days</strong>, with an estimated transit time of <strong>6–8 business days</strong>, making the total estimated delivery time <strong>8–11 business days</strong>. These timelines apply to all three countries. Shipping is subject to product eligibility, destination availability, and applicable import regulations. For more details, please refer to our Shipping & Delivery Policy.</p>",
             "default_open": false
           }
         },
