@@ -236,3 +236,20 @@
     display: none !important;
   }
 }
+
+/* More dropdown - compact horizontal categories */
+@media screen and (min-width: 1280px) {
+  header-overflow-menu
+  .m-header__menu-more.m-header__menu-more--open
+  > .m-header__menu-more__list {
+    width: min(750px, calc(100vw - 32px)) !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 12px !important;
+  }
+
+  header-overflow-menu
+  .m-header__menu-more__list > li > a {
+    padding: 10px 8px !important;
+    font-size: 15px !important;
+  }
+}
