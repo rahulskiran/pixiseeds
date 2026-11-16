@@ -41,6 +41,15 @@
 
       this.layout();
 
+this.list.addEventListener('pointerover', () => {
+  this.positionDropdowns();
+});
+
+this.list.addEventListener('focusin', () => {
+  this.positionDropdowns();
+});
+
+
       if ('ResizeObserver' in window) {
         // Observe the container, not this element: its width is independent of
         // how many items we move, so re-layouts cannot retrigger the observer.
