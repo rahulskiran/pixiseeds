@@ -131,7 +131,12 @@ positionDropdowns() {
       this.items.forEach((item) => this.list.insertBefore(item, this.more));
       this.more.hidden = true;
 
-      if (!this.isWrapping()) return;
+      
+if (!this.isWrapping()) {
+  this.positionDropdowns();
+  return;
+}
+
 
       // "More" takes up room itself, so reveal it before measuring again.
       this.more.hidden = false;
