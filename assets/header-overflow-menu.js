@@ -19,13 +19,44 @@
       this.items = Array.from(this.list.children).filter((item) => item !== this.more);
       if (!this.moreList || this.items.length === 0) return;
 
-      this.toggle = this.more.querySelector('a');
-      if (this.toggle) {
-        this.toggle.addEventListener('click', (event) => {
-          event.preventDefault();
-          this.setOpen(!this.more.classList.contains(OPEN_CLASS));
-        });
-      }
+      
+this.toggle = this.more.querySelector('a');
+
+if (this.toggle) {
+  this.toggle.addEventListener('click', (event) => {
+    event.preventDefault();
+    this.setOpen(!this.more.classList.contains(OPEN_CLASS));
+  });
+}
+
+// Open More dropdown when mouse enters
+this.more.addEventListener('mouseenter', () => {
+  if (!this.more.hidden) {
+    this.positionDropdowns();
+    this.setOpen(true);
+  }
+});
+
+// Close More dropdown when mouse leaves
+this.more.addEventListener('mouseleave', () => {
+  this.setOpen(false);
+});
+
+// Open More dropdown on keyboard focus
+this.more.addEventListener('focusin', () => {
+  if (!this.more.hidden) {
+    this.positionDropdowns();
+    this.setOpen(true);
+  }
+});
+
+// Close when keyboard focus leaves More
+this.more.addEventListener('focusout', (event) => {
+  if (!this.more.contains(event.relatedTarget)) {
+    this.setOpen(false);
+  }
+});
+
 
       this.onDocumentClick = (event) => {
         if (!this.more.contains(event.target)) this.setOpen(false);
