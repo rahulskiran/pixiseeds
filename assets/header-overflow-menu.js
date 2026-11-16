@@ -74,6 +74,48 @@ this.list.addEventListener('focusin', () => {
       if (this.toggle) this.toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
     }
 
+positionDropdowns() {
+  const screenWidth = window.innerWidth;
+  const margin = 16;
+
+  Array.from(this.list.children).forEach((item) => {
+    if (item.hidden) return;
+
+    const panel = Array.from(item.children).find(
+      (child) => child.classList &&
+        child.classList.contains('m-header__submenu')
+    );
+
+    if (!panel) return;
+
+    const itemRect = item.getBoundingClientRect();
+
+    const isMore = item.classList.contains(
+      'm-header__menu-more'
+    );
+
+    const panelWidth = Math.min(
+      isMore ? 900 : 1100,
+      screenWidth - margin * 2
+    );
+
+    const desiredLeft = Math.max(
+      margin,
+      Math.min(
+        itemRect.left,
+        screenWidth - margin - panelWidth
+      )
+    );
+
+    const offset = desiredLeft - itemRect.left;
+
+    item.style.setProperty(
+      '--ish-dropdown-left',
+      `${offset}px`
+    );
+  });
+}
+
     // The list is flex-wrap: wrap, so overflow shows up as extra height.
     isWrapping() {
       const reference = this.items[0] || this.more;
