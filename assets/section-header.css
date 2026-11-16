@@ -20,3 +20,154 @@
 .m-header__menu-more__list .m-header__submenu{top:-16px;left:100%}
 .m-header__menu-more--open>.m-header__submenu,.m-header__menu-more:focus-within>.m-header__submenu{transform:translateZ(0);pointer-events:auto;opacity:1;visibility:visible}
 .m-header__menu-more--open>a .m-header__menu-item--icon{transform:rotateX(180deg)}
+
+/* INDIAN SEED HOUSE - DESKTOP DROPDOWN IMPROVEMENTS */
+
+@media screen and (min-width: 1280px) {
+
+  /* Allow dropdowns to extend below the header */
+  .m-header__nav,
+  .m-header__menu,
+  .m-header__menu-center,
+  header-overflow-menu,
+  header-overflow-menu > nav,
+  header-overflow-menu [data-menu-list] {
+    overflow: visible !important;
+  }
+
+  /* Make each heading the positioning anchor */
+  header-overflow-menu [data-menu-list] > li {
+    position: relative !important;
+  }
+
+  /* Regular category dropdowns */
+  header-overflow-menu [data-menu-list] > li:not(.m-header__menu-more)
+  > .m-header__submenu {
+    position: absolute !important;
+    top: 100% !important;
+    left: var(--ish-dropdown-left, 0px) !important;
+    right: auto !important;
+
+    width: min(1100px, calc(100vw - 32px)) !important;
+    min-width: 0 !important;
+    max-width: calc(100vw - 32px) !important;
+    max-height: min(450px, calc(100vh - 190px)) !important;
+
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    align-content: start;
+    gap: 0 16px;
+
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    box-sizing: border-box;
+    padding: 15px 20px !important;
+    z-index: 100;
+  }
+
+  /* Consistent link spacing */
+  header-overflow-menu [data-menu-list] > li:not(.m-header__menu-more)
+  > .m-header__submenu > li {
+    width: auto !important;
+    min-width: 0 !important;
+    float: none !important;
+  }
+
+  header-overflow-menu .m-header__submenu a {
+    white-space: normal;
+    overflow-wrap: break-word;
+  }
+
+  /* The More dropdown */
+  header-overflow-menu .m-header__menu-more
+  > .m-header__menu-more__list {
+    position: absolute !important;
+    top: 100% !important;
+    left: var(--ish-dropdown-left, 0px) !important;
+    right: auto !important;
+
+    width: min(900px, calc(100vw - 32px)) !important;
+    min-width: 0 !important;
+    max-height: min(450px, calc(100vh - 190px)) !important;
+
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-content: start;
+    gap: 20px;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    padding: 20px !important;
+    box-sizing: border-box;
+    z-index: 110;
+  }
+
+  /* Display More only when activated */
+  header-overflow-menu .m-header__menu-more
+  > .m-header__menu-more__list {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+  }
+
+  header-overflow-menu .m-header__menu-more.m-header__menu-more--open
+  > .m-header__menu-more__list {
+    display: grid !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    transform: none !important;
+    pointer-events: auto !important;
+  }
+
+  /* Group each category inside More */
+  header-overflow-menu .m-header__menu-more__list
+  > li {
+    position: static !important;
+    width: auto !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  header-overflow-menu .m-header__menu-more__list
+  > li > a {
+    display: block !important;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  /* Expand submenu links inside More instead of
+     allowing flyouts to jump across the screen */
+  header-overflow-menu .m-header__menu-more__list
+  .m-header__submenu {
+    position: static !important;
+    display: block !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    transform: none !important;
+    box-shadow: none !important;
+    padding: 0 0 0 10px !important;
+    margin: 0 !important;
+    pointer-events: auto !important;
+  }
+
+  header-overflow-menu .m-header__menu-more__list
+  .m-header__submenu li {
+    width: 100% !important;
+    padding: 5px 0 !important;
+  }
+
+  /* Responsive desktop columns */
+  @media (max-width: 1450px) {
+    header-overflow-menu [data-menu-list] > li:not(.m-header__menu-more)
+    > .m-header__submenu {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+}
