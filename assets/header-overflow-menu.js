@@ -147,6 +147,9 @@ if (!this.isWrapping()) {
       }
 
       if (this.moreList.children.length === 0) this.more.hidden = true;
+
+this.positionDropdowns();
+
     }
   }
 
