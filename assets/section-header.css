@@ -171,3 +171,68 @@
     }
   }
 }
+
+/* MORE MENU - SHOW ONLY TOP-LEVEL CATEGORIES */
+
+@media screen and (min-width: 1280px) {
+
+  /* Keep the More heading as the dropdown anchor */
+  header-overflow-menu .m-header__menu-more {
+    position: relative !important;
+  }
+
+  /* Hide dropdown by default */
+  header-overflow-menu .m-header__menu-more
+  > .m-header__menu-more__list {
+    display: none !important;
+  }
+
+  /* Show categories when More is clicked */
+  header-overflow-menu .m-header__menu-more.m-header__menu-more--open
+  > .m-header__menu-more__list {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    width: min(650px, calc(100vw - 32px)) !important;
+    max-height: 450px !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    transform: none !important;
+    z-index: 9999 !important;
+    background: #ffffff !important;
+    padding: 20px !important;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+  }
+
+  /* Show top-level category names */
+  header-overflow-menu .m-header__menu-more__list
+  > li {
+    display: block !important;
+    position: relative !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  header-overflow-menu .m-header__menu-more__list
+  > li > a {
+    display: block !important;
+    padding: 12px !important;
+    margin: 0 !important;
+    font-weight: 500 !important;
+    white-space: normal !important;
+  }
+
+  /* Hide child categories inside More */
+  header-overflow-menu .m-header__menu-more__list
+  > li > .m-header__submenu {
+    display: none !important;
+  }
+
+  /* Hide submenu arrows inside More */
+  header-overflow-menu .m-header__menu-more__list
+  > li > a .m-header__menu-item--icon {
+    display: none !important;
+  }
+}
