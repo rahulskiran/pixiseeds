@@ -253,3 +253,37 @@
     font-size: 15px !important;
   }
 }
+
+/* MORE DROPDOWN - COMPACT ALIGNMENT FIX */
+@media screen and (min-width: 1280px) {
+
+  header-overflow-menu .m-header__menu-more {
+    position: relative !important;
+  }
+
+  header-overflow-menu
+  .m-header__menu-more.m-header__menu-more--open
+  > .m-header__menu-more__list {
+    width: max-content !important;
+    min-width: 0 !important;
+    max-width: min(650px, calc(100vw - 32px)) !important;
+
+    left: 0 !important;
+    right: auto !important;
+    top: 100% !important;
+
+    grid-template-columns: repeat(3, max-content) !important;
+    column-gap: 24px !important;
+
+    padding: 18px 20px !important;
+    box-sizing: border-box !important;
+  }
+
+  header-overflow-menu
+  .m-header__menu-more__list > li > a,
+  header-overflow-menu
+  .m-header__menu-more__list > li > a span {
+    white-space: nowrap !important;
+    overflow-wrap: normal !important;
+  }
+}
